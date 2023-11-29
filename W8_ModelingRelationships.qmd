@@ -1,0 +1,900 @@
+---
+title: "08 Modeling Relationships"
+subtitle: |
+   | Julius-Maximilians-University Würzburg 
+   | Course: "Biostatistics"    
+   | Translational Neuroscience
+author: "Dr. Mario Reutter (slides adapted from Dr. Lea Hildebrandt)"
+format: 
+  revealjs:
+    smaller: true
+    scrollable: true
+    slide-number: true
+    theme: serif
+    chalkboard: true
+from: markdown+emoji
+---
+
+# Modeling Categorical Relationships
+
+```{css}
+code.sourceCode {
+  font-size: 1.4em;
+}
+
+div.cell-output-stdout {
+  font-size: 1.4em;
+}
+```
+
+```{r}
+#| echo: false
+#| messages: false
+
+library(tidyverse)
+library(ggplot2)
+library(kableExtra)
+#library(BayesFactor)
+library(sfsmisc)
+library(cowplot)
+library(knitr)
+set.seed(123456) # set random seed to exactly replicate results
+# load the NHANES data library
+library(NHANES)
+
+```
+
+::: notes
+Now that we have covered the basics, we will apply them and turn to the question how to model particular relationships.
+:::
+
+## Chi² Test
+
+We will first focus on modeling *categorical* relationships (of variables that are qualitative!).
+
+. . .
+
+These data are usually expressed in terms of **counts**.
+
+. . .
+
+**Example: Candy colors**
+
+Bag of candy: 30 chocolates, 33 licorices, and 37 gumballs.
+
+. . .
+
+Is the distribution fair (i.e. 1/3rd of the bag = each candy) and the fact that there are only 30 chocolates a random accident?
+
+. . .
+
+**What is the likelihood that the count would come out this way if the true probability of each candy type is the averaged proportion of 1/3 each?**
+
+::: notes
+Counts: For each combination of variables, how many observations do we have?
+
+If the machine really sorts on average 1/3 of each in each bag? How much is due to chance?
+:::
+
+## Chi² Test 2
+
+The Chi² test tests whether observed counts differ from expected values ($H_0$).
+
+$$
+\chi^2 = \sum_i\frac{(observed_i - expected_i)^2}{expected_i}
+$$
+
+. . .
+
+The null hypothesis in our example is that the proportion of each type of candy is equal (1/3 or \~33.33).
+
+If we plug in our values from above, we would calculate $\chi^2$ like this:
+
+$$ \chi^2 = \frac{(30 - 33.33)^2}{33.33} + \frac{(33 - 33.33)^2}{33.33} + \frac{(37 - 33.33)^2}{33.33} = 0.74 $$
+
+::: notes
+take the difference between observed and expected (33.33), square it, divide it by expected 33.33 and add everything up
+:::
+
+## Chi² Test 3
+
+On its own, the $\chi^2$ statistic is not interpretable - it depends on its distribution.
+
+The shape of the chi-squared distribution depends on the *degrees of freedom*, which is the number of variables added.
+
+```{r}
+#| echo: false
+xvals <- seq(0.01, 20, 0.01)
+dfvals <- c(1, 2, 4, 8)
+chisqDf <-
+  data.frame(xvals, dfvals) %>%
+  complete(xvals, dfvals)
+chisqDf <-
+  chisqDf %>%
+  mutate(chisq = dchisq(x = xvals, df = dfvals),
+         dfvals= as.factor(dfvals)) %>%
+  group_by(dfvals) %>%
+  mutate(chisqNorm = chisq / max(chisq),
+         Df=dfvals
+         )
+  
+p1 <- ggplot(chisqDf, aes(xvals, chisqNorm, group = Df, linetype = Df)) +
+  geom_line() +
+  theme(legend.position = c(0.8, 0.7)) +
+  labs(
+    fill = "Degrees of freedom",
+    color = "Degrees of freedom",
+    x = "Chi-squared values"
+  ) + ylab('Density')
+
+p1
+```
+
+For the candy example, we use a chi-squared distribution with DFs = k-1 (k being 3 for the 3 candy categories - we lost one DF when we calculated the mean for the expected values). If we'd look at the distribution and found $\chi^2 = .74$ on the x-axis, we would see that it does not fall far into the tail of the distribution but is rather in the middle. If we calculate the *p*-value, we'd get $P(\chi^2 > .74) = 0.691$.
+
+It is thus not particularly surprising to find this distribution of candies and we would not reject $H_0$ (equal proportions).
+
+## Contingency Tables and the Two-Way Test
+
+The $\chi^2$ test is also used to test whether two categorical variables are related to each other.
+
+. . .
+
+Example: Are Black drivers more likely to be pulled over by police than white drivers?
+
+We have two variables: Skin color (black vs white) and being pulled over (true vs. false). We can represent the data in a *contingency table*:
+
+```{r}
+#| echo: false
+#| message: false
+
+stopData <-
+  read_csv("Data/CT_data_cleaned.csv") %>%
+  rename(searched = search_conducted)
+
+# compute and print two-way contingency table
+summaryDf2way <-
+  stopData %>%
+  count(searched, driver_race) %>%
+  arrange(driver_race, searched) 
+
+summaryContingencyTable <-
+  summaryDf2way %>%
+  spread(driver_race, n)
+
+# Compute and print contingency table using proportions 
+# rather than raw frequencies
+summaryContingencyTable <-
+  summaryContingencyTable %>%
+  mutate(
+    `Black (relative)` = Black / nrow(stopData), #count of Black individuals searched / total searched
+  `White (relative)` = White / nrow(stopData)
+  )
+kable(summaryContingencyTable, caption='Contingency table for police search data')
+```
+
+If there is no relationship between skin color and being searched, the frequencies would be the same for both skin colors. This would be our expected values. We can determine them using probabilities:
+
+|                  | Black       | White       |       |
+|------------------|-------------|-------------|-------|
+| **Not searched** | P(NS)\*P(B) | P(NS)\*P(W) | P(NS) |
+| **Searched**     | P(S)\*P(B)  | P(S)\*P(W)  | P(S)  |
+|                  | P(B)        | P(W)        |       |
+
+::: notes
+Probabilities: Because we expect the variables to be *unrelated*, we can calculate the **joint probability** as the product of the **marginal probabilities**:\
+$P(X \cap Y) = P(X) * P(Y)$
+
+Marginal probabilities are the prob of each event occuring regardless of other events (in the margins of the table!)
+:::
+
+## Chi² Test 4
+
+If we compute the standardized squared difference between observed and expected values, we can sum them up to get $\chi^2 = 828.3$
+
+```{r}
+#| echo: false
+
+# first, compute the marginal probabilities
+# probability of being each race
+summaryDfRace <-
+  stopData %>%
+  count(driver_race) %>% #count the number of drivers of each race
+  mutate(
+    prop = n / sum(n) #compute the proportion of each race out of all drivers
+  )
+
+# probability of being searched 
+summaryDfStop <-
+  stopData %>%
+  count(searched) %>% #count the number of searched vs. not searched
+  mutate(
+    prop = n / sum(n) # compute proportion of each outcome out all traffic stops
+  )
+
+# We can use a linear algebra trick known as the "outer product" 
+# (via the `outer()` function) to compute this easily.
+# second, multiply outer product by n (all stops) to compute expected frequencies
+expected <- outer(summaryDfRace$prop, summaryDfStop$prop) * nrow(stopData)
+
+# create a data frame of expected frequencies for each race 
+expectedDf <- 
+  data.frame(expected, driverRace = c("Black", "White")) %>% 
+  rename(
+    NotSearched = X1,
+    Searched = X2
+  )
+
+# tidy the data frame
+expectedDfTidy <-
+  gather(expectedDf, searched, n, -driverRace) %>%
+  arrange(driverRace, searched)
+
+# third, add expected frequencies to the original summary table
+# and fourth, compute the standardized squared difference between 
+# the observed and expected frequences
+summaryDf2way <-
+  summaryDf2way %>%
+  mutate(expected = expectedDfTidy$n)
+
+summaryDf2way <-
+  summaryDf2way %>%
+  mutate(stdSqDiff = (n - expected)**2 / expected)
+chisq <- sum(summaryDf2way$stdSqDiff)
+pval <- pchisq(chisq, df = 1, lower.tail = FALSE)
+kable(summaryDf2way, digits=2,caption='Summary of the 2-way contingency table for police search data')
+```
+
+We can then compute the *p*-value using a chi-squared distribution with $DF = (nRows - 1) * (nColumns - 1) = (2-1) * (2-1) = 1$
+
+We can also calculate a $\chi^2$ test easily in R:
+
+```{r}
+#| echo: false
+# first need to rearrange the data into a 2x2 table
+summaryDf2wayTable <-
+  summaryDf2way %>%
+  dplyr::select(-expected, -stdSqDiff) %>%
+  spread(searched, n) %>%
+  dplyr::select(-driver_race)
+```
+
+```{r}
+#| echo: true
+chisqTestResult <- chisq.test(summaryDf2wayTable, 1, correct = FALSE)
+chisqTestResult
+
+```
+
+The results indicate that the data are highly unlikely if there was no true relationship between skin color and police searches! We would thus reject $H_0$.
+
+::: notes
+DF: computing the expected frequencies requires three values: total number of observations and marg probs each variable. thus only one of the four values can vary freely.
+:::
+
+## Standardized Residuals
+
+If we want to know not only whether but also *how* the data differ from what we would expect under $H_0$, we can examine the **residuals** of the model.
+
+The residuals tell us for each cell how much the observed data deviates from the expected data.
+
+To make the residuals better comparable, we will look at the *standardized* residuals:
+
+$$
+\text{standardized residual}_{ij} = \frac{observed_{ij} - expected_{ij}}{\sqrt{expected_{ij}}}
+$$
+
+where $i$ and $j$ are the rows and columns respectively.
+
+```{r}
+#| echo: false
+
+# compute standardized residuals
+summaryDfResids <- 
+  summaryDf2way %>% 
+  mutate(`Standardized residuals` = (n - expected)/sqrt(expected)) %>%
+  dplyr::select(-n, -expected, -stdSqDiff)
+kable(summaryDfResids, caption="Summary of standardized residuals for police stop data")
+```
+
+::: notes
+raw residuals depend on number of observations!
+
+Black individuals are searched way more often than expected --\> helps us intepret significant results.
+:::
+
+## Odds Ratios
+
+Alternatively, we can represent the relative likelihood of different outcomes as odds ratios:
+
+$$
+odds_{searched|black} = \frac{N_{searched\cap black}}{N_{not\ searched\cap black}} = \frac{1219}{36244} = 0.034
+$$
+
+$$
+odds_{searched|white} = \frac{N_{searched\cap white}}{N_{not\ searched\cap white}} = \frac{3108}{239241} = 0.013
+$$
+
+$$
+odds\ ratio = \frac{odds_{searched|black}}{odds_{searched|white}} = 2.59
+$$
+
+The odds of being searched are 2.59x higher for Black vs. white drivers!
+
+## Simpson's Paradox
+
+The Simpson's Paradox is a great example of misleading summaries.
+
+If we look at the baseball data below, we see that David Justice has a better batting average in every single year, but Derek Jeter has a better overall batting average:
+
+| Player        | 1995    |          | 1996    |          | 1997    |          | Combined |          |
+|--------|--------|--------|--------|--------|--------|--------|--------|--------|
+| Derek Jeter   | 12/48   | .250     | 183/582 | .314     | 190/654 | .291     | 385/1284 | **.300** |
+| David Justice | 104/411 | **.253** | 45/140  | **.321** | 163/495 | **.329** | 312/1046 | .298     |
+
+How can this be?
+
+. . .
+
+**Simpson's Paradox**: A pattern is present in the combined dataset but may be different in subsets of the data.
+
+. . .
+
+Happens if another (lurking) variable changes across subsets (e.g. number of at-bats/denominator).
+
+::: notes
+batting average: hits/at bats
+
+1995: in general low batting averages, Justice a lot of at-bats
+:::
+
+# Modeling Continuous Relationships
+
+```{r}
+#| echo: false
+#| message: false
+
+library(tidyverse)
+library(ggplot2)
+library(fivethirtyeight)
+library(BayesFactor)
+library(bayestestR)
+library(cowplot)
+library(knitr)
+library(DiagrammeR)
+library(htmltools)
+library(webshot)
+library(DiagrammeRsvg)
+library(rsvg)
+set.seed(123456) # set random seed to exactly replicate results
+# load the NHANES data library
+library(NHANES)
+# drop duplicated IDs within the NHANES dataset
+NHANES <- 
+  NHANES %>% 
+  dplyr::distinct(ID,.keep_all=TRUE)
+NHANES_adult <- 
+  NHANES %>%
+  drop_na(Weight) %>%
+  subset(Age>=18)
+```
+
+## Example: Income Inequality and Hate Crimes
+
+We want to look at a dataset that was used for an analysis of the relationship between income inequality (*Gini index*) and the prevalence of hate crimes in the USA.
+
+```{r}
+#| echo: false
+
+hateCrimes <- 
+  hate_crimes %>%
+  mutate(state_abb = state.abb[match(state,state.name)]) %>%
+  drop_na(avg_hatecrimes_per_100k_fbi)
+
+hateCrimes$state_abb[hateCrimes$state=="District of Columbia"]='DC'
+
+ggplot(hateCrimes,aes(gini_index,avg_hatecrimes_per_100k_fbi,label=state_abb)) +
+  geom_point() + 
+  geom_text(aes(label=state_abb),hjust=0, vjust=0) +
+  theme(plot.title = element_text(size = 20, face = "bold")) +
+  xlab('Gini index') + 
+  ylab('Avg hate crimes per 100K population (FBI)') +
+  theme(plot.margin = unit(c(1,1,1,1), "cm")) +
+  xlim(0.4, 0.55)
+
+```
+
+It looks like there is a positive relationship between the variables. How can we quantify this relationship?
+
+## Covariance and Correlation
+
+**Covariance**: How much do two variables *co-vary* with each other?
+
+Variance (single variable): $s^2 = \frac{\sum_{i=1}^n (x_i - \bar{x})^2}{N - 1}$
+
+Covariance (two variables): $covariance = \frac{\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})}{N - 1}$
+
+. . .
+
+"Is there are relation between the deviations of two different variables (from their means) across observations?"
+
+. . .
+
+Will be far from 0 (and positive) if data points deviate in similar ways, will be negative if deviations are in opposite directions.
+
+. . .
+
+Covariance varies with overall level of variance in the data, so not that useful to describe relationship.
+
+. . .
+
+**Correlation coefficient** (Pearson correlation): Scales the covariance by the standard deviations of the two variables and thus standardizes it (=varies between -1 and 1!)!
+
+$$
+r = \frac{covariance}{s_xs_y} = \frac{\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})}{(N - 1)s_x s_y}
+$$
+
+::: notes
+Covariance depends on dataset!
+:::
+
+## Hypothesis Testing for Correlations
+
+The correlation between income inequality and hate crimes is $r = .42$, which seems to be a reasonably strong (positive) relationship.
+
+. . .
+
+We can test whether such a relationship could occur by chance, even if there is actually no relationship. In this case, our null hypothesis is $H_0: r = 0$.
+
+. . .
+
+To test whether there is a significant relationship, we can transform the $r$ statistic into a $t$ statistic:
+
+$$
+t_r = \frac{r\sqrt{N-2}}{\sqrt{1-r^2}}
+$$
+
+We can compute this with R:
+
+```{r}
+#| echo: true
+
+# perform correlation test on hate crime data
+cor.test(
+  hateCrimes$avg_hatecrimes_per_100k_fbi,
+  hateCrimes$gini_index
+)
+
+```
+
+The *p*-value is quite small , which indicates that it is quite unlikely to find a *r* value this extreme or more. We would thus reject $H_0: r = 0$.
+
+::: notes
+subsetting with \$!
+:::
+
+## Robust Correlations
+
+In the plot, we have seen an **outlier** the District of Columbia was quite different from the other data points.
+
+. . .
+
+::: columns
+::: column
+The Pearson's correlation coefficient $r$ is highly sensitive to outliers:
+
+```{r}
+#| echo: false
+#| fig-height: 3
+#| fig-width: 3
+
+n <- 10
+set.seed(1234)
+dfOutlier <-
+  data.frame(x = rnorm(n)) %>%
+  mutate(y = x * -1)
+dfOutlier$x[1] <- 10
+dfOutlier$y[1] <- 10
+cc <- cor(dfOutlier$x, dfOutlier$y)
+ccSpearman <- cor(dfOutlier$x, dfOutlier$y, method = "spearman")
+p <- ggplot(dfOutlier, aes(x, y)) +
+  geom_point() +
+  ggtitle(sprintf("r = %0.2f (without outlier: r = %.2f)", cc, cor(dfOutlier$x[2:n], dfOutlier$y[2:n]))) +
+  theme(plot.title = element_text(size = 16, face = "bold")) +
+  theme(plot.margin = unit(c(0, 1, 0, 0), "cm")) +
+  labs(
+    x = "variable x",
+    y = "variable y"
+  )
+print(p)
+
+```
+
+(simulated data)
+:::
+
+<div>
+
+We can use a different correlation coefficient, though, which is less sensitive to outliers: **Spearman correlation**.
+
+It is based on ranking (i.e. ordering) the data and using the ranks (instead of the data) for the correlation.
+
+The correlation is now -0.45, the influence of the outlier is thus greatly reduced, and it is no longer significant!
+
+The original correlation is also much lower and non-significant!
+
+```{r}
+#| echo: true
+
+corTestSpearman <- cor.test(hateCrimes$avg_hatecrimes_per_100k_fbi,
+  hateCrimes$gini_index,
+  method = "spearman")
+corTestSpearman
+```
+
+</div>
+:::
+
+::: notes
+Without outlier: perfectly *negative* correlation, with outlier: highly positive!
+:::
+
+## Correlation and Causation
+
+Doing a well controlled, randomized experiment (RCT) is extremely helpful to gather causal evidence.
+
+However, it is not always possible or ethical to do an experiment!
+
+We can still collect (observational) data. However, if we correlate two variables, we *can't* conclude that one causes the other: They *might* be related but there could also be a third variable that causes both.
+
+. . .
+
+If we have observational data, **causal graphs** can be helpful for interpreting causality:
+
+::: columns
+::: column
+```{r,fig.width=5,out.height='25%'}
+#| echo: false
+
+latent_graph = "
+digraph boxes_and_circles {
+  # a 'graph' statement
+  graph [overlap = true, fontsize = 6]
+  # several 'node' statements
+ 
+  node [shape = circle,
+        fixedsize = true,
+        width = 0.9,
+        fontsize=6] // sets as circles
+  StudyTime; ExamGrade; FinishTime
+  
+  node [shape = box,
+        fixedsize = true,
+        width = 0.9,
+        fontsize=6] //  
+  Knowledge
+  # several 'edge' statements
+  StudyTime->Knowledge [color=green]
+  Knowledge->ExamGrade [color=green]
+  Knowledge->FinishTime [color=red]
+}
+"
+grViz(latent_graph) %>% 
+   export_svg %>% 
+   charToRaw %>% 
+   rsvg_png("images/dag_latent_example.png", width = 250)
+
+knitr::include_graphics("images/dag_latent_example.png")
+```
+:::
+
+::: column
+*Green arrow*: positive relationship, *red*: negative\
+*Circle*: observed, *rectangle*: latent (unobservable)\
+
+*ExamGrade* and *FinishTime* seem negative related if we ignore others!\
+*Knowledge* = mediator\
+*StudyTime* = proxy for knowledge, if we "control" it/hold it constant/only use people with same amount, we would see that EG and FT are unrelated!
+:::
+:::
+
+::: notes
+We have briefly talked about *causation* in week 1
+
+Think of data/questions where it is impossible/unethical!\
+abused children and brain development!\
+(3rd var: family stress -\> less intellectual engagement --\> poorer brain dev)
+
+Correlation: s.th. is probably causing s.th. else but not clear what causes what!
+
+DAG:\
+green: pos, red: net\
+circle: observed, rect: latent (unobservable)\
+ExamGrade and FinishTime seem neg related if we ignore others\
+knowledge = mediates\
+StudyTime = proxy for knowledge, if we "control" it/hold it constant/only use people with same amount, we would see that EG and FT are unrelated!
+:::
+
+# Comparing Means
+
+```{r}
+#| echo: false
+#| message: false
+
+library(emmeans)
+
+```
+
+## Testing a Single Mean
+
+We sometimes might want to know whether a single value, the mean of a group, differs from a specific value, e.g. whether the blood pressure in the sample differs from or is bigger than 80.
+
+. . .
+
+We can test this using the $t$-test, which we have already encountered in the "Hypothesis Testing" session!
+
+$$
+t = \frac{\hat{X} - \mu}{SEM}
+$$
+
+$$
+SEM = \frac{\hat{\sigma}}{\sqrt{n}}
+$$
+
+$\hat{X}$ is the mean of our sample, $\mu$ the hypothesized population mean (e.g. the value we want to test against, such as 80 for the blood pressure example).
+
+We can easily calculate the $t$-test in R:
+
+```{r}
+#| echo: true
+t.test(x=NHANES_adult$BPDiaAve, mu=80, alternative='greater')
+```
+
+::: notes
+(The $t$ statistic thus asks how large the deviation of sample mean from the expected value with respect to the sampling variability of the mean!)
+
+We tested the one-sided alternative (\>) and the blood pressure in the sample is much lower than 80, so it is far from significance
+
+We can't interpret the $p$-value as evidence in favor of $H_0$ (i.e. larger $p$-value! vs non.sign) --\> Bayes!
+:::
+
+## Comparing Two Means
+
+More often, we want to know whether there is a difference between the means of *two groups*.
+
+Example: Do regular marijuana smokers watch more television?\
+In this example, we expect that they watch *more* TV, which leads us to the following directed hypotheses:
+
+$H_0$ = marijuana smokers watch less or equally often TV,\
+$H_A$ = marijuana smokers watch more TV.
+
+```{r}
+set.seed(123456) 
+# drop duplicated IDs within the NHANES dataset
+NHANES <- 
+  NHANES %>% 
+  dplyr::distinct(ID,.keep_all=TRUE)
+NHANES_adult <- 
+  NHANES %>%
+  subset(Age>=18) %>%
+  drop_na(BMI)
+
+# create sample with tv watching and marijuana use
+NHANES_sample <-
+  NHANES_adult %>%
+  drop_na(TVHrsDay, RegularMarij) %>%
+  mutate(
+    TVHrsNum = recode( #recode character values into numerical values
+      TVHrsDay,
+      "More_4_hr" = 5,
+      "4_hr" = 4, 
+      "2_hr" = 2,
+      "1_hr" = 1, 
+      "3_hr" = 3, 
+      "0_to_1_hr" = 0.5,
+      "0_hrs" = 0
+    )
+  ) %>%
+  sample_n(200)
+p1 <- ggplot(NHANES_sample,aes(RegularMarij,TVHrsNum)) +
+  geom_violin(draw_quantiles=.50) +
+  labs(
+    x = "Regular marijuana user",
+    y = "TV hours per day"
+  )
+p1
+```
+
+If the observations are independent (i.e. you really have two unrelated groups), you can use a very similar formula to calculate the $t$ statistic:
+
+$$
+t = \frac{\bar{X_1} - \bar{X_2}}{\sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}}}
+$$
+
+whereby $\hat{X_1}$ and $\hat{X_2}$ are the group means, $S_1^2$ and $S_2^2$ the group variances, and $n_1$ and $n_2$ the group sizes.
+
+Here are the results from a one-tailed $t$-test in R:
+
+```{r}
+ t.test(
+  TVHrsNum ~ RegularMarij,
+  data = NHANES_sample,
+  alternative = 'less' # because of coding of the groups!
+)
+```
+
+::: notes
+DV: continuous, IV: categories
+
+n.s. (differs from book), although mean is higher in Yes, not significantly different!
+:::
+
+## Comparing Paired (= Dependent) Observations
+
+If we have repeated observations of the same subject (i.e. a within-subject design), we might want to compare the same subject thus on multiple, *repeated measurements*.
+
+. . .
+
+If we want to test whether blood pressure differs between the first and second measurement session across individuals, we can use a **paired** $t$**-test**.
+
+A paired $t$-test is equivalent to a one-sample $t$-test, only using the difference between the two means as $\hat{X}$ and e.g. 0 (if we expect no difference for $H0$) for $\mu$.
+
+In R, we would run a paired-samples $t$-test like this:
+
+```{r}
+set.seed(12345678)
+NHANES_sample <- 
+  NHANES %>% 
+  dplyr::filter(Age>17 & !is.na(BPSys2) & !is.na(BPSys1)) %>%
+  dplyr::select(BPSys1,BPSys2,ID) %>%
+  sample_n(200)
+NHANES_sample_tidy <- 
+  NHANES_sample %>%
+  gather(timepoint,BPsys,-ID)
+```
+
+```{r}
+#| echo: true
+
+t.test(BPsys ~ timepoint, data = NHANES_sample_tidy, paired = TRUE)
+```
+
+::: notes
+important: If we run an independent sample t-test, it would probably be n.s.! (check out book)
+:::
+
+## Comparing More Than Two Means
+
+Often, we want to compare more than two means, e.g. different treatment groups or timepoints.
+
+Example: Different treatments for blood pressure
+
+```{r, fig.width=5, fig.height=4}
+set.seed(123456)
+nPerGroup <- 36
+noiseSD <- 10
+meanSysBP <- 140
+effectSize <- 0.8
+df <- data.frame(
+  group=as.factor(c(rep('placebo',nPerGroup),
+                    rep('drug1',nPerGroup),
+                    rep('drug2',nPerGroup))),
+  sysBP=NA) 
+df$sysBP[df$group=='placebo'] <- rnorm(nPerGroup,mean=meanSysBP,sd=noiseSD)
+df$sysBP[df$group=='drug1'] <- rnorm(nPerGroup,mean=meanSysBP-noiseSD*effectSize,sd=noiseSD)
+df$sysBP[df$group=='drug2'] <- rnorm(nPerGroup,mean=meanSysBP,sd=noiseSD)
+ggplot(df,aes(group,sysBP)) + geom_boxplot()
+```
+
+## Analysis of Variance (ANOVA)
+
+$H_0$: all means are equal\
+$H_A$: not all means are equal (e.g. at least one differs)
+
+. . .
+
+We can partition the variance in the data into different parts:
+
+$SS_{total}$ = total variance in the data\
+$SS_{model}$ = Variance explained by the model\*\
+$SS_{error}$ = Variance *not* explained by the model
+
+. . .
+
+We can use those to calculate the *mean squares* for the model and the error:
+
+$MS_{model} =\frac{SS_{model}}{df_{model}}= \frac{SS_{model}}{p-1}$ ($p$ is the number of means we have calculated)
+
+$MS_{error} = \frac{SS_{error}}{df_{error}} = \frac{SS_{error}}{N - p}$
+
+. . .
+
+We want to test whether the variance accounted for by the model is greater than expected by chance ($H_0$: no difference).
+
+::: aside
+$SS$ = Sum of Squares, remember that the variance is the sum of the squared deviation of an observation to the mean
+
+\*more on that in the next session!
+:::
+
+::: notes
+quite common analysis! We will just scratch the surface
+:::
+
+## ANOVA 2
+
+In R, we would run an ANOVA like this:
+
+::: columns
+::: column
+```{r}
+#| echo: true
+
+df <-
+  df %>% 
+  mutate(group2=fct_relevel(group,c("placebo","drug1","drug2")))
+# reorder the factor levels so that "placebo" is the control condition/intercept!
+  
+ 
+# test model without separate duymmies
+lmResultAnovaBasic <- lm(sysBP ~ group2, data=df)
+summary(lmResultAnovaBasic)
+
+# emm.result <- emmeans(lmResultAnovaBasic, "group" )
+
+```
+:::
+
+::: column
+We can see a $t$-test for every drug. This is because the *factor* `group2` is automatically **dummy coded** by R: We always compare one drug against the intercept, which is the mean of the placebo group!
+
+The $t$-test shows us that drug1 differs significantly from placebo.
+
+The $F$-statistic (also called *omnibus test*) actually tests our hypothesis of no difference between conditions.
+:::
+:::
+
+::: notes
+Dummy coded (explicitly):
+
+```{r}
+df <-
+  df %>%
+mutate(
+    d1 = as.integer(group == "drug1"), # 1s for drug1, 0s for all other drugs
+    d2 = as.integer(group == "drug2")  # 1s for drug2, 0s for all other drugs
+  )
+
+# fit ANOVA model
+lmResultANOVA <- lm(sysBP ~ d1 + d2, data = df)
+summary(lmResultANOVA)
+```
+
+$t$-tests: dummy coded = 0 vs. 1\
+- control for multiple comparisons! (later)\
+- if we wanted to compare the two drugs, we'd have to dummy code/relevel differently or use follow-up comparisons like with emmeans()
+
+$F$: Is our model better than a simple model that just includes the intercept? In this case placebo...
+:::
+
+::: aside
+There are different functions that you can use to run an ANOVA besides `lm()`, which are usually also fine (functions like `ezANOVA()` from the `ez` packages or functions from the (highly recommended) `afex` package might be helpful).
+
+Just like with the $t$-test, there's also a distinction between *between-subjects* and *within-subjects* or *repeated measures ANOVA.* What I showed you is just usable if you have *between-subjects* measures, i.e. different groups. We will talk about other options later, but see the packages mentioned above as well for *repeated measures*.
+:::
+
+# Thanks!
+
+Learning objectives:
+
+-   What are *contingency tables* and how do we use $\chi^2$-tests to assess a significant relationship between *categorical* variables?
+
+-   Be able to describe what a *correlation coefficient* is and compute & interpret a correlation.
+
+-   Know what a $t$-test & ANOVA is and how to compute and interpret it.
+
+Next:
+
+Practice exercises!
+
+General Linear Model

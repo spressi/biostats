@@ -1,0 +1,1223 @@
+---
+title: "10 The General Linear Model \n & Multivariate Statistics"
+subtitle: |
+   | Julius-Maximilians-University Würzburg 
+   | Course: "Biostatistics"    
+   | Translational Neuroscience
+author: "Dr. Mario Reutter (slides adapted from Dr. Lea Hildebrandt)"
+format: 
+  revealjs:
+    smaller: true
+    scrollable: true
+    slide-number: true
+    theme: serif
+    chalkboard: true
+from: markdown+emoji
+---
+
+# The General Linear Model!
+
+```{css}
+code.sourceCode {
+  font-size: 1.4em;
+}
+
+div.cell-output-stdout {
+  font-size: 1.4em;
+}
+```
+
+```{r}
+#| message: false
+
+library(tidyverse)
+library(ggplot2)
+library(fivethirtyeight)
+#library(caret)
+library(MASS)
+library(cowplot)
+library(knitr)
+set.seed(123456) # set random seed to exactly replicate results
+opts_chunk$set(tidy.opts=list(width.cutoff=80))
+options(tibble.width = 60)
+# load the NHANES data library
+library(NHANES)
+# drop duplicated IDs within the NHANES dataset
+NHANES <- 
+  NHANES %>% 
+  dplyr::distinct(ID,.keep_all=TRUE)
+NHANES_adult <- 
+  NHANES %>%
+  drop_na(Weight) %>%
+  subset(Age>=18)
+```
+
+Remember the basic model of statistics:
+
+$$
+data = model + error
+$$
+
+Our general goal is to find the model with the *best fit*, i.e. that minimizes the error.
+
+. . .
+
+One approach is the GLM. You might be surprised that a lot of the common models can be viewed as linear models:
+
+::: scrollable
+![All models can be thought of as linear models](images/linear_tests_cheat_sheet.png)
+:::
+
+::: notes
+finally!
+:::
+
+## Definitions
+
+**Dependent variable (DV)**: The outcome variable that the model aims to explain ($Y$).
+
+**Independent variable (IV)**: The variable that we use to explain the DV ($X$).
+
+**Linear model**: The model for the DV is composed of a *linear combination* of IVs (that are multiplied by different [weights]{.underline}!)
+
+. . .
+
+The weights are the *parameters* $\beta$ and determine the relative contribution of each IV. (This is what the model estimates! The weights thus give us the important information we're usually interested in: How strong are IV and DV related.)
+
+There may be several DVs, but usually that's not the case and we will focus on those cases with one DV!
+
+## Example
+
+::: columns
+::: column
+Let's use some simulated data:
+
+```{r}
+#| echo: false
+#| fig.width: 3
+#| fig.height: 3
+#| out.height: '50%'
+#| 
+# create simulated data for example
+set.seed(12345)
+# the number of points that having a prior class increases grades
+betas <- c(6, 5)
+df <-
+  tibble(
+    studyTime = c(2, 3, 5, 6, 6, 8, 10, 12) / 3,
+    priorClass = c(0, 1, 1, 0, 1, 0, 1, 0)
+  ) %>%
+  mutate(
+    grade = 
+      studyTime * betas[1] + 
+      priorClass * betas[2] + 
+      round(rnorm(8, mean = 70, sd = 5))
+  )
+
+p <- ggplot(df,aes(studyTime,grade)) +
+  geom_point(size=3) +
+  xlab('Study time (hours)') +
+  ylab('Grade (percent)') +
+  xlim(0,5) + 
+  ylim(70,100)
+print(p)
+```
+:::
+
+::: column
+We can calculate the *correlation* between the two variables:
+
+```{r}
+#| echo: false
+# compute correlation between grades and study time
+corTestResult <- cor.test(df$grade, df$studyTime)
+corTestResult
+```
+
+The correlation is quite high (.63), but the CI is also pretty wide.
+:::
+:::
+
+. . .
+
+Fundamental activities of statistics:
+
+-   *Describe*: How strong is the relationship between grade and study time?
+
+-   *Decide*: Is there a statistically significant relationship between grade and study time?
+
+-   *Predict*: Given a particular amount of study time, what grade do we expect?
+
+::: notes
+relationship study time and grade
+:::
+
+## Linear Regression
+
+Use the GLM (\~synonymous to linear regression) to...
+
+::: incremental
+-   decribe the relation between two variables (similar to correlation)
+
+-   predict DV for new values of IV (new observations)
+
+-   add multiple IVs!
+:::
+
+. . .
+
+::: columns
+::: column
+Simple GLM:
+
+$$
+y = \beta_0+ x * \beta_x + \epsilon
+$$
+
+$\beta_0$ = *intercept*, the overall offset of the line when $x=0$ (even if that is impossible)\
+$\beta_x$ = *slope*, how much do we expect $y$ to change with each change in $x$?\
+$y$ = *DV*\
+$x$ = *IV* or *predictor\
+*$\epsilon$ = *error term*, whatever variance is left over once the model is fit, *residuals*! (Think of the model as the line that is fitted and the residuals are the vertical deviations of the data points from the line!)
+
+(If we refer to *predicted* $y$-values, after we have estimated the model fit/line, we can drop the error term: $\hat{y} = \hat{\beta_0} + x * \hat{\beta_x}$.)
+:::
+
+::: column
+```{r}
+#| echo: false
+
+lmResult <- lm(grade~studyTime,data=df)
+p2 <- p+geom_abline(slope=lmResult$coefficients[2],
+                  intercept=lmResult$coefficients[1],
+                  color='blue')
+p3 <- p2 +
+  geom_hline(yintercept=lmResult$coefficients[1],color='black',size=0.5,linetype='dotted') +
+  annotate('segment',x=2,xend=3,color='red',linetype='dashed',
+           y=predict(lmResult,newdata=data.frame(studyTime=2))[1],
+           yend=predict(lmResult,newdata=data.frame(studyTime=2))[1]) +
+   annotate('segment',x=3,xend=3,color='red',linetype='dashed',
+           y=predict(lmResult,newdata=data.frame(studyTime=2))[1],
+           yend=predict(lmResult,newdata=data.frame(studyTime=3))[1])
+ 
+print(p3)
+
+```
+:::
+:::
+
+## The Relation Between Correlation and Regression
+
+There is a close relation and we can convert $r$ to $\hat{\beta_x}$.
+
+$\hat{r} = \frac{covariance_{xy}}{s_x * s_y}$
+
+$\hat{\beta_x} = \frac{covariance_{xy}}{s_x*s_x}$
+
+$covariance_{xy} = \hat{r} * s_x * s_y$
+
+$\hat{\beta_x} = \frac{\hat{r} * s_x * s_y}{s_x * s_x} = r * \frac{s_y}{s_x}$
+
+\--\> Regression slope = correlation multiplied by ratio of SDs (if SDs are equal, $r$ = $\hat{\beta}$ )
+
+::: notes
+Estimation of GLM:
+
+linear algebra (R will do that for us!) --\> Appendix book
+:::
+
+## Standard Errors for Regression Models
+
+We usually want to make inferences about the regression parameter estimates. For this we need an estimate of their variability.
+
+We first need an estimate of how much variability is *not* explained by the model: the **residual variance** (or **error variance**):
+
+Compute *residuals*:
+
+$$
+residual = y - \hat{y} = y - (x*\hat{\beta_x} + \hat{\beta_0})
+$$
+
+Compute *Sum of Squared Errors* (remember?):
+
+$$
+SS_{error} = \sum_{i=1}^n{(y_i - \hat{y_i})^2} = \sum_{i=1}^n{residuals^2}
+$$
+
+Compute *Mean Squared Error*:
+
+$$
+MS_{error} = \frac{SS_{error}}{df} = \frac{\sum_{i=1}^n{(y_i - \hat{y_i})^2} }{N - p}
+$$
+
+where the $df$ are the number of observations $N$ - the number of estimated parameter $p$ (in this case 2: $\hat{\beta_0}$ and $\hat{\beta_x}$).
+
+Finally, we can calculate the *standard error* for the *full* model:
+
+$$
+SE_{model} = \sqrt{MS_{error}}
+$$
+
+We can also calculate the SE for specific regression parameter estimates by rescaling the $SE_{model}$:
+
+$$
+SE_{\hat{\beta_x}} = \frac{SE_{model}}{\sqrt{\sum{(x_i - \bar{x})^2}}}
+$$
+
+::: notes
+rescaling SE: by square root of the SS of the X variable
+:::
+
+## Statistical Tests for Regression Parameters
+
+With the parameter estimates and their standard errors, we can compute $t$-statistics, which represent the likelihood of the observed estimate vs. the expected value under $H_0$ (usually 0, no effect).
+
+$$
+\begin{array}{c}
+t_{N - p} = \frac{\hat{\beta} - \beta_{expected}}{SE_{\hat{\beta}}}\\
+t_{N - p} = \frac{\hat{\beta} - 0}{SE_{\hat{\beta}}}\\
+t_{N - p} = \frac{\hat{\beta} }{SE_{\hat{\beta}}}
+\end{array}
+$$
+
+Usually, we would just let R do the calculations:
+
+```{r}
+summary(lmResult)
+```
+
+The intercept is significantly different from zero (which is usually not very relevant) and the effect of `studyTime` is not significant. So for every hour that we study more, the effect on the grade is rather small (4...) but possibly not present.
+
+::: notes
+$t$ ratio of $\beta$ to its $SE$!
+
+intercept: expected grade without studying at all
+:::
+
+## Quantifying Goodness of Fit of the Model
+
+Often, it is useful to check how good the model we estimated fits the data.
+
+. . .
+
+We can do that easily by asking *how much of the variability in the data is accounted for by the model?*
+
+. . .
+
+If we only have one IV ($x$), then we can simply square the correlation coefficient:
+
+$$
+R^2 = r^2
+$$
+
+In study time example, $R^2$ = 0.4 --\> we accounted for 40% of the overall variance in grades!
+
+. . .
+
+More generally, we can calculate $R^2$ with the Sum of Squared Variances:
+
+$$
+R^2 = \frac{SS_{model}}{SS_{total}} = 1-\frac{SS_{error}}{SS_{total}}
+$$
+
+::: notes
+$R^2$ is the name of the GoF stat!
+
+A small R² tells us that even though a model might be significant, it may only explain a small amount of information in the DV
+:::
+
+## Fitting More Complex Models
+
+Often we want to know the effects of *multiple variables* (IVs) on some outcome.
+
+Example:\
+Some students have taken a very similar class before, so there might not only be the effect of `studyTime` on `grades`, but also of having taken a `priorClass`.
+
+. . .
+
+::: columns
+::: column
+We can built a model that takes both into account by simply adding the "weight" and the IV (`priorClass`) to the model:
+
+$\hat{y} = \hat{\beta_1}*studyTime + \hat{\beta_2}*priorClass + \hat{\beta_0}$
+
+::: incremental
+-   To model `priorClass`, i.e. whether each individual has taken a previous class or not, we use **dummy coding** (0=no, 1=yes).
+-   This means, for those who have *not* taken a class, the whole part of the equation ($\hat{\beta_2} * priorClass$) will be zero - we will add it for the others.
+-   $\hat{\beta_2}$ is thus the difference in means between the two groups!
+-   $\hat{\beta_1}$ is the regression slope of `studyTime` across data points/regardless of whether someone has taken a class before.
+:::
+:::
+
+::: column
+If we plot the data, we can see that both IVs seem to have an effect on grades:
+
+```{r, fig.width=5, fig.height=3}
+df$priorClass <- as.factor(df$priorClass)
+lmResultTwoVars <- lm(grade ~ studyTime + priorClass, data = df)
+# summary(lmResultTwoVars)
+
+p <- ggplot(df,aes(studyTime,grade,shape=priorClass)) +
+  geom_point(size=3) + xlim(0,5) + ylim(70,100)
+p <- p+
+  geom_abline(slope=lmResultTwoVars$coefficients[2],
+              intercept=lmResultTwoVars$coefficients[1],lineype='dotted')
+# p <- p+
+#   annotate('segment',x=2,xend=3,
+#            y=lmResultTwoVars$coefficients[1]+
+#              2*lmResultTwoVars$coefficients[2],
+#            yend=lmResultTwoVars$coefficients[1]+
+#              2*lmResultTwoVars$coefficients[2],
+#            color='blue') +
+#   annotate('segment',x=3,xend=3,
+#            y=lmResultTwoVars$coefficients[1]+
+#              2*lmResultTwoVars$coefficients[2],
+#            yend=lmResultTwoVars$coefficients[1]+
+#              3*lmResultTwoVars$coefficients[2],
+#            color='blue')
+p <- p+
+  geom_abline(slope=lmResultTwoVars$coefficients[2],
+              intercept=lmResultTwoVars$coefficients[1]+
+                lmResultTwoVars$coefficients[3],
+              linetype='dashed') 
+p <- p+
+  annotate('segment',x=2,xend=2,
+           y=lmResultTwoVars$coefficients[1]+
+             2*lmResultTwoVars$coefficients[2],
+           yend=lmResultTwoVars$coefficients[1]+
+             lmResultTwoVars$coefficients[3] +
+             2*lmResultTwoVars$coefficients[2],
+           linetype='dotted',size=1) +
+  scale_color_discrete(
+    limits = c(0, 1),
+    labels = c("No", "Yes")
+  ) +
+  labs(
+    color = "Previous course"
+  )
+print(p)
+```
+:::
+:::
+
+::: notes
+How can we tell from the plot that both IVs might have an effect?
+:::
+
+## Interactions Between Variables
+
+We previously assumed that the effect of `studyTime` on `grade` was the same for both groups - but sometimes we expect that this regression slope differs per group!
+
+. . .
+
+This is what we call an **interaction**: The effect of one variable depends on the value of another variable.
+
+. . .
+
+Example: What is the effect of caffeine on public speaking?\
+There doesn't seem to be an effect:
+
+::: columns
+::: column
+```{r}
+set.seed(1234567)
+df <- 
+  data.frame(
+    group=c(rep(-1,10),
+            rep(1,10)
+          )
+  ) %>%
+  mutate(caffeine=runif(n())*100) %>%
+  mutate(speaking=0.5*caffeine*-group + group*20 + rnorm(20)*10) %>%
+  mutate(anxiety=ifelse(group==1,'anxious','notAnxious'))
+
+
+```
+
+```{r}
+#| echo: true
+# perform linear regression with caffeine as independent variable
+lmResultCaffeine <- lm(speaking ~ caffeine, data = df)
+summary(lmResultCaffeine)
+```
+:::
+
+::: column
+```{r, fig.width=4, fig.height=3}
+p1 <- ggplot(df,aes(caffeine,speaking)) +
+  geom_point()
+p1
+```
+:::
+:::
+
+## Interactions 2
+
+What if we find research suggesting that *anxious* people react differently to caffeine than non-anxious people?
+
+Let's include `anxiety` in the model:
+
+::: columns
+::: column
+```{r}
+#| echo: true
+# compute linear regression adding anxiety to model
+lmResultCafAnx <- lm(speaking ~ caffeine + anxiety, data = df)
+summary(lmResultCafAnx)
+```
+:::
+
+::: column
+```{r, fig.width=4, fig.height=3}
+p2 <- ggplot(df,aes(caffeine,speaking,shape=anxiety)) +
+  geom_point() + 
+  theme(legend.position = c(0.1, 0.9))
+p2
+```
+:::
+:::
+
+. . .
+
+It looks like the effect of caffeine is indeed different for the two anxiety groups: Increasing for non-anxious people and decreasing for anxious ones.
+
+However, the model is not significant!
+
+. . .
+
+This is due to the fact that we only look at **additive effects** (main effects) with this model. *Overall*, neither caffeine nor anxiety predicts grades.
+
+In other words: The model tries to fit the same slope for both groups, which is a flat line.
+
+::: notes
+explain additive effects: flat line for average caffeine effect, no difference for means of anxiety groups
+:::
+
+## Interactions 3
+
+To allow for different slopes for each group (i.e. for the effect of caffeine to vary between the anxiety groups), we have to model the *interaction* as well.
+
+The interaction is simply the product of the two variables:
+
+::: columns
+::: column
+```{r}
+#| echo: true
+# compute linear regression including caffeine X anxiety interaction
+lmResultInteraction <- lm(
+  speaking ~ caffeine + anxiety + caffeine:anxiety,
+  # speaking ~ caffeine * anxiety,  # same!
+  data = df
+)
+summary(lmResultInteraction)
+
+```
+:::
+
+::: column
+```{r, fig.width=4, fig.height=3}
+df_anx <- 
+  df %>%
+  subset(anxiety=='anxious') %>%
+  mutate(y=lmResultInteraction$fitted.values[df$anxiety=='anxious'])
+
+df_notanx <- 
+  df %>%
+  subset(anxiety=='notAnxious')%>%
+  mutate(y=lmResultInteraction$fitted.values[df$anxiety=='notAnxious'])
+
+p3 <- ggplot(df,aes(caffeine,speaking,shape=anxiety)) +
+   geom_point() + 
+   theme(legend.position = c(0.1, 0.9)) +
+  geom_line(data=df_anx,
+             aes(caffeine,y),linetype='dashed') +
+  geom_line(data=df_notanx,
+             aes(caffeine,y),linetype='dotted')
+
+p3
+```
+:::
+:::
+
+. . .
+
+We now see that there are significant *main effects* for both `caffeine` and `anxiety`, as well as the significant *interaction* between both variables. (We have to be careful of interpreting the main effects when an interaction is also significant!)
+
+. . .
+
+The interpretation of the coefficients when interactions are included is not as straight forward!
+
+. . .
+
+If you want to report the "typical" ANOVA table with main effects and the general interaction:
+
+```{r}
+#| eval: true
+#| echo: true
+
+anova(lmResultInteraction)
+```
+
+::: notes
+interpretation coefficients:
+
+intercept: intercept of anxious group!
+
+intercept not anxious: difference intercept anxiousnotanxious
+
+slope anxious: only for the anxious group!
+
+slope not anxious: diff in slopes
+
+no main effects!!!
+:::
+
+## Model Comparison
+
+Sometimes, we want to compare two (*nested*!) models to see which one fits the data better.
+
+We can do so by using the `anova()`\* function in R:
+
+```{r}
+#| echo: true
+anova(lmResultCafAnx, lmResultInteraction)
+
+```
+
+This shows that Model 2, incl. the interaction, is to be preferred.
+
+. . .
+
+*Note*: We can only use this method with nested models, which means that the simpler (*reduced*) model only contains variables also included in the more complex (*full*) model.
+
+::: aside
+\*Yes, it is *kind of* an ANOVA as well, in that (a ratio of) squared errors is compared to an $F$-distribution...
+:::
+
+::: notes
+Wald compares the ratio of squared errors to an F-distribution (sound familiar from ANOVA?), while likelihood ratio compares the ratio of likelihoods to a χ2 distribution
+:::
+
+## Criticizing Our Model and Checking Assumptions
+
+"Garbage in, garbage out" - we have to make sure our model is properly specified!
+
+. . .
+
+*Properly specified* = having included the appropriate IVs.
+
+. . .
+
+The model also needs to satisfy the **assumptions** of the statistical method (= GLM).
+
+One important assumption of the GLM is that *the residuals are normally distributed* (NOT necessarily the data!).
+
+This assumption can be violated by a not properly specified model or because the data are inappropriate for the statistical model.
+
+. . .
+
+We can use a **Q-Q plot**, which represents the quantiles of two distributions/variables (e.g. the data and a normal distribution of the same data) against each other.
+
+If the data points diverge substantially from the line (especially in the extremes), we can conclude that the residuals are not normally distributed.
+
+## Model Diagnostics 2
+
+To check the assumptions, we can easily run a function for model diagnostics (incl. Q-Q plots) in R. The function, `check_model()`, is included in the `performance` package by the [*easystats*](https://easystats.github.io/easystats/index.html) team (who make great packages for everything related to statistical modeling!)
+
+```{r}
+#| echo: true
+
+# install.packages("easystats)
+library(performance)
+
+check_model(lmResultInteraction)
+```
+
+::: notes
+We're not going into detail about all these diagnostics (and hard to see!), but it is always a good idea to run diagnostics/check assumptions for your models!
+:::
+
+## What Does "Predict" Really Mean?
+
+We neither mean "predicting before seeing the data/in the future" nor mean to imply *causality*!
+
+. . .
+
+It simply refers to fitting a model to the data: We estimate (or predict) values for the DV ($\hat{y}$) and the IVs are often referred to as *predictors*.
+
+::: notes
+Related to: predicting future values
+:::
+
+# Multivariate Statistics
+
+*Multivariate* = involving more than one random variable.
+
+We generally do not distinguish between DVs and IVs but are interested in how a number of variables relate to one another.
+
+. . .
+
+::: incremental
+1.  **Clustering**: Understand the structure that exists in the data, find clusters of observations or variables that are similar.
+2.  **Dimensionality reduction**: Reduce a large set of variables to fewer, retaining as much information as possible.
+:::
+
+. . .
+
+*unsupervised learning* vs. *supervised learning* (e.g. linear regression)!
+
+::: notes
+Supervised: we know the value of the DV that we're trying to predict (try to find best model predictions).
+
+Unsupervised: we don't have specific value to predict, we try to discover (patterns that help understand). Requires some assumptions about pattern.
+
+\--\> does not necessarily have a "right" answer!
+:::
+
+## Multivariate Data: An Example
+
+```{r}
+# import MASS first because it otherwise will mask dplyr::select
+library(MASS)
+library(tidyverse)
+library(ggdendro)
+library(psych)
+library(gplots)
+library(pdist)
+library(factoextra)
+library(viridis)
+library(mclust)
+theme_set(theme_minimal())
+
+behavdata <- read_csv('Data/meaningful_variables.csv',
+                      show_col_types = FALSE)  
+
+demoghealthdata <- read_csv('Data/demographic_health.csv',
+                            show_col_types = FALSE) 
+# recode Sex variable from 0/1 to Male/Female
+demoghealthdata <- demoghealthdata %>%
+  mutate(Sex = recode_factor(Sex, `0`="Male", `1`="Female"))
+# combine the data into a single data frame by subcode
+alldata <- merge(behavdata, demoghealthdata, by='subcode')
+rename_list = list('upps_impulsivity_survey' = 'UPPS', 'sensation_seeking_survey' = 'SSS',
+                   'dickman_survey' = 'Dickman',  'bis11_survey' = 'BIS11', 
+                   'spatial_span' = 'spatial', 'digit_span' = 'digit',
+                   'adaptive_n_back' = 'nback', 'dospert_rt_survey' = 'dospert',
+                   'motor_selective_stop_signal.SSRT' = 'SSRT_motorsel',
+                   'stim_selective_stop_signal.SSRT' = 'SSRT_stimsel',
+                   'stop_signal.SSRT_low' = 'SSRT_low',
+                   'stop_signal.SSRT_high' = 'SSRT_high')
+                   
+impulsivity_variables = c('Sex')
+keep_variables <- c("spatial.forward_span", "spatial.reverse_span", "digit.forward_span","digit.reverse_span", "nback.mean_load")
+for (potential_match in names(alldata)){
+  for (n in names(rename_list)){
+    if (str_detect(potential_match, n)){
+      # print(sprintf('found match: %s %s', n, potential_match))
+      replacement_name <- str_replace(potential_match, n, toString(rename_list[n]))
+      names(alldata)[names(alldata) == potential_match] <- replacement_name
+      impulsivity_variables <- c(impulsivity_variables, replacement_name)
+    }
+  }
+}
+impulsivity_data <- alldata[,impulsivity_variables] %>%
+  drop_na()
+ssrtdata = alldata[,c('subcode', names(alldata)[grep('SSRT_', names(alldata))])] %>% 
+  drop_na() %>% 
+  dplyr::select(-stop_signal.proactive_SSRT_speeding)
+upps_data <- alldata %>%
+  dplyr::select(starts_with('UPPS'), 'subcode') %>%
+  setNames(gsub("UPPS.", "", names(.)))
+impdata <- inner_join(ssrtdata, upps_data) %>% 
+  drop_na() %>% 
+  dplyr::select(-subcode) %>% 
+  scale() %>%
+  as.data.frame() %>%
+  dplyr::rename(SSRT_motor = SSRT_motorsel,
+                SSRT_stim = SSRT_stimsel,
+                UPPS_pers = lack_of_perseverance,
+                UPPS_premed = lack_of_premeditation,
+                UPPS_negurg = negative_urgency,
+                UPPS_posurg = positive_urgency,
+                UPPS_senseek = sensation_seeking
+                )
+```
+
+How do different aspects of psychological function (self-control etc.) relate to one another?
+
+10h battery of cognitive tests and surveys, N = 522, 9 measures of interest!
+
+Measures:
+
+-   *Response inhibition*: ability to quickly stop an action (measured with the stop-signal task, measure is called *stop-signal reaction time (SSRT)* - we have 4 different versions of this measure).
+
+-   *Impulsivity*: tendency to make decisions on impulse, without regard of potential consequences (*UPPS-P* survey, assesses 5 facets of impulsivity).
+
+## Visualizing Multivariate Data
+
+Hard (impossible?) for us to visualize more than three dimensions/variables.
+
+```{r echo=FALSE, fig.width=8, fig.height=8, fig.cap='Scatterplot of matrices for the nine variables in the self-control dataset.  The diagonal elements in the matrix show the histogram for each of the individual variables.  The lower left panels show scatterplots of the relationship between each pair of variables, and the upper right panel shows the correlation coefficient for each pair of variables.'}
+pairs.panels(impdata, lm=TRUE)
+```
+
+::: notes
+What do you see?
+
+each row/col --\> single variable\
+diagonal: dist each var\
+lower triangle: scatterplot each pair, regression line --\> relationship\
+upper: correlation coefficient
+:::
+
+## Heatmap
+
+Visualize correlations:
+
+```{r hmap, echo=FALSE, fig.width=8, fig.height=8, fig.cap='Heatmap of the correlation matrix for the nine self-control variables.  The brighter yellow areas in the top left and bottom right highlight the higher correlations within the two subsets of variables.'}
+cc = cor(impdata)
+par(mai=c(2, 1, 1, 1)+0.1) 
+heatmap.2(cc, trace='none', dendrogram='none', 
+          cellnote=round(cc, 2), notecol='black', key=FALSE,
+          margins=c(12,8), srtCol=45, symm=TRUE, revC=TRUE, #notecex=4, 
+          cexRow=1, cexCol=1, offsetRow=-150, col=viridis(50))
+
+```
+
+We can see clear clusters: SSRT and UPPS have greater intercorrelations than correlations with the other measure.
+
+## Heatmap 2
+
+Heatmaps are especially helpful if we have a large number of variables, such as in neuroimaging! Below you can see the *functional connectivity* of \>300 brain regions:
+
+![Heatmap of correlation coefficients of brain activity between 316 regions of the left hemisphere of a single individual. Yellow: strong positive correlations, blue: strong negative correlations](images/Heatmap2.png){width="445"}
+
+::: notes
+large blocks of pos corr: major connected networks in the brain
+:::
+
+## Clustering
+
+**Clustering**: Identifying groups of related observations or variables within a dataset, based on the similarity of the values of the observations.
+
+. . .
+
+**Similarity**: Distance between values.
+
+**Euclidean Distance**: Length of the line that connects two data points:
+
+```{r, fig.width=3, fig.height=3}
+euc_df <- data.frame(x=c(1, 4), y=c(2, 3))
+ggplot(euc_df, aes(x,y)) + geom_point() + 
+  xlim(0, 5) + ylim(0, 4) + 
+  annotate('segment', x=1, y=2, xend=4, yend=3, linetype='dotted')
+
+```
+
+$$
+d(x,y) = \sqrt{(x_1 - x_2)^2 + (y_1 - y_2)^2}
+$$
+
+(Euclidean Distance is sensitive to mean & variability in data --\> *scale* data before!)
+
+::: notes
+Clustering: finding set of groups that have the lowest distance between their members.
+
+Euclidean Dist: Pythagorean theorem\
+--\> can be extended to more than two dimensions!
+
+Scale: calculate z-score, standardizing
+:::
+
+## K-Means Clustering
+
+**K-means clustering**: Identifies a set of cluster centers & then assigns each data point to the cluster whose center is the closest (Euclidean Distance!).
+
+. . .
+
+::: incremental
+1.  Decide on value for *K*, the number of clusters to be found (e.g. based on previous knowledge/expectations).
+2.  Come up with *k* locations for the centers - or *centroids* - of the clusters (e.g. choose data points at random to start with).
+3.  Compute Euclidean distance of each data point to each centroid.
+4.  Assign each point to a cluster, based on closest distance to centroid.
+5.  Recompute centroid by averaging the location of all points assigned to that cluster.
+6.  Repeat 1-5 until a stable solution is found (*iterative* process).
+:::
+
+## Example: Latitude/Longitude Data
+
+::: columns
+::: column
+Here we can see the starting points (black squares) and end points (big colored dots) for each cluster, as well as the final cluster assignment of each data point (color):
+
+```{r}
+countries <- read_delim('Data/country_data.csv', na=c('')) %>%
+  # filter out countries with less than 1M population
+  filter(Population2020 > 500000)
+latlong <- countries %>% 
+  dplyr::select(latitude, longitude) 
+
+k = 6
+set.seed(123456)
+# select random starting points as the means - i.e. Forgy method
+centroids = latlong[sample.int(nrow(latlong), k),]
+iterations = 0
+oldCentroids = data.frame()
+MAX_ITERATIONS <- 100
+shouldStop <- function(oldCentroids, centroids, iterations){
+    if (iterations > MAX_ITERATIONS){
+      return(TRUE)
+    } 
+    if (dim(oldCentroids)[1] == 0){
+      return(FALSE)
+    }
+    return(all.equal(as.matrix(centroids), as.matrix(oldCentroids)) == TRUE)
+}
+getLabels <- function(dataSet, centroids){
+    d <- as.matrix(pdist::pdist(dataSet, centroids))
+    
+    # For each element in the dataset, chose the closest centroid. 
+    # Make that centroid the element's label.
+    return(apply(d, 1, which.min))
+}
+getCentroids <- function(dataSet, labels, k){
+    # Each centroid is the geometric mean of the points that
+    # have that centroid's label. Important: If a centroid is empty (no points have
+    # that centroid's label) you should randomly re-initialize it.
+    newCentroids <- NULL
+    for (i in 1:k){
+      labeldata <- dataSet[labels==i,]
+      newCentroids <- rbind(newCentroids, apply(labeldata, 2, mean))
+    }
+    return(newCentroids)
+}
+all_centroids_df = data.frame(centroids) %>%
+  mutate(label_kmeans=as.factor(seq(1,nrow(.))),
+         iter=0)
+while (!shouldStop(oldCentroids, centroids, iterations)) {
+          # Save old centroids for convergence test. Book keeping.
+        oldCentroids = centroids
+        iterations = iterations + 1
+        # Assign labels to each datapoint based on centroids
+        labels = getLabels(latlong, centroids)
+        
+        # Assign centroids based on datapoint labels
+        centroids = getCentroids(latlong, labels, k)
+        centroids_df = data.frame(centroids) %>%
+          mutate(label_kmeans=as.factor(seq(1,nrow(.))),
+                 iter=iterations)
+        all_centroids_df = rbind(all_centroids_df, centroids_df)
+}
+#sprintf('Completed after %d iterations', iterations)
+countries <- countries %>%
+  mutate(label_kmeans = as.factor(labels))
+centroid_df = all_centroids_df %>%
+  filter(iter==iterations)
+p = ggplot(countries, aes(longitude, latitude, color=label_kmeans)) + 
+  geom_point() + 
+  geom_point(data=centroid_df,alpha=0.5, size=4) 
+for (i in 1:iterations){
+  for (j in 1:k){
+    iter_df = all_centroids_df %>% filter(iter==i, label_kmeans==j)
+    prev_df = all_centroids_df %>% filter(iter==i-1, label_kmeans==j)
+    p = p +  annotate('segment', x = iter_df$longitude, 
+                              y = iter_df$latitude,
+                              xend = prev_df$longitude,
+                              yend = prev_df$latitude, alpha=0.7)
+  }
+}
+p + geom_point(data=all_centroids_df %>% filter(iter==0), 
+               size=2, shape=15, color='black')
+```
+:::
+
+::: column
+We can see that there is a reasonable overlap between clusters and continents.
+
+We can further investigate this overlap with the **confusion matrix**, which compares membership of each cluster with the actual continents for each country:
+
+```{r}
+table(labels, countries$Continent)
+```
+
+(Note: usually we don't know the ground truth (i.e. which continent) in unsupervised learning!
+
+Note 2: Every time we run the iterative process, we will get a different result if we use random starting points. Make sure the result is robust, e.g. by running the Clustering algorithm several times.)
+:::
+:::
+
+::: notes
+-   Cluster 1 contains all European countries, as well as countries from northern Africa and Asia.
+
+<!-- -->
+
+-   Cluster 2 contains contains Asian countries as well as several African countries.
+
+-   Cluster 3 contains countries from the southern part of South America.
+
+-   Cluster 4 contains all of the North American countries as well as northern South American countries.
+
+-   Cluster 5 contains Oceania as well as several Asian countries
+
+-   Cluster 6 contains all of the remaining African countries.
+:::
+
+## Hierarchical Clustering
+
+**Hierarchical Clustering:** Also uses distances to determine clusters but also visualizes relationships in *dendrograms*.
+
+::: columns
+::: column
+The most common procedure is **agglomerative clustering**:
+
+::: incremental
+1.  Every data point is treated as its own cluster.
+2.  Two clusters with the least distance (e.g. *average linkage*) between them are combined.
+3.  Repeat 1 & 2 until only one cluster is left.
+4.  Visualize, decide on a cutoff for the amount of reasonable clusters.
+:::
+:::
+
+::: column
+```{r}
+d <- dist(t(impdata))
+hc <- hclust(d, method='average')
+#convert cluster object to use with ggplot
+dendr <- dendro_data(hc, type="rectangle") 
+# TODO: https://stackoverflow.com/questions/21474388/colorize-clusters-in-dendogram-with-ggplot2
+cutoffs = c(25, 20, 19)
+#your own labels (now rownames) are supplied in geom_text() and label=label
+ggplot() + 
+  geom_segment(data=segment(dendr), aes(x=x, y=y, xend=xend, yend=yend)) + 
+  geom_text(data=label(dendr), aes(x=x, y=y,label=dendr$labels$label, hjust=0), size=3) +
+  coord_flip() + scale_y_reverse(expand=c(0.2, 0)) + 
+  theme(axis.line.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.title.y=element_blank(),
+        panel.background=element_rect(fill="white"),
+        panel.grid=element_blank()) + 
+   geom_hline(yintercept=cutoffs[1], color='blue') + 
+   geom_hline(yintercept=cutoffs[2], color='green') + 
+   geom_hline(yintercept=cutoffs[3], color='red') + 
+   ylim(30, -10)
+
+```
+
+Colored lines: different cutoffs.
+:::
+:::
+
+. . .
+
+There seems to be a high degree of similarity within each variable set (SSRT and UPPS) compared the between the sets.\
+Within UPPS, sensation seeking stands out as different etc.
+
+::: notes
+average linkage: average of all distances between each data point in each of two clusters.
+
+colored lines: different cutor
+:::
+
+## Dimensionality Reduction
+
+We often measure different variables that are highly similar to each other, e.g. because they are supposed to measure the same *construct*.
+
+Although we might measure a particular number of variables (*dimensionality*), there might be not as many underlying sources of information!
+
+**Dimensionality reduction**: Reduce the number of variables by creating composite variables that reflect the underlying information.
+
+## Principal Component Analysis (PCA)
+
+Aim: Find a lower-dimensional (linear) description of a set of variables (that still accounts for the maximum possible information/variance in the dataset).
+
+Variance: Combination of signal + noise --\> find strongest common signal between variables!
+
+. . .
+
+**1st Component**: explains most variance between variables, 2nd component: maximum of remaining variance - but uncorrelated with 1st...
+
+. . .
+
+::: columns
+::: column
+```{r fig.width=4, fig.height=3}
+#| echo: false
+N <-30                           #setting my sample size             
+mu <- c(0, 0)                      #setting the means
+c1 <- .7
+sigma <- matrix(c(1, c1, c1, 1),2, 2)  #setting the covariance matrix values. The "2,2" part at the tail end defines the number of rows and columns in the matrix
+set.seed(04182019)  #setting the seed value so I can reproduce this exact sim later if need be
+simdata <- mvrnorm(n=N,mu=mu,Sigma=sigma, empirical=TRUE)  #simulate the data, as specified above
+sim_df <- data.frame(simdata)
+names(sim_df) <- c("Y", "X")
+
+
+# scale variables
+sim_df <- sim_df %>%
+  mutate(X = scale(X), 
+         Y = scale(Y))
+# compute covariance matrix
+sim_df_cov<- cov(sim_df)
+# Compute eigenvalues/eigenvectors
+cov_eig <- eigen(sim_df_cov)
+
+g <- ggplot(sim_df, aes(X, Y)) + 
+   geom_point(size=1.5) + 
+  xlim(-3, 3) + 
+  ylim(-3, 3) 
+# based on https://stats.stackexchange.com/questions/153564/visualizing-pca-in-r-data-points-eigenvectors-projections-confidence-ellipse
+# calculate slopes as ratios
+cov_eig$slopes[1] <- cov_eig$vectors[1,1]/cov_eig$vectors[2,1]  
+cov_eig$slopes[2] <- cov_eig$vectors[1, 2]/cov_eig$vectors[2,2] 
+g <- g + geom_segment(x = 0, y = 0, 
+                      xend = cov_eig$values[1], 
+                      yend = cov_eig$slopes[1] * cov_eig$values[1], 
+                      colour = "green", size=1.5,
+                      arrow = arrow(length = unit(0.2, "cm")))  # add arrow for pc1
+g <- g + geom_segment(x = 0, y = 0, 
+                      xend = cov_eig$values[2], 
+                      yend = cov_eig$slopes[2] * cov_eig$values[2], 
+                      colour = "red", size=1.5,
+                      arrow = arrow(length = unit(0.2, "cm")))  # add arrow for pc2
+g 
+
+
+```
+:::
+
+::: column
+**Green arrow:** 1st component, follows direction of max. variance\
+**Red arrows**: 2nd component, perpendicular to 1st =\> uncorrelated!
+
+We can run a PCA on more than two variables!
+:::
+:::
+
+::: notes
+obtain as many components as there are variables (assuming that there are more observations than there are variables)
+
+in practice: find a small number of components that can explain a large portion of the variance.
+
+1st component: similar to regression line, but minimizes perpendicular distance points to line (not vertical!)
+:::
+
+## PCA 2
+
+If we calculated a PCA on the impulsivity data, we would see that there are two components (in the *scree plot*) that account for quite some variance.
+
+We can also look at the variable *loadings*, which show which variable "goes into" which component to better specify what that component represents. Here we can see that one components represents (=captures variance related to) the SSRT variables, the other the UPPS.
+
+::: columns
+::: column
+```{r}
+imp_pc = prcomp(impdata,  scale. = T)
+fviz_screeplot(imp_pc, addlabels = TRUE, ylim = c(0, 50))
+```
+:::
+
+::: column
+```{r}
+loading_df = as.data.frame(imp_pc$rotation) 
+loading_df['Variable'] = rownames(loading_df)
+loading_df = loading_df %>% 
+  pivot_longer(!Variable, names_to='PC', values_to='Loading') %>%
+  filter(PC %in% c('PC1', 'PC2'))
+ggplot(loading_df ,
+       aes(Variable, Loading)) + geom_bar(stat='identity')  + 
+      facet_grid(PC ~ .)
+```
+:::
+:::
+
+::: notes
+Scree plot: Sometimes used to make decisions on number of components (eigenvalues plotted)
+
+loadings: sign is arbitrary
+:::
+
+## Factor Analysis
+
+PCA is useful for reducing a dataset.\
+The components are per definition uncorrelated --\> sometimes this is a limitation.\
+PCA also doesn't account for measurement error --\> possibly difficult to interpret loadings.
+
+. . .
+
+**Exploratory Factor Analysis**: can also be used for dimensionality reduction.
+
+Idea: Each observed variable is created through a combination of contributions from a *latent* variable + measurement error. (*latent*: can't be directly observed!)
+
+. . .
+
+*How do different measures relate to underlying factor (that gives rise to these measures)?*
+
+## FA 2
+
+::: columns
+::: column
+```{r, fig.width=4, fig.height=4}
+N <- 200                           #setting my sample size             
+mu <- rep(0, 3)                     #setting the means
+c1 <- .5 # correlation b/w WM and FR
+sigma <- matrix(c(1, c1, 0, c1, 1, 0, 0, 0, 1), 3, 3)  #setting the covariance matrix values. The "2,2" part at the tail end defines the number of rows and columns in the matrix
+set.seed(04182019)  #setting the seed value so I can reproduce this exact sim later if need be
+simdata <- mvrnorm(n=N,mu=mu,Sigma=sigma, empirical=TRUE)  #simulate the data, as specified above
+latent_df <- data.frame(simdata)
+names(latent_df) = c('WM', 'FR', 'IMP')
+# create observed variables by matrix-multiplying the latent variables
+# by a weight matrix 
+set.seed(123456)
+tasknames = c('nback', 'dspan', 'sspan', 'ravens', 'crt', 'UPPS', 'BIS11', 'dickman')
+ntasks = length(tasknames)
+weights = matrix(data = 0, 3, ntasks)
+weights[1, 1:3] = 1
+weights[2, 4:5] = 1
+weights[3, 6:8] = 1
+noise_sd = .6
+observed_vals = as.matrix(latent_df) %*% weights + 
+  mvrnorm(n=N, mu=rep(0, ntasks), Sigma=diag(ntasks) * noise_sd)
+observed_df <- data.frame(observed_vals)
+names(observed_df) <- tasknames
+
+
+cormtx = t(cor(observed_df))
+heatmap.2(cormtx, trace='none', symm=TRUE, 
+          revC=TRUE,col=viridis(50),
+          cellnote=round(cormtx, 2), notecol='black', key=FALSE,)
+
+```
+:::
+
+::: column
+```{r}
+fa_result <- fa(observed_df, nfactors = 3)
+summary(fa_result)
+
+fa.diagram(fa_result)
+```
+
+**RMSEA** (root mean square error of approximation): Measure of model fit, should be \< .08.
+
+Use (lowest) **SABIC** (sample-size adjusted Bayesian information criterion) to compare models with different number of factors.
+:::
+:::
+
+::: notes
+We can "hand over" **3 factors**
+
+**RMSEA** quantifies how far predicted covariances (between data) are from actual covariances
+:::
+
+# Thanks!
+
+Learning objectives:
+
+-   Describe the concept of the *general linear model/linear regression* and apply it to a dataset
+-   Understand *clustering* and *dimensionality reduction,* incl. the difference between k-means and hierarchical clustering as well as PCA and FA
+
+. . .
+
+Next:
+
+-   Linear Mixed Models!

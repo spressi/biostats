@@ -1,0 +1,50 @@
+## R Markdown
+
+R scripts are a good way to save your code. However, you'd better heavily comment in your scripts, so that future you (and potentially collaborators) know what happens in your script.
+
+An alternative is an **R Markdown file**. This is also a sort of script, but you can write text (like in a word processor) and mix it with code chunks, where you can write your R code. R Markdown is the "language" you use to write in these files, which is a variety of the *Markdown* language.
+
+The advantage of R Markdown files (ending with `.Rmd`) is that they increase reproducibility. For example, you can write whole reports in R Markdown (and also these slides are made with it!).
+
+A newer variant is called *quarto*, which works very similar to R Markdown (but is more flexible).
+
+## R Markdown 2
+
+![R script](images/Rscript.jpg)
+
+![R Markdown](images/Rmd.jpg)
+
+![R Markdown rendered as html report](images/rmdrendered.jpg){width="400"}
+
+## R Markdown 3
+
+**Assignment**:
+
+-   Open a new .Rmd file, change/insert the title and author.
+
+-   Check out the content of it.
+
+-   Delete and add some of the text on the white background. Change the Header (indicated by `##`) to "About me" and write something about yourself underneath.
+
+-   Switch between "Source" and "Visual" in the top left. What changes? What is "Visual"?
+
+-   In the grey boxes ("code chunks"), add some code. Try to find out how you can add a new code chunk.
+
+-   Save the file with a sensible name.
+
+-   What happens when you click on "Knit" (top of Script pane)?
+
+::: notes
+-   hint: The green C with the + on the top right will do so (or using "insert" in the visual view)
+-   Click on the little arrow next to knit and select "Knit to PDF"
+-   insert inline code
+:::
+
+## R Markdown 4
+
+There are many useful things you can do with R Markdown: Adding different headers, adding inline code, knitting as a PDF, adding pictures or tables...You can also decide whether the code chunks should be visible in the output etc.
+
+**You will need R Markdown for your report!**
+
+For further information, check out the R Markdown cheatsheet: <https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf>
+
