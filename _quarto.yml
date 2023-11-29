@@ -6,9 +6,7 @@ website:
   title: "Biostatistics"
   navbar:
     left:
-      - href: index.qmd
-        text: Home
-      - W1_intro.qmd
+      - W1_Intro.qmd
       - W1b_IntroR.qmd
       - W2_Models.qmd
       - W3_DataWranglingR.qmd
