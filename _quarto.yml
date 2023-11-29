@@ -1,3 +1,28 @@
 project:
   type: website
   output-dir: docs
+  
+website:
+  title: "Biostatistics"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - W1_intro.qmd
+      - W1b_IntroR.qmd
+      - W2_Models.qmd
+      - W3_DataWranglingR.qmd
+      - W4_DataVizR.qmd
+      - W5_Sampling.qmd
+      - W6_ProbabilityR.qmd
+      - W7_Hypothesis.qmd
+      - W8_ModelingRelationships.qmd
+      - W9_FirstAnalysisR.qmd
+      - W10_GLM.qmd
+      - W11_GLMinR.qmd
+      - W12_LMM.qmd
+      - W15_RepResearchR.qmd
+  
+format:
+  html:
+    theme: cosmo
