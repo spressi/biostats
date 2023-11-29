@@ -4,4 +4,4 @@ title: "Biostatistics"
 
 Welcome to the website of the course "Biostatistics" of the master's programme "Translational Neuroscience" of the Julius-Maximilians-University Würzburg.
 
-Please use the navigation on the left to select the slides for each session.
+Please use the navigation on top to select the slides for each session (recommendation: Open in new tab).
