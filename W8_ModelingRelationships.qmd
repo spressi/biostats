@@ -457,7 +457,7 @@ Covariance (two variables): $covariance = \frac{\sum_{i=1}^n (x_i - \bar{x})(y_i
 
 . . .
 
-Will be far from 0 if data points share a relationship. Positive values for some direction, negative values for opposite directions.
+Will be far from 0 if data points share a relationship. Positive values for same direction, negative values for opposite directions.
 
 . . .
 
