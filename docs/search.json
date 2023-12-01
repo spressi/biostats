@@ -1076,5 +1076,215 @@
     "title": "07 Hypothesis Testing",
     "section": "Statistical Power 2",
     "text": "Statistical Power 2\nHere, we can see how these three factors influence the power (i.e. the proportion of significant results found):\n\nThe black dotted line denotes the standard 80% power that is often aimed at.\n\nEven with \\(n = 96\\), we have only little power to detect a small effect (\\(d = 0.2\\)): Only ~25% of studies would find the true effect. This means doing this study would be futile, we would likely fail to find the true effect.\n\n\nTherefore, we would do a power analysis before we even run the study - to determine the necessary sample size for a well-powered study that would be able to find an effect if the effect is true.\nFurthermore, positive findings from an underpowered study are more likely to be false positive!\n\nMore on that in Chapter 18 of ST21!"
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#chi²-test",
+    "href": "W8_ModelingRelationships.html#chi²-test",
+    "title": "08 Modeling Relationships",
+    "section": "Chi² Test",
+    "text": "Chi² Test\nWe will first focus on modeling categorical relationships (of variables that are qualitative!).\n\nThese data are usually expressed in terms of counts.\n\n\nExample: Candy colors\nBag of candy: 30 chocolates, 33 licorices, and 37 gumballs.\n\n\nIs the distribution fair (i.e., 1/3rd of the bag = each candy) and the fact that there are only 30 chocolates a random accident?\n\n\nWhat is the likelihood that the count would come out this way (or even more extreme) if the true probability of each candy type is the same?\n\nCounts: For each combination of variables, how many observations do we have?\nIf the machine really sorts on average 1/3 of each in each bag? How much is due to chance?"
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#chi²-test-2",
+    "href": "W8_ModelingRelationships.html#chi²-test-2",
+    "title": "08 Modeling Relationships",
+    "section": "Chi² Test 2",
+    "text": "Chi² Test 2\nThe Chi² test checks whether observed counts differ from expected values (\\(H_0\\)).\n\\[\n\\chi^2 = \\sum_i\\frac{(observed_i - expected_i)^2}{expected_i}\n\\]\n\nThe null hypothesis in our example is that the proportion of each type of candy is equal (1/3 or ~33.33).\nIf we plug in our values from above, we would calculate \\(\\chi^2\\) like this:\n\\[ \\chi^2 = \\frac{(30 - 33.33)^2}{33.33} + \\frac{(33 - 33.33)^2}{33.33} + \\frac{(37 - 33.33)^2}{33.33} = 0.74 \\]\n\ntake the difference between observed and expected (33.33), square it, divide it by expected 33.33 and add everything up"
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#chi²-test-3",
+    "href": "W8_ModelingRelationships.html#chi²-test-3",
+    "title": "08 Modeling Relationships",
+    "section": "Chi² Test 3",
+    "text": "Chi² Test 3\nOn its own, the \\(\\chi^2\\) statistic is not interpretable - it depends on its distribution.\nThe shape of the chi-squared distribution depends on the degrees of freedom (much like the t distribution), which is the number of category levels \\(k-1\\).\n\nFor the candy example, we use a chi-squared distribution with DFs = 2 (3 candy categories minus one). If we’d look at the distribution and found \\(\\chi^2 = .74\\) on the x-axis, we would see that it does not fall far into the tail of the distribution but is rather in the middle. If we calculate the p-value, we’d get \\(P(\\chi^2 &gt; .74) = 0.691\\).\nIt is thus not particularly surprising to find this distribution of candies and we would not reject \\(H_0\\) (equal proportions)."
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#contingency-tables-and-the-two-way-test",
+    "href": "W8_ModelingRelationships.html#contingency-tables-and-the-two-way-test",
+    "title": "08 Modeling Relationships",
+    "section": "Contingency Tables and the Two-Way Test",
+    "text": "Contingency Tables and the Two-Way Test\nThe \\(\\chi^2\\) test is also used to test whether two categorical variables are related to each other.\n\nExample: Are Black drivers more likely to be pulled over by police than white drivers?\nWe have two variables: Skin color (black vs white) and being pulled over (true vs. false). We can represent the data in a contingency table (remember: the count() function was helpful to do this in R):\n\n\n\nContingency table for police search data\n\n\nsearched\nBlack\nWhite\nBlack (relative)\nWhite (relative)\n\n\n\n\nFALSE\n36244\n239241\n0.1295298\n0.8550062\n\n\nTRUE\n1219\n3108\n0.0043565\n0.0111075\n\n\n\n\n\n\n\n\n\nIf there is no relationship between skin color and being searched, the frequencies of searches would be proportional to the frequencies of skin color. This would be our expected values. We can determine them using probabilities:\n\n\n\n\nBlack\nWhite\n\n\n\n\n\nNot searched\n\\(P(\\neg S)*P(B)\\)\n\\(P(\\neg S)*P(W)\\)\n\\(P(\\neg S)\\)\n\n\nSearched\n\\(P(S)*P(B)\\)\n\\(P(S)*P(W)\\)\n\\(P(S)\\)\n\n\n\n\\(P(B)\\)\n\\(P(W)\\)\n\\(100\\%\\)\n\n\n\nRemember: You can only multiply two probabilities to get their conjoint probability if they are independent. Here, we assume independence to calculate expected values and then check how much our observed values deviate from independence.\n\nProbabilities: Because we expect the variables to be unrelated, we can calculate the joint probability as the product of the marginal probabilities:\n\\(P(X \\cap Y) = P(X) * P(Y)\\)\nMarginal probabilities are the prob of each event occuring regardless of other events (in the margins of the table!)"
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#chi²-test-4",
+    "href": "W8_ModelingRelationships.html#chi²-test-4",
+    "title": "08 Modeling Relationships",
+    "section": "Chi² Test 4",
+    "text": "Chi² Test 4\nIf we compute the standardized squared difference between observed and expected values, we can sum them up to get \\(\\chi^2 = 828.3\\)\n\n\n\nSummary of the 2-way contingency table for police search data\n\n\nsearched\ndriver_race\nn\nexpected\nstdSqDiff\n\n\n\n\nFALSE\nBlack\n36244\n36883.67\n11.09\n\n\nTRUE\nBlack\n1219\n579.33\n706.31\n\n\nFALSE\nWhite\n239241\n238601.33\n1.71\n\n\nTRUE\nWhite\n3108\n3747.67\n109.18\n\n\n\n\n\n\n\nWe can then compute the p-value using a chi-squared distribution with \\(DF = (nRows - 1) * (nColumns - 1) = (2-1) * (2-1) = 1\\)\nWe can also calculate a \\(\\chi^2\\) test easily in R:\n\nchisqTestResult &lt;- chisq.test(summaryDf2wayTable, 1, correct = FALSE)\nchisqTestResult\n\n\n    Pearson's Chi-squared test\n\ndata:  summaryDf2wayTable\nX-squared = 828.3, df = 1, p-value &lt; 2.2e-16\n\n\nThe results indicate that the data are highly unlikely if there was no true relationship between skin color and police searches! We would thus reject \\(H_0\\).\n\nDF: computing the expected frequencies requires three values: total number of observations and marg probs each variable. thus only one of the four values can vary freely."
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#standardized-residuals",
+    "href": "W8_ModelingRelationships.html#standardized-residuals",
+    "title": "08 Modeling Relationships",
+    "section": "Standardized Residuals",
+    "text": "Standardized Residuals\nIf we want to know not only whether but also how the data differ from what we would expect under \\(H_0\\), we can examine the residuals of the model.\nThe residuals tell us for each cell how much the observed data deviates from the expected data.\nTo make the residuals better comparable, we will look at the standardized residuals:\n\\[\n\\text{standardized residual}_{ij} = \\frac{observed_{ij} - expected_{ij}}{\\sqrt{expected_{ij}}}\n\\]\nwhere \\(i\\) and \\(j\\) are the rows and columns respectively.\n\nNegative residuals indicate an observed value smaller than expected.\n\n\n\nSummary of standardized residuals for police stop data\n\n\nsearched\ndriver_race\nStandardized residuals\n\n\n\n\nFALSE\nBlack\n-3.330746\n\n\nTRUE\nBlack\n26.576456\n\n\nFALSE\nWhite\n1.309550\n\n\nTRUE\nWhite\n-10.449072\n\n\n\n\n\n\n\n\nraw residuals depend on number of observations!\nBlack individuals are searched way more often than expected –&gt; helps us intepret significant results."
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#odds-ratios",
+    "href": "W8_ModelingRelationships.html#odds-ratios",
+    "title": "08 Modeling Relationships",
+    "section": "Odds Ratios",
+    "text": "Odds Ratios\nAlternatively, we can represent the relative likelihood of different outcomes as odds ratios:\n\\[\nodds_{searched|black} = \\frac{N(searched\\cap black)}{N(\\neg searched \\cap black)} = \\frac{1219}{36244} = 0.034\n\\]\n\\[\nodds_{searched|white} = \\frac{N(searched \\cap white)}{N(\\neg searched \\cap white)} = \\frac{3108}{239241} = 0.013\n\\]\n\\[\nodds\\ ratio = \\frac{odds(searched|black)}{odds(searched|white)} = 2.59\n\\]\nThe odds of being searched are 2.59x higher for Black vs. white drivers!"
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#simpsons-paradox",
+    "href": "W8_ModelingRelationships.html#simpsons-paradox",
+    "title": "08 Modeling Relationships",
+    "section": "Simpson’s Paradox",
+    "text": "Simpson’s Paradox\nThe Simpson’s Paradox is a great example of misleading summaries.\nIf we look at the baseball data below, we see that David Justice has a better batting average in every single year, but Derek Jeter has a better overall batting average:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPlayer\n1995\n\n1996\n\n1997\n\nCombined\n\n\n\n\n\nD. Jeter\n12/48\n.250\n183/582\n.314\n190/654\n.291\n385/1284\n.300\n\n\nD. Justice\n104/411\n.253\n45/140\n.321\n163/495\n.329\n312/1046\n.298\n\n\n\nHow can this be?\n\nSimpson’s Paradox: A pattern is present in the combined dataset but may be different in subsets of the data.\n\n\nHappens if another (lurking) variable changes across subsets (e.g., the number of at-bats, i.e., the denominator).\n\nbatting average: hits/at bats\n1995: in general low batting averages, Justice a lot of at-bats =&gt; diminishes total combined value more strongly than for Jeter."
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#example-income-inequality-and-hate-crimes",
+    "href": "W8_ModelingRelationships.html#example-income-inequality-and-hate-crimes",
+    "title": "08 Modeling Relationships",
+    "section": "Example: Income Inequality and Hate Crimes",
+    "text": "Example: Income Inequality and Hate Crimes\nWe want to look at a dataset that was used for an analysis of the relationship between income inequality (Gini index) and the prevalence of hate crimes in the USA.\n\nIt looks like there is a positive relationship between the variables. How can we quantify this relationship?"
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#covariance-and-correlation",
+    "href": "W8_ModelingRelationships.html#covariance-and-correlation",
+    "title": "08 Modeling Relationships",
+    "section": "Covariance and Correlation",
+    "text": "Covariance and Correlation\nCovariance: How much do two variables co-vary with each other?\nVariance (single variable): \\(s^2 = \\frac{\\sum_{i=1}^n (x_i - \\bar{x})^2}{N - 1}\\)\nCovariance (two variables): \\(covariance = \\frac{\\sum_{i=1}^n (x_i - \\bar{x})(y_i - \\bar{y})}{N - 1}\\)\n(Side note: Variance is the covariance of a variable with itself.)\n\n\n\n“Is there are relation between the deviations of two different variables (from their means) across observations?”\n\n\nWill be far from 0 if data points share a relationship. Positive values for some direction, negative values for opposite directions.\n\n\nCovariance varies with overall level of variance in the data, so not that useful to describe relationships in general.\n\n\n\n\nCorrelation coefficient (Pearson correlation): Scales the covariance by the standard deviations of the two variables and thus standardizes it (=varies between \\(-1\\) and \\(1\\) =&gt; comparability!)\n\\[\nr = \\frac{covariance}{s_xs_y} = \\frac{\\sum_{i=1}^n (x_i - \\bar{x})(y_i - \\bar{y})}{(N - 1)s_x s_y}\n\\]\n\nCovariance depends on dataset!"
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#hypothesis-testing-for-correlations",
+    "href": "W8_ModelingRelationships.html#hypothesis-testing-for-correlations",
+    "title": "08 Modeling Relationships",
+    "section": "Hypothesis Testing for Correlations",
+    "text": "Hypothesis Testing for Correlations\nThe correlation between income inequality and hate crimes is \\(r = .42\\), which seems to be a reasonably strong (positive) relationship.\n\nWe can test whether such a relationship could occur by chance, even if there is actually no relationship. In this case, our null hypothesis is \\(H_0: r = 0\\).\n\n\nTo test whether there is a significant relationship, we can transform the \\(r\\) statistic into a \\(t\\) statistic:\n\\[\nt_r = \\frac{r\\sqrt{N-2}}{\\sqrt{1-r^2}}\n\\]\nWe can compute this easily in R:\n\n# perform correlation test on hate crime data\ncor.test(\n  hateCrimes$avg_hatecrimes_per_100k_fbi,\n  hateCrimes$gini_index\n)\n\n\n    Pearson's product-moment correlation\n\ndata:  hateCrimes$avg_hatecrimes_per_100k_fbi and hateCrimes$gini_index\nt = 3.2182, df = 48, p-value = 0.002314\nalternative hypothesis: true correlation is not equal to 0\n95 percent confidence interval:\n 0.1619097 0.6261922\nsample estimates:\n      cor \n0.4212719 \n\n\nThe p-value is quite small , which indicates that it is quite unlikely to find an r value this high or more extreme. We would thus reject \\(H_0: r = 0\\).\nSide note: There are more beautiful / convenient ways to do this in R. We will cover this in the next session.\n\nsubsetting with $!"
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#robust-correlations",
+    "href": "W8_ModelingRelationships.html#robust-correlations",
+    "title": "08 Modeling Relationships",
+    "section": "Robust Correlations",
+    "text": "Robust Correlations\nIn the plot, we have seen an outlier: The District of Columbia was quite different from the other data points.\n\nThe Pearson’s correlation coefficient \\(r\\) is highly sensitive to outliers, see this hypothetical example:"
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#correlation-and-causation",
+    "href": "W8_ModelingRelationships.html#correlation-and-causation",
+    "title": "08 Modeling Relationships",
+    "section": "Correlation and Causation",
+    "text": "Correlation and Causation\nDoing a well controlled, randomized experiment (RCT) is extremely helpful to gather causal evidence.\nHowever, it is not always possible or ethical to do an experiment!\nWe can still collect (observational) data. However, if we correlate two variables, we can’t conclude that one causes the other: They might be related but there could also be a third variable that causes both (or even more complex causal structures).\n\nIf we have observational data, causal graphs can be helpful for interpreting causality:\n\n\n\n\n\n\n\n\nCircle: observed variables\nrectangle: latent (unobservable) variable\n\nGreen arrow: positive relationship,\nred: negative\nExamGrade and FinishTime seem negatively related if we ignore other variables!\n(“Hand in your exam early to improve your grade!”)\nKnowledge = theoretical mediator\nStudyTime = proxy for knowledge\nIf we control for StudyTime (which approximates individual knowledge), we find out that ExamGrade and FinishTime are (causally) unrelated!\n\n\n\nWe have briefly talked about causation in week 1\nThink of data/questions where it is impossible/unethical!\nabused children and brain development!\n(3rd var: family stress -&gt; less intellectual engagement –&gt; poorer brain dev)\nCorrelation: s.th. is probably causing s.th. else but not clear what causes what!\nDAG:\ngreen: pos, red: net\ncircle: observed, rect: latent (unobservable)\nExamGrade and FinishTime seem neg related if we ignore others\nknowledge = mediates\nStudyTime = proxy for knowledge, if we “control” it/hold it constant/only use people with same amount, we would see that EG and FT are unrelated!"
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#testing-a-single-mean",
+    "href": "W8_ModelingRelationships.html#testing-a-single-mean",
+    "title": "08 Modeling Relationships",
+    "section": "Testing a Single Mean",
+    "text": "Testing a Single Mean\nWe sometimes might want to know whether a single value, the mean of a group, differs from a specific value, e.g. whether the blood pressure in the sample differs from or is bigger than 80.\n\nWe can test this using the \\(t\\)-test, which we have already encountered in the “Hypothesis Testing” session!\n\\[\nt = \\frac{\\hat{X} - \\mu}{SEM}\n\\]\n\\[\nSEM = \\frac{\\hat{\\sigma}}{\\sqrt{n}}\n\\]\n\\(\\hat{X}\\) is the mean of our sample, \\(\\mu\\) the hypothesized population mean (e.g. the value we want to test against, such as 80 for the blood pressure example).\nWe can easily calculate the \\(t\\)-test in R:\n\nt.test(x=NHANES_adult$BPDiaAve, mu=80, alternative='greater')\n\n\n    One Sample t-test\n\ndata:  NHANES_adult$BPDiaAve\nt = -55.23, df = 4599, p-value = 1\nalternative hypothesis: true mean is greater than 80\n95 percent confidence interval:\n 69.1588     Inf\nsample estimates:\nmean of x \n 69.47239 \n\n\n\n(The \\(t\\) statistic thus asks how large the deviation of sample mean from the expected value with respect to the sampling variability of the mean!)\nWe tested the one-sided alternative (&gt;) and the blood pressure in the sample is much lower than 80, so it is far from significance\nWe can’t interpret the \\(p\\)-value as evidence in favor of \\(H_0\\) (i.e. larger \\(p\\)-value! vs non.sign) –&gt; Bayes!"
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#comparing-two-means",
+    "href": "W8_ModelingRelationships.html#comparing-two-means",
+    "title": "08 Modeling Relationships",
+    "section": "Comparing Two Means",
+    "text": "Comparing Two Means\nMore often, we want to know whether there is a difference between the means of two groups.\nExample: Do regular marijuana smokers watch more television?\nIn this example, we expect that they watch more TV, which leads us to the following directed hypotheses:\n\\(H_0\\) = marijuana smokers watch less or equally often TV,\n\\(H_A\\) = marijuana smokers watch more TV.\n\nIf the observations are independent (i.e. you really have two unrelated groups), you can use a very similar formula to calculate the \\(t\\) statistic:\n\\[\nt = \\frac{\\bar{X_1} - \\bar{X_2}}{\\sqrt{\\frac{S_1^2}{n_1} + \\frac{S_2^2}{n_2}}}\n\\]\nwhereby \\(\\hat{X_1}\\) and \\(\\hat{X_2}\\) are the group means, \\(S_1^2\\) and \\(S_2^2\\) the group variances, and \\(n_1\\) and \\(n_2\\) the group sizes.\nHere are the results from a one-tailed \\(t\\)-test in R:\n\n\n\n    Welch Two Sample t-test\n\ndata:  TVHrsNum by RegularMarij\nt = -1.2147, df = 116.9, p-value = 0.1135\nalternative hypothesis: true difference in means between group No and group Yes is less than 0\n95 percent confidence interval:\n       -Inf 0.09866006\nsample estimates:\n mean in group No mean in group Yes \n          2.02963           2.30000 \n\n\n\nDV: continuous, IV: categories\nn.s. (differs from book), although mean is higher in Yes, not significantly different!"
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#comparing-paired-dependent-observations",
+    "href": "W8_ModelingRelationships.html#comparing-paired-dependent-observations",
+    "title": "08 Modeling Relationships",
+    "section": "Comparing Paired (= Dependent) Observations",
+    "text": "Comparing Paired (= Dependent) Observations\nIf we have repeated observations of the same subject (i.e. a within-subject design), we might want to compare the same subject thus on multiple, repeated measurements.\n\nIf we want to test whether blood pressure differs between the first and second measurement session across individuals, we can use a paired \\(t\\)-test.\nA paired \\(t\\)-test is equivalent to a one-sample \\(t\\)-test, only using the difference between the two means as \\(\\hat{X}\\) and e.g. 0 (if we expect no difference for \\(H0\\)) for \\(\\mu\\).\nIn R, we would run a paired-samples \\(t\\)-test like this:\n\nt.test(BPsys ~ timepoint, data = NHANES_sample_tidy, paired = TRUE)\n\n\n    Paired t-test\n\ndata:  BPsys by timepoint\nt = 2.7369, df = 199, p-value = 0.006763\nalternative hypothesis: true mean difference is not equal to 0\n95 percent confidence interval:\n 0.2850857 1.7549143\nsample estimates:\nmean difference \n           1.02 \n\n\n\nimportant: If we run an independent sample t-test, it would probably be n.s.! (check out book)"
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#comparing-more-than-two-means",
+    "href": "W8_ModelingRelationships.html#comparing-more-than-two-means",
+    "title": "08 Modeling Relationships",
+    "section": "Comparing More Than Two Means",
+    "text": "Comparing More Than Two Means\nOften, we want to compare more than two means, e.g. different treatment groups or timepoints.\nExample: Different treatments for blood pressure"
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#analysis-of-variance-anova",
+    "href": "W8_ModelingRelationships.html#analysis-of-variance-anova",
+    "title": "08 Modeling Relationships",
+    "section": "Analysis of Variance (ANOVA)",
+    "text": "Analysis of Variance (ANOVA)\n\\(H_0\\): all means are equal\n\\(H_A\\): not all means are equal (e.g. at least one differs)\n\nWe can partition the variance in the data into different parts:\n\\(SS_{total}\\) = total variance in the data\n\\(SS_{model}\\) = Variance explained by the model*\n\\(SS_{error}\\) = Variance not explained by the model\n\n\nWe can use those to calculate the mean squares for the model and the error:\n\\(MS_{model} =\\frac{SS_{model}}{df_{model}}= \\frac{SS_{model}}{p-1}\\) (\\(p\\) is the number of means we have calculated)\n\\(MS_{error} = \\frac{SS_{error}}{df_{error}} = \\frac{SS_{error}}{N - p}\\)\n\n\nWe want to test whether the variance accounted for by the model is greater than expected by chance (\\(H_0\\): no difference).\n\n\nquite common analysis! We will just scratch the surface\n\n\n\n\\(SS\\) = Sum of Squares, remember that the variance is the sum of the squared deviation of an observation to the mean\n\\(MS\\) = Mean (Sum of) Squares: How much variance per degree of freedom?\n*more on that in the next session!"
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#anova-2",
+    "href": "W8_ModelingRelationships.html#anova-2",
+    "title": "08 Modeling Relationships",
+    "section": "ANOVA 2",
+    "text": "ANOVA 2\nIn R, we would run an ANOVA like this:\n\ndf &lt;-\n  df %&gt;% \n  mutate(group2=fct_relevel(group,c(\"placebo\",\"drug1\",\"drug2\")))\n# reorder the factor levels so that \"placebo\" is the control condition/intercept!\n  \n \n# test model without separate duymmies\nlmResultAnovaBasic &lt;- lm(sysBP ~ group2, data=df)\nsummary(lmResultAnovaBasic)\n\n\nCall:\nlm(formula = sysBP ~ group2, data = df)\n\nResiduals:\n     Min       1Q   Median       3Q      Max \n-29.0838  -7.7452  -0.0978   7.6872  23.4313 \n\nCoefficients:\n            Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)  141.595      1.656  85.502  &lt; 2e-16 ***\ngroup2drug1  -10.237      2.342  -4.371 2.92e-05 ***\ngroup2drug2   -2.027      2.342  -0.865    0.389    \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 9.936 on 105 degrees of freedom\nMultiple R-squared:  0.1695,    Adjusted R-squared:  0.1537 \nF-statistic: 10.71 on 2 and 105 DF,  p-value: 5.83e-05\n\n# emm.result &lt;- emmeans(lmResultAnovaBasic, \"group\" )"
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#chi²-test-general",
+    "href": "W8_ModelingRelationships.html#chi²-test-general",
+    "title": "08 Modeling Relationships",
+    "section": "Chi² Test: General",
+    "text": "Chi² Test: General\nWe will first focus on modeling categorical relationships (of variables that are qualitative!).\n\nThese data are usually expressed in terms of counts.\n\n\nExample: Candy colors\nBag of candy: 30 chocolates, 33 licorices, and 37 gumballs.\n\n\nIs the distribution fair (i.e., 1/3rd of the bag = each candy) and the fact that there are only 30 chocolates a random accident?\n\n\nWhat is the likelihood that the count would come out this way (or even more extreme) if the true probability of each candy type is the same?\n\nCounts: For each combination of variables, how many observations do we have?\nIf the machine really sorts on average 1/3 of each in each bag? How much is due to chance?"
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#chi²-test-one-variable",
+    "href": "W8_ModelingRelationships.html#chi²-test-one-variable",
+    "title": "08 Modeling Relationships",
+    "section": "Chi² Test: One Variable",
+    "text": "Chi² Test: One Variable\nThe Chi² test checks whether observed counts differ from expected values (\\(H_0\\)).\n\\[\n\\chi^2 = \\sum_i\\frac{(observed_i - expected_i)^2}{expected_i}\n\\]\n\nThe null hypothesis in our example is that the proportion of each type of candy is equal (1/3 or ~33.33).\nIf we plug in our values from above, we would calculate \\(\\chi^2\\) like this:\n\\[ \\chi^2 = \\frac{(30 - 33.33)^2}{33.33} + \\frac{(33 - 33.33)^2}{33.33} + \\frac{(37 - 33.33)^2}{33.33} = 0.74 \\]\n\ntake the difference between observed and expected (33.33), square it, divide it by expected 33.33 and add everything up"
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#chi²-test-general-2",
+    "href": "W8_ModelingRelationships.html#chi²-test-general-2",
+    "title": "08 Modeling Relationships",
+    "section": "Chi² Test: General 2",
+    "text": "Chi² Test: General 2\nOn its own, the \\(\\chi^2\\) statistic is not interpretable - it depends on its distribution.\nThe shape of the chi-squared distribution depends on the degrees of freedom (much like the t distribution), which is the number of category levels \\(k-1\\).\n\nFor the candy example, we use a chi-squared distribution with DFs = 2 (3 candy categories minus one). If we’d look at the distribution and found \\(\\chi^2 = .74\\) on the x-axis, we would see that it does not fall far into the tail of the distribution but is rather in the middle. If we calculate the p-value, we’d get \\(P(\\chi^2 &gt; .74) = 0.691\\).\nIt is thus not particularly surprising to find this distribution of candies and we would not reject \\(H_0\\) (equal proportions)."
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#chi²-test-two-variables",
+    "href": "W8_ModelingRelationships.html#chi²-test-two-variables",
+    "title": "08 Modeling Relationships",
+    "section": "Chi² Test: Two Variables",
+    "text": "Chi² Test: Two Variables\nIf we compute the standardized squared difference between observed and expected values, we can sum them up to get \\(\\chi^2 = 828.3\\)\n\n\n\nContingency table for police search data\n\n\nsearched\ndriver_race\nn\nexpected\nstdSqDiff\n\n\n\n\nFALSE\nBlack\n36244\n36883.67\n11.09\n\n\nTRUE\nBlack\n1219\n579.33\n706.31\n\n\nFALSE\nWhite\n239241\n238601.33\n1.71\n\n\nTRUE\nWhite\n3108\n3747.67\n109.18\n\n\n\n\n\n\n\nWe can then compute the p-value using a chi-squared distribution with \\(DF = (levels_{var1} - 1) * (levels_{var2} - 1) = (2-1) * (2-1) = 1\\)\nWe can also calculate a \\(\\chi^2\\) test easily in R:\n\nchisq.test(summaryDf2wayTable, 1, correct = FALSE)\n\n\n    Pearson's Chi-squared test\n\ndata:  summaryDf2wayTable\nX-squared = 828.3, df = 1, p-value &lt; 2.2e-16\n\n\nThe results indicate that the data are highly unlikely if there was no true relationship between skin color and police searches! We would thus reject \\(H_0\\).\nQuestion: What is the direction of the observed relationship?\n\nDF: computing the expected frequencies requires three values: total number of observations and marg probs each variable. thus only one of the four values can vary freely."
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#simpsons-paradox-more-intuitive",
+    "href": "W8_ModelingRelationships.html#simpsons-paradox-more-intuitive",
+    "title": "08 Modeling Relationships",
+    "section": "Simpson’s Paradox: More intuitive",
+    "text": "Simpson’s Paradox: More intuitive\nWhile typing on a keyboard, what is the relationship between speed and accuracy (or typing errors)? (positive, negative, or none)\n\n\n\nIf I try to type faster, I will make more errors =&gt; speed-accuracy trade-off (negative association)\nPeople who are better at typing usually are both faster and make fewer mistakes (positive association)\n\n\n\n\nAnswer: It depends\n\nWithin a person, the relationship between speed and accuracy is negative. My own skill is limited, I can either use it for speed or accuracy.\nBetween persons, the relationship is positive due to inter-individual differences in overall typing skill.\n\n\nUsually, when leveling up, people don’t put all their skill points in only speed or accuracy."
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#robust-correlatoin-2",
+    "href": "W8_ModelingRelationships.html#robust-correlatoin-2",
+    "title": "08 Modeling Relationships",
+    "section": "Robust Correlatoin 2",
+    "text": "Robust Correlatoin 2\nWe can use a different correlation coefficient, though, which is less sensitive to outliers: Spearman correlation.\nIt is based on ranking (i.e., ordering) the data and using the ranks (instead of the original data) for the correlation.\n\ncor.test(hateCrimes$avg_hatecrimes_per_100k_fbi,\n  hateCrimes$gini_index,\n  method = \"spearman\")\n\n\n    Spearman's rank correlation rho\n\ndata:  hateCrimes$avg_hatecrimes_per_100k_fbi and hateCrimes$gini_index\nS = 20146, p-value = 0.8221\nalternative hypothesis: true rho is not equal to 0\nsample estimates:\n       rho \n0.03261836 \n\n\nThe correlation has now dropped from \\(.42\\) to \\(.03\\) and is no longer significant. The influence of the one outlier has been greatly diminished.\nOf course, a ranked correlation can also obscure true effects that critically depend on the scale of the data. When in doubt, try both and discuss reasons for differences.\n\nWithout outlier: perfectly negative correlation, with outlier: highly positive!"
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#testing-a-single-mean-one-sample-t-test",
+    "href": "W8_ModelingRelationships.html#testing-a-single-mean-one-sample-t-test",
+    "title": "08 Modeling Relationships",
+    "section": "Testing a Single Mean (One sample t-Test)",
+    "text": "Testing a Single Mean (One sample t-Test)\nWe sometimes might want to know whether a single value, the mean of a group, differs from a specific value, e.g. whether the blood pressure in the sample differs from or is bigger than 80.\n\nWe can test this using the \\(t\\)-test, which we have already encountered in the “Hypothesis Testing” session!\n\\[\nt = \\frac{\\hat{X} - \\mu}{SEM}\n\\]\n\\[\nSEM = \\frac{\\hat{\\sigma}}{\\sqrt{n}}\n\\]\n\\(\\hat{X}\\) is the mean of our sample, \\(\\mu\\) the hypothesized population mean (e.g. the value we want to test against, such as 80 for the blood pressure example).\nWe can easily calculate the \\(t\\)-test in R:\n\nt.test(x=NHANES_adult$BPDiaAve, mu=80, alternative='greater')\n\n\n    One Sample t-test\n\ndata:  NHANES_adult$BPDiaAve\nt = -55.23, df = 4599, p-value = 1\nalternative hypothesis: true mean is greater than 80\n95 percent confidence interval:\n 69.1588     Inf\nsample estimates:\nmean of x \n 69.47239 \n\n\n\n(The \\(t\\) statistic thus asks how large the deviation of sample mean from the expected value with respect to the sampling variability of the mean!)\nWe tested the one-sided alternative (&gt;) and the blood pressure in the sample is much lower than 80, so it is far from significance\nWe can’t interpret the \\(p\\)-value as evidence in favor of \\(H_0\\) (i.e. larger \\(p\\)-value! vs non.sign) –&gt; Bayes!"
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#comparing-two-means-two-sample-t-test",
+    "href": "W8_ModelingRelationships.html#comparing-two-means-two-sample-t-test",
+    "title": "08 Modeling Relationships",
+    "section": "Comparing Two Means (Two sample t-Test)",
+    "text": "Comparing Two Means (Two sample t-Test)\nMore often, we want to know whether there is a difference between the means of two groups.\nExample: Do regular marijuana smokers watch more television?\nIn this example, we expect that they watch more TV, which leads us to the following directional hypotheses:\n\\(H_0\\) = marijuana smokers watch less or equally often TV,\n\\(H_A\\) = marijuana smokers watch more TV.\n\nIf the observations are independent (i.e. you really have two unrelated groups), you can use a very similar formula to calculate the \\(t\\) statistic:\n\\[\nt = \\frac{\\bar{X_1} - \\bar{X_2}}{\\sqrt{\\frac{S_1^2}{n_1} + \\frac{S_2^2}{n_2}}}\n\\]\nwhereby \\(\\hat{X_1}\\) and \\(\\hat{X_2}\\) are the group means, \\(S_1^2\\) and \\(S_2^2\\) the group variances, and \\(n_1\\) and \\(n_2\\) the group sizes.\nHere are the results from a one-tailed \\(t\\)-test in R:\n\n\n\n    Welch Two Sample t-test\n\ndata:  TVHrsNum by RegularMarij\nt = -1.2147, df = 116.9, p-value = 0.1135\nalternative hypothesis: true difference in means between group No and group Yes is less than 0\n95 percent confidence interval:\n       -Inf 0.09866006\nsample estimates:\n mean in group No mean in group Yes \n          2.02963           2.30000 \n\n\n\nDV: continuous, IV: categories\nn.s. (differs from book), although mean is higher in Yes, not significantly different!"
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#comparing-dependent-observations-paired-t-test",
+    "href": "W8_ModelingRelationships.html#comparing-dependent-observations-paired-t-test",
+    "title": "08 Modeling Relationships",
+    "section": "Comparing Dependent Observations (Paired t-test)",
+    "text": "Comparing Dependent Observations (Paired t-test)\nIf we have repeated observations of the same subject (i.e., a within-subject design), we might want to compare the same subject thus on multiple, repeated measurements.\n\nIf we want to test whether blood pressure differs between the first and second measurement session across individuals, we can use a paired \\(t\\)-test.\nIn R, we would run a paired-samples \\(t\\)-test like this:\n\nt.test(BPsys ~ timepoint, data = NHANES_sample_tidy, paired = TRUE)\n\n\n    Paired t-test\n\ndata:  BPsys by timepoint\nt = 2.7369, df = 199, p-value = 0.006763\nalternative hypothesis: true mean difference is not equal to 0\n95 percent confidence interval:\n 0.2850857 1.7549143\nsample estimates:\nmean difference \n           1.02 \n\n\nSide note: A paired \\(t\\)-test is equivalent to a one-sample \\(t\\)-test, when using the paired differences as \\(\\hat{X}\\) and testing them against a value of 0 (if we expect no difference for \\(H_0\\)) for \\(\\mu\\).\n\nimportant: If we run an independent sample t-test, it would probably be n.s.! (check out book)"
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#anova-3",
+    "href": "W8_ModelingRelationships.html#anova-3",
+    "title": "08 Modeling Relationships",
+    "section": "ANOVA 3",
+    "text": "ANOVA 3\n\n\n\nCall:\nlm(formula = sysBP ~ group2, data = df)\n\nResiduals:\n     Min       1Q   Median       3Q      Max \n-29.0838  -7.7452  -0.0978   7.6872  23.4313 \n\nCoefficients:\n            Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)  141.595      1.656  85.502  &lt; 2e-16 ***\ngroup2drug1  -10.237      2.342  -4.371 2.92e-05 ***\ngroup2drug2   -2.027      2.342  -0.865    0.389    \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 9.936 on 105 degrees of freedom\nMultiple R-squared:  0.1695,    Adjusted R-squared:  0.1537 \nF-statistic: 10.71 on 2 and 105 DF,  p-value: 5.83e-05\n\n\nWe can see a \\(t\\)-test for every drug. This is because the factor group2 is automatically dummy coded by R: We always compare one drug against the intercept, which is the mean of the placebo group!\nThe \\(t\\)-test shows us that drug1 differs significantly from placebo but not drug2.\nThe \\(F\\)-statistic (also called omnibus test) actually tests our overall hypothesis of no difference between conditions."
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#anova-side-notes",
+    "href": "W8_ModelingRelationships.html#anova-side-notes",
+    "title": "08 Modeling Relationships",
+    "section": "ANOVA side notes",
+    "text": "ANOVA side notes\nIn R, there are different functions that you can use to run an ANOVA besides lm(), which have different advantages and disadvantages (functions like ezANOVA() from the ez packages or functions from the afex package might be helpful).\nJust like with the \\(t\\)-test, there’s also a distinction between between-subjects and within-subjects (i.e., repeated measures ANOVA). The previous example contained just between-subjects measures, i.e. different groups without repeated measures. We will talk about other options later, but see the packages mentioned above as well for functional parameters called, e.g., within.\n\nDummy coded (explicitly):\n\n\n\nCall:\nlm(formula = sysBP ~ d1 + d2, data = df)\n\nResiduals:\n     Min       1Q   Median       3Q      Max \n-29.0838  -7.7452  -0.0978   7.6872  23.4313 \n\nCoefficients:\n            Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)  141.595      1.656  85.502  &lt; 2e-16 ***\nd1           -10.237      2.342  -4.371 2.92e-05 ***\nd2            -2.027      2.342  -0.865    0.389    \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 9.936 on 105 degrees of freedom\nMultiple R-squared:  0.1695,    Adjusted R-squared:  0.1537 \nF-statistic: 10.71 on 2 and 105 DF,  p-value: 5.83e-05\n\n\n\\(t\\)-tests: dummy coded = 0 vs. 1\n- control for multiple comparisons! (later)\n- if we wanted to compare the two drugs, we’d have to dummy code/relevel differently or use follow-up comparisons like with emmeans()\n\\(F\\): Is our model better than a simple model that just includes the intercept? In this case placebo…"
   }
 ]
