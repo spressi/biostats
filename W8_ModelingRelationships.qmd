@@ -265,7 +265,7 @@ summaryDf2wayTable <-
 
 ```{r}
 #| echo: true
-chisq.test(summaryDf2wayTable, 1, correct = FALSE)
+chisq.test(summaryDf2wayTable, correct = FALSE)
 ```
 
 The results indicate that the data are highly unlikely if there was no true relationship between skin color and police searches! We would thus reject $H_0$.
