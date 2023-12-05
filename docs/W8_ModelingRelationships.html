@@ -644,7 +644,7 @@ div.cell-output-stdout {
 <p>We can then compute the <em>p</em>-value using a chi-squared distribution with <span class="math inline">\(DF = (levels_{var1} - 1) * (levels_{var2} - 1) = (2-1) * (2-1) = 1\)</span></p>
 <p>We can also calculate a <span class="math inline">\(\chi^2\)</span> test easily in R:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">chisq.test</span>(summaryDf2wayTable, <span class="dv">1</span>, <span class="at">correct =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">chisq.test</span>(summaryDf2wayTable, <span class="at">correct =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Pearson's Chi-squared test
@@ -826,7 +826,8 @@ odds\ ratio = \frac{odds(searched|black)}{odds(searched|white)} = 2.59
 </section>
 <section id="simpsons-paradox-more-intuitive" class="slide level2">
 <h2>Simpson’s Paradox: More intuitive</h2>
-<p>While typing on a keyboard, what is the relationship between speed and accuracy (or typing errors)? (positive, negative, or none)</p>
+<p>While typing on a keyboard, what is the relationship between speed and accuracy (or typing errors)?<br>
+(positive, negative, or none)</p>
 <div class="fragment">
 <p><br>
 </p>
@@ -876,7 +877,7 @@ odds\ ratio = \frac{odds(searched|black)}{odds(searched|white)} = 2.59
 <div class="fragment">
 <p><br>
 </p>
-<p>“Is there are relation between the deviations of two different variables (from their means) across observations?”</p>
+<p>“Is there a relation between the deviations of two different variables (from their means) across observations?”</p>
 </div>
 <div class="fragment">
 <p>Will be far from 0 if data points share a relationship. Positive values for same direction, negative values for opposite directions.</p>
@@ -887,7 +888,7 @@ odds\ ratio = \frac{odds(searched|black)}{odds(searched|white)} = 2.59
 <div class="fragment">
 <p><br>
 </p>
-<p><strong>Correlation coefficient</strong> (Pearson correlation): Scales the covariance by the standard deviations of the two variables and thus standardizes it (=varies between <span class="math inline">\(-1\)</span> and <span class="math inline">\(1\)</span> =&gt; comparability!)</p>
+<p><strong>Correlation coefficient</strong> (Pearson correlation): Scales the covariance by the standard deviations of the two variables and thus standardizes it (=&gt; <span class="math inline">\(r\)</span> varies between <span class="math inline">\(-1\)</span> and <span class="math inline">\(1\)</span> =&gt; comparability!)</p>
 <p><span class="math display">\[
 r = \frac{covariance}{s_xs_y} = \frac{\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})}{(N - 1)s_x s_y}
 \]</span></p>
@@ -938,7 +939,7 @@ sample estimates:
 0.4212719 </code></pre>
 </div>
 </div>
-<p>The <em>p</em>-value is quite small , which indicates that it is quite unlikely to find an <em>r</em> value this high or more extreme. We would thus reject <span class="math inline">\(H_0: r = 0\)</span>.</p>
+<p>The <em>p</em>-value is quite small, which indicates that it is quite unlikely to find an <span class="math inline">\(r\)</span> value this high or more extreme. We would thus reject <span class="math inline">\(H_0: r = 0\)</span>.</p>
 <p>Side note: There are more beautiful / convenient ways to do this in R. We will cover this in the next session.</p>
 <aside class="notes">
 <p>subsetting with $!</p>
@@ -967,8 +968,8 @@ sample estimates:
 </div>
 </div>
 </section>
-<section id="robust-correlatoin-2" class="slide level2">
-<h2>Robust Correlatoin 2</h2>
+<section id="robust-correlation-2" class="slide level2">
+<h2>Robust Correlation 2</h2>
 <p>We can use a different correlation coefficient, though, which is less sensitive to outliers: <strong>Spearman correlation</strong>.</p>
 <p>It is based on ranking (i.e., ordering) the data and using the ranks (instead of the original data) for the correlation.</p>
 <div class="cell">
@@ -1206,7 +1207,7 @@ mean difference
 </div>
 <div class="fragment">
 <p>We can use those to calculate the <em>mean squares</em> for the model and the error:</p>
-<p><span class="math inline">\(MS_{model} =\frac{SS_{model}}{df_{model}}= \frac{SS_{model}}{p-1}\)</span> (<span class="math inline">\(p\)</span> is the number of means we have calculated)</p>
+<p><span class="math inline">\(MS_{model} =\frac{SS_{model}}{df_{model}}= \frac{SS_{model}}{p-1}\)</span> (<span class="math inline">\(p\)</span> is the number of factor levels)</p>
 <p><span class="math inline">\(MS_{error} = \frac{SS_{error}}{df_{error}} = \frac{SS_{error}}{N - p}\)</span></p>
 </div>
 <div class="fragment">
