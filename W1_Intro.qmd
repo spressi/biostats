@@ -149,7 +149,7 @@ Slides might be text heavy --\> so that you can go through the slides afterwards
     -   and a short discussion.
         -   *All* these parts should be *at least half a page* long.
 
-## Calender {.scrollable .smaller}
+## Calendar {.scrollable .smaller}
 
 | Date            | Topic                        | Reading            | Project Deadlines              |
 |-----------------|-------------------|-----------------|--------------------|
