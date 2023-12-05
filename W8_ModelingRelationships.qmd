@@ -265,7 +265,7 @@ summaryDf2wayTable <-
 
 ```{r}
 #| echo: true
-chisq.test(summaryDf2wayTable, 1, correct = FALSE)
+chisq.test(summaryDf2wayTable, correct = FALSE)
 ```
 
 The results indicate that the data are highly unlikely if there was no true relationship between skin color and police searches! We would thus reject $H_0$.
@@ -358,7 +358,8 @@ batting average: hits/at bats
 
 ## Simpson's Paradox: More intuitive
 
-While typing on a keyboard, what is the relationship between speed and accuracy (or typing errors)? (positive, negative, or none)
+While typing on a keyboard, what is the relationship between speed and accuracy (or typing errors)? \
+(positive, negative, or none)
 
 . . .
 
@@ -453,7 +454,7 @@ Covariance (two variables): $covariance = \frac{\sum_{i=1}^n (x_i - \bar{x})(y_i
 
 \
 
-"Is there are relation between the deviations of two different variables (from their means) across observations?"
+"Is there a relation between the deviations of two different variables (from their means) across observations?"
 
 . . .
 
@@ -467,7 +468,7 @@ Covariance varies with overall level of variance in the data, so not that useful
 
 \
 
-**Correlation coefficient** (Pearson correlation): Scales the covariance by the standard deviations of the two variables and thus standardizes it (=varies between $-1$ and $1$ => comparability!)
+**Correlation coefficient** (Pearson correlation): Scales the covariance by the standard deviations of the two variables and thus standardizes it (=> $r$ varies between $-1$ and $1$ => comparability!)
 
 $$
 r = \frac{covariance}{s_xs_y} = \frac{\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})}{(N - 1)s_x s_y}
@@ -506,7 +507,7 @@ cor.test(
 
 ```
 
-The *p*-value is quite small , which indicates that it is quite unlikely to find an *r* value this high or more extreme. We would thus reject $H_0: r = 0$.
+The *p*-value is quite small, which indicates that it is quite unlikely to find an $r$ value this high or more extreme. We would thus reject $H_0: r = 0$.
 
 Side note: There are more beautiful / convenient ways to do this in R. We will cover this in the next session.
 
@@ -549,7 +550,7 @@ print(p)
 
 ```
 
-## Robust Correlatoin 2
+## Robust Correlation 2
 
 We can use a different correlation coefficient, though, which is less sensitive to outliers: **Spearman correlation**.
 
@@ -842,7 +843,7 @@ $SS_{error}$ = Variance *not* explained by the model
 
 We can use those to calculate the *mean squares* for the model and the error:
 
-$MS_{model} =\frac{SS_{model}}{df_{model}}= \frac{SS_{model}}{p-1}$ ($p$ is the number of means we have calculated)
+$MS_{model} =\frac{SS_{model}}{df_{model}}= \frac{SS_{model}}{p-1}$ ($p$ is the number of factor levels)
 
 $MS_{error} = \frac{SS_{error}}{df_{error}} = \frac{SS_{error}}{N - p}$
 
