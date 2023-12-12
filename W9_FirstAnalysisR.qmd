@@ -1,5 +1,5 @@
 ---
-title: "09 Chi², *t*-tests, correlations and ANOVA in R"
+title: "09 Statistical Analyses in R"
 subtitle: |
    | Julius-Maximilians-University Würzburg 
    | Course: "Biostatistics"    
@@ -15,7 +15,8 @@ format:
 from: markdown+emoji
 ---
 
-# Quiz!
+# Kinds of Statistical Analyses
+Last session, we have heard about Chi² tests, *t*-tests, correlations, and ANOVA. Today we will apply them in R.
 
 ```{css}
 code.sourceCode {
@@ -37,23 +38,13 @@ library(tidyverse)
 which analysis do you use when you have two categorical etc. variables?
 :::
 
-## Your First Analysis
+## Set Up
 
-Today, we will practice a lot of different analysis, most of which you will encounter a lot: The Chi³-test, the t-test, ANOVAs and correlation.
+1.  Open RStudio and load your Biostats R project. Create a new script called `DataAnalysis1.R`.
 
-. . .
+2.  Install and load new packages you'll need: `car`, `effectsize`, and `apa`.
 
-Please set up your RStudio as usual:
-
--   Open RStudio and set the working directory to the course folder
-
--   Open a new R Markdown document, delete the content, and save it with a suitable name
-
--   Install and load packages you'll need: `car`, `effectsize`, `tidyverse`
-
--   **OR download the prepared W6_Analysis.Rmd file!**
-
-## **Activity 1**
+# Activity 1
 
 Which test would you choose if you wanted to test whether a variable is differently distributed between groups?
 
@@ -69,24 +60,32 @@ $$
 \chi^2 = \sum\frac{(Observed - Expected)^2}{Expected}
 $$
 
+## One Sample Chi²-Test
+
 ```{r}
 #| echo: true
+library(tidyverse) 
 
-# "Simulate" tabular data
-
-lever_presses <- as.table(c(5,4,11))
-dimnames(lever_presses) <- list(c("blue", "green", "red"))
-
-lever_presses
+# Input data into R
+lever_presses <- tibble(levers=c(rep("blue", 5), rep("green", 4), rep("red", 11))) %>% #data in usual format
+  count(levers) #convert to a frequency table
 
 # run Chi² test
-chi2_lever <- chisq.test(lever_presses)
-chi2_lever
+chi2_lever <- chisq.test(lever_presses %>% pivot_wider(names_from="levers", values_from="n")) #wide format needed
+#chi2_lever <- chisq.test(tibble(blue=5, green=4, red=11)) #enter data directly as summary table
 
-# get observed and expected counts
-chi2_lever$expected
-chi2_lever$observed
+chi2_lever %>% apa::chisq_apa() #output results
+
+# add expected count and residuals to data
+lever_presses %>% mutate(expected = chi2_lever$expected, 
+                         residuals = chi2_lever$residuals)
 ```
+
+:::notes
+Is sample size not important for significance here?
+$$\chi^2 = \sum\frac{(Observed - Expected)^2}{Expected}$$
+More observations => easier to see greater absolute difference between observed and expected values => gets squared and therefore "outcompetes" denominator (what about expected reductions in sampling error?)
+:::
 
 ## Chi²-Test 2
 
@@ -100,33 +99,18 @@ Let's say we have a treatment and a control group and we record the different le
 | Control    |   5   |   4    |   11   |   **20**   |
 | **Totals** | **8** | **16** | **16** |   **40**   |
 
-. . .
-
-The formula is the same, but how we calculate the expected values differs:
-
-$$
-Expected = \frac{Total_{row} \times Total_{column}}{N_{total}}
-$$
-
-So for the first cell, Treatment and Blue lever presses, we would have an expected value of: $\frac{20 * 8}{40} = 4$.
-
-Of course, if we use R to calculate the Chi²-test, we don't need to know all the expected values.
-
-. . .
-
-Find out how to run the Chi²-test for these (crosstabular) data!
+Remember: We use the assumption of independence to calculate the expected values.
 
 . . .
 
 ```{r}
 #| echo: true
 
-# get data into R:
+lever_presses2 = tibble(group="treatment", blue=3, green=12, red=5) %>% 
+  bind_rows(tibble(group="control", blue=5, green=4, red=11)) #clearest way to manually input data
+#for long data, you create the frequency table identically to previous slide but with: count(group, levers)
 
-lever_presses2 <- as.table(rbind(c(3, 12, 5), c(5, 4, 11)))
-dimnames(lever_presses2) <- list(gender = c("Treatment", "Control"),
-                    party = c("Blue","Green", "Red"))
-(chi2_lever2 <- chisq.test(lever_presses2))
+chisq.test(lever_presses2 %>% column_to_rownames("group")) %>% apa::chisq_apa()
 ```
 
 ## Assumptions of Chi²-Tests
@@ -134,7 +118,7 @@ dimnames(lever_presses2) <- list(gender = c("Treatment", "Control"),
 ::: incremental
 -   **Random sample**
 
--   **Categorical variables**
+-   **Categorical variables**, i.e., **counts** within (combinations of) groups
 
 -   **Expected cell count**: \>5 counts per cell
 
@@ -143,42 +127,47 @@ dimnames(lever_presses2) <- list(gender = c("Treatment", "Control"),
 
 . . .
 
-In the case of the last analysis, we got a *warning* because the cell sizes were too small. In this case, it is better to use **Fisher's exact test**:
+In the case of the last analysis, we got a *warning* because the expected cell sizes were too small. In this case, it is better to use **Fisher's exact test**:
 
 ```{r}
 #| echo: true
 
-fisher.test(lever_presses2)
+fisher.test(lever_presses2 %>% column_to_rownames("group"))
 ```
 
-## Activity 2
+# Activity 2
 
 Now imagine you want to compare *reaction times* of the lever presses of the two groups of mice. You expect that those in the treatment group respond faster than those in the control group. Which statistical test would you use?
 
 . . .
 
-*Hint*: We now have two groups and a *continuous* dependent variable (reaction times).
+*Hint*: We now have two *independent* groups and a *continuous* dependent variable (reaction times).
 
 . . .
 
-It's a ***t*****-test**!
+An (independent samples) *t*-test!
 
-To run a *t*-test, let's first simulate data. What happens here?
+. . .
+
+## *t*-test setup
+
+To run a *t*-Test, let's first simulate data. What happens here?
 
 ```{r}
 #| echo: true
-
+set.seed(31415)
 sim_data_t <- tibble(
   group = rep(c("treatment", "control"), each=20),
-  reaction_times = c(rnorm(20, 400, 100), rnorm(20, 450, 100))
-)
+  reaction_times = c(rnorm(20, 400, 100), rnorm(20, 450, 100)))
+```
 
+. . .
+
+```{r}
 # visualize
 ggplot(sim_data_t, aes(x=group, y=reaction_times)) +
    geom_boxplot()
 ```
-
-**Task**: Find out how to run a *t*-test with these data!
 
 ## *t*-Test
 
@@ -190,10 +179,10 @@ Replace the `NULL`s:
 #| echo: true
 #| eval: false
 
-tt1 <- t.test(NULL ~ NULL,
-         data = NULL,
-         alternative = "greater", # depends on coding of groups!
-         paired = FALSE) 
+t.test(NULL ~ NULL,
+       data = NULL,
+       alternative = NULL,
+       paired = NULL) 
 
 ```
 
@@ -203,36 +192,78 @@ tt1 <- t.test(NULL ~ NULL,
 #| echo: true
 #| eval: true
 
-tt1 <- t.test(reaction_times ~ group,
-         data = sim_data_t,
-         alternative = "greater",
-         paired = FALSE) 
-
+t.test(reaction_times ~ group,
+       data = sim_data_t,
+       alternative = "greater", #depends on order of groups in data! 1st group > 2nd group
+       paired = FALSE) #in the future, we only specify this IF the data are paired
 ```
 
 . . .
 
-As you can see in the output, R automatically chose to run Welch's *t*-test, which is more robust than Student's *t*-test.
+As you can see in the output, R automatically chose to run Welch's *t*-test, which does not assume **variance homogeneity** in contrast to Student's *t*-test. For the latter, you can add the function parameter `var.equal = FALSE`
+
+## *t*-Test: alternatives
+
+You can also supply two vectors of numerical values for the groups:
+
+```{r}
+#| eval: true
+#| echo: true
+t.test(x = sim_data_t %>% filter(group=="treatment") %>% pull(reaction_times),
+       y = sim_data_t %>% filter(group=="control") %>% pull(reaction_times),
+       alternative = "less") #more intuitive now because you can filter for treatment first
+```
+
+. . .
+
+More useful output with `apa` package (only for Student's t-tests):
+```{r}
+#| eval: true
+#| echo: true
+t.test(x = sim_data_t %>% filter(group=="treatment") %>% pull(reaction_times),
+       y = sim_data_t %>% filter(group=="control") %>% pull(reaction_times),
+       alternative = "less", 
+       var.equal = T) %>% 
+  apa::t_apa(es_ci=T) #optional: confidence interval around effect size
+```
+
+. . .
+
+For paired t-tests, you can also work with the wide format of data (advantage: missing values become explicit):
+```{r}
+#| eval: true
+#| echo: true
+sim_data_t_wide = sim_data_t %>% mutate(subject=rep.int(1:(n()/2), 2)) %>% 
+  pivot_wider(names_from="group", values_from="reaction_times")
+t.test(x = sim_data_t_wide %>% pull(treatment),
+       y = sim_data_t_wide %>% pull(control),
+       alternative = "less", 
+       paired = T) %>% 
+  apa::t_apa(es_ci=T) #optional: confidence interval around effect size
+```
 
 ## Assumptions of *t*-Tests
 
 Before we run a *t*-test, we also want to check the assumptions for violations:
 
 ::: incremental
--   The data (DV!) are continuous
+-   The dependent variable is continuous (otherwise: chi²-test)
 
--   The data are independent
+-   The data are independent (otherwise: *paired* sample *t*-test)
 
--   The *residuals* are normally distributed for each group
+-   The variance between the groups is homogeneous (only for Student's *t*-test, R uses Welch's test by default)
 
--   The variance between the groups is homogeneous (only for Student's *t*-test!)
+-   The *residuals*\ are normally distributed for each group (otherwise: `wilcox.test`)
 :::
 
 . . .
 
+Oftentimes, the last assumption is misquoted as: "The *dependent variable* needs to be normally distributed". \
+In fact, only its *sampling distribution* needs to be (blue vs. grey distribution in the lecture on sampling [[direct link](https://spressi.github.io/biostats/W5_Sampling.html#/example-sampling-distribution)]), which will always be the case for big enough samples due to the central limit theorem.
+
 ## Assumptions of *t*-Tests 2
 
-**Test for normality of *residuals***:
+**Test for normality of *residuals***: If points fall along the line nicely, assumption is met.
 
 ```{r}
 #| echo: true
@@ -240,14 +271,13 @@ Before we run a *t*-test, we also want to check the assumptions for violations:
 
 treatment <- sim_data_t %>%
   filter(group == "treatment") %>%
-  mutate(group_resid = reaction_times - mean(reaction_times)) %>%
-  select(group_resid)
+  mutate(group_resid = 
+           reaction_times - mean(reaction_times)) %>%
+  pull(group_resid)
 
-qqnorm(treatment$group_resid)
-qqline(treatment$group_resid)
-
-# or use qqPlot from the car package:
-# qqPlot(treatment$group_resid)
+#base R QQ plot
+qqnorm(treatment)
+qqline(treatment)
 ```
 
 ```{r}
@@ -257,22 +287,23 @@ qqline(treatment$group_resid)
 control <- sim_data_t %>%
   filter(group == "control") %>%
   mutate(group_resid = reaction_times - mean(reaction_times)) %>%
-  select(group_resid)
+  pull(group_resid)
 
-qqnorm(control$group_resid)
-qqline(control$group_resid)
+#car's version highlighting (and returning) problematic values
+car::qqPlot(control)
 ```
 
-The points fall along the line nicely, so we can conclude that the assumption is met!
+## Assumptions of *t*-Tests 3
 
-Alternatively, we can also run a **Shapiro-Wilk** test to test for normality:
+Alternatively, we can also run a **Shapiro-Wilk** test to test for **deviations** from normality:
 
 ```{r}
-shapiro.test(x = treatment$group_resid)
-shapiro.test(x = control$group_resid)
+#| echo: true
+shapiro.test(x = treatment)
+shapiro.test(x = control)
 ```
 
-If the test is non-significant, then we can conclude that normality of residuals is not violated
+If the test is non-significant, then we can conclude that normality of residuals is **not** violated.
 
 ::: notes
 1.  Transform your data to try and normalise the distribution. Not usually recommended these days but some still use it.
@@ -280,9 +311,9 @@ If the test is non-significant, then we can conclude that normality of residuals
 3.  Do nothing. [Delacre, Lakens & Leys, 2017](https://www.rips-irsp.com/articles/10.5334/irsp.82/) argue that with a large enough sample (\>30), the Welch test is robust to deviations from assumptions. With very large samples normality is even less of an issue, so design studies with large samples.
 :::
 
-## Paired Samples (or Within-Subjects) *t*-Test
+# Optional Activity: Paired Samples *t*-Test
 
-Sometimes you have dependent data: These data are somehow correlated, e.g. they belong to the same subject (that you measured repeatedly).
+Sometimes you have dependent data: These data are somehow correlated, e.g. they belong to the same subject (that you measured repeatedly across a *within-subject manipulation*).
 
 . . .
 
@@ -290,7 +321,7 @@ In this case, you would use a **paired-samples *t*-test**.
 
 . . .
 
-Let's run such a *t*-test with real data. We'll use the `Mehr Song and Spelke 2016 Experiment 1.csv` file (note that this is not a good file name!).
+Let's run such a *t*-test with real data. We'll use the [`Mehr Song and Spelke 2016 Experiment 1.csv`](https://github.com/spressi/biostats/blob/main/Data/Mehr%20Song%20and%20Spelke%202016%20Experiment%201.csv) file (note that this is not a good file name!).
 
 In this dataset, the authors examined whether infants exposed to certain songs would recognize strangers singing these lullabies as part of their social group. Parents sang certain lullabies to their infants for 1-2 weeks. During the experiment, the infants looked at videos of two strangers: First the strangers were just smiling (baseline phase), then they would sing either the familiar or an unfamiliar lullaby. Finally, the infants again saw the videos of the strangers smiling (test phase). Eye-tracking (duration looked at each stranger) was measured.
 
@@ -304,11 +335,9 @@ Load the file into your Environment. Run the code and explain what happens:
 
 gaze <- read_csv("Mehr Song and Spelke 2016 Experiment 1.csv") %>%
   filter(exp1 == 1) %>%
-  select(id,
-         Baseline_Proportion_Gaze_to_Singer,
-         Test_Proportion_Gaze_to_Singer) %>%
   rename(baseline = Baseline_Proportion_Gaze_to_Singer,
-         test = Test_Proportion_Gaze_to_Singer)
+         test = Test_Proportion_Gaze_to_Singer) %>% 
+  select(id, baseline, test)
 ```
 
 ```{r}
@@ -316,16 +345,14 @@ gaze <- read_csv("Mehr Song and Spelke 2016 Experiment 1.csv") %>%
 
 gaze <- read_csv("Data/Mehr Song and Spelke 2016 Experiment 1.csv") %>%
   filter(exp1 == 1) %>%
-  select(id,
-         Baseline_Proportion_Gaze_to_Singer,
-         Test_Proportion_Gaze_to_Singer) %>%
   rename(baseline = Baseline_Proportion_Gaze_to_Singer,
-         test = Test_Proportion_Gaze_to_Singer)
+         test = Test_Proportion_Gaze_to_Singer) %>% 
+  select(id, baseline, test)
 ```
 
-## Assumptions of the Paired-Samples *t*-Test 2
+## Assumptions of the Paired-Samples *t*-Test
 
-1.  The data is continuous.
+1.  The data are continuous.
 
 2.  All participants should appear in both conditions/groups.
 
@@ -354,7 +381,7 @@ shapiro.test(gaze_residual$group_resid)
 
 ## Descriptives & Visualization
 
-For the visualization, we need the data in long format:
+For the visualization, we need the data in long format (this is identical for between-subject groups):
 
 ```{r}
 #| echo: true
@@ -366,23 +393,23 @@ gaze_tidy <- gaze %>%
                cols = c(baseline, test))
 
 # boxplot
-ggplot(gaze_tidy, aes(x=phase, y=looking_time)) +
+gaze_tidy %>% 
+  ggplot(aes(x=phase, y=looking_time)) +
   geom_boxplot()
 ```
 
+\
 We can also calculate the means and SDs per phase:
 
 ```{r}
 #| echo: true
+#| output-location: column
 
-gaze_summary <- gaze_tidy %>% 
-  group_by(phase) %>% 
+gaze_tidy %>% 
   summarise(mean_looking = mean(looking_time),
             sd_looking = sd(looking_time),
-            n = n())
-
-gaze_summary
-
+            n = n(),
+            .by = phase)
 ```
 
 ## Paired Samples *t*-Test in R
@@ -409,7 +436,7 @@ t.test(NULL ~ NULL,
 #| eval: true
 
 
-t.test(looking_time ~ phase,
+t.test(looking_time ~ phase, #this assumes that data are ordered by subject!
        paired = TRUE,
        data = gaze_tidy,
        alternative = "two.sided")
@@ -424,10 +451,23 @@ For the *t*-tests, you would calculate **Cohen's d** (using the function from th
 ```{r}
 #| echo: true
 
-cohens_d(looking_time ~ phase, data = gaze_tidy)
+effectsize::cohens_d(looking_time ~ phase, paired=T, data=gaze_tidy)
 
 ```
 
+. . .
+
+\
+Or just use the `apa` package and you get everything in one go:
+```{r}
+#| echo: true
+
+with(gaze, #the with function allows to call columns as if they were variables (but pipe function doesn't work with it)
+     t.test(baseline, test, paired = TRUE)) %>% 
+  apa::t_apa(es_ci=T)
+
+```
+<!--
 ## Write Up of the *t*-Test
 
 What do you think you should report in your results section?
@@ -445,56 +485,88 @@ What do you think you should report in your results section?
 . . .
 
 > At test stage (M = .59, SD = .18), infants showed a significantly longer preferential looking time to the singer of the familiar melody than they had shown the same singer at baseline (M = .52, SD = .18), *t*(31) = 2.42, *p* = .022, *d* = .41.
+-->
 
-## Correlation
+## Summary: Optional Activity
 
-If we have two continuous variables, we can of course also look at their relationship using **correlation**. In the data you just used, we have two continuous variables, the repeated measures of gaze.
+:::incremental
+-  Most things are similar between independent and dependent sample *t*-tests
 
-With these data, we might be interested in whether there is a relationship between the two measures of gaze, i.e. whether those children who looked at the stranger more at baseline would also be the ones who looked at the stranger more often at the follow-up test.
+-  Make sure to include `paired=T` for repeated measures to get correct results
+
+-  Recommendation: Use `apa::t_apa()` with `es.ci=T` to get (most of) the information you need
+
+-  It is often a good idea to also report means and standard deviations per group (`summarise` with `.by` argument)
+
+-  Plotting: Unfortunately, (between subjects) confidence intervals are not diagnostic for the significance of dependent samples. Instead, we need the **confidence interval around the paired differences (i.e., the within subject changes)**. Since this is not easy to do and there is little consensus yet, I will just raise awareness here.
+:::
+
+# Correlation: Preparation
+
+If we have two continuous variables, we can look at their relationship using **correlation**. In the data you just used, we have two continuous variables: the repeated measures of gaze.
+
+If you skipped the previous activity, here is what you need: 
+
+1.  Download [`Mehr Song and Spelke 2016 Experiment 1.csv`](https://github.com/spressi/biostats/blob/main/Data/Mehr%20Song%20and%20Spelke%202016%20Experiment%201.csv) (download button near the top right) into your project folder and 
+
+2.  run this code:
 
 ```{r}
 #| echo: true
 #| eval: false
 
-# cor(x = variable1, y = variable2)
-
-ct <- cor.test(x = NULL, 
-         y = NULL, 
-         method = "pearson", 
-         alternative = "two.sided")
-ct
-
+gaze <- read_csv("Mehr Song and Spelke 2016 Experiment 1.csv") %>%
+  filter(exp1 == 1) %>%
+  rename(baseline = Baseline_Proportion_Gaze_to_Singer,
+         test = Test_Proportion_Gaze_to_Singer) %>% 
+  select(id, baseline, test)
 ```
 
+## Correlation Test
+
+With these data, we might be interested in whether there is a relationship between the two measures of gaze, i.e., whether those children who looked at the stranger more at baseline would also be the ones who looked at the stranger more often at the follow-up test (here: indicating stability of preferences).
+
 . . .
+
+Similar to the paired *t*-Test, the continuous variables are also "paired" within subjects. Thus, we can a similar syntax that is easier for a wide format of data (`gaze` instead of `gaze_tidy`):
 
 ```{r}
 #| echo: true
 
-cor(x = gaze$baseline, y = gaze$test)
-
-ct <- cor.test(x = gaze$baseline, 
-         y = gaze$test, 
+cor.test(x = gaze %>% pull(baseline), 
+         y = gaze %>% pull(test), 
          method = "pearson", 
          alternative = "two.sided")
-ct
+```
+
+Note: We don't have to indicate `paired=T` because correlations only work for paired values.
+
+## Correlations: Write Up
+
+Once again, the `apa` package offers help to summarize the results:
+
+```{r}
+#| echo: true
+cor.test(x = gaze %>% pull(baseline), 
+         y = gaze %>% pull(test), 
+         method = "pearson", 
+         alternative = "two.sided") %>% 
+  apa::cor_apa(r_ci=T)
 ```
 
 . . .
 
-**Write-Up**:
-
-> There appeared to be a positive relationship between gaze at strangers at baseline (M = .52, SD = .18) and at the follow-up test (M = .59, SD = .18), in line with the alternative hypothesis. A Pearson correlation found a significant, large positive correlation between the two variables (r = .55, t(30) = 3.57, *p* = .001) and the null hypothesis is therefore rejected.
-
-. . .
-
-You can also use `report()` to get an automatic suggestion for how to report the results (works with a lot of different models!).
+You can even use `report()` to get an automatic suggestion of how to report the results (works with a lot of different models!).
 
 ```{r}
 #| echo: true
 
 library(report)
-report(ct)
+with(gaze, cor.test(x = baseline, 
+                    y = test, 
+                    method = "pearson", 
+                    alternative = "two.sided")) %>% 
+  report()
 ```
 
 ::: notes
@@ -503,19 +575,20 @@ We mainly use this dataset so that you don't have to load another one, but in pr
 The t-tests answers whether there is a change across all participants between the two time points, the correlation answers the question whether those who score high at one time point would also score high at the next (regardless of overall level).
 :::
 
-## Correlations 2 - Notes
+## Correlations: Notes
 
 There are also some **assumptions** that need to be checked:
 
-1.  Is the data *continuous* (interval, ratio, or ordinal)?
+1.  Are the data *continuous*? (for ordinal values: Spearman's rho)
 
-2.  Is there a data point for each participant on both variables?
+2.  Is there a data point for each participant on both variables? (paired values)
 
-3.  Is the data *normally distributed* in both variables?
+3.  Are the residuals *normally distributed*?
 
 4.  Does the relationship between variables appear *linear*?
 
-5.  Does the spread have *homoscedasticity*?
+5.  Does the spread have *homoscedasticity*? (Variance of residuals should be constant across x-axis)\
+Note: This is very hard to judge by eye and is not the same as the confidence band around the regression line to show constant width. In fact, the latter will always be larger near the ends of the regression line due to how it is computed.
 
 Please see [the text book for how to test these assumptions](https://psyteachr.github.io/quant-fun-v2/correlations.html#assumptions-of-the-test).
 
@@ -527,7 +600,7 @@ You should - as always - report the descriptive statistics (summary statistics s
 
 You can also report and visualize multiple correlations at once, using a scatterplot matrix or heatmaps. Check out e.g. the `corrplot` package!
 
-## Activity 3
+# Activity 3
 
 What if we have more than two groups and/or more than one variable? For example, what if we have one variable `treatment` (with the factor levels *treatment 1, treatment 2,* and *control*) and possibly another variable called `timepoint` (*baseline, post-test*)?
 
@@ -541,7 +614,9 @@ If we have only one factor (e.g. treatment with three factor levels), we would d
 If we have more than one factor but only between-subjects variables, we would run an **ANOVA**.\
 If we have at least one within-subjects factor, we would run a **repeated measures (or mixed) ANOVA**.
 
-We will cover ANOVAs even more next week in the context of the **linear model**.
+The names are only there for historical reasons. With the right R packages, we only have to ask ourselves if a variable changes between subjects or within subjects.
+
+Due to their potency and wide-spread use, we will cover ANOVAs even more next week in the context of the **linear model**.
 
 ::: notes
 we will today only look at one-way anovas! Next week we will cover the case when we have more than one IV/predictor!
@@ -554,17 +629,15 @@ For this activity, we will use data from a study about memory of traumatic event
 > reconsolidation - the process during which memories become malleable when recalled - can be blocked using a cognitive task and whether such an approach can reduce these unbidden intrusions.
 
 ::: incremental
--   Load the following packages: `pwr`, `lsr`, `car`, `broom`, `afex`, `emmeans`, `performance` and `tidyverse`.
+1.   Download the data [`James Holmes_Expt 2_DATA.csv`](https://github.com/spressi/biostats/blob/main/Data/James%20Holmes_Expt%202_DATA.csv). This time, put it in a **subfolder** of your project called "Data".
 
--   Load the data: `James Holmes_Expt 2_DATA.csv.`
+2.   Add a column to the dataframe called `subject` that equals the `row_number()`, which will act as a participant ID.
 
--   Add a column to the dataframe called `subject` that equals the `row_number()`, which will act as a participant ID.
+3.   `rename()`: `Days_One_to_Seven_Image_Based_Intrusions_in_Intrusion_Diary` to `intrusions.`
 
--   Select only the columns `subject`, `Condition` and `Days_One_to_Seven_Image_Based_Intrusions_in_Intrusion_Diary.`
+4.   Select only the columns `subject`, `Condition` and `intrusions`.
 
--   `rename()` `Days_One_to_Seven_Image_Based_Intrusions_in_Intrusion_Diary` to `intrusions.`
-
--   Change the variable `Condition` from `numeric` to a `factor`using `as.factor()` (right now R thinks it contains numbers, but those are actually categories!). This is crucial for running an ANOVA!
+5.   Change the variable `Condition` from `numeric` to a `factor` using `as.factor()`
 :::
 
 . . .
@@ -572,24 +645,12 @@ For this activity, we will use data from a study about memory of traumatic event
 ```{r}
 #| echo: true
 
-# install.packages("pwr") # etc.
-
-library(pwr)
-library(lsr)
-library(car)
-library(broom)
-library(afex)
-library(emmeans)
-library(performance)
 library(tidyverse)
 
-dat0 <- read_csv("Data/James Holmes_Expt 2_DATA.csv") # or where ever you saved files
-
-
-dat <- dat0 %>% 
-  mutate(subject = row_number()) %>% 
-  select(subject, Condition, Days_One_to_Seven_Image_Based_Intrusions_in_Intrusion_Diary) %>% 
+dat <- read_csv("Data/James Holmes_Expt 2_DATA.csv") %>% 
+  rownames_to_column("subject") %>% #mutate(subject = 1:n()) %>% 
   rename(intrusions = Days_One_to_Seven_Image_Based_Intrusions_in_Intrusion_Diary) %>% 
+  select(subject, Condition, intrusions) %>% 
   mutate(Condition = as.factor(Condition))
 ```
 
@@ -601,22 +662,24 @@ we will today only look at one-way anovas! Next week we will cover the case when
 
 Create summary/descriptive statistics and visualize the data.
 
-As summary statistics, we want the mean, SD, and SE. We can calculate the SE based on the SD and the number of observations:
-
-```         
-standard error = sd/sqrt(n) =  sd/sqrt(length(some_variable_name)
-```
+As summary statistics, we want the mean, SD, and SE.
 
 ```{r}
 #| echo: true
 
+se = function(x, na.rm = FALSE) { sd(x, na.rm) / sqrt(if(!na.rm) length(x) else sum(!is.na(x))) }
+
 sum_dat <- dat %>%
-  group_by(Condition) %>%
   summarise(mean = mean(intrusions),
             sd = sd(intrusions),
-            se = sd/sqrt(length(intrusions)))
+            se = se(intrusions),
+            .by = Condition)
+print(sum_dat)
 ```
 
+Note: The names of the factor levels are missing. If we wanted to plot the data, we should have added them in the previous step. For brevity, we will not do it this time.
+
+<!--
 . . .
 
 ```{r}
@@ -632,33 +695,33 @@ ggplot(sum_dat, aes(x = Condition, y = mean, fill = Condition)) +
                      name = "Intrusive-Memory Frequency (Mean for the Week)") 
 
 ```
-
+-->
 ::: notes
 don't use a bar chart!
 :::
 
 ## One-Way ANOVA 3
 
-Run the ANOVA:
+1.  Run the ANOVA using `lm()` and formula notation.
 
 ```{r}
 #| echo: true
-
 mod1 <- lm(intrusions ~ Condition, data = dat)
 anova(mod1)
 ```
 
+2.  Using `afex::aov_ez`:
+
 ```{r}
 #| echo: true
-
+library(afex)
 mod <- aov_ez(id = "subject", # the column containing the subject IDs
               dv = "intrusions", # the DV 
               between = "Condition", # the between-subject variable
-              es = "pes", # sets effect size to partial eta-squared
-              type = 3, # this affects how the sum of squares is calculated, set this to 3
-              include_aov = TRUE,
+              es = "pes", # can output an effect size! we want partial eta-squared
+              type = 3, # there are both reasons for 2 and 3 (not covered here)
+              include_aov = TRUE, # needed for some calculations with emmeans but takes longer
               data = dat)
-
 anova(mod)
 
 ```
@@ -667,6 +730,7 @@ anova(mod)
 
 ```{r}
 library(performance)
+library(patchwork)
 
 check_model(mod1) # doesn't work for ezANOVA output!
 
@@ -693,39 +757,31 @@ Both assumptions are not met!
 
 ## Post-Hoc Tests
 
-So now we know that there are differences between the `Condition`s, but we don't know yet which groups differ from each other.
+So now we know that there are differences between the `Condition`s, but we don't know yet which groups differ from each other. We could thus calculate *pairwise comparisons* or *post-hoc t-tests* to compare each condition to the others by by filtering the data (so that only two conditions remain) and running *t*-tests. 
 
-We thus calculate *pairwise comparisons* or *post-hoc t-tests* to compare each condition to the others.
+A more convenient way is to use the `emmeans()` function from the package with the same name. We can also adjust the tests for *multiple comparisons* directly.
 
-We could do so by filtering the data (so that only two conditions remain) and running *t*-tests, but an either way is to use the `emmeans()` function from the emmeans package. We can also adjust the tests for *multiple comparisons* directly.
+We could also define specific *contrasts* to test **a priori** (i.e., based on hypotheses). But we will skip this here.
 
 ```{r}
 #| echo: true
-
-
-mod_contrasts <- emmeans(mod, pairwise ~ Condition, adjust = "bonferroni")
-mod_contrasts
-
-# also works with mod1!
+library(emmeans)
+mod %>% emmeans(pairwise ~ Condition, adjust = "bonferroni") # also works with mod1!
 ```
 
-## Power & Effect Sizes
+:::notes
+Should we adjust for multiple comparisons? It depends. There are good reasons for either.
+:::
 
-You should calculate the **power** before conducting the study, using an estimated effect size based on e.g. prior research:
+## Effect Sizes & Power
 
+The most common effect size estimate for an ANOVA is *partial eta squared* $\eta_p^2$ (as we calculated with `afex::aov_ez` before). We get *one per factor* and it summarizes all pairwise effects within it. \
+We could also calculate Cohen's d for each pairwise comparison within the factor but this is tedious and gets confusing quickly (1 factor with 5 levels = 10 effects; 3 factors with 5 levels each = 30 effects). It's still sad that `emmeans` doesn't output it as one additional column.
+
+<!--
 ```{r}
 #| echo: true
-
-pwr.anova.test(k = 4, f = .4, sig.level = .05, power = .8)
-
-```
-
-. . .
-
-You can calculate **effect sizes** for each pairwise comparison (the overall effect size for the model is given if you use the `aov_ez()` function above. It is the `ges` in the output and represents an effect size called *partial eta²)*.
-
-```{r}
-#| echo: true
+library(lsr)
 
 d_1_2 <- cohensD(intrusions ~ Condition, 
                  data = filter(dat, Condition %in% c(1,2)) %>% 
@@ -740,18 +796,57 @@ d_1_3 <- cohensD(intrusions ~ Condition,
 d_1_2
 d_1_3
 ```
+-->
+. . .
+
+\
+Effect sizes are important to calculate the **statistical power** of your study before conducting it. Use an estimated effect size based on prior research:
+
+```{r}
+#| echo: true
+library(pwr)
+pwr.anova.test(k = 4, f = .4, sig.level = .05, power = .8) #we leave out the n parameter to let it be calculated
+```
+
+
 
 ## Write Up
 
-> There was a significant difference between groups in overall intrusion frequency in daily life, F(3, 68) = 3.79, p = 0.014, ηp2 = .0.14. Planned comparisons demonstrated that relative to the no-task control group, only those in the reactivation-plus-Tetris group, t(68) = 3.04, p = 0.02, d = 1, experienced significantly fewer intrusive memories...
+Once again, the `apa` package helps us here - if we used `afex::aov_ez` instead of `lm` 😅:
 
-\[check out text book for further write up!\]
+```{r}
+#| echo: true
+mod %>% apa::anova_apa()
+```
+
+. . .
+
+```{r}
+#| echo: true
+mod %>% emmeans("Condition") %>% pairs(adjust="none") #follow up t-tests without adjustment
+```
+
+Looking at contrasts including condition 1 (control group): Only condition 2 different. \
+Let's get the associated effect size of this specific contrast:
+
+. . .
+
+```{r}
+#| echo: true
+library(lsr)
+cohensD(intrusions ~ Condition, 
+        data = filter(dat, Condition %in% c(1,2)) %>% droplevels())
+```
+
+. . .
+
+> There was a significant difference between groups in overall intrusion frequency in daily life, $F(3, 68) = 3.79, p = 0.014, \eta_p^2 = .14$. Pairwise comparisons demonstrated that relative to the no-task control group, only those in the reactivation-plus-Tetris group, $t(68) = 3.04, p < 0.01, d = 1.00$, experienced significantly fewer intrusive memories...
 
 # Thanks!
 
 Learning objectives:
 
--   Be able to run the following tests in R, check their assumptions and report the results: Chi², *t*-tests, correlation, and one-way ANOVA
+-   Be able to run the following tests in R, check their assumptions, and report the results: Chi², *t*-tests, correlation, and one-way ANOVA
 
 Next week:
 

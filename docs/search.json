@@ -1293,5 +1293,278 @@
     "title": "08 Modeling Relationships",
     "section": "Robust Correlation 2",
     "text": "Robust Correlation 2\nWe can use a different correlation coefficient, though, which is less sensitive to outliers: Spearman correlation.\nIt is based on ranking (i.e., ordering) the data and using the ranks (instead of the original data) for the correlation.\n\ncor.test(hateCrimes$avg_hatecrimes_per_100k_fbi,\n  hateCrimes$gini_index,\n  method = \"spearman\")\n\n\n    Spearman's rank correlation rho\n\ndata:  hateCrimes$avg_hatecrimes_per_100k_fbi and hateCrimes$gini_index\nS = 20146, p-value = 0.8221\nalternative hypothesis: true rho is not equal to 0\nsample estimates:\n       rho \n0.03261836 \n\n\nThe correlation has now dropped from \\(.42\\) to \\(.03\\) and is no longer significant. The influence of the one outlier has been greatly diminished.\nOf course, a ranked correlation can also obscure true effects that critically depend on the scale of the data. When in doubt, try both and discuss reasons for differences.\n\nWithout outlier: perfectly negative correlation, with outlier: highly positive!"
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#your-first-analysis",
+    "href": "W9_FirstAnalysisR.html#your-first-analysis",
+    "title": "09 Statistical Analyses in R",
+    "section": "Your First Analysis",
+    "text": "Your First Analysis\nToday, we will practice a lot of different analysis, most of which you will encounter a lot: The Chi³-test, the t-test, ANOVAs and correlation.\n\nPlease set up your RStudio as usual:\n\nOpen RStudio and set the working directory to the course folder\nOpen a new R Markdown document, delete the content, and save it with a suitable name\nInstall and load packages you’ll need: car, effectsize, tidyverse\nOR download the prepared W6_Analysis.Rmd file!"
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#activity-1",
+    "href": "W9_FirstAnalysisR.html#activity-1",
+    "title": "09 Statistical Analyses in R",
+    "section": "Activity 1",
+    "text": "Activity 1\nWhich test would you choose if you wanted to test whether a variable is differently distributed between groups?\nLet’s say we have tested 20 mice and want to know whether they pressed the blue, green, or red lever more often than by chance. This is how often the mice pressed each lever: Blue = 5, Green = 4, Red = 11\n\nWe would run a (one-sample) Chi²-test!\nRemember that in a Chi²-test, we would compare observed to expected counts:\n\\[\n\\chi^2 = \\sum\\frac{(Observed - Expected)^2}{Expected}\n\\]"
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#chi²-test-2",
+    "href": "W9_FirstAnalysisR.html#chi²-test-2",
+    "title": "09 Statistical Analyses in R",
+    "section": "Chi²-Test 2",
+    "text": "Chi²-Test 2\nWe can also run a Chi²-test for two variables, such as if we want to know whether the lever presses differ per group.\nLet’s say we have a treatment and a control group and we record the different lever presses:\n\n\n\nGroup\nBlue\nGreen\nRed\nTotals\n\n\n\n\nTreatment\n3\n12\n5\n20\n\n\nControl\n5\n4\n11\n20\n\n\nTotals\n8\n16\n16\n40\n\n\n\nRemember: We use the assumption of independence to calculate the expected values.\n\n\nlever_presses2 = tibble(group=\"treatment\", blue=3, green=12, red=5) %&gt;% \n  bind_rows(tibble(group=\"control\", blue=5, green=4, red=11)) #clearest way to manually input data\n#for long data, you create the frequency table identically to previous slide but with: count(group, levers)\n\nchisq.test(lever_presses2 %&gt;% column_to_rownames(\"group\")) %&gt;% apa::chisq_apa()\n\nchi^2(2) = 6.75, p = .034"
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#assumptions-of-chi²-tests",
+    "href": "W9_FirstAnalysisR.html#assumptions-of-chi²-tests",
+    "title": "09 Statistical Analyses in R",
+    "section": "Assumptions of Chi²-Tests",
+    "text": "Assumptions of Chi²-Tests\n\n\nRandom sample\nCategorical variables, i.e., counts within (combinations of) groups\nExpected cell count: &gt;5 counts per cell\nIndependence: Each observation is independent of the others, e.g. there are no repeated measurements/paired data (within-subjects data are correlated!)\n\n\n\nIn the case of the last analysis, we got a warning because the expected cell sizes were too small. In this case, it is better to use Fisher’s exact test:\n\nfisher.test(lever_presses2 %&gt;% column_to_rownames(\"group\"))\n\n\n    Fisher's Exact Test for Count Data\n\ndata:  lever_presses2 %&gt;% column_to_rownames(\"group\")\np-value = 0.04168\nalternative hypothesis: two.sided"
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#activity-2",
+    "href": "W9_FirstAnalysisR.html#activity-2",
+    "title": "09 Statistical Analyses in R",
+    "section": "Activity 2",
+    "text": "Activity 2\nNow imagine you want to compare reaction times of the lever presses of the two groups of mice. You expect that those in the treatment group respond faster than those in the control group. Which statistical test would you use?\n\nHint: We now have two independent groups and a continuous dependent variable (reaction times).\n\n\nAn (independent samples) t-test!"
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#t-test",
+    "href": "W9_FirstAnalysisR.html#t-test",
+    "title": "09 Statistical Analyses in R",
+    "section": "t-Test",
+    "text": "t-Test\nWe can use the formula notation to run the t-test. This notation usually looks like this: dependent variable ~ independent variable.\nReplace the NULLs:\n\nt.test(NULL ~ NULL,\n       data = NULL,\n       alternative = NULL,\n       paired = NULL) \n\n\n\nt.test(reaction_times ~ group,\n       data = sim_data_t,\n       alternative = \"greater\", #depends on order of groups in data! 1st group &gt; 2nd group\n       paired = FALSE) #in the future, we only specify this IF the data are paired\n\n\n    Welch Two Sample t-test\n\ndata:  reaction_times by group\nt = 1.9841, df = 34.42, p-value = 0.02763\nalternative hypothesis: true difference in means between group control and group treatment is greater than 0\n95 percent confidence interval:\n 10.02639      Inf\nsample estimates:\n  mean in group control mean in group treatment \n               468.0592                400.3289 \n\n\n\n\nAs you can see in the output, R automatically chose to run Welch’s t-test, which does not assume variance homogeneity in contrast to Student’s t-test. For the latter, you can add the function parameter var.equal = FALSE"
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#assumptions-of-t-tests",
+    "href": "W9_FirstAnalysisR.html#assumptions-of-t-tests",
+    "title": "09 Statistical Analyses in R",
+    "section": "Assumptions of t-Tests",
+    "text": "Assumptions of t-Tests\nBefore we run a t-test, we also want to check the assumptions for violations:\n\n\nThe dependent variable is continuous (otherwise: chi²-test)\nThe data are independent (otherwise: paired sample t-test)\nThe variance between the groups is homogeneous (only for Student’s t-test, R uses Welch’s test by default)\nThe residuals are normally distributed for each group (otherwise: wilcox.test)\n\n\n\nOftentimes, the last assumption is misquoted as: “The dependent variable needs to be normally distributed”.\nIn fact, only its sampling distribution needs to be (blue vs. grey distribution in the lecture on sampling [direct link]), which will always be the case for big enough samples due to the central limit theorem."
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#assumptions-of-t-tests-2",
+    "href": "W9_FirstAnalysisR.html#assumptions-of-t-tests-2",
+    "title": "09 Statistical Analyses in R",
+    "section": "Assumptions of t-Tests 2",
+    "text": "Assumptions of t-Tests 2\nTest for normality of residuals: If points fall along the line nicely, assumption is met.\n\n\ntreatment &lt;- sim_data_t %&gt;%\n  filter(group == \"treatment\") %&gt;%\n  mutate(group_resid = \n           reaction_times - mean(reaction_times)) %&gt;%\n  pull(group_resid)\n\n#base R QQ plot\nqqnorm(treatment)\nqqline(treatment)\n\n\n\n\n\n\n\n\ncontrol &lt;- sim_data_t %&gt;%\n  filter(group == \"control\") %&gt;%\n  mutate(group_resid = reaction_times - mean(reaction_times)) %&gt;%\n  pull(group_resid)\n\n#car's version highlighting (and returning) problematic values\ncar::qqPlot(control)\n\n\n\n\n\n[1] 18  4"
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#paired-samples-or-within-subjects-t-test",
+    "href": "W9_FirstAnalysisR.html#paired-samples-or-within-subjects-t-test",
+    "title": "09 Statistical Analyses in R",
+    "section": "Paired Samples (or Within-Subjects) t-Test",
+    "text": "Paired Samples (or Within-Subjects) t-Test\nSometimes you have dependent data: These data are somehow correlated, e.g. they belong to the same subject (that you measured repeatedly).\n\nIn this case, you would use a paired-samples t-test.\n\n\nLet’s run such a t-test with real data. We’ll use the Mehr Song and Spelke 2016 Experiment 1.csv file (note that this is not a good file name!).\nIn this dataset, the authors examined whether infants exposed to certain songs would recognize strangers singing these lullabies as part of their social group. Parents sang certain lullabies to their infants for 1-2 weeks. During the experiment, the infants looked at videos of two strangers: First the strangers were just smiling (baseline phase), then they would sing either the familiar or an unfamiliar lullaby. Finally, the infants again saw the videos of the strangers smiling (test phase). Eye-tracking (duration looked at each stranger) was measured.\n\n\nLoad the file into your Environment. Run the code and explain what happens:\n\ngaze &lt;- read_csv(\"Mehr Song and Spelke 2016 Experiment 1.csv\") %&gt;%\n  filter(exp1 == 1) %&gt;%\n  select(id,\n         Baseline_Proportion_Gaze_to_Singer,\n         Test_Proportion_Gaze_to_Singer) %&gt;%\n  rename(baseline = Baseline_Proportion_Gaze_to_Singer,\n         test = Test_Proportion_Gaze_to_Singer)"
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#assumptions-of-the-paired-samples-t-test-2",
+    "href": "W9_FirstAnalysisR.html#assumptions-of-the-paired-samples-t-test-2",
+    "title": "09 Statistical Analyses in R",
+    "section": "Assumptions of the Paired-Samples t-Test 2",
+    "text": "Assumptions of the Paired-Samples t-Test 2\n\nThe data are continuous.\nAll participants should appear in both conditions/groups.\nThe residuals are normally distributed.\n\n\nA paired-samples t-test actually tests whether the difference between two measurements is significantly different from 0 (= no difference/effect).\nIn our example data, this means that the test values are subtracted from the baseline values, and this difference is used as data.\nTo test the assumption that residuals are normally distributed, we thus calculate the residuals as follow:\n\ngaze_residual &lt;- gaze %&gt;%\n  mutate(diff = baseline - test) %&gt;%\n  mutate(group_resid = diff - mean(diff))\n\nqqPlot(gaze_residual$group_resid)\n\n\n\n\n[1] 22 29\n\nshapiro.test(gaze_residual$group_resid)\n\n\n    Shapiro-Wilk normality test\n\ndata:  gaze_residual$group_resid\nW = 0.97818, p-value = 0.7451"
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#descriptives-visualization",
+    "href": "W9_FirstAnalysisR.html#descriptives-visualization",
+    "title": "09 Statistical Analyses in R",
+    "section": "Descriptives & Visualization",
+    "text": "Descriptives & Visualization\nFor the visualization, we need the data in long format (this is identical for between-subject groups):\n\n\ngaze_tidy &lt;- gaze %&gt;%\n  pivot_longer(names_to = \"phase\", \n               values_to = \"looking_time\", \n               cols = c(baseline, test))\n\n# boxplot\ngaze_tidy %&gt;% \n  ggplot(aes(x=phase, y=looking_time)) +\n  geom_boxplot()\n\n\n\n\n\n\n\nWe can also calculate the means and SDs per phase:\n\n\ngaze_tidy %&gt;% \n  summarise(mean_looking = mean(looking_time),\n            sd_looking = sd(looking_time),\n            n = n(),\n            .by = phase)\n\n\n# A tibble: 2 × 4\n  phase    mean_looking sd_looking     n\n  &lt;chr&gt;           &lt;dbl&gt;      &lt;dbl&gt; &lt;int&gt;\n1 baseline        0.521      0.177    32\n2 test            0.593      0.179    32"
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#paired-samples-t-test-in-r",
+    "href": "W9_FirstAnalysisR.html#paired-samples-t-test-in-r",
+    "title": "09 Statistical Analyses in R",
+    "section": "Paired Samples t-Test in R",
+    "text": "Paired Samples t-Test in R\nAny ideas how you would specify the paired samples t-test in R?\n\n\nt.test(NULL ~ NULL,\n       paired = NULL,\n       data = NULL,\n       alternative = NULL)\n\n\n\n\nt.test(looking_time ~ phase, #this assumes that data are ordered by subject!\n       paired = TRUE,\n       data = gaze_tidy,\n       alternative = \"two.sided\")\n\n\n    Paired t-test\n\ndata:  looking_time by phase\nt = -2.4164, df = 31, p-value = 0.02175\nalternative hypothesis: true mean difference is not equal to 0\n95 percent confidence interval:\n -0.13349698 -0.01129217\nsample estimates:\nmean difference \n    -0.07239458"
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#effect-size-for-the-t-test",
+    "href": "W9_FirstAnalysisR.html#effect-size-for-the-t-test",
+    "title": "09 Statistical Analyses in R",
+    "section": "Effect Size for the t-Test",
+    "text": "Effect Size for the t-Test\nYou can (and should!) of course calculate and report effect sizes for your test statistics to get an impression of how practically relevant the effect is.\nFor the t-tests, you would calculate Cohen’s d (using the function from the effectsize package):\n\neffectsize::cohens_d(looking_time ~ phase, paired=T, data=gaze_tidy)\n\nCohen's d |         95% CI\n--------------------------\n-0.43     | [-0.79, -0.06]\n\n\n\n\nOr just use the apa package and you get everything in one go:\n\nwith(gaze, #the with function allows to call columns as if they were variables (but pipe function doesn't work with it)\n     t.test(baseline, test, paired = TRUE)) %&gt;% \n  apa::t_apa(es_ci=T)\n\nt(31) = -2.42, p = .022, d = -0.43 [-0.79; -0.06]"
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#write-up-of-the-t-test",
+    "href": "W9_FirstAnalysisR.html#write-up-of-the-t-test",
+    "title": "09 Statistical Analyses in R",
+    "section": "Write Up of the t-Test",
+    "text": "Write Up of the t-Test\nWhat do you think you should report in your results section?\n\n\nthe means and SDs per condition (or the mean difference and the SD of the difference between conditions)\nthe test statistic t, incl. degrees of freedom\nthe p-value\nthe effect size\n\n\n\n\nAt test stage (M = .59, SD = .18), infants showed a significantly longer preferential looking time to the singer of the familiar melody than they had shown the same singer at baseline (M = .52, SD = .18), t(31) = 2.42, p = .022, d = .41."
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#correlation",
+    "href": "W9_FirstAnalysisR.html#correlation",
+    "title": "09 Statistical Analyses in R",
+    "section": "Correlation",
+    "text": "Correlation\nIf we have two continuous variables, we can of course also look at their relationship using correlation. In the data you just used, we have two continuous variables, the repeated measures of gaze.\nWith these data, we might be interested in whether there is a relationship between the two measures of gaze, i.e. whether those children who looked at the stranger more at baseline would also be the ones who looked at the stranger more often at the follow-up test.\n\n# cor(x = variable1, y = variable2)\n\nct &lt;- cor.test(x = NULL, \n         y = NULL, \n         method = \"pearson\", \n         alternative = \"two.sided\")\nct\n\n\n\ncor(x = gaze$baseline, y = gaze$test)\n\n[1] 0.5458966\n\nct &lt;- cor.test(x = gaze$baseline, \n         y = gaze$test, \n         method = \"pearson\", \n         alternative = \"two.sided\")\nct\n\n\n    Pearson's product-moment correlation\n\ndata:  gaze$baseline and gaze$test\nt = 3.5686, df = 30, p-value = 0.00123\nalternative hypothesis: true correlation is not equal to 0\n95 percent confidence interval:\n 0.2435655 0.7515352\nsample estimates:\n      cor \n0.5458966 \n\n\n\n\nWrite-Up:\n\nThere appeared to be a positive relationship between gaze at strangers at baseline (M = .52, SD = .18) and at the follow-up test (M = .59, SD = .18), in line with the alternative hypothesis. A Pearson correlation found a significant, large positive correlation between the two variables (r = .55, t(30) = 3.57, p = .001) and the null hypothesis is therefore rejected.\n\n\n\nYou can also use report() to get an automatic suggestion for how to report the results (works with a lot of different models!).\n\nlibrary(report)\nreport(ct)\n\nEffect sizes were labelled following Funder's (2019) recommendations.\n\nThe Pearson's product-moment correlation between gaze$baseline and gaze$test is\npositive, statistically significant, and very large (r = 0.55, 95% CI [0.24,\n0.75], t(30) = 3.57, p = 0.001)\n\n\n\nWe mainly use this dataset so that you don’t have to load another one, but in practice you would either run a t-test or a correlation, not necessarily both!\nThe t-tests answers whether there is a change across all participants between the two time points, the correlation answers the question whether those who score high at one time point would also score high at the next (regardless of overall level)."
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#correlations-2---notes",
+    "href": "W9_FirstAnalysisR.html#correlations-2---notes",
+    "title": "09 Statistical Analyses in R",
+    "section": "Correlations 2 - Notes",
+    "text": "Correlations 2 - Notes\nThere are also some assumptions that need to be checked:\n\nIs the data continuous (interval, ratio, or ordinal)?\nIs there a data point for each participant on both variables?\nIs the data normally distributed in both variables?\nDoes the relationship between variables appear linear?\nDoes the spread have homoscedasticity?\n\nPlease see the text book for how to test these assumptions.\n\nYou should - as always - report the descriptive statistics (summary statistics such as mean and SD).\n\n\nYou can also report and visualize multiple correlations at once, using a scatterplot matrix or heatmaps. Check out e.g. the corrplot package!"
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#activity-3",
+    "href": "W9_FirstAnalysisR.html#activity-3",
+    "title": "09 Statistical Analyses in R",
+    "section": "Activity 3",
+    "text": "Activity 3\nWhat if we have more than two groups and/or more than one variable? For example, what if we have one variable treatment (with the factor levels treatment 1, treatment 2, and control) and possibly another variable called timepoint (baseline, post-test)?\nWhich statistical test could we use?\n\nWe would possibly run an ANOVA!\nIf we have only one factor (e.g. treatment with three factor levels), we would do an one-way ANOVA.\nIf we have more than one factor but only between-subjects variables, we would run an ANOVA.\nIf we have at least one within-subjects factor, we would run a repeated measures (or mixed) ANOVA.\nWe will cover ANOVAs even more next week in the context of the linear model.\n\nwe will today only look at one-way anovas! Next week we will cover the case when we have more than one IV/predictor!"
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#one-way-anova",
+    "href": "W9_FirstAnalysisR.html#one-way-anova",
+    "title": "09 Statistical Analyses in R",
+    "section": "One-Way ANOVA",
+    "text": "One-Way ANOVA\nFor this activity, we will use data from a study about memory of traumatic events (see the textbook for details). In short, the authors of the paper were interested to find out whether:\n\nreconsolidation - the process during which memories become malleable when recalled - can be blocked using a cognitive task and whether such an approach can reduce these unbidden intrusions.\n\n\n\nDownload the data James Holmes_Expt 2_DATA.csv. This time, put it in a subfolder of your project called “Data”.\nAdd a column to the dataframe called subject that equals the row_number(), which will act as a participant ID.\nrename(): Days_One_to_Seven_Image_Based_Intrusions_in_Intrusion_Diary to intrusions.\nSelect only the columns subject, Condition and intrusions.\nChange the variable Condition from numeric to a factor using as.factor()\n\n\n\n\nlibrary(tidyverse)\n\ndat &lt;- read_csv(\"Data/James Holmes_Expt 2_DATA.csv\") %&gt;% \n  rownames_to_column(\"subject\") %&gt;% #mutate(subject = 1:n()) %&gt;% \n  rename(intrusions = Days_One_to_Seven_Image_Based_Intrusions_in_Intrusion_Diary) %&gt;% \n  select(subject, Condition, intrusions) %&gt;% \n  mutate(Condition = as.factor(Condition))\n\n\nwe will today only look at one-way anovas! Next week we will cover the case when we have more than one IV/predictor!"
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#one-way-anova-2",
+    "href": "W9_FirstAnalysisR.html#one-way-anova-2",
+    "title": "09 Statistical Analyses in R",
+    "section": "One-Way ANOVA 2",
+    "text": "One-Way ANOVA 2\nCreate summary/descriptive statistics and visualize the data.\nAs summary statistics, we want the mean, SD, and SE.\n\nse = function(x, na.rm = FALSE) { sd(x, na.rm) / sqrt(if(!na.rm) length(x) else sum(!is.na(x))) }\n\nsum_dat &lt;- dat %&gt;%\n  summarise(mean = mean(intrusions),\n            sd = sd(intrusions),\n            se = se(intrusions),\n            .by = Condition)\nprint(sum_dat)\n\n# A tibble: 4 × 4\n  Condition  mean    sd    se\n  &lt;fct&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;\n1 1          5.11  4.23 0.996\n2 2          1.89  1.75 0.411\n3 3          3.89  2.89 0.681\n4 4          4.83  3.33 0.785\n\n\nNote: The names of the factor levels are missing. If we wanted to plot the data, we should have added them in the previous step. For brevity, we will not do it this time.\n\n\ndon’t use a bar chart!"
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#one-way-anova-3",
+    "href": "W9_FirstAnalysisR.html#one-way-anova-3",
+    "title": "09 Statistical Analyses in R",
+    "section": "One-Way ANOVA 3",
+    "text": "One-Way ANOVA 3\n\nRun the ANOVA using lm() and formula notation.\n\n\nmod1 &lt;- lm(intrusions ~ Condition, data = dat)\nanova(mod1)\n\nAnalysis of Variance Table\n\nResponse: intrusions\n          Df Sum Sq Mean Sq F value  Pr(&gt;F)  \nCondition  3 114.82  38.273  3.7948 0.01409 *\nResiduals 68 685.83  10.086                  \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n\n\nUsing afex::aov_ez:\n\n\nlibrary(afex)\nmod &lt;- aov_ez(id = \"subject\", # the column containing the subject IDs\n              dv = \"intrusions\", # the DV \n              between = \"Condition\", # the between-subject variable\n              es = \"pes\", # can output an effect size! we want partial eta-squared\n              type = 3, # there are both reasons for 2 and 3 (not covered here)\n              include_aov = TRUE, # needed for some calculations with emmeans but takes longer\n              data = dat)\nanova(mod)\n\nAnova Table (Type 3 tests)\n\nResponse: intrusions\n          num Df den Df    MSE      F     ges  Pr(&gt;F)  \nCondition      3     68 10.086 3.7948 0.14341 0.01409 *\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1"
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#checking-the-assumptions",
+    "href": "W9_FirstAnalysisR.html#checking-the-assumptions",
+    "title": "09 Statistical Analyses in R",
+    "section": "Checking the Assumptions",
+    "text": "Checking the Assumptions\n\n\n\n\n\n\n\n\n[1]  3 57\n\n\n\n    Shapiro-Wilk normality test\n\ndata:  mod$aov$residuals\nW = 0.87739, p-value = 4.252e-06\n\n\nWarning: Variances differ between groups (Levene's Test, p = 0.039).\n\n\n\nBoth assumptions are not met!\nBut ANOVAS are quite robust to (minor) deviations…\n(if the assumptions are violated more, you could…\n- run a non-parametric test (Kruskall-Wallis for between-subjects designs of Friedman for repeated measures)\n- transform the data (see Field et al., 2009)\n- use bootstrapping (see Field et al., 2009)"
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#post-hoc-tests",
+    "href": "W9_FirstAnalysisR.html#post-hoc-tests",
+    "title": "09 Statistical Analyses in R",
+    "section": "Post-Hoc Tests",
+    "text": "Post-Hoc Tests\nSo now we know that there are differences between the Conditions, but we don’t know yet which groups differ from each other. We could thus calculate pairwise comparisons or post-hoc t-tests to compare each condition to the others by by filtering the data (so that only two conditions remain) and running t-tests.\nA more convenient way is to use the emmeans() function from the package with the same name. We can also adjust the tests for multiple comparisons directly.\nWe could also define specific contrasts to test a priori (i.e., based on hypotheses). But we will skip this here.\n\nlibrary(emmeans)\nmod %&gt;% emmeans(pairwise ~ Condition, adjust = \"bonferroni\") # also works with mod1!\n\n$emmeans\n Condition emmean    SE df lower.CL upper.CL\n 1           5.11 0.749 68    3.617     6.60\n 2           1.89 0.749 68    0.395     3.38\n 3           3.89 0.749 68    2.395     5.38\n 4           4.83 0.749 68    3.340     6.33\n\nConfidence level used: 0.95 \n\n$contrasts\n contrast                estimate   SE df t.ratio p.value\n Condition1 - Condition2    3.222 1.06 68   3.044  0.0199\n Condition1 - Condition3    1.222 1.06 68   1.155  1.0000\n Condition1 - Condition4    0.278 1.06 68   0.262  1.0000\n Condition2 - Condition3   -2.000 1.06 68  -1.889  0.3787\n Condition2 - Condition4   -2.944 1.06 68  -2.781  0.0420\n Condition3 - Condition4   -0.944 1.06 68  -0.892  1.0000\n\nP value adjustment: bonferroni method for 6 tests \n\n\n\nShould we adjust for multiple comparisons? It depends. There are good reasons for either."
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#power-effect-sizes",
+    "href": "W9_FirstAnalysisR.html#power-effect-sizes",
+    "title": "09 Statistical Analyses in R",
+    "section": "Power & Effect Sizes",
+    "text": "Power & Effect Sizes\nYou should calculate the power before conducting the study, using an estimated effect size based on e.g. prior research:\n\nlibrary(pwr)\n\npwr.anova.test(k = 4, f = .4, sig.level = .05, power = .8)\n\n\n     Balanced one-way analysis of variance power calculation \n\n              k = 4\n              n = 18.04262\n              f = 0.4\n      sig.level = 0.05\n          power = 0.8\n\nNOTE: n is number in each group\n\n\n\nYou can calculate effect sizes for each pairwise comparison (the overall effect size for the model is given if you use the aov_ez() function above. It is the ges in the output and represents an effect size called partial eta²).\n\nlibrary(lsr)\n\nd_1_2 &lt;- cohensD(intrusions ~ Condition, \n                 data = filter(dat, Condition %in% c(1,2)) %&gt;% \n                   droplevels())\n\nd_1_3 &lt;- cohensD(intrusions ~ Condition, \n                 data = filter(dat, Condition %in% c(1,3)) %&gt;%\n                   droplevels()) \n\n# and so forth...\n\nd_1_2\n\n[1] 0.9964172\n\nd_1_3\n\n[1] 0.3376282"
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#write-up",
+    "href": "W9_FirstAnalysisR.html#write-up",
+    "title": "09 Statistical Analyses in R",
+    "section": "Write Up",
+    "text": "Write Up\nOnce again, the apa package helps us here - if we used afex::aov_ez instead of lm 😅:\n\nmod %&gt;% apa::anova_apa()\n\n       Effect                                              \n1 (Intercept) F(1, 68) = 110.29, p &lt; .001, petasq = .62 ***\n2   Condition F(3, 68) =   3.79, p = .014, petasq = .14 *  \n\n\n\n\nmod %&gt;% emmeans(\"Condition\") %&gt;% pairs(adjust=\"none\") #follow up t-tests without adjustment\n\n contrast                estimate   SE df t.ratio p.value\n Condition1 - Condition2    3.222 1.06 68   3.044  0.0033\n Condition1 - Condition3    1.222 1.06 68   1.155  0.2523\n Condition1 - Condition4    0.278 1.06 68   0.262  0.7938\n Condition2 - Condition3   -2.000 1.06 68  -1.889  0.0631\n Condition2 - Condition4   -2.944 1.06 68  -2.781  0.0070\n Condition3 - Condition4   -0.944 1.06 68  -0.892  0.3755\n\n\nLooking at contrasts including condition 1 (control group): Only condition 2 different.\nLet’s get the associated effect size of this specific contrast:\n\n\n\nlibrary(lsr)\ncohensD(intrusions ~ Condition, \n        data = filter(dat, Condition %in% c(1,2)) %&gt;% droplevels())\n\n[1] 0.9964172\n\n\n\n\n\nThere was a significant difference between groups in overall intrusion frequency in daily life, \\(F(3, 68) = 3.79, p = 0.014, \\eta_p^2 = .14\\). Pairwise comparisons demonstrated that relative to the no-task control group, only those in the reactivation-plus-Tetris group, \\(t(68) = 3.04, p &lt; 0.01, d = 1.00\\), experienced significantly fewer intrusive memories…"
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#set-up",
+    "href": "W9_FirstAnalysisR.html#set-up",
+    "title": "09 Statistical Analyses in R",
+    "section": "Set Up",
+    "text": "Set Up\n\nOpen RStudio and load your Biostats R project. Create a new script called DataAnalysis1.R.\nInstall and load new packages you’ll need: car, effectsize, and apa."
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#one-sample-chi²-test",
+    "href": "W9_FirstAnalysisR.html#one-sample-chi²-test",
+    "title": "09 Statistical Analyses in R",
+    "section": "One Sample Chi²-Test",
+    "text": "One Sample Chi²-Test\n\nlibrary(tidyverse) \n\n# Input data into R\nlever_presses &lt;- tibble(levers=c(rep(\"blue\", 5), rep(\"green\", 4), rep(\"red\", 11))) %&gt;% #data in usual format\n  count(levers) #convert to a frequency table\n\n# run Chi² test\nchi2_lever &lt;- chisq.test(lever_presses %&gt;% pivot_wider(names_from=\"levers\", values_from=\"n\")) #wide format needed\n#chi2_lever &lt;- chisq.test(tibble(blue=5, green=4, red=11)) #enter data directly as summary table\n\nchi2_lever %&gt;% apa::chisq_apa() #output results\n\nchi^2(2) = 4.30, p = .116\n\n# add expected count and residuals to data\nlever_presses %&gt;% mutate(expected = chi2_lever$expected, \n                         residuals = chi2_lever$residuals)\n\n# A tibble: 3 × 4\n  levers     n expected residuals\n  &lt;chr&gt;  &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt;\n1 blue       5     6.67    -0.645\n2 green      4     6.67    -1.03 \n3 red       11     6.67     1.68 \n\n\n\nIs sample size not important for significance here? \\[\\chi^2 = \\sum\\frac{(Observed - Expected)^2}{Expected}\\] More observations =&gt; easier to see greater absolute difference between observed and expected values =&gt; gets squared and therefore “outcompetes” denominator (what about expected reductions in sampling error?)"
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#t-test-setup",
+    "href": "W9_FirstAnalysisR.html#t-test-setup",
+    "title": "09 Statistical Analyses in R",
+    "section": "t-test setup",
+    "text": "t-test setup\nTo run a t-Test, let’s first simulate data. What happens here?\n\nset.seed(31415)\nsim_data_t &lt;- tibble(\n  group = rep(c(\"treatment\", \"control\"), each=20),\n  reaction_times = c(rnorm(20, 400, 100), rnorm(20, 450, 100)))"
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#t-test-alternative-function-calls",
+    "href": "W9_FirstAnalysisR.html#t-test-alternative-function-calls",
+    "title": "09 Statistical Analyses in R",
+    "section": "t-Test: alternative function calls",
+    "text": "t-Test: alternative function calls\nYou can also supply two vectors of numerical values for the groups:\n\nt.test(x = sim_data_t %&gt;% filter(group==\"treatment\") %&gt;% pull(reaction_times),\n       y = sim_data_t %&gt;% filter(group==\"control\") %&gt;% pull(reaction_times),\n       alternative = \"less\") #more intuitive now because you can filter for treatment first\n\n\n    Welch Two Sample t-test\n\ndata:  sim_data_t %&gt;% filter(group == \"treatment\") %&gt;% pull(reaction_times) and sim_data_t %&gt;% filter(group == \"control\") %&gt;% pull(reaction_times)\nt = -1.3232, df = 37.735, p-value = 0.09686\nalternative hypothesis: true difference in means is less than 0\n95 percent confidence interval:\n     -Inf 8.368736\nsample estimates:\nmean of x mean of y \n 408.5894  439.0917 \n\n\n\nMore beautiful output with apa package (only for Student’s t-tests):\n\nt.test(x = sim_data_t %&gt;% filter(group==\"treatment\") %&gt;% pull(reaction_times),\n       y = sim_data_t %&gt;% filter(group==\"control\") %&gt;% pull(reaction_times),\n       alternative = \"less\", \n       var.equal = T) %&gt;% \n  apa::t_apa(es_ci=T) #optional: confidence interval around effect size\n\nt(38) = -1.32, p = .097, d = -0.42 [-1.04; 0.21]"
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#t-test-alternatives",
+    "href": "W9_FirstAnalysisR.html#t-test-alternatives",
+    "title": "09 Statistical Analyses in R",
+    "section": "t-Test: alternatives",
+    "text": "t-Test: alternatives\nYou can also supply two vectors of numerical values for the groups:\n\nt.test(x = sim_data_t %&gt;% filter(group==\"treatment\") %&gt;% pull(reaction_times),\n       y = sim_data_t %&gt;% filter(group==\"control\") %&gt;% pull(reaction_times),\n       alternative = \"less\") #more intuitive now because you can filter for treatment first\n\n\n    Welch Two Sample t-test\n\ndata:  sim_data_t %&gt;% filter(group == \"treatment\") %&gt;% pull(reaction_times) and sim_data_t %&gt;% filter(group == \"control\") %&gt;% pull(reaction_times)\nt = -1.9841, df = 34.42, p-value = 0.02763\nalternative hypothesis: true difference in means is less than 0\n95 percent confidence interval:\n      -Inf -10.02639\nsample estimates:\nmean of x mean of y \n 400.3289  468.0592 \n\n\n\nMore useful output with apa package (only for Student’s t-tests):\n\nt.test(x = sim_data_t %&gt;% filter(group==\"treatment\") %&gt;% pull(reaction_times),\n       y = sim_data_t %&gt;% filter(group==\"control\") %&gt;% pull(reaction_times),\n       alternative = \"less\", \n       var.equal = T) %&gt;% \n  apa::t_apa(es_ci=T) #optional: confidence interval around effect size\n\nt(38) = -1.98, p = .027, d = -0.63 [-1.26; 0.01]\n\n\n\n\nFor paired t-tests, you can also work with the wide format of data (advantage: missing values become explicit):\n\nsim_data_t_wide = sim_data_t %&gt;% mutate(subject=rep.int(1:(n()/2), 2)) %&gt;% \n  pivot_wider(names_from=\"group\", values_from=\"reaction_times\")\nt.test(x = sim_data_t_wide %&gt;% pull(treatment),\n       y = sim_data_t_wide %&gt;% pull(control),\n       alternative = \"less\", \n       paired = T) %&gt;% \n  apa::t_apa(es_ci=T) #optional: confidence interval around effect size\n\nt(19) = -1.98, p = .031, d = -0.44 [-0.90; 0.02]"
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#assumptions-of-t-tests-3",
+    "href": "W9_FirstAnalysisR.html#assumptions-of-t-tests-3",
+    "title": "09 Statistical Analyses in R",
+    "section": "Assumptions of t-Tests 3",
+    "text": "Assumptions of t-Tests 3\nAlternatively, we can also run a Shapiro-Wilk test to test for deviations from normality:\n\nshapiro.test(x = treatment)\n\n\n    Shapiro-Wilk normality test\n\ndata:  treatment\nW = 0.91403, p-value = 0.0761\n\nshapiro.test(x = control)\n\n\n    Shapiro-Wilk normality test\n\ndata:  control\nW = 0.96812, p-value = 0.7147\n\n\nIf the test is non-significant, then we can conclude that normality of residuals is not violated.\n\n\nTransform your data to try and normalise the distribution. Not usually recommended these days but some still use it.\nUse a non-parametric test. The non-parametric equivalent of the independent t-test is the Mann-Whitney and the equivalent of the paired-samples t-test is the Wilcoxon signed-ranks test. Though more modern permutation tests are better.\nDo nothing. Delacre, Lakens & Leys, 2017 argue that with a large enough sample (&gt;30), the Welch test is robust to deviations from assumptions. With very large samples normality is even less of an issue, so design studies with large samples."
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#optional-assumptions-of-the-paired-samples-t-test-2",
+    "href": "W9_FirstAnalysisR.html#optional-assumptions-of-the-paired-samples-t-test-2",
+    "title": "09 Statistical Analyses in R",
+    "section": "Optional: Assumptions of the Paired-Samples t-Test 2",
+    "text": "Optional: Assumptions of the Paired-Samples t-Test 2\n\nThe data are continuous.\nAll participants should appear in both conditions/groups.\nThe residuals are normally distributed.\n\n\nA paired-samples t-test actually tests whether the difference between two measurements is significantly different from 0 (= no difference/effect).\nIn our example data, this means that the test values are subtracted from the baseline values, and this difference is used as data.\nTo test the assumption that residuals are normally distributed, we thus calculate the residuals as follow:\n\ngaze_residual &lt;- gaze %&gt;%\n  mutate(diff = baseline - test) %&gt;%\n  mutate(group_resid = diff - mean(diff))\n\nqqPlot(gaze_residual$group_resid)\n\n\n\n\n[1] 22 29\n\nshapiro.test(gaze_residual$group_resid)\n\n\n    Shapiro-Wilk normality test\n\ndata:  gaze_residual$group_resid\nW = 0.97818, p-value = 0.7451"
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#optional-paired-samples-t-test",
+    "href": "W9_FirstAnalysisR.html#optional-paired-samples-t-test",
+    "title": "09 Statistical Analyses in R",
+    "section": "Optional: Paired Samples t-Test",
+    "text": "Optional: Paired Samples t-Test\nSometimes you have dependent data: These data are somehow correlated, e.g. they belong to the same subject (that you measured repeatedly across a within-subject manipulation).\n\nIn this case, you would use a paired-samples t-test.\n\n\nLet’s run such a t-test with real data. We’ll use the Mehr Song and Spelke 2016 Experiment 1.csv file (note that this is not a good file name!).\nIn this dataset, the authors examined whether infants exposed to certain songs would recognize strangers singing these lullabies as part of their social group. Parents sang certain lullabies to their infants for 1-2 weeks. During the experiment, the infants looked at videos of two strangers: First the strangers were just smiling (baseline phase), then they would sing either the familiar or an unfamiliar lullaby. Finally, the infants again saw the videos of the strangers smiling (test phase). Eye-tracking (duration looked at each stranger) was measured.\n\n\nLoad the file into your Environment. Run the code and explain what happens:\n\ngaze &lt;- read_csv(\"Mehr Song and Spelke 2016 Experiment 1.csv\") %&gt;%\n  filter(exp1 == 1) %&gt;%\n  select(id,\n         Baseline_Proportion_Gaze_to_Singer,\n         Test_Proportion_Gaze_to_Singer) %&gt;%\n  rename(baseline = Baseline_Proportion_Gaze_to_Singer,\n         test = Test_Proportion_Gaze_to_Singer)"
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#assumptions-of-the-paired-samples-t-test",
+    "href": "W9_FirstAnalysisR.html#assumptions-of-the-paired-samples-t-test",
+    "title": "09 Statistical Analyses in R",
+    "section": "Assumptions of the Paired-Samples t-Test",
+    "text": "Assumptions of the Paired-Samples t-Test\n\nThe data are continuous.\nAll participants should appear in both conditions/groups.\nThe residuals are normally distributed.\n\n\nA paired-samples t-test actually tests whether the difference between two measurements is significantly different from 0 (= no difference/effect).\nIn our example data, this means that the test values are subtracted from the baseline values, and this difference is used as data.\nTo test the assumption that residuals are normally distributed, we thus calculate the residuals as follow:\n\ngaze_residual &lt;- gaze %&gt;%\n  mutate(diff = baseline - test) %&gt;%\n  mutate(group_resid = diff - mean(diff))\n\nqqPlot(gaze_residual$group_resid)\n\n\n\n\n[1] 22 29\n\nshapiro.test(gaze_residual$group_resid)\n\n\n    Shapiro-Wilk normality test\n\ndata:  gaze_residual$group_resid\nW = 0.97818, p-value = 0.7451"
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#summary-optional-activity",
+    "href": "W9_FirstAnalysisR.html#summary-optional-activity",
+    "title": "09 Statistical Analyses in R",
+    "section": "Summary: Optional Activity",
+    "text": "Summary: Optional Activity\n\n\nMost things are similar between independent and dependent sample t-tests\nMake sure to include paired=T for repeated measures to get correct results\nRecommendation: Use apa::t_apa() with es.ci=T to get (most of) the information you need\nIt is often a good idea to also report means and standard deviations per group (summarise with .by argument)\nPlotting: Unfortunately, (between subjects) confidence intervals are not diagnostic for the significance of dependent samples. Instead, we need the confidence interval around the paired differences (i.e., the within subject changes). Since this is not easy to do and there is little consensus yet, I will just raise awareness here."
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#correlations-2",
+    "href": "W9_FirstAnalysisR.html#correlations-2",
+    "title": "09 Statistical Analyses in R",
+    "section": "Correlations 2",
+    "text": "Correlations 2\nWith these data, we might be interested in whether there is a relationship between the two measures of gaze, i.e., whether those children who looked at the stranger more at baseline would also be the ones who looked at the stranger more often at the follow-up test (here: indicating stability of preferences).\n\nSimilar to the paired t-Test, the continuous variables are also “paired” within subjects. Thus, we can a similar syntax that is easier for a wide format of data (gaze instead of gaze_tidy):\n\ncor.test(x = gaze %&gt;% pull(baseline), \n         y = gaze %&gt;% pull(test), \n         method = \"pearson\", \n         alternative = \"two.sided\")\n\n\n    Pearson's product-moment correlation\n\ndata:  gaze %&gt;% pull(baseline) and gaze %&gt;% pull(test)\nt = 3.5686, df = 30, p-value = 0.00123\nalternative hypothesis: true correlation is not equal to 0\n95 percent confidence interval:\n 0.2435655 0.7515352\nsample estimates:\n      cor \n0.5458966 \n\n\nNote: We don’t have to indicate paired=T because correlations only work for paired values."
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#correlations-write-up",
+    "href": "W9_FirstAnalysisR.html#correlations-write-up",
+    "title": "09 Statistical Analyses in R",
+    "section": "Correlations: Write Up",
+    "text": "Correlations: Write Up\nOnce again, the apa package offers help to summarize the results:\n\ncor.test(x = gaze %&gt;% pull(baseline), \n         y = gaze %&gt;% pull(test), \n         method = \"pearson\", \n         alternative = \"two.sided\") %&gt;% \n  apa::cor_apa(r_ci=T)\n\nr(30) = .55 [.24; .75], p = .001\n\n\n\nYou can even use report() to get an automatic suggestion of how to report the results (works with a lot of different models!).\n\nlibrary(report)\nwith(gaze, cor.test(x = baseline, \n                    y = test, \n                    method = \"pearson\", \n                    alternative = \"two.sided\")) %&gt;% \n  report()\n\nEffect sizes were labelled following Funder's (2019) recommendations.\n\nThe Pearson's product-moment correlation between baseline and test is positive,\nstatistically significant, and very large (r = 0.55, 95% CI [0.24, 0.75], t(30)\n= 3.57, p = 0.001)\n\n\n\nWe mainly use this dataset so that you don’t have to load another one, but in practice you would either run a t-test or a correlation, not necessarily both!\nThe t-tests answers whether there is a change across all participants between the two time points, the correlation answers the question whether those who score high at one time point would also score high at the next (regardless of overall level)."
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#correlation-test",
+    "href": "W9_FirstAnalysisR.html#correlation-test",
+    "title": "09 Statistical Analyses in R",
+    "section": "Correlation Test",
+    "text": "Correlation Test\nWith these data, we might be interested in whether there is a relationship between the two measures of gaze, i.e., whether those children who looked at the stranger more at baseline would also be the ones who looked at the stranger more often at the follow-up test (here: indicating stability of preferences).\n\nSimilar to the paired t-Test, the continuous variables are also “paired” within subjects. Thus, we can a similar syntax that is easier for a wide format of data (gaze instead of gaze_tidy):\n\ncor.test(x = gaze %&gt;% pull(baseline), \n         y = gaze %&gt;% pull(test), \n         method = \"pearson\", \n         alternative = \"two.sided\")\n\n\n    Pearson's product-moment correlation\n\ndata:  gaze %&gt;% pull(baseline) and gaze %&gt;% pull(test)\nt = 3.5686, df = 30, p-value = 0.00123\nalternative hypothesis: true correlation is not equal to 0\n95 percent confidence interval:\n 0.2435655 0.7515352\nsample estimates:\n      cor \n0.5458966 \n\n\nNote: We don’t have to indicate paired=T because correlations only work for paired values."
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#correlations-notes",
+    "href": "W9_FirstAnalysisR.html#correlations-notes",
+    "title": "09 Statistical Analyses in R",
+    "section": "Correlations: Notes",
+    "text": "Correlations: Notes\nThere are also some assumptions that need to be checked:\n\nAre the data continuous? (for ordinal values: Spearman’s rho)\nIs there a data point for each participant on both variables? (paired values)\nAre the residuals normally distributed?\nDoes the relationship between variables appear linear?\nDoes the spread have homoscedasticity? (Variance of residuals should be constant across x-axis)\nNote: This is very hard to judge by eye and is not the same as the confidence band around the regression line to show constant width. In fact, the latter will always be larger near the ends of the regression line due to how it is computed.\n\nPlease see the text book for how to test these assumptions.\n\nYou should - as always - report the descriptive statistics (summary statistics such as mean and SD).\n\n\nYou can also report and visualize multiple correlations at once, using a scatterplot matrix or heatmaps. Check out e.g. the corrplot package!"
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#effect-sizes-power",
+    "href": "W9_FirstAnalysisR.html#effect-sizes-power",
+    "title": "09 Statistical Analyses in R",
+    "section": "Effect Sizes & Power",
+    "text": "Effect Sizes & Power\nThe most common effect size estimate for an ANOVA is partial eta squared \\(\\eta_p^2\\) (as we calculated with afex::aov_ez before). We get one per factor and it summarizes all pairwise effects within it.\nWe could also calculate Cohen’s d for each pairwise comparison within the factor but this is tedious and gets confusing quickly (1 factor with 5 levels = 10 effects; 3 factors with 5 levels each = 30 effects). It’s still sad that emmeans doesn’t output it as one additional column.\n\n\n\nEffect sizes are important to calculate the statistical power of your study before conducting it. Use an estimated effect size based on prior research:\n\nlibrary(pwr)\npwr.anova.test(k = 4, f = .4, sig.level = .05, power = .8) #we leave out the n parameter to let it be calculated\n\n\n     Balanced one-way analysis of variance power calculation \n\n              k = 4\n              n = 18.04262\n              f = 0.4\n      sig.level = 0.05\n          power = 0.8\n\nNOTE: n is number in each group"
   }
 ]
