@@ -171,7 +171,8 @@ ggplot(sim_data_t, aes(x=group, y=reaction_times)) +
 
 ## *t*-Test
 
-We can use the *formula* notation to run the *t*-test. This notation usually looks like this: `dependent variable ~ independent variable.`
+We can use the *formula* notation to run the *t*-test. This notation usually looks like this: \
+`dependent variable ~ independent variable.`
 
 Replace the `NULL`s:
 
@@ -194,13 +195,24 @@ t.test(NULL ~ NULL,
 
 t.test(reaction_times ~ group,
        data = sim_data_t,
-       alternative = "greater", #depends on order of groups in data! 1st group > 2nd group
+       alternative = "greater", #depends on ALPHABETICAL order of groups in data!
        paired = FALSE) #in the future, we only specify this IF the data are paired
 ```
 
 . . .
 
-As you can see in the output, R automatically chose to run Welch's *t*-test, which does not assume **variance homogeneity** in contrast to Student's *t*-test. For the latter, you can add the function parameter `var.equal = FALSE`
+As you can see in the output, R automatically chose to run Welch's *t*-test, which does not assume **variance homogeneity** in contrast to Student's *t*-test. For the latter, you can add the function parameter `var.equal = TRUE`
+
+:::notes
+When changing the name "treatment" to "a", the results change:
+```{r}
+#| echo: true
+t.test(reaction_times ~ group,
+       data = sim_data_t %>% mutate(group = ifelse(group=="treatment", "a", group)),
+       alternative = "greater", #depends on order of groups in data! 1st group > 2nd group
+       paired = FALSE, var.equal=T) %>% apa::t_apa()
+```
+:::
 
 ## *t*-Test: alternatives
 
@@ -263,7 +275,7 @@ In fact, only its *sampling distribution* needs to be (blue vs. grey distributio
 
 ## Assumptions of *t*-Tests 2
 
-**Test for normality of *residuals***: If points fall along the line nicely, assumption is met.
+**Test for normality of *residuals*** (for both groups): If points fall along the line nicely, assumption is met.
 
 ```{r}
 #| echo: true
@@ -729,6 +741,7 @@ anova(mod)
 ## Checking the Assumptions
 
 ```{r}
+#| echo: true
 library(performance)
 library(patchwork)
 
@@ -743,8 +756,6 @@ shapiro.test(mod$aov$residuals)
 # check homogeneity of variance
 test_levene(mod)
 ```
-
-. . .
 
 Both assumptions are not met!
 
