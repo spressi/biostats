@@ -1566,5 +1566,257 @@
     "title": "09 Statistical Analyses in R",
     "section": "Effect Sizes & Power",
     "text": "Effect Sizes & Power\nThe most common effect size estimate for an ANOVA is partial eta squared \\(\\eta_p^2\\) (as we calculated with afex::aov_ez before). We get one per factor and it summarizes all pairwise effects within it.\nWe could also calculate Cohen’s d for each pairwise comparison within the factor but this is tedious and gets confusing quickly (1 factor with 5 levels = 10 effects; 3 factors with 5 levels each = 30 effects). It’s still sad that emmeans doesn’t output it as one additional column.\n\n\n\nEffect sizes are important to calculate the statistical power of your study before conducting it. Use an estimated effect size based on prior research:\n\nlibrary(pwr)\npwr.anova.test(k = 4, f = .4, sig.level = .05, power = .8) #we leave out the n parameter to let it be calculated\n\n\n     Balanced one-way analysis of variance power calculation \n\n              k = 4\n              n = 18.04262\n              f = 0.4\n      sig.level = 0.05\n          power = 0.8\n\nNOTE: n is number in each group"
+  },
+  {
+    "objectID": "W10_GLM.html#definitions",
+    "href": "W10_GLM.html#definitions",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Definitions",
+    "text": "Definitions\nDependent variable (DV): The outcome variable that the model aims to explain (\\(Y\\)).\nIndependent variable (IV): The variable(s) that we use to explain the DV (\\(X\\)).\nLinear model: The model for the DV is composed of a linear combination of IVs (that are multiplied by different weights!)\n\nThe weights are the parameters \\(\\beta\\) and determine the relative contribution of each IV. (This is what the model estimates! The weights thus give us the important information we’re usually interested in: How strong are IV and DV related.)\nThere may also be several DVs (“multivariate statistics”), but usually that’s not the case except for specific biopsychological methods (e.g., fMRI). Thus, we will focus on those cases with one DV!"
+  },
+  {
+    "objectID": "W10_GLM.html#example",
+    "href": "W10_GLM.html#example",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Example",
+    "text": "Example\n\n\nLet’s use some simulated data:\n\n\n\n\n\n\nWe can calculate the correlation between the two variables:\n\n\n\n    Pearson's product-moment correlation\n\ndata:  df$grade and df$studyTime\nt = 2.0134, df = 6, p-value = 0.09073\nalternative hypothesis: true correlation is not equal to 0\n95 percent confidence interval:\n -0.1261283  0.9255245\nsample estimates:\n      cor \n0.6349813 \n\n\nr(6) = .63 [-.13; .93], p = .091\n\n\nThe correlation is quite high (.63), but the CI is also pretty wide.\n\n\n\nFundamental activities of statistics:\n\nDescribe: How strong is the relationship between grade and study time?\nDecide: Is there a statistically significant relationship between grade and study time?\nPredict: Given a particular amount of study time, what grade do we expect?\n\n\nrelationship study time and grade"
+  },
+  {
+    "objectID": "W10_GLM.html#linear-regression",
+    "href": "W10_GLM.html#linear-regression",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Linear Regression",
+    "text": "Linear Regression\nUse the GLM to…\n\n\ndescribe the relation between two variables (similar to correlation)\npredict DV for new values of IV (new observations)\nadd multiple IVs!\n\n\n\n\n\nSimple GLM (here: equivalent to linear regression):\n\\[\ny = \\beta_0+ x * \\beta_x + \\epsilon\n\\]\n\\(\\beta_0\\) = intercept: the overall offset of the line when \\(x=0\\) (this cannot always be interpreted)\n\\(\\beta_x\\) = slope: how much do we expect \\(y\\) to change with each change in \\(x\\)?\n\\(y\\) = DV\n\\(x\\) = IV or predictor\n\\(\\epsilon\\) = error term* or resudials: whatever variance is left once the model is fit (Think of the model as the blue line and the residuals are the vertical deviations of the data points from the line)\n(If we refer to predicted \\(y\\)-values, after we have estimated the model, we can drop the error term: \\(\\hat{y} = \\hat{\\beta_0} + x * \\hat{\\beta_x}\\).)"
+  },
+  {
+    "objectID": "W10_GLM.html#the-relation-between-correlation-and-regression",
+    "href": "W10_GLM.html#the-relation-between-correlation-and-regression",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "The Relation Between Correlation and Regression",
+    "text": "The Relation Between Correlation and Regression\nThere is a close relation and we can convert \\(r\\) to \\(\\hat{\\beta_x}\\).\n\\(\\hat{r} = \\frac{covariance_{xy}}{s_x * s_y}\\)\n\\(\\hat{\\beta_x} = \\frac{covariance_{xy}}{s_x*s_x}\\)\n\\(covariance_{xy} = \\hat{r} * s_x * s_y\\)\n\\(\\hat{\\beta_x} = \\frac{\\hat{r} * s_x * s_y}{s_x * s_x} = r * \\frac{s_y}{s_x}\\)\n--&gt; Regression slope = correlation multiplied by ratio of SDs (if SDs are equal, \\(r\\) = \\(\\hat{\\beta}\\) )\n\nEstimation of GLM:\nlinear algebra (R will do that for us!) –&gt; Appendix book"
+  },
+  {
+    "objectID": "W10_GLM.html#standard-errors-for-regression-models",
+    "href": "W10_GLM.html#standard-errors-for-regression-models",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Standard Errors for Regression Models",
+    "text": "Standard Errors for Regression Models\nWe usually want to make inferences about the regression parameter estimates. For this we need an estimate of their variability.\nWe first need an estimate of how much variability is not explained by the model: the residual variance (or error variance):\nCompute residuals:\n\\[\nresidual = y - \\hat{y} = y - (x*\\hat{\\beta_x} + \\hat{\\beta_0})\n\\]\nCompute Sum of Squared Errors (remember from ANOVA?):\n\\[\nSS_{error} = \\sum_{i=1}^n{(y_i - \\hat{y_i})^2} = \\sum_{i=1}^n{residuals^2}\n\\]\nCompute Mean Squared Error:\n\\[\nMS_{error} = \\frac{SS_{error}}{df} = \\frac{\\sum_{i=1}^n{(y_i - \\hat{y_i})^2} }{N - p}\n\\]\nwhere the \\(df\\) are the number of observations \\(N\\) - the number of estimated parameter \\(p\\) (in this case 2: \\(\\hat{\\beta_0}\\) and \\(\\hat{\\beta_x}\\)).\nFinally, we can calculate the standard error for the full model:\n\\[\nSE_{model} = \\sqrt{MS_{error}}\n\\]\nWe can also calculate the SE for specific regression parameter estimates by rescaling the \\(SE_{model}\\):\n\\[\nSE_{\\hat{\\beta_x}} = \\frac{SE_{model}}{\\sqrt{\\sum{(x_i - \\bar{x})^2}}}\n\\]\n\nrescaling SE: by square root of the SS of the X variable"
+  },
+  {
+    "objectID": "W10_GLM.html#statistical-tests-for-regression-parameters",
+    "href": "W10_GLM.html#statistical-tests-for-regression-parameters",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Statistical Tests for Regression Parameters",
+    "text": "Statistical Tests for Regression Parameters\nWith the parameter estimates and their standard errors, we can compute \\(t\\)-statistics, which represent the likelihood of the observed estimate vs. the expected value under \\(H_0\\) (usually 0, no effect).\n\\[\n\\begin{array}{c}\nt_{N - p} = \\frac{\\hat{\\beta} - \\beta_{expected}}{SE_{\\hat{\\beta}}}\\\\\nt_{N - p} = \\frac{\\hat{\\beta} - 0}{SE_{\\hat{\\beta}}}\\\\\nt_{N - p} = \\frac{\\hat{\\beta} }{SE_{\\hat{\\beta}}}\n\\end{array}\n\\]"
+  },
+  {
+    "objectID": "W10_GLM.html#quantifying-goodness-of-fit-of-the-model",
+    "href": "W10_GLM.html#quantifying-goodness-of-fit-of-the-model",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Quantifying Goodness of Fit of the Model",
+    "text": "Quantifying Goodness of Fit of the Model\nOften, it is useful to check how good the (total) model we estimated fits the data.\n\nWe can do that easily by asking how much of the variability in the data is accounted for by the model?\n\n\nIf we only have one IV (\\(x\\)), then we can simply square the correlation coefficient:\n\\[\nR^2 = r^2\n\\]\nIn study time example, \\(R^2\\) = 0.63² = 0.4 –&gt; we accounted for 40% of the overall variance in grades!\n\n\nMore generally, we can calculate \\(R^2\\) with the Sum of Squared Variances:\n\\[\nR^2 = \\frac{SS_{model}}{SS_{total}} = 1-\\frac{SS_{error}}{SS_{total}}\n\\]\n\n\nWith a sample of sufficient size, it is possible to get highly significant values that still explain very little of the total variance (i.e., little practical significance despite statistical significance)\n\n\\(R^2\\) is the name of the Goodness of Fit stat!\nA small R² tells us that even though a model might be significant, it may only explain a small amount of information in the DV"
+  },
+  {
+    "objectID": "W10_GLM.html#fitting-more-complex-models",
+    "href": "W10_GLM.html#fitting-more-complex-models",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Fitting More Complex Models",
+    "text": "Fitting More Complex Models\nOften we want to know the effects of multiple variables (IVs) on some outcome.\nExample:\nSome students have taken a very similar class before, so there might not only be the effect of studyTime on grades, but also of having taken a priorClass.\n\n\n\nWe can built a model that takes both into account by simply adding the “weight” and the IV (priorClass) to the model:\n\\(\\hat{y} = \\hat{\\beta_1}*studyTime + \\hat{\\beta_2}*priorClass + \\hat{\\beta_0}\\)\n\n\nTo model priorClass, i.e. whether each individual has taken a previous class or not, we use dummy coding (0=no, 1=yes).\nThis means, for those who have not taken a class, the whole part of the equation (\\(\\hat{\\beta_2} * priorClass\\)) will be zero - we will add it for the others.\n\\(\\hat{\\beta_2}\\) is thus the difference in means between the two groups!\n\\(\\hat{\\beta_1}\\) is the regression slope of studyTime across data points/regardless of whether someone has taken a class before.\n\n\n\nIf we plot the data, we can see that both IVs seem to have an effect on grades:\n\n\n\n\n\n\n\n\nHow can we tell from the plot that both IVs might have an effect?"
+  },
+  {
+    "objectID": "W10_GLM.html#interactions-between-variables",
+    "href": "W10_GLM.html#interactions-between-variables",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Interactions Between Variables",
+    "text": "Interactions Between Variables\nWe previously assumed that the effect of studyTime on grade was the same for both groups - but sometimes we expect that this regression slope differs per group!\nE.g., due to prior knowledge from another class, it may be easier to profit from studying the new materials (i.e., steeper slope). Or it may be harder due to diminishing marginal returns (i.e., flatter slope).\n\n\nThis is what we call an interaction: The effect of one variable depends on the value of another variable.\nThus, priorClass can have a main effect on grade (i.e., independent of studyTime): “I already know more, so I don’t need to study”.\nBut it can also interact with studyTime: “Due to my prior knowledge, I can study more efficiently.”"
+  },
+  {
+    "objectID": "W10_GLM.html#interactions-2",
+    "href": "W10_GLM.html#interactions-2",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Interactions 2",
+    "text": "Interactions 2\nWhat if we find research suggesting that anxious people react differently to caffeine than non-anxious people?\nLet’s include anxiety in the model:\n\n\n\n# compute linear regression adding anxiety to model\nlmResultCafAnx &lt;- lm(speaking ~ caffeine + anxiety, data = df)\nsummary(lmResultCafAnx)\n\n\nCall:\nlm(formula = speaking ~ caffeine + anxiety, data = df)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-32.968  -9.743   1.351  10.530  25.361 \n\nCoefficients:\n                  Estimate Std. Error t value Pr(&gt;|t|)\n(Intercept)       -12.5812     9.1967  -1.368    0.189\ncaffeine            0.1313     0.1446   0.908    0.377\nanxietynotAnxious  14.2328     8.2324   1.729    0.102\n\nResidual standard error: 18.21 on 17 degrees of freedom\nMultiple R-squared:  0.2041,    Adjusted R-squared:  0.1105 \nF-statistic:  2.18 on 2 and 17 DF,  p-value: 0.1436\n\n\n\n\n\n\n\n\n\n\n\nIt looks like the effect of caffeine is indeed different for the two anxiety groups: Increasing for non-anxious people and decreasing for anxious ones.\nHowever, the model is not significant!\n\n\nThis is due to the fact that we only look at additive effects (main effects) with this model. Overall, neither caffeine nor anxiety predicts grades.\nIn other words: The model tries to fit the same slope for both groups, which is a flat line.\n\nexplain additive effects: flat line for average caffeine effect, no difference for means of anxiety groups"
+  },
+  {
+    "objectID": "W10_GLM.html#interactions-3",
+    "href": "W10_GLM.html#interactions-3",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Interactions 3",
+    "text": "Interactions 3\nTo allow for different slopes for each group (i.e. for the effect of caffeine to vary between the anxiety groups), we have to model the interaction as well.\nThe interaction is simply the product of the two variables:\n\n\n\n# compute linear regression including caffeine X anxiety interaction\nlmResultInteraction &lt;- lm(\n  speaking ~ caffeine + anxiety + caffeine:anxiety,\n  # speaking ~ caffeine * anxiety,  # same!\n  data = df\n)\nsummary(lmResultInteraction)\n\n\nCall:\nlm(formula = speaking ~ caffeine + anxiety + caffeine:anxiety, \n    data = df)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-11.385  -7.103  -0.444   6.171  13.458 \n\nCoefficients:\n                            Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)                 17.43085    5.43012   3.210 0.005461 ** \ncaffeine                    -0.47416    0.09664  -4.906 0.000158 ***\nanxietynotAnxious          -43.44873    7.79141  -5.576 4.17e-05 ***\ncaffeine:anxietynotAnxious   1.08395    0.12931   8.382 3.01e-07 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 8.085 on 16 degrees of freedom\nMultiple R-squared:  0.8524,    Adjusted R-squared:  0.8247 \nF-statistic:  30.8 on 3 and 16 DF,  p-value: 7.014e-07\n\n\n\n\n\n\n\n\n\n\n\nWe now see that there are significant main effects for both caffeine and anxiety, as well as the significant interaction between both variables. (We have to be careful of interpreting the main effects when an interaction is also significant!)\n\n\nThe interpretation of the coefficients when interactions are included is not as straight forward!\n\n\nIf you want to report the “typical” ANOVA table with main effects and the general interaction:\n\nanova(lmResultInteraction)\n\nAnalysis of Variance Table\n\nResponse: speaking\n                 Df Sum Sq Mean Sq F value   Pr(&gt;F)    \ncaffeine          1  454.8   454.8  6.9578 0.017911 *  \nanxiety           1  991.5   991.5 15.1678 0.001288 ** \ncaffeine:anxiety  1 4593.4  4593.4 70.2662 3.01e-07 ***\nResiduals        16 1045.9    65.4                     \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n\n\ninterpretation coefficients:\nintercept: intercept of anxious group!\nintercept not anxious: difference intercept anxiousnotanxious\nslope anxious: only for the anxious group!\nslope not anxious: diff in slopes\nno main effects!!!"
+  },
+  {
+    "objectID": "W10_GLM.html#model-comparison",
+    "href": "W10_GLM.html#model-comparison",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Model Comparison",
+    "text": "Model Comparison\nSometimes, we want to compare two (nested!) models to see which one fits the data better.\nWe can do so by using the anova()* function in R:\n\nanova(lmResultCafAnx, lmResultInteraction)\n\nAnalysis of Variance Table\n\nModel 1: speaking ~ caffeine + anxiety\nModel 2: speaking ~ caffeine + anxiety + caffeine:anxiety\n  Res.Df    RSS Df Sum of Sq      F   Pr(&gt;F)    \n1     17 5639.3                                 \n2     16 1045.9  1    4593.4 70.266 3.01e-07 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n\nThis shows that Model 2, incl. the interaction, is to be preferred.\n\nNote: We can only meaningfully use this method with so-called nested models, which means that the simpler (reduced) model only contains variables also included in the more complex (full) model.\n\n\nWald compares the ratio of squared errors to an F-distribution (sound familiar from ANOVA?), while likelihood ratio compares the ratio of likelihoods to a χ2 distribution\n\n\n\n*Yes, it is kind of an ANOVA as well, in that (a ratio of) squared errors is compared to an \\(F\\)-distribution…"
+  },
+  {
+    "objectID": "W10_GLM.html#criticizing-our-model-and-checking-assumptions",
+    "href": "W10_GLM.html#criticizing-our-model-and-checking-assumptions",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Criticizing Our Model and Checking Assumptions",
+    "text": "Criticizing Our Model and Checking Assumptions\n“Garbage in, garbage out” - we have to make sure our model is properly specified!\n\nProperly specified = having included the appropriate IVs.\n\n\nThe model also needs to satisfy the assumptions of the statistical method (= GLM).\nOne important assumption of the GLM is that the residuals are normally distributed.\nThis assumption can be violated by a not properly specified model or because the data are inappropriate for the statistical model.\n\n\nWe can use a Q-Q plot, which represents the quantiles of two distributions/variables (e.g., the data and a normal distribution of the same data) against each other.\nIf the data points diverge substantially from the line (especially in the extremes), we can conclude that the residuals are not normally distributed."
+  },
+  {
+    "objectID": "W10_GLM.html#model-diagnostics-2",
+    "href": "W10_GLM.html#model-diagnostics-2",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Model Diagnostics 2",
+    "text": "Model Diagnostics 2\nTo check the assumptions, we can easily run a function for model diagnostics (incl. Q-Q plots) in R. The function, check_model(), is included in the performance package by the easystats team (who make great packages for everything related to statistical modeling!)\n\n# install.packages(\"easystats)\nlibrary(performance)\n\ncheck_model(lmResultInteraction)\n\n\n\nWe’re not going into detail about all these diagnostics (and hard to see!), but it is always a good idea to run diagnostics/check assumptions for your models!"
+  },
+  {
+    "objectID": "W10_GLM.html#what-does-predict-really-mean",
+    "href": "W10_GLM.html#what-does-predict-really-mean",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "What Does “Predict” Really Mean?",
+    "text": "What Does “Predict” Really Mean?\nWe neither mean “predicting before seeing the data/in the future” nor mean to imply causality!\n\nIt simply refers to fitting a model to the data: We estimate (or predict) values for the DV (\\(\\hat{y}\\)) and the IVs are often referred to as predictors.\n\nRelated to: predicting future values"
+  },
+  {
+    "objectID": "W10_GLM.html#multivariate-data-an-example",
+    "href": "W10_GLM.html#multivariate-data-an-example",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Multivariate Data: An Example",
+    "text": "Multivariate Data: An Example\nHow do different aspects of psychological function (self-control etc.) relate to one another?\n10h battery of cognitive tests and surveys, N = 522, 9 measures of interest!\nMeasures:\n\nResponse inhibition: ability to quickly stop an action (measured with the stop-signal task, measure is called stop-signal reaction time (SSRT) - we have 4 different versions of this measure).\nImpulsivity: tendency to make decisions on impulse, without regard of potential consequences (UPPS-P survey, assesses 5 facets of impulsivity)."
+  },
+  {
+    "objectID": "W10_GLM.html#visualizing-multivariate-data",
+    "href": "W10_GLM.html#visualizing-multivariate-data",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Visualizing Multivariate Data",
+    "text": "Visualizing Multivariate Data\nHard (impossible?) for us to visualize more than three dimensions/variables.\n\nScatterplot of matrices for the nine variables in the self-control dataset. The diagonal elements in the matrix show the histogram for each of the individual variables. The lower left panels show scatterplots of the relationship between each pair of variables, and the upper right panel shows the correlation coefficient for each pair of variables.\nWhat do you see?\neach row/col –&gt; single variable\ndiagonal: dist each var\nlower triangle: scatterplot each pair, regression line –&gt; relationship\nupper: correlation coefficient"
+  },
+  {
+    "objectID": "W10_GLM.html#heatmap",
+    "href": "W10_GLM.html#heatmap",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Heatmap",
+    "text": "Heatmap\nVisualize correlations:\n\nHeatmap of the correlation matrix for the nine self-control variables. The brighter yellow areas in the top left and bottom right highlight the higher correlations within the two subsets of variables.We can see clear clusters: SSRT and UPPS have greater intercorrelations than correlations with the other measure."
+  },
+  {
+    "objectID": "W10_GLM.html#heatmap-2",
+    "href": "W10_GLM.html#heatmap-2",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Heatmap 2",
+    "text": "Heatmap 2\nHeatmaps are especially helpful if we have a large number of variables, such as in neuroimaging! Below you can see the functional connectivity of &gt;300 brain regions:\n\nHeatmap of correlation coefficients of brain activity between 316 regions of the left hemisphere of a single individual. Yellow: strong positive correlations, blue: strong negative correlations\nlarge blocks of pos corr: major connected networks in the brain"
+  },
+  {
+    "objectID": "W10_GLM.html#clustering",
+    "href": "W10_GLM.html#clustering",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Clustering",
+    "text": "Clustering\nClustering: Identifying groups of related observations or variables within a dataset, based on the similarity of the values of the observations.\n\nSimilarity: Distance between values.\nEuclidean Distance: Length of the line that connects two data points:\n\n\n\n\n\n\\[\nd(x,y) = \\sqrt{(x_1 - x_2)^2 + (y_1 - y_2)^2}\n\\]\n\n\nEuclidean Distance is sensitive to variability in both variables –&gt; scale data before! (e.g., z-transformation using R’s scale function)\n\nClustering: finding set of groups that have the lowest distance between their members.\nEuclidean Dist: Pythagorean theorem\n–&gt; can be extended to more than two dimensions!\nScale: calculate z-score, standardizing\nExample: Relation between height and weight =&gt; it shouldn’t make a difference if we rescale the data from m to cm or from kg to pounds."
+  },
+  {
+    "objectID": "W10_GLM.html#k-means-clustering",
+    "href": "W10_GLM.html#k-means-clustering",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "K-Means Clustering",
+    "text": "K-Means Clustering\nK-means clustering: Identifies a set of cluster centers & then assigns each data point to the cluster whose center is the closest (Euclidean Distance!).\n\n\nDecide on value for K, the number of clusters to be found (e.g. based on previous knowledge/expectations).\nCome up with k locations for the centers - or centroids - of the clusters (e.g. choose data points at random to start with).\nCompute Euclidean distance of each data point to each centroid.\nAssign each point to a cluster, based on closest distance to centroid.\nRecompute centroid by averaging the location of all points assigned to that cluster.\nRepeat steps 1-5 until a stable solution is found (iterative process)."
+  },
+  {
+    "objectID": "W10_GLM.html#example-latitudelongitude-data",
+    "href": "W10_GLM.html#example-latitudelongitude-data",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Example: Latitude/Longitude Data",
+    "text": "Example: Latitude/Longitude Data\n\n\nHere we can see the starting points (black squares) and end points (big colored dots) for each cluster, as well as the final cluster assignment of each data point (color):\n\n\n\n\n\n\nWe can see that there is a reasonable overlap between clusters and continents.\nWe can further investigate this overlap with the confusion matrix, which compares membership of each cluster with the actual continents for each country:\n\n\n      \nlabels AF AS EU NA OC SA\n     1  5  1 36  0  0  0\n     2  3 24  0  0  0  0\n     3  0  0  0  0  0  7\n     4  0  0  0 15  0  4\n     5  0 10  0  0  6  0\n     6 35  0  0  0  0  0\n\n\nNote: usually we don’t know the ground truth (i.e. which continent) in unsupervised learning!\n=&gt; confusion matrix cannot be estimated\nNote 2: Every time we run the iterative process, we will get a different result if we use random starting points. Make sure the result is robust, e.g. by running the Clustering algorithm several times.)\n\n\n\n\nCluster 1 contains all European countries, as well as countries from northern Africa and Asia.\n\n\n\nCluster 2 contains contains Asian countries as well as several African countries.\nCluster 3 contains countries from the southern part of South America.\nCluster 4 contains all of the North American countries as well as northern South American countries.\nCluster 5 contains Oceania as well as several Asian countries\nCluster 6 contains all of the remaining African countries."
+  },
+  {
+    "objectID": "W10_GLM.html#hierarchical-clustering",
+    "href": "W10_GLM.html#hierarchical-clustering",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Hierarchical Clustering",
+    "text": "Hierarchical Clustering\nHierarchical Clustering: Also uses distances to determine clusters but also visualizes relationships in dendrograms.\n\n\nThe most common procedure is agglomerative clustering:\n\n\nEvery data point is treated as its own cluster.\nTwo clusters with the least distance (e.g. average linkage) between them are combined.\nRepeat 1 & 2 until only one cluster is left.\nVisualize, decide on a cutoff for the amount of reasonable clusters.\n\n\n\n\n\n\n\n\nColored lines: different cutoffs.\n\n\n\nThere seems to be a high degree of similarity within each variable set (SSRT and UPPS) compared to between sets.\n=&gt; The first split separates UPPS vs. SSRT perfectly.\nWithin UPPS, sensation seeking stands out as the most different to the rest.\n\naverage linkage: average of all distances between each data point in each of two clusters.\nCan read diagram from left to right: One supercluster that is split up more and more. Or right to left: Individual points that get joint together into bigger and bigger clusters.\ncolored lines: different cutoff values"
+  },
+  {
+    "objectID": "W10_GLM.html#dimensionality-reduction",
+    "href": "W10_GLM.html#dimensionality-reduction",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Dimensionality Reduction",
+    "text": "Dimensionality Reduction\nWe often measure different variables that are highly similar to each other, e.g. because they are supposed to measure the same construct.\nAlthough we might measure a particular number of variables (= dimensionality of data set), there may be fewer independent sources of underlying information!\nDimensionality reduction: Reduce the number of variables by creating composite variables that reflect the underlying information."
+  },
+  {
+    "objectID": "W10_GLM.html#principal-component-analysis-pca",
+    "href": "W10_GLM.html#principal-component-analysis-pca",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Principal Component Analysis (PCA)",
+    "text": "Principal Component Analysis (PCA)\nAim: Find a lower-dimensional (linear) description of a set of variables (that still accounts for the maximum possible information/variance in the dataset).\nVariance: Combination of signal + noise –&gt; find strongest common signal between variables!\n\n1st Component: explains most variance between variables, 2nd component: maximum of remaining variance - but uncorrelated with 1st…\n\n\n\n\n\n\n\n\n\n\nGreen arrow: 1st component, follows direction of max. variance\nRed arrow: 2nd component, perpendicular to 1st =&gt; uncorrelated!\nWe can run a PCA on more than two variables!\n\n\n\nobtain as many components as there are variables (assuming that there are more observations than there are variables)\nin practice: find a small number of components that can explain a large portion of the variance.\n1st component: similar to regression line, but minimizes perpendicular distance points to line (not vertical!)"
+  },
+  {
+    "objectID": "W10_GLM.html#pca-2",
+    "href": "W10_GLM.html#pca-2",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "PCA 2",
+    "text": "PCA 2\nIf we calculate a PCA on the impulsivity data, we see that there are two components (in the scree plot) that account for quite some variance.\nWe can also look at the variable loadings, which show which variable “goes into” which component to better specify what that component represents. Here we can see that one components represents (=captures variance related to) the SSRT variables, the other the UPPS.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nScree plot: Sometimes used to make decisions on number of components (eigenvalues plotted)\nloadings: sign is arbitrary"
+  },
+  {
+    "objectID": "W10_GLM.html#factor-analysis",
+    "href": "W10_GLM.html#factor-analysis",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Factor Analysis",
+    "text": "Factor Analysis\nPCA is useful for reducing a dataset.\nThe components are per definition uncorrelated –&gt; sometimes this is a limitation.\nPCA also doesn’t account for measurement error –&gt; possibly difficult to interpret loadings.\n\nExploratory Factor Analysis: can also be used for dimensionality reduction.\nIdea: Each observed variable is created through a combination of contributions from a latent variable + measurement error. (latent: can’t be directly observed!)\n\n\nHow do different measures relate to underlying factor (that gives rise to these measures)?"
+  },
+  {
+    "objectID": "W10_GLM.html#fa-2",
+    "href": "W10_GLM.html#fa-2",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "FA 2",
+    "text": "FA 2\n\n\n\n\n\n\n\n\n\n\n\nFactor analysis with Call: fa(r = observed_df, nfactors = 3)\n\nTest of the hypothesis that 3 factors are sufficient.\nThe degrees of freedom for the model is 7  and the objective function was  0.04 \nThe number of observations was  200  with Chi Square =  7.96  with prob &lt;  0.34 \n\nThe root mean square of the residuals (RMSA) is  0.01 \nThe df corrected root mean square of the residuals is  0.03 \n\nTucker Lewis Index of factoring reliability =  0.993\nRMSEA index =  0.026  and the 10 % confidence intervals are  0 0.094\nBIC =  -29.13\n\n\n\n\n\n\n\nRMSEA (root mean square error of approximation): Measure of model fit, should be &lt; .08.\nUse (lowest) SABIC (sample-size adjusted Bayesian information criterion) to compare models with different number of factors.\n\nWe can “hand over” 3 factors\nRMSEA quantifies how far predicted covariances (between data) are from actual covariances"
+  },
+  {
+    "objectID": "W10_GLM.html#glm-results",
+    "href": "W10_GLM.html#glm-results",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "GLM results",
+    "text": "GLM results\nUsually, we would just let R do the calculations:\n\nsummary(lmResult)\n\n\nCall:\nlm(formula = grade ~ studyTime, data = df)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-10.656  -2.719   0.125   4.703   7.469 \n\nCoefficients:\n            Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)   76.156      5.161  14.756 6.09e-06 ***\nstudyTime      4.313      2.142   2.013   0.0907 .  \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 6.386 on 6 degrees of freedom\nMultiple R-squared:  0.4032,    Adjusted R-squared:  0.3037 \nF-statistic: 4.054 on 1 and 6 DF,  p-value: 0.09073\n\n\nThe intercept is significantly different from zero (which is usually not very relevant: with 0 study time, you don’t get 0%) and the effect of studyTime is not (or only “marginally”) significant. So for every hour that we study more, the effect on the grade is descriptively rather small (~4%) but possibly not present at all (because it is not statistically significant).\n\n\\(t\\) ratio of \\(\\beta\\) to its \\(SE\\)!\nintercept: expected grade without studying at all"
+  },
+  {
+    "objectID": "W10_GLM.html#interaction-example",
+    "href": "W10_GLM.html#interaction-example",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Interaction Example",
+    "text": "Interaction Example\nExample: What is the effect of caffeine on public speaking?\n\n\n\n\n\n# perform linear regression with caffeine as independent variable\nlmResultCaffeine &lt;- lm(speaking ~ caffeine, data = df)\nsummary(lmResultCaffeine)\n\n\nCall:\nlm(formula = speaking ~ caffeine, data = df)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-33.096 -16.024   5.014  16.453  26.979 \n\nCoefficients:\n            Estimate Std. Error t value Pr(&gt;|t|)\n(Intercept)  -7.4132     9.1653  -0.809    0.429\ncaffeine      0.1676     0.1508   1.111    0.281\n\nResidual standard error: 19.19 on 18 degrees of freedom\nMultiple R-squared:  0.06419,   Adjusted R-squared:  0.0122 \nF-statistic: 1.235 on 1 and 18 DF,  p-value: 0.2811\n\n\n\n\n\n\n\n\n\n\n\nThere doesn’t seem to be a “direct” (bivariate) effect:"
+  },
+  {
+    "objectID": "W10_GLM.html#interaction-example-two-main-effects",
+    "href": "W10_GLM.html#interaction-example-two-main-effects",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Interaction Example: Two main effects",
+    "text": "Interaction Example: Two main effects\nWhat if we have the hypothesis that anxiety also affects public speaking?\n\n\n\n\n\n\n\nCall:\nlm(formula = speaking ~ caffeine + anxiety, data = df)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-32.968  -9.743   1.351  10.530  25.361 \n\nCoefficients:\n                  Estimate Std. Error t value Pr(&gt;|t|)\n(Intercept)       -12.5812     9.1967  -1.368    0.189\ncaffeine            0.1313     0.1446   0.908    0.377\nanxietynotAnxious  14.2328     8.2324   1.729    0.102\n\nResidual standard error: 18.21 on 17 degrees of freedom\nMultiple R-squared:  0.2041,    Adjusted R-squared:  0.1105 \nF-statistic:  2.18 on 2 and 17 DF,  p-value: 0.1436\n\n\n\n\n\n\n\n\n\n\n\nThe new model is still not significant. This is due to the fact that we only look at additive effects (main effects). But neither caffeine nor anxiety alone/independently predict public speaking performance.\n\n\nFrom the plot, however, it looks like the effect of caffeine is indeed different for the two anxiety groups: Increasing for non-anxious people and decreasing for anxious ones.\nIn other words: We need to have a model that allows to fit different regression slopes to both groups.\n\nexplain additive effects: look at average caffeine effect, then add mean for anxiety groups (but: both not significant here!)\nproblem of independent main effects: also if you bring together two findings from two different papers =&gt; no information about interaction of predictors"
+  },
+  {
+    "objectID": "W10_GLM.html#interaction-example-full-model",
+    "href": "W10_GLM.html#interaction-example-full-model",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Interaction Example: Full model",
+    "text": "Interaction Example: Full model\nTo allow for different slopes for each group (i.e. for the effect of caffeine to vary between the anxiety groups), we have to model the interaction as well.\n\n\n\n\n\nCall:\nlm(formula = speaking ~ caffeine + anxiety + caffeine:anxiety, \n    data = df)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-11.385  -7.103  -0.444   6.171  13.458 \n\nCoefficients:\n                            Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)                 17.43085    5.43012   3.210 0.005461 ** \ncaffeine                    -0.47416    0.09664  -4.906 0.000158 ***\nanxietynotAnxious          -43.44873    7.79141  -5.576 4.17e-05 ***\ncaffeine:anxietynotAnxious   1.08395    0.12931   8.382 3.01e-07 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 8.085 on 16 degrees of freedom\nMultiple R-squared:  0.8524,    Adjusted R-squared:  0.8247 \nF-statistic:  30.8 on 3 and 16 DF,  p-value: 7.014e-07\n\n\n\n\n\n\n\n\n\n\n\nThe model is now significant! There is an interaction between caffeine and anxiety. Interestingly, the main effects are also significant now even though they were not in the previous models (because the residual variance has been reduced drastically from 18 to 8 by the highly significant interaction).\nNote: speaking ~ caffeine * anxiety is shorthand for speaking ~ caffeine + anxiety + caffeine:anxiety"
+  },
+  {
+    "objectID": "W10_GLM.html#convert-glm-to-anova",
+    "href": "W10_GLM.html#convert-glm-to-anova",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Convert GLM to ANOVA",
+    "text": "Convert GLM to ANOVA\nThe interpretation of the coefficients of a GLM when interactions are included is not as straight forward compared to an ANOVA!\n\nIf you want to report the “typical” ANOVA table with main effects and the general interaction:\n\nanova(lmResultInteraction)\n\nAnalysis of Variance Table\n\nResponse: speaking\n                 Df Sum Sq Mean Sq F value   Pr(&gt;F)    \ncaffeine          1  454.8   454.8  6.9578 0.017911 *  \nanxiety           1  991.5   991.5 15.1678 0.001288 ** \ncaffeine:anxiety  1 4593.4  4593.4 70.2662 3.01e-07 ***\nResiduals        16 1045.9    65.4                     \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n\n\n\nNote: The p-values are different between the GLM and the ANOVA outputs because effects including factors are coded slightly differently (dummy vs. effect coding):\nDummy coding uses the first level as a default and compares the remaining levels to it (\\(0\\) vs. \\(1\\)).\nEffect coding takes the overall mean as an abstract comparison (\\(-.5\\) vs. \\(+.5\\)).\nThis difference is resembled in the output tables as anxietynotAnxious (GLM) vs. anxiety (ANOVA).\n\ninterpretation coefficients:\nintercept: intercept of anxious group!\nintercept not anxious: difference intercept anxious vs. notanxious\nslope anxious: only for the anxious group!\nslope not anxious: diff in slopes\nno main effects!!!"
+  },
+  {
+    "objectID": "W10_GLM.html#model-diagnostics",
+    "href": "W10_GLM.html#model-diagnostics",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Model Diagnostics",
+    "text": "Model Diagnostics\nTo check the assumptions, we can easily run a function for model diagnostics (incl. Q-Q plots) in R. The function, check_model(), is included in the performance package by the easystats team (who make great packages for everything related to statistical modeling!)\n\n# install.packages(\"easystats\")\nlibrary(performance)\n\ncheck_model(lmResultInteraction)\n\n\n\nWe’re not going into detail about all these diagnostics (and hard to see!), but it is always a good idea to run diagnostics/check assumptions for your models!"
+  },
+  {
+    "objectID": "W10_GLM.html#remark-predicting-in-a-statistical-context",
+    "href": "W10_GLM.html#remark-predicting-in-a-statistical-context",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Remark: “Predicting” in a Statistical Context",
+    "text": "Remark: “Predicting” in a Statistical Context\nWe neither mean “predicting before seeing the data/in the future” nor mean to imply causality!\n\nIt simply refers to fitting a model to the data: We estimate (or predict) values for the DV (\\(\\hat{y}\\)) and the IVs are often referred to as predictors.\n\nRelated to: predicting future values"
+  },
+  {
+    "objectID": "W10_GLM.html#factor-analysis-fa",
+    "href": "W10_GLM.html#factor-analysis-fa",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Factor Analysis (FA)",
+    "text": "Factor Analysis (FA)\nPCA is useful for reducing the dimensionality of a dataset.\nThe components are per definition uncorrelated –&gt; sometimes this is a limitation.\nPCA also doesn’t account for measurement error –&gt; possibly difficult to interpret loadings.\n\nExploratory Factor Analysis: can also be used for dimensionality reduction.\nIdea: Each observed variable is created through a combination of contributions from a latent variable + measurement error. (latent: can’t be directly observed!)\n\n\nHow do different measures relate to underlying factor (that gives rise to these measures)?"
   }
 ]

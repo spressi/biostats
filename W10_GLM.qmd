@@ -1,5 +1,5 @@
 ---
-title: "10 The General Linear Model \n & Multivariate Statistics"
+title: "10 The General Linear Model & Multivariate Statistics"
 subtitle: |
    | Julius-Maximilians-University Würzburg 
    | Course: "Biostatistics"    
@@ -15,7 +15,7 @@ format:
 from: markdown+emoji
 ---
 
-# The General Linear Model!
+# General Linear Model (GLM)
 
 ```{css}
 code.sourceCode {
@@ -58,25 +58,19 @@ $$
 data = model + error
 $$
 
-Our general goal is to find the model with the *best fit*, i.e. that minimizes the error.
+Our general goal is to find the model with the *best fit*, i.e., that minimizes the error.
 
 . . .
 
 One approach is the GLM. You might be surprised that a lot of the common models can be viewed as linear models:
 
-::: scrollable
 ![All models can be thought of as linear models](images/linear_tests_cheat_sheet.png)
-:::
-
-::: notes
-finally!
-:::
 
 ## Definitions
 
 **Dependent variable (DV)**: The outcome variable that the model aims to explain ($Y$).
 
-**Independent variable (IV)**: The variable that we use to explain the DV ($X$).
+**Independent variable (IV)**: The variable(s) that we use to explain the DV ($X$).
 
 **Linear model**: The model for the DV is composed of a *linear combination* of IVs (that are multiplied by different [weights]{.underline}!)
 
@@ -84,7 +78,7 @@ finally!
 
 The weights are the *parameters* $\beta$ and determine the relative contribution of each IV. (This is what the model estimates! The weights thus give us the important information we're usually interested in: How strong are IV and DV related.)
 
-There may be several DVs, but usually that's not the case and we will focus on those cases with one DV!
+There may also be several DVs ("*multivariate statistics*"), but usually that's not the case except for specific biopsychological methods (e.g., fMRI). Thus, we will focus on those cases with one DV!
 
 ## Example
 
@@ -132,6 +126,7 @@ We can calculate the *correlation* between the two variables:
 # compute correlation between grades and study time
 corTestResult <- cor.test(df$grade, df$studyTime)
 corTestResult
+corTestResult %>% apa::cor_apa(r_ci=T)
 ```
 
 The correlation is quite high (.63), but the CI is also pretty wide.
@@ -154,10 +149,10 @@ relationship study time and grade
 
 ## Linear Regression
 
-Use the GLM (\~synonymous to linear regression) to...
+Use the GLM to...
 
 ::: incremental
--   decribe the relation between two variables (similar to correlation)
+-   describe the relation between two variables (similar to correlation)
 
 -   predict DV for new values of IV (new observations)
 
@@ -168,19 +163,19 @@ Use the GLM (\~synonymous to linear regression) to...
 
 ::: columns
 ::: column
-Simple GLM:
+Simple GLM (here: equivalent to linear regression):
 
 $$
 y = \beta_0+ x * \beta_x + \epsilon
 $$
 
-$\beta_0$ = *intercept*, the overall offset of the line when $x=0$ (even if that is impossible)\
-$\beta_x$ = *slope*, how much do we expect $y$ to change with each change in $x$?\
+$\beta_0$ = *intercept*: the overall offset of the line when $x=0$ (this cannot always be interpreted)\
+$\beta_x$ = *slope*: how much do we expect $y$ to change with each change in $x$?\
 $y$ = *DV*\
 $x$ = *IV* or *predictor\
-*$\epsilon$ = *error term*, whatever variance is left over once the model is fit, *residuals*! (Think of the model as the line that is fitted and the residuals are the vertical deviations of the data points from the line!)
+$\epsilon$ = *error term* or *resudials*: whatever variance is left once the model is fit (Think of the model as the blue line and the residuals are the vertical deviations of the data points from the line)
 
-(If we refer to *predicted* $y$-values, after we have estimated the model fit/line, we can drop the error term: $\hat{y} = \hat{\beta_0} + x * \hat{\beta_x}$.)
+(If we refer to *predicted* $y$-values, after we have estimated the model, we can drop the error term: $\hat{y} = \hat{\beta_0} + x * \hat{\beta_x}$.)
 :::
 
 ::: column
@@ -238,7 +233,7 @@ $$
 residual = y - \hat{y} = y - (x*\hat{\beta_x} + \hat{\beta_0})
 $$
 
-Compute *Sum of Squared Errors* (remember?):
+Compute *Sum of Squared Errors* (remember from ANOVA?):
 
 $$
 SS_{error} = \sum_{i=1}^n{(y_i - \hat{y_i})^2} = \sum_{i=1}^n{residuals^2}
@@ -280,13 +275,16 @@ t_{N - p} = \frac{\hat{\beta} }{SE_{\hat{\beta}}}
 \end{array}
 $$
 
+## GLM results
+
 Usually, we would just let R do the calculations:
 
 ```{r}
+#| echo: true
 summary(lmResult)
 ```
 
-The intercept is significantly different from zero (which is usually not very relevant) and the effect of `studyTime` is not significant. So for every hour that we study more, the effect on the grade is rather small (4...) but possibly not present.
+The intercept is significantly different from zero (which is usually not very relevant: with 0 study time, you don't get 0%) and the effect of `studyTime` is not (or only "marginally") significant. So for every hour that we study more, the effect on the grade is *descriptively* rather small (~4%) but possibly not present at all (because it is not *statistically* significant).
 
 ::: notes
 $t$ ratio of $\beta$ to its $SE$!
@@ -296,7 +294,7 @@ intercept: expected grade without studying at all
 
 ## Quantifying Goodness of Fit of the Model
 
-Often, it is useful to check how good the model we estimated fits the data.
+Often, it is useful to check how good the (total) model we estimated fits the data.
 
 . . .
 
@@ -310,7 +308,7 @@ $$
 R^2 = r^2
 $$
 
-In study time example, $R^2$ = 0.4 --\> we accounted for 40% of the overall variance in grades!
+In study time example, $R^2$ = 0.63² = 0.4 --\> we accounted for 40% of the overall variance in grades!
 
 . . .
 
@@ -320,8 +318,12 @@ $$
 R^2 = \frac{SS_{model}}{SS_{total}} = 1-\frac{SS_{error}}{SS_{total}}
 $$
 
+. . .
+
+With a sample of sufficient size, it is possible to get highly significant values that still explain very little of the total variance (i.e., little *practical* significance despite *statistical* significance)
+
 ::: notes
-$R^2$ is the name of the GoF stat!
+$R^2$ is the name of the Goodness of Fit stat!
 
 A small R² tells us that even though a model might be significant, it may only explain a small amount of information in the DV
 :::
@@ -406,19 +408,25 @@ How can we tell from the plot that both IVs might have an effect?
 
 ## Interactions Between Variables
 
-We previously assumed that the effect of `studyTime` on `grade` was the same for both groups - but sometimes we expect that this regression slope differs per group!
+We previously assumed that the effect of `studyTime` on `grade` was the same for both groups - but sometimes we expect that this regression slope differs per group! 
+
+E.g., due to prior knowledge from another class, it may be *easier* to profit from studying the new materials (i.e., steeper slope). Or it may be *harder* due to diminishing marginal returns (i.e., flatter slope).
 
 . . .
 
+\
 This is what we call an **interaction**: The effect of one variable depends on the value of another variable.
 
-. . .
+Thus, `priorClass` can have a **main effect** on `grade` (i.e., independent of `studyTime`): "I already know more, so I don't need to study".\
+But it can also **interact** with `studyTime`: "Due to my prior knowledge, I can study more efficiently."
 
-Example: What is the effect of caffeine on public speaking?\
-There doesn't seem to be an effect:
+## Interaction Example
+Example: What is the effect of caffeine on public speaking?
+
+\
 
 ::: columns
-::: column
+::: {.column width="60%"}
 ```{r}
 set.seed(1234567)
 df <- 
@@ -442,36 +450,43 @@ summary(lmResultCaffeine)
 ```
 :::
 
-::: column
+::: {.column width="40%"}
 ```{r, fig.width=4, fig.height=3}
 p1 <- ggplot(df,aes(caffeine,speaking)) +
-  geom_point()
+  stat_smooth(method="lm") + geom_point()
 p1
 ```
 :::
 :::
 
-## Interactions 2
+. . .
 
-What if we find research suggesting that *anxious* people react differently to caffeine than non-anxious people?
+There doesn't seem to be a "direct" (bivariate) effect:
 
-Let's include `anxiety` in the model:
+## Interaction Example: Two main effects
+
+What if we have the hypothesis that `anxiety` also affects public speaking?
+
+\
 
 ::: columns
-::: column
+::: {.column width="60%"}
 ```{r}
-#| echo: true
 # compute linear regression adding anxiety to model
 lmResultCafAnx <- lm(speaking ~ caffeine + anxiety, data = df)
 summary(lmResultCafAnx)
 ```
 :::
 
-::: column
+::: {.column width="40%"}
 ```{r, fig.width=4, fig.height=3}
-p2 <- ggplot(df,aes(caffeine,speaking,shape=anxiety)) +
-  geom_point() + 
-  theme(legend.position = c(0.1, 0.9))
+#TODO add individual regression lines per group but with identical slope?
+p2 <- ggplot(df,aes(caffeine,speaking,color=anxiety,group=NA)) +
+  geom_hline(data=df %>% summarise(speaking.m=mean(speaking), .by=anxiety),
+             mapping=aes(yintercept=speaking.m, color=anxiety),
+             linetype="dashed", size=1.2) +
+  stat_smooth(method="lm") + geom_point() + 
+  theme(legend.position = "top")
 p2
 ```
 :::
@@ -479,30 +494,28 @@ p2
 
 . . .
 
-It looks like the effect of caffeine is indeed different for the two anxiety groups: Increasing for non-anxious people and decreasing for anxious ones.
-
-However, the model is not significant!
+The new model is still not significant. This is due to the fact that we only look at **additive effects** (main effects). But neither caffeine nor anxiety alone/independently predict public speaking performance.
 
 . . .
 
-This is due to the fact that we only look at **additive effects** (main effects) with this model. *Overall*, neither caffeine nor anxiety predicts grades.
+From the plot, however, it looks like the effect of caffeine is indeed different for the two anxiety groups: Increasing for non-anxious people and decreasing for anxious ones.
 
-In other words: The model tries to fit the same slope for both groups, which is a flat line.
+In other words: We need to have a model that allows to fit different regression *slopes* to both groups.
 
 ::: notes
-explain additive effects: flat line for average caffeine effect, no difference for means of anxiety groups
+explain additive effects: look at average caffeine effect, then add mean for anxiety groups (but: both not significant here!)
+
+problem of independent main effects: also if you bring together two findings from two different papers => no information about interaction of predictors
 :::
 
-## Interactions 3
+## Interaction Example: Full model
 
 To allow for different slopes for each group (i.e. for the effect of caffeine to vary between the anxiety groups), we have to model the *interaction* as well.
 
-The interaction is simply the product of the two variables:
-
 ::: columns
-::: column
+::: {.column width="60%"}
 ```{r}
-#| echo: true
+#| echo: false
 # compute linear regression including caffeine X anxiety interaction
 lmResultInteraction <- lm(
   speaking ~ caffeine + anxiety + caffeine:anxiety,
@@ -514,7 +527,7 @@ summary(lmResultInteraction)
 ```
 :::
 
-::: column
+::: {.column width="40%"}
 ```{r, fig.width=4, fig.height=3}
 df_anx <- 
   df %>%
@@ -526,13 +539,14 @@ df_notanx <-
   subset(anxiety=='notAnxious')%>%
   mutate(y=lmResultInteraction$fitted.values[df$anxiety=='notAnxious'])
 
-p3 <- ggplot(df,aes(caffeine,speaking,shape=anxiety)) +
-   geom_point() + 
-   theme(legend.position = c(0.1, 0.9)) +
-  geom_line(data=df_anx,
-             aes(caffeine,y),linetype='dashed') +
-  geom_line(data=df_notanx,
-             aes(caffeine,y),linetype='dotted')
+p3 <- ggplot(df,aes(caffeine,speaking,color=anxiety,group=anxiety)) +
+  stat_smooth(method="lm") +
+  geom_point() + 
+  theme(legend.position = "top")
+  # geom_line(data=df_anx,
+  #            aes(caffeine,y),linetype='dashed') +
+  # geom_line(data=df_notanx,
+  #            aes(caffeine,y),linetype='dotted')
 
 p3
 ```
@@ -541,11 +555,13 @@ p3
 
 . . .
 
-We now see that there are significant *main effects* for both `caffeine` and `anxiety`, as well as the significant *interaction* between both variables. (We have to be careful of interpreting the main effects when an interaction is also significant!)
+The model is now significant! There is an *interaction* between `caffeine` and `anxiety`. Interestingly, the *main effects* are also significant now even though they were not in the previous models (because the residual variance has been reduced drastically from 18 to 8 by the highly significant interaction).
 
-. . .
+Note: `speaking ~ caffeine * anxiety` is shorthand for `speaking ~ caffeine + anxiety + caffeine:anxiety`
 
-The interpretation of the coefficients when interactions are included is not as straight forward!
+## Convert GLM to ANOVA
+
+The interpretation of the coefficients of a GLM when interactions are included is not as straight forward compared to an ANOVA!
 
 . . .
 
@@ -558,12 +574,20 @@ If you want to report the "typical" ANOVA table with main effects and the genera
 anova(lmResultInteraction)
 ```
 
+. . .
+
+Note: The *p*-values are different between the GLM and the ANOVA outputs because effects including factors are coded slightly differently (dummy vs. effect coding):
+
+Dummy coding uses the first level as a default and compares the remaining levels to it ($0$ vs. $1$).\
+Effect coding takes the overall mean as an abstract comparison ($-.5$ vs. $+.5$).\
+This difference is resembled in the output tables as `anxietynotAnxious` (GLM) vs. `anxiety` (ANOVA).
+
 ::: notes
 interpretation coefficients:
 
 intercept: intercept of anxious group!
 
-intercept not anxious: difference intercept anxiousnotanxious
+intercept not anxious: difference intercept anxious vs. notanxious
 
 slope anxious: only for the anxious group!
 
@@ -588,7 +612,7 @@ This shows that Model 2, incl. the interaction, is to be preferred.
 
 . . .
 
-*Note*: We can only use this method with nested models, which means that the simpler (*reduced*) model only contains variables also included in the more complex (*full*) model.
+*Note*: We can only meaningfully use this method with so-called nested models, which means that the simpler (*reduced*) model only contains variables also included in the more complex (*full*) model.
 
 ::: aside
 \*Yes, it is *kind of* an ANOVA as well, in that (a ratio of) squared errors is compared to an $F$-distribution...
@@ -610,24 +634,24 @@ Wald compares the ratio of squared errors to an F-distribution (sound familiar f
 
 The model also needs to satisfy the **assumptions** of the statistical method (= GLM).
 
-One important assumption of the GLM is that *the residuals are normally distributed* (NOT necessarily the data!).
+One important assumption of the GLM is that *the residuals are normally distributed*.
 
 This assumption can be violated by a not properly specified model or because the data are inappropriate for the statistical model.
 
 . . .
 
-We can use a **Q-Q plot**, which represents the quantiles of two distributions/variables (e.g. the data and a normal distribution of the same data) against each other.
+We can use a **Q-Q plot**, which represents the quantiles of two distributions/variables (e.g., the data and a normal distribution of the same data) against each other.
 
 If the data points diverge substantially from the line (especially in the extremes), we can conclude that the residuals are not normally distributed.
 
-## Model Diagnostics 2
+## Model Diagnostics
 
 To check the assumptions, we can easily run a function for model diagnostics (incl. Q-Q plots) in R. The function, `check_model()`, is included in the `performance` package by the [*easystats*](https://easystats.github.io/easystats/index.html) team (who make great packages for everything related to statistical modeling!)
 
 ```{r}
 #| echo: true
 
-# install.packages("easystats)
+# install.packages("easystats")
 library(performance)
 
 check_model(lmResultInteraction)
@@ -637,7 +661,7 @@ check_model(lmResultInteraction)
 We're not going into detail about all these diagnostics (and hard to see!), but it is always a good idea to run diagnostics/check assumptions for your models!
 :::
 
-## What Does "Predict" Really Mean?
+## Remark: "Predicting" in a Statistical Context
 
 We neither mean "predicting before seeing the data/in the future" nor mean to imply *causality*!
 
@@ -651,20 +675,21 @@ Related to: predicting future values
 
 # Multivariate Statistics
 
-*Multivariate* = involving more than one random variable.
+*Multivariate* = involving more than one (dependent) variable.
 
-We generally do not distinguish between DVs and IVs but are interested in how a number of variables relate to one another.
-
-. . .
+Usually, the distinction between dependent and independent variables is not very strict (rather depends on the model than on the data itself). In the following section, we are interested in how a number of variables relate to one another (no clear predictor vs. criterion).
 
 ::: incremental
-1.  **Clustering**: Understand the structure that exists in the data, find clusters of observations or variables that are similar.
-2.  **Dimensionality reduction**: Reduce a large set of variables to fewer, retaining as much information as possible.
+1.  **Clustering**: Understand the structure that exists in the data, find clusters of observations or variables that are similar.\
+=> From dimensions to categories
+
+2.  **Dimensionality reduction**: Reduce a large set of variables to fewer, retaining as much information as possible.\
+=> From many dimensions to fewer dimensions
 :::
 
 . . .
 
-*unsupervised learning* vs. *supervised learning* (e.g. linear regression)!
+These two methods belong to the class of *unsupervised learning*. Before, we have only dealt with *supervised learning* (e.g., regression, ANOVA). There are also methods for multivariate, supervised learning (e.g., MANOVA).
 
 ::: notes
 Supervised: we know the value of the DV that we're trying to predict (try to find best model predictions).
@@ -818,7 +843,9 @@ $$
 d(x,y) = \sqrt{(x_1 - x_2)^2 + (y_1 - y_2)^2}
 $$
 
-(Euclidean Distance is sensitive to mean & variability in data --\> *scale* data before!)
+. . .
+
+Euclidean Distance is sensitive to variability in both variables --\> *scale* data before! (e.g., z-transformation using R's `scale` function)
 
 ::: notes
 Clustering: finding set of groups that have the lowest distance between their members.
@@ -827,13 +854,13 @@ Euclidean Dist: Pythagorean theorem\
 --\> can be extended to more than two dimensions!
 
 Scale: calculate z-score, standardizing
+
+Example: Relation between height and weight => it shouldn't make a difference if we rescale the data from m to cm or from kg to pounds.
 :::
 
 ## K-Means Clustering
 
 **K-means clustering**: Identifies a set of cluster centers & then assigns each data point to the cluster whose center is the closest (Euclidean Distance!).
-
-. . .
 
 ::: incremental
 1.  Decide on value for *K*, the number of clusters to be found (e.g. based on previous knowledge/expectations).
@@ -841,7 +868,7 @@ Scale: calculate z-score, standardizing
 3.  Compute Euclidean distance of each data point to each centroid.
 4.  Assign each point to a cluster, based on closest distance to centroid.
 5.  Recompute centroid by averaging the location of all points assigned to that cluster.
-6.  Repeat 1-5 until a stable solution is found (*iterative* process).
+6.  Repeat steps 1-5 until a stable solution is found (*iterative* process).
 :::
 
 ## Example: Latitude/Longitude Data
@@ -940,7 +967,8 @@ We can further investigate this overlap with the **confusion matrix**, which com
 table(labels, countries$Continent)
 ```
 
-(Note: usually we don't know the ground truth (i.e. which continent) in unsupervised learning!
+Note: usually we don't know the ground truth (i.e. which continent) in unsupervised learning!\
+=> confusion matrix cannot be estimated
 
 Note 2: Every time we run the iterative process, we will get a different result if we use random starting points. Make sure the result is robust, e.g. by running the Clustering algorithm several times.)
 :::
@@ -1010,20 +1038,25 @@ Colored lines: different cutoffs.
 
 . . .
 
-There seems to be a high degree of similarity within each variable set (SSRT and UPPS) compared the between the sets.\
-Within UPPS, sensation seeking stands out as different etc.
+There seems to be a high degree of similarity within each variable set (SSRT and UPPS) compared to between sets.\
+=> The first split separates UPPS vs. SSRT perfectly.
+
+Within UPPS, sensation seeking stands out as the most different to the rest.
 
 ::: notes
 average linkage: average of all distances between each data point in each of two clusters.
 
-colored lines: different cutor
+Can read diagram from left to right: One supercluster that is split up more and more.
+Or right to left: Individual points that get joint together into bigger and bigger clusters.
+
+colored lines: different cutoff values
 :::
 
 ## Dimensionality Reduction
 
 We often measure different variables that are highly similar to each other, e.g. because they are supposed to measure the same *construct*.
 
-Although we might measure a particular number of variables (*dimensionality*), there might be not as many underlying sources of information!
+Although we might measure a particular number of variables (= *dimensionality* of data set), there may be fewer independent sources of underlying information!
 
 **Dimensionality reduction**: Reduce the number of variables by creating composite variables that reflect the underlying information.
 
@@ -1088,7 +1121,7 @@ g
 
 ::: column
 **Green arrow:** 1st component, follows direction of max. variance\
-**Red arrows**: 2nd component, perpendicular to 1st =\> uncorrelated!
+**Red arrow**: 2nd component, perpendicular to 1st =\> uncorrelated!
 
 We can run a PCA on more than two variables!
 :::
@@ -1104,7 +1137,7 @@ in practice: find a small number of components that can explain a large portion 
 
 ## PCA 2
 
-If we calculated a PCA on the impulsivity data, we would see that there are two components (in the *scree plot*) that account for quite some variance.
+If we calculate a PCA on the impulsivity data, we see that there are two components (in the *scree plot*) that account for quite some variance.
 
 We can also look at the variable *loadings*, which show which variable "goes into" which component to better specify what that component represents. Here we can see that one components represents (=captures variance related to) the SSRT variables, the other the UPPS.
 
@@ -1136,9 +1169,9 @@ Scree plot: Sometimes used to make decisions on number of components (eigenvalue
 loadings: sign is arbitrary
 :::
 
-## Factor Analysis
+## Factor Analysis (FA)
 
-PCA is useful for reducing a dataset.\
+PCA is useful for reducing the dimensionality of a dataset.\
 The components are per definition uncorrelated --\> sometimes this is a limitation.\
 PCA also doesn't account for measurement error --\> possibly difficult to interpret loadings.
 
@@ -1196,12 +1229,12 @@ summary(fa_result)
 
 fa.diagram(fa_result)
 ```
+:::
+:::
 
 **RMSEA** (root mean square error of approximation): Measure of model fit, should be \< .08.
 
 Use (lowest) **SABIC** (sample-size adjusted Bayesian information criterion) to compare models with different number of factors.
-:::
-:::
 
 ::: notes
 We can "hand over" **3 factors**
@@ -1220,4 +1253,4 @@ Learning objectives:
 
 Next:
 
--   Linear Mixed Models!
+-   Linear Mixed Models
