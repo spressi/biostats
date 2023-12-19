@@ -1,5 +1,5 @@
 ---
-title: "11 ANOVA & the General Linear Model (a.k.a. Regression)"
+title: "11 ANOVA & the General Linear Model in R"
 subtitle: |
    | Julius-Maximilians-University Würzburg 
    | Course: "Biostatistics"    
