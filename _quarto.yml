@@ -2,10 +2,13 @@ project:
   type: website
   output-dir: docs
   
+  
 website:
   title: "Biostatistics"
-  navbar:
-    left:
+  sidebar:
+    style: "floating"
+    search: true
+    contents:
       - W1_Intro.qmd
       - W1b_IntroR.qmd
       - W2_Models.qmd
@@ -20,7 +23,8 @@ website:
       - W11_GLMinR.qmd
       - W12_LMM.qmd
       - W15_RepResearchR.qmd
-  
+
 format:
   html:
     theme: cosmo
+  
