@@ -48,11 +48,11 @@ start recording
 
 # Factorial ANOVA
 
-Last week, we have used **one-way ANOVAs** to analyze data where we were interested in differences between levels of one factor (between-subjects groups) on a continuous dependent variable.
+Last R session, we have used **one-way ANOVAs** to analyze data where we were interested in differences between levels of one factor (between-subjects groups) on a continuous dependent variable.
 
 . . .
 
-Today, we want to turn towards the case where we have several factors as independent variables/preditors. We can do so by running a factorial ANOVA or a linear model.
+Today, we want to turn towards the case where we have several factors as independent variables/predictors. We can do so by running a factorial ANOVA or a linear model.
 
 . . .
 
