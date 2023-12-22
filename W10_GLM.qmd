@@ -691,6 +691,8 @@ Usually, the distinction between dependent and independent variables is not very
 
 These two methods belong to the class of *unsupervised learning*. Before, we have only dealt with *supervised learning* (e.g., regression, ANOVA). There are also methods for multivariate, supervised learning (e.g., MANOVA).
 
+Note: Unsupervised learning techniques are very *explorative* in nature. It is a different approach to learning from data compared to hypothesis testing. Explorative methods are usually used in science to create a first insight into new phenomena that can develop into hypotheses further down the line.
+
 ::: notes
 Supervised: we know the value of the DV that we're trying to predict (try to find best model predictions).
 
@@ -1195,7 +1197,7 @@ mu <- rep(0, 3)                     #setting the means
 c1 <- .5 # correlation b/w WM and FR
 sigma <- matrix(c(1, c1, 0, c1, 1, 0, 0, 0, 1), 3, 3)  #setting the covariance matrix values. The "2,2" part at the tail end defines the number of rows and columns in the matrix
 set.seed(04182019)  #setting the seed value so I can reproduce this exact sim later if need be
-simdata <- mvrnorm(n=N,mu=mu,Sigma=sigma, empirical=TRUE)  #simulate the data, as specified above
+simdata <- MASS::mvrnorm(n=N,mu=mu,Sigma=sigma, empirical=TRUE)  #simulate the data, as specified above
 latent_df <- data.frame(simdata)
 names(latent_df) = c('WM', 'FR', 'IMP')
 # create observed variables by matrix-multiplying the latent variables
@@ -1209,14 +1211,14 @@ weights[2, 4:5] = 1
 weights[3, 6:8] = 1
 noise_sd = .6
 observed_vals = as.matrix(latent_df) %*% weights + 
-  mvrnorm(n=N, mu=rep(0, ntasks), Sigma=diag(ntasks) * noise_sd)
+  MASS::mvrnorm(n=N, mu=rep(0, ntasks), Sigma=diag(ntasks) * noise_sd)
 observed_df <- data.frame(observed_vals)
 names(observed_df) <- tasknames
 
 
 cormtx = t(cor(observed_df))
-heatmap.2(cormtx, trace='none', symm=TRUE, 
-          revC=TRUE,col=viridis(50),
+gplots::heatmap.2(cormtx, trace='none', symm=TRUE, 
+          revC=TRUE,col=viridis::viridis(50),
           cellnote=round(cormtx, 2), notecol='black', key=FALSE,)
 
 ```
@@ -1249,8 +1251,7 @@ Learning objectives:
 -   Describe the concept of the *general linear model/linear regression* and apply it to a dataset
 -   Understand *clustering* and *dimensionality reduction,* incl. the difference between k-means and hierarchical clustering as well as PCA and FA
 
-. . .
-
 Next:
 
+-   R Session on the General Linear Model
 -   Linear Mixed Models
