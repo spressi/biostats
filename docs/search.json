@@ -10,36 +10,36 @@
     "objectID": "W1_Intro.html#hello",
     "href": "W1_Intro.html#hello",
     "title": "01a Introduction to Biostatistics",
-    "section": "",
-    "text": "Who am I?\n. . .\nWho are you?\n\nWhat is your background?\nDo you have experience with data analysis?\nWhat’s your attitude towards statistics?\n\n\n\nSurvey (Zoom) + Moodmeter (pick a stamp - top of screen, select annotate…)\nToo many people to have an introduction round!\nI know that you probably don’t know each other yet, there will be some break-out sessions where you can get to know each other a bit (and talk about stats!) ;)\nStats Anxiety: It will be packed, but it will be ok (You can always reach me with questions!)!"
+    "section": "Hello!",
+    "text": "Hello!\nWho am I?\n\nWho are you?\n\nWhat is your background?\nDo you have experience with data analysis?\nWhat’s your attitude towards statistics?\n\n\n\nSurvey (Zoom) + Moodmeter (pick a stamp - top of screen, select annotate…)\nToo many people to have an introduction round!\nI know that you probably don’t know each other yet, there will be some break-out sessions where you can get to know each other a bit (and talk about stats!) ;)\nStats Anxiety: It will be packed, but it will be ok (You can always reach me with questions!)!"
   },
   {
     "objectID": "W1_Intro.html#using-the-slides",
     "href": "W1_Intro.html#using-the-slides",
     "title": "01a Introduction to Biostatistics",
-    "section": "",
-    "text": "These slides are created directly in R with the quarto extension.\nYou can jump to a slide by clicking the three dashes in the bottom left.\nYou can conveniently copy R code from the slides with one click and paste it into your RStudio.\n\n\nprint(\"Hello World\")\n\n[1] \"Hello World\""
+    "section": "Using the Slides",
+    "text": "Using the Slides\n\nThese slides are created directly in R with the quarto extension.\nYou can jump to a slide by clicking the three dashes in the bottom left.\nYou can conveniently copy R code from the slides with one click and paste it into your RStudio.\n\n\nprint(\"Hello World\")\n\n[1] \"Hello World\""
   },
   {
     "objectID": "W1_Intro.html#organizational-issues",
     "href": "W1_Intro.html#organizational-issues",
     "title": "01a Introduction to Biostatistics",
-    "section": "",
-    "text": ". . .\n\n\nAttendance is mandatory! (I don’t make the rules :) )\n\nYou may miss one session without giving reasons (recommendation: don’t waste it early!)\nIf you miss additional sessions, please write an email with an explanation (further proof may be required, e.g. doctor’s certificate)\n\n\n. . .\n\nThe course will take place in person\n\nOnly for students who are not in Würzburg yet, there is an option via Zoom\n\n\n. . .\n\nWe will use these textbooks (Open Educational Resources - freely available online, also linked in WueCampus):\n\nStatistical Thinking for the 21st Century: https://statsthinking21.github.io/statsthinking21-core-site/index.html\nFor the R part: Fundamentals of Quantitative Analysis: https://psyteachr.github.io/quant-fun-v2/\n\n\n\n\nOnline: Participation, videos, chat…\nOr R Session on Tuesday and video before? Some can’t make it on Wednesdays… (chat or speak out)\nAttendance: If 2x per week sync: max. 3 missed classes, if 1x per week: max. 2 missed classes (unless I know your reasons for missing Wednesdays!) –&gt; if you missed more, I can’t admit you for the exam/report\nThe input and hands-on sessions will be highly based on these two textbooks. You don’t need to read the textbooks, but it will of course help if you either read the chapter before or after the sessions: Repetition is always helpful!"
+    "section": "Organizational Issues",
+    "text": "Organizational Issues\n\n\n\nAttendance is mandatory! (I don’t make the rules :) )\n\nYou may miss one session without giving reasons (recommendation: don’t waste it early!)\nIf you miss additional sessions, please write an email with an explanation (further proof may be required, e.g. doctor’s certificate)\n\n\n\n\n\nThe course will take place in person\n\nOnly for students who are not in Würzburg yet, there is an option via Zoom\n\n\n\n\n\nWe will use these textbooks (Open Educational Resources - freely available online, also linked in WueCampus):\n\nStatistical Thinking for the 21st Century: https://statsthinking21.github.io/statsthinking21-core-site/index.html\nFor the R part: Fundamentals of Quantitative Analysis: https://psyteachr.github.io/quant-fun-v2/\n\n\n\n\nOnline: Participation, videos, chat…\nOr R Session on Tuesday and video before? Some can’t make it on Wednesdays… (chat or speak out)\nAttendance: If 2x per week sync: max. 3 missed classes, if 1x per week: max. 2 missed classes (unless I know your reasons for missing Wednesdays!) –&gt; if you missed more, I can’t admit you for the exam/report\nThe input and hands-on sessions will be highly based on these two textbooks. You don’t need to read the textbooks, but it will of course help if you either read the chapter before or after the sessions: Repetition is always helpful!"
   },
   {
     "objectID": "W1_Intro.html#contents",
     "href": "W1_Intro.html#contents",
     "title": "01a Introduction to Biostatistics",
-    "section": "",
-    "text": "From basic probability to (Generalized) Linear Mixed Models\n\nSome things may be repetitive for you but this course aims to provide a common starting position for your next semesters\n\nInput (lecture style) with hands-on R sessions \nIn addition, you should read a few pages in the text books\n(Statistical Thinking for the 21st Century, and possibly Fundamentals of Quantitative Analysis)\nProject: Independently analyze a dataset (exam with pass or fail grading)\n\n\n\nFor some, e.g. the psychologists, it will be more of a repetition - but you will also learn R.\nSlides might be text heavy –&gt; so that you can go through the slides afterwards again (but textbook might also be helpful)"
+    "section": "Contents",
+    "text": "Contents\n\n\nFrom basic probability to (Generalized) Linear Mixed Models\n\nSome things may be repetitive for you but this course aims to provide a common starting position for your next semesters\n\nInput (lecture style) with hands-on R sessions \nIn addition, you should read a few pages in the text books\n(Statistical Thinking for the 21st Century, and possibly Fundamentals of Quantitative Analysis)\nProject: Independently analyze a dataset (exam with pass or fail grading)\n\n\n\nFor some, e.g. the psychologists, it will be more of a repetition - but you will also learn R.\nSlides might be text heavy –&gt; so that you can go through the slides afterwards again (but textbook might also be helpful)"
   },
   {
     "objectID": "W1_Intro.html#project",
     "href": "W1_Intro.html#project",
     "title": "01a Introduction to Biostatistics",
-    "section": "",
-    "text": ". . .\n\nFind a dataset that can answer a question you are interested in\n\nhttps://ourworldindata.org/\nStatistisches Bundesamt\nYour own, e.g., from an internship\n\n\n. . .\n\npreprocess/wrangle it,\nanalyze the data,\nand write a short (min. 2-page) report!\n\nshort intro incl. research question and hypothesis\nmethods (both how the data were acquired and how they are analyzed)\nresults (incl. at least one plot)\nand a short discussion.\n\nAll these parts should be at least half a page long."
+    "section": "Project",
+    "text": "Project\n\n\nFind a dataset that can answer a question you are interested in\n\nhttps://ourworldindata.org/\nStatistisches Bundesamt\nYour own, e.g., from an internship\n\n\n\n\n\npreprocess/wrangle it,\nanalyze the data,\nand write a short (min. 2-page) report!\n\nshort intro incl. research question and hypothesis\nmethods (both how the data were acquired and how they are analyzed)\nresults (incl. at least one plot)\nand a short discussion.\n\nAll these parts should be at least half a page long."
   },
   {
     "objectID": "W1_Intro.html#calender",
@@ -67,7 +67,7 @@
     "href": "W1_Intro.html#why-is-statistical-thinking-important",
     "title": "01a Introduction to Biostatistics",
     "section": "Why is Statistical Thinking Important?",
-    "text": "Why is Statistical Thinking Important?\n\n\ndata literacy vs. intuition/heuristics/anecdotal evidence\n\nPublic discourse about Covid-19, migration, etc. (e.g., “50% of people in intensive care are vaccinated”)\n\n\n\n. . .\n\n\n\nBase Rate Fallacy\n\n\n\nWrite in chat! (after first bullet point!)\nexample availability heuristic from book (or any other example where intuition is wrong, i.e. vaccinations/covid…)\n--&gt; test in class? Ask for opinion/intuition, show data"
+    "text": "Why is Statistical Thinking Important?\n\n\ndata literacy vs. intuition/heuristics/anecdotal evidence\n\nPublic discourse about Covid-19, migration, etc. (e.g., “50% of people in intensive care are vaccinated”)\n\n\n\n\n\n\n\nBase Rate Fallacy\n\n\n\nWrite in chat! (after first bullet point!)\nexample availability heuristic from book (or any other example where intuition is wrong, i.e. vaccinations/covid…)\n--&gt; test in class? Ask for opinion/intuition, show data"
   },
   {
     "objectID": "W1_Intro.html#what-can-statistics-do-for-us",
@@ -88,7 +88,7 @@
     "href": "W1_Intro.html#causality",
     "title": "01a Introduction to Biostatistics",
     "section": "Causality",
-    "text": "Causality\nCorrelation does not imply causation… but is a hint!\n. . .\nExample: Smoking = less risk for Parkinson’s disease? (Godwin-Austen et al., 1982; Chen et al., 2010)\n. . .\n--&gt; confounding factors?\n. . .\ne.g., individual dopaminergic activity =&gt; addiction & motor function\n. . .\nRandomized Controlled Trials (RCT) as the solution?\n\ngive example! Eat more fat = living longer? Confounders (richer people, healthier diets, less stress, better health care…)\nRCT: exp control and manipulation, removes confounds if done well\nAt least some more causal evidence!\nQUESTIONS so far?"
+    "text": "Causality\nCorrelation does not imply causation… but is a hint!\n\nExample: Smoking = less risk for Parkinson’s disease? (Godwin-Austen et al., 1982; Chen et al., 2010)\n\n\n--&gt; confounding factors?\n\n\ne.g., individual dopaminergic activity =&gt; addiction & motor function\n\n\nRandomized Controlled Trials (RCT) as the solution?\n\ngive example! Eat more fat = living longer? Confounders (richer people, healthier diets, less stress, better health care…)\nRCT: exp control and manipulation, removes confounds if done well\nAt least some more causal evidence!\nQUESTIONS so far?"
   },
   {
     "objectID": "W1_Intro.html#what-are-data",
@@ -109,7 +109,7 @@
     "href": "W1_Intro.html#what-is-a-data-set",
     "title": "01a Introduction to Biostatistics",
     "section": "What is a Data Set?",
-    "text": "What is a Data Set?\n\na collection of data\nusually organized into rows and columns (like an excel spreadsheet)\n\nrows: participants/animals/cells…\ncolumns: variables!\n\neach variable contains one type of measurement\n\ntable cells = unique observations of variables per participant etc.\n\n\n\n\n\nNHANES dataset\n\n\n\npossibly go through columns and ask for data types?"
+    "text": "What is a Data Set?\n\na collection of data\nusually organized into rows and columns (like an excel spreadsheet)\n\nrows: participants/animals/cells…\ncolumns: variables!\n\neach variable contains one type of measurement\n\ntable cells = unique observations of variables per participant etc.\n\n\n\nNHANES dataset\npossibly go through columns and ask for data types?"
   },
   {
     "objectID": "W1_Intro.html#what-makes-a-good-measurement",
@@ -123,14 +123,14 @@
     "href": "W1_Intro.html#reliability",
     "title": "01a Introduction to Biostatistics",
     "section": "Reliability",
-    "text": "Reliability\nCorrelation of a measurement with “itself”\n\n\nInternal reliability (consistency)\nTest-retest reliability (stability)\nInter-rater reliability (agreement)\n\n\n. . .\nCorrelation with other variables can’t be higher than reliability (cf., Wilmer et al., 2012, Table 1)!"
+    "text": "Reliability\nCorrelation of a measurement with “itself”\n\n\nInternal reliability (consistency)\nTest-retest reliability (stability)\nInter-rater reliability (agreement)\n\n\n\nCorrelation with other variables can’t be higher than reliability (cf., Wilmer et al., 2012, Table 1)!"
   },
   {
     "objectID": "W1_Intro.html#validity",
     "href": "W1_Intro.html#validity",
     "title": "01a Introduction to Biostatistics",
     "section": "Validity",
-    "text": "Validity\nAre we measuring the construct we’re interested in?\n\n\nFace validity: Does it intuitively make sense? First reality check!\nConstruct validity\n\nconvergent validity: Related to similar measures that should measure the same construct\ndivergent validity: Is it unrelated to other measures?\n\nPredictive validity: Is it predictive of other outcomes? (e.g., intelligence & job success)\n\n\n. . .\n\n\n\nReliability & Validity"
+    "text": "Validity\nAre we measuring the construct we’re interested in?\n\n\nFace validity: Does it intuitively make sense? First reality check!\nConstruct validity\n\nconvergent validity: Related to similar measures that should measure the same construct\ndivergent validity: Is it unrelated to other measures?\n\nPredictive validity: Is it predictive of other outcomes? (e.g., intelligence & job success)\n\n\n\n\n\n\nReliability & Validity"
   },
   {
     "objectID": "W1_Intro.html#summarizing-data",
@@ -2369,7 +2369,7 @@
     "objectID": "W1_Intro.html#calendar",
     "href": "W1_Intro.html#calendar",
     "title": "01a Introduction to Biostatistics",
-    "section": "",
-    "text": "Date\nTopic\nReading\nProject Deadlines\n\n\n\n\n17.10.\nGeneral & R Intro\nST21: 1-3, QF: 1-3\n\n\n\n24.10.\nProbability\nST21: 4, QF: 4-6\n\n\n\n31.10.\nData Wrangling\nST21: 4, QF: 4-6\n\n\n\n07.11.\nData Visualization\nQF: 7\n\n\n\n14.11.\nSampling\nST21: 7-8, QF: 8\n\n\n\n21.11.\nProbability & Sampling in R\nST21: 7-8, QF: 8\n\n\n\n28.11.\nHypothesis Testing\nST21: 9-10\n\n\n\n05.12.\nComparing Means & Categories\nST21: 12, 15\nDataset\n\n\n12.12.\nExercises (t-Tests, Chi²)\nST21: 12, 15\n\n\n\n19.12.\n(Generalized) Linear Models\nST21: 12-13\nResearch Question & Hypotheses\n\n\n26.12. & 02.01.\nChristmas & New Year’s\n\n\n\n\n09.01.\nExercises (GLM)\nST21: 12-13\n\n\n\n16.01.\nLinear Mixed Models\nST21: 14\n\n\n\n23.01.\nExercises (LMM)\nST21: 14\nAnalysis\n\n\n30.01.\nTroubleshooting Your Report\n\n\n\n\n06.02.\nReproducible Research\nST21: 18\nReport\n\n\n\n\n\nST21: Statistical Thinking for the 21st Century\nQF: Fundamentals of Quantitative Analysis (QuantFun)\n\nThe first four weeks will be basics, the next 4 will be analyses."
+    "section": "Calendar",
+    "text": "Calendar\n\n\n\n\n\n\n\n\n\nDate\nTopic\nReading\nProject Deadlines\n\n\n\n\n17.10.\nGeneral & R Intro\nST21: 1-3, QF: 1-3\n\n\n\n24.10.\nProbability\nST21: 4, QF: 4-6\n\n\n\n31.10.\nData Wrangling\nST21: 4, QF: 4-6\n\n\n\n07.11.\nData Visualization\nQF: 7\n\n\n\n14.11.\nSampling\nST21: 7-8, QF: 8\n\n\n\n21.11.\nProbability & Sampling in R\nST21: 7-8, QF: 8\n\n\n\n28.11.\nHypothesis Testing\nST21: 9-10\n\n\n\n05.12.\nComparing Means & Categories\nST21: 12, 15\nDataset\n\n\n12.12.\nExercises (t-Tests, Chi²)\nST21: 12, 15\n\n\n\n19.12.\n(Generalized) Linear Models\nST21: 12-13\nResearch Question & Hypotheses\n\n\n26.12. & 02.01.\nChristmas & New Year’s\n\n\n\n\n09.01.\nExercises (GLM)\nST21: 12-13\n\n\n\n16.01.\nLinear Mixed Models\nST21: 14\n\n\n\n23.01.\nExercises (LMM)\nST21: 14\nAnalysis\n\n\n30.01.\nTroubleshooting Your Report\n\n\n\n\n06.02.\nReproducible Research\nST21: 18\nReport\n\n\n\n\n\nThe first four weeks will be basics, the next 4 will be analyses.\n\n\nST21: Statistical Thinking for the 21st Century\nQF: Fundamentals of Quantitative Analysis (QuantFun)"
   }
 ]
