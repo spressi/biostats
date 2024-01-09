@@ -1,0 +1,1480 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.353">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Dr.&nbsp;Mario Reutter (slides adapted from Dr.&nbsp;Lea Hildebrandt)">
+
+<title>Biostatistics - 12 Linear Mixed Models</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./W12_LMM.html">12 Linear Mixed Models</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Biostatistics</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./W1_Intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">01a Introduction to Biostatistics</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./W1b_IntroR.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">01b Intro to R</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./W2_Models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">02 Models</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./W3_DataWranglingR.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">03 Data Wrangling</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./W4_DataVizR.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">04 Data Visualization</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./W5_Sampling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">05 Probabilities &amp; Sampling</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./W6_ProbabilityR.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">06 Probability &amp; Sampling in R</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./W7_Hypothesis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">07 Hypothesis Testing</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./W8_ModelingRelationships.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">08 Modeling Relationships</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./W9_FirstAnalysisR.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">09 Statistical Analyses in R</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./W10_GLM.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">10 The General Linear Model &amp; Multivariate Statistics</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./W11_GLMinR.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">11 ANOVA &amp; the General Linear Model in R</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./W12_LMM.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">12 Linear Mixed Models</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./W15_RepResearchR.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">15 Reproducible Research</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        
+    <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="W12_LMM.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">12 Linear Mixed Models</h1>
+<p class="subtitle lead"></p><p>Julius-Maximilians-University Würzburg<br>
+Course: “Biostatistics”<br>
+Translational Neuroscience</p><p></p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Dr.&nbsp;Mario Reutter (slides adapted from Dr.&nbsp;Lea Hildebrandt) </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="linear-mixed-models" class="level1">
+<h1>Linear Mixed Models</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode css code-with-copy"><code class="sourceCode css"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>code<span class="fu">.sourceCode</span> {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">font-size</span>: <span class="dv">1.4</span><span class="dt">em</span><span class="op">;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<style type="text/css">
+code.sourceCode {
+  font-size: 1.4em;
+}
+</style>
+</div>
+<p>This week will be based on parts of a different textbook: <a href="https://psyteachr.github.io/stat-models-v1/">Learning Statistical Models Through Simulation in R</a>.</p>
+<p>. . .</p>
+<p>We will cover <em>Linear Mixed-Effects Models,</em> which are a generalization of linear models, but they allow us to include <strong>random effects</strong>, e.g.&nbsp;for subjects. This is especially helpful if we have within-subject variables. LMMs are a lot more flexible than (repeated-measures) ANOVAs.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(performance)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(effectsize)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(emmeans)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.2     ✔ readr     2.1.4
+✔ forcats   1.0.0     ✔ stringr   1.5.0
+✔ ggplot2   3.4.3     ✔ tibble    3.2.1
+✔ lubridate 1.9.2     ✔ tidyr     1.3.0
+✔ purrr     1.0.2     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+</div>
+<section id="setup" class="level2">
+<h2 class="anchored" data-anchor-id="setup">Setup</h2>
+<p>We will use a package called <code>lme4</code> for the statistical models. The package includes a dataset called <code>sleepstudy</code>, which we will be using. You don’t have to load the data separately, just load the package and you have access to the data:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lme4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Lade nötiges Paket: Matrix</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attache Paket: 'Matrix'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Die folgenden Objekte sind maskiert von 'package:tidyr':
+
+    expand, pack, unpack</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sleepstudy)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Reaction Days Subject
+1 249.5600    0     308
+2 258.7047    1     308
+3 250.8006    2     308
+4 321.4398    3     308
+5 356.8519    4     308
+6 414.6901    5     308</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># for information about the dataset, check out:</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ?sleepstudy</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>Description:
+
+     The average reaction time per day (in milliseconds) for subjects
+     in a sleep deprivation study.
+
+     Days 0-1 were adaptation and training (T1/T2), day 2 was baseline
+     (B); sleep deprivation started after day 2.
+
+Format:
+
+     A data frame with 180 observations on the following 3 variables.
+
+     ‘Reaction’ Average reaction time (ms)
+
+     ‘Days’ Number of days of sleep deprivation
+
+     ‘Subject’ Subject number on which the observation was made.</code></pre>
+</section>
+<section id="multilevel-data" class="level2">
+<h2 class="anchored" data-anchor-id="multilevel-data">Multilevel Data</h2>
+<p>Multilevel data are <strong>nested</strong> data, which means that the are clustered:</p>
+<div class="incremental">
+<ul class="incremental">
+<li>For example, repeated measures of the same subjects will result in data that are more strongly correlated <em>within</em> subjects than <em>between.</em></li>
+<li>But LMMs can also account for other kinds of nesting/clustering, such as patients who share therapists or mice from the same cage/experimenter.</li>
+</ul>
+</div>
+<p>. . .</p>
+<p>Data is usually multilevel for one of the three reasons below (multiple reasons could simultaneously apply):</p>
+<ol type="1">
+<li><p>you have a within-subject factor, and/or</p></li>
+<li><p>you have <strong>pseudoreplications</strong> (several trials/measurements), and/or</p></li>
+<li><p>you have multiple stimulus items.</p></li>
+</ol>
+<p>. . .</p>
+<div class="columns">
+<div class="column">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/LMM.png" class="img-fluid figure-img" width="378"></p>
+<figcaption class="figure-caption">Levels of a Multilevel Model</figcaption>
+</figure>
+</div>
+</div><div class="column">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://rpsychologist.com/r-guide-longitudinal-lme-lmer"><img src="images/LMM2.png" class="img-fluid figure-img" width="376"></a></p>
+<figcaption class="figure-caption">3-level LMM</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>. . .</p>
+<p>These kind of data are extremely common in neuroscientific research!</p>
+<p>. . .</p>
+<p>Unfortunately, LMMs are hardly every covered in statistics classes. Instead, these data are often analyzed using t-tests or ANOVAs, but sometimes these models are not sufficient (e.g.&nbsp;because they only allow for categorical predictors, but <code>time</code> in our example data is continuous…).</p>
+<p>. . .</p>
+<p>Moreover, LMMs have less of a problem with <strong>missing data</strong>.</p>
+<div class="notes">
+<p>We can often use t-tests or ANOVAs, but we might have to calculate the means per condition or the like before we run the analysis. This means throwing away a lot of information!</p>
+</div>
+</section>
+<section id="the-sleepstudy-data" class="level2">
+<h2 class="anchored" data-anchor-id="the-sleepstudy-data">The Sleepstudy Data</h2>
+<p>In the dataset, we have measurements of 18 participants across 10 days of sleep deprivation. Each day, the participants performed a “psychomotor vigilance test” where they had to monitor a display and press a button as quickly as possible as soon as a stimulus appeared.</p>
+<p>The dependent measure (DV) is response times (RT).</p>
+<p>Let’s take a look at the data, with a separate plot per participant:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>sleep <span class="ot">&lt;-</span> sleepstudy</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(sleep, <span class="fu">aes</span>(<span class="at">x =</span> Days, <span class="at">y =</span> Reaction)) <span class="sc">+</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">9</span>) <span class="sc">+</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>Subject)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="W12_LMM_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>It looks like RT is increasing with each additional day of sleep deprivation, starting from day 2 and increasing until day 10.</p>
+</section>
+<section id="preparing-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="preparing-the-data">Preparing the Data</h2>
+<p>We have some more information about the model that is helpful:</p>
+<ul>
+<li><p>The first two days were adaptation and training, the third day was a baseline measurement (8h time in bed)</p></li>
+<li><p>On the 4th day (until the 10th, so for 7 days), the sleep deprivation began:</p>
+<ul>
+<li>There were four groups: 9h, 7h, 5h, 3h time in bed</li>
+</ul></li>
+</ul>
+<p>. . .</p>
+<p>We thus have to remove the first two days, as they might bias our results.</p>
+<p><strong>Task</strong>:</p>
+<ul>
+<li><p>Remove (filter) observations where <code>Days</code> is <code>0</code> or <code>1</code>.</p></li>
+<li><p>Make a new variable, <code>days_deprived</code>, where day 2 is recoded as 0, day 3 as 1 etc.</p></li>
+<li><p>Store the data in a dataframe called <code>sleep2</code>.</p></li>
+</ul>
+<p>. . .</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>sleep2 <span class="ot">&lt;-</span> sleepstudy <span class="sc">%&gt;%</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Days <span class="sc">&gt;=</span> <span class="dv">2</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">days_deprived =</span> Days <span class="sc">-</span> <span class="dv">2</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sleep2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Reaction Days Subject days_deprived
+1 250.8006    2     308             0
+2 321.4398    3     308             1
+3 356.8519    4     308             2
+4 414.6901    5     308             3
+5 382.2038    6     308             4
+6 290.1486    7     308             5</code></pre>
+</div>
+</div>
+</section>
+<section id="fitting-the-model" class="level2">
+<h2 class="anchored" data-anchor-id="fitting-the-model">Fitting the Model</h2>
+<p>How might we model the relationship between <code>days_deprived</code> and <code>Reaction</code>?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(sleep2, <span class="fu">aes</span>(<span class="at">x =</span> days_deprived, <span class="at">y =</span> Reaction)) <span class="sc">+</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">7</span>) <span class="sc">+</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>Subject) <span class="sc">+</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Reaction Time"</span>, <span class="at">x =</span> <span class="st">"Days deprived of sleep (0 = baseline)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="W12_LMM_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>. . .</p>
+<p>It looks like we could fit an (increasing) line to each participant’s data.</p>
+<p>Remember the general formula for fitting lines:</p>
+<p><span class="math inline">\(Y = \beta_0 + \beta_1 X\)</span></p>
+<p>where <span class="math inline">\(\beta_0\)</span> is the y-intercept and <span class="math inline">\(\beta_1\)</span> is the slope, which we both estimate from the data.</p>
+<p>. . .</p>
+<p>If we fit such a line for every participant, the lines will differ in their intercept (mean RT at baseline, people differ in RTs!) and slope (the change in RT with each additional day of sleep deprivation).</p>
+<p>Should we fit the same line for every participant? Or individual lines? Or something in between?<br>
+These three approaches are also called <strong>complete pooling</strong>, <strong>no pooling</strong>, and <strong>partial pooling</strong>.</p>
+</section>
+<section id="complete-pooling" class="level2">
+<h2 class="anchored" data-anchor-id="complete-pooling">Complete Pooling</h2>
+<p>With complete pooling, we would estimate the same intercept and slope for every participant (“one size fits all”). This approach ignores that certain data points belong to certain individuals and just fits a line across all data points.</p>
+<p>We could fit such a model simply with <code>lm()</code>, which means we ignore the repeated measures within person and pretend that all observations are independent:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>cp_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(Reaction <span class="sc">~</span> days_deprived, sleep2)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(cp_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Reaction ~ days_deprived, data = sleep2)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-112.284  -26.732    2.143   27.734  140.453 
+
+Coefficients:
+              Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    267.967      7.737  34.633  &lt; 2e-16 ***
+days_deprived   11.435      1.850   6.183 6.32e-09 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 50.85 on 142 degrees of freedom
+Multiple R-squared:  0.2121,    Adjusted R-squared:  0.2066 
+F-statistic: 38.23 on 1 and 142 DF,  p-value: 6.316e-09</code></pre>
+</div>
+</div>
+<div class="cell" data-output-location="column">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(sleep2, <span class="fu">aes</span>(<span class="at">x =</span> days_deprived, <span class="at">y =</span> Reaction)) <span class="sc">+</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> <span class="fu">coef</span>(cp_model)[<span class="dv">1</span>],</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">slope =</span> <span class="fu">coef</span>(cp_model)[<span class="dv">2</span>],</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> <span class="st">'blue'</span>) <span class="sc">+</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">7</span>) <span class="sc">+</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>Subject) <span class="sc">+</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Reaction Time"</span>, <span class="at">x =</span> <span class="st">"Days deprived of sleep (0 = baseline)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="W12_LMM_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="notes">
+<p>Fits the data badly!</p>
+<p>the predicted mean response time on Day 0 is about 268 milliseconds, with an increase of about 11 milliseconds per day of deprivation, on average. We can’t trust the standard errors for our regression coefficients, however, because we are assuming that all of the observations are independent (technically, that the residuals are). However, we can be pretty sure this is a bad assumption.</p>
+</div>
+</section>
+<section id="no-pooling" class="level2">
+<h2 class="anchored" data-anchor-id="no-pooling">No Pooling</h2>
+<p>Another approach would be to fit separate lines for each participant.</p>
+<p>This approach implies that the estimates for one participant are completely uninformed by the estimates for the other participants - we could fit 18 separate models.</p>
+<p>We could also include <code>Subject</code> as a <em>predictor</em>, or a so-called <strong>fixed effect</strong>.</p>
+<p>For this approach, we have to make sure <code>Subject</code> is a factor (because the subject ID is meaningless, 310 is not 1 better than 309 etc.).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(sleep2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   144 obs. of  4 variables:
+ $ Reaction     : num  251 321 357 415 382 ...
+ $ Days         : num  2 3 4 5 6 7 8 9 2 3 ...
+ $ Subject      : Factor w/ 18 levels "308","309","310",..: 1 1 1 1 1 1 1 1 2 2 ...
+ $ days_deprived: num  0 1 2 3 4 5 6 7 0 1 ...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit the model</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>np_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(Reaction <span class="sc">~</span> days_deprived <span class="sc">+</span> Subject <span class="sc">+</span> days_deprived<span class="sc">:</span>Subject, <span class="at">data =</span> sleep2)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(np_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Reaction ~ days_deprived + Subject + days_deprived:Subject, 
+    data = sleep2)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-106.521   -8.541    1.143    8.889  128.545 
+
+Coefficients:
+                         Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)              288.2175    16.4772  17.492  &lt; 2e-16 ***
+days_deprived             21.6905     3.9388   5.507 2.49e-07 ***
+Subject309               -87.9262    23.3023  -3.773 0.000264 ***
+Subject310               -62.2856    23.3023  -2.673 0.008685 ** 
+Subject330               -14.9533    23.3023  -0.642 0.522422    
+Subject331                 9.9658    23.3023   0.428 0.669740    
+Subject332                27.8157    23.3023   1.194 0.235215    
+Subject333                -2.7581    23.3023  -0.118 0.906000    
+Subject334               -50.2051    23.3023  -2.155 0.033422 *  
+Subject335               -25.3429    23.3023  -1.088 0.279207    
+Subject337                24.6143    23.3023   1.056 0.293187    
+Subject349               -59.2183    23.3023  -2.541 0.012464 *  
+Subject350               -40.2023    23.3023  -1.725 0.087343 .  
+Subject351               -24.2467    23.3023  -1.041 0.300419    
+Subject352                43.0655    23.3023   1.848 0.067321 .  
+Subject369               -21.5040    23.3023  -0.923 0.358154    
+Subject370               -53.3072    23.3023  -2.288 0.024107 *  
+Subject371               -30.4896    23.3023  -1.308 0.193504    
+Subject372                 2.4772    23.3023   0.106 0.915535    
+days_deprived:Subject309 -17.3334     5.5703  -3.112 0.002380 ** 
+days_deprived:Subject310 -17.7915     5.5703  -3.194 0.001839 ** 
+days_deprived:Subject330 -13.6849     5.5703  -2.457 0.015613 *  
+days_deprived:Subject331 -16.8231     5.5703  -3.020 0.003154 ** 
+days_deprived:Subject332 -19.2947     5.5703  -3.464 0.000765 ***
+days_deprived:Subject333 -10.8151     5.5703  -1.942 0.054796 .  
+days_deprived:Subject334  -3.5745     5.5703  -0.642 0.522423    
+days_deprived:Subject335 -25.8995     5.5703  -4.650 9.47e-06 ***
+days_deprived:Subject337   0.7518     5.5703   0.135 0.892895    
+days_deprived:Subject349  -5.2644     5.5703  -0.945 0.346731    
+days_deprived:Subject350   1.6007     5.5703   0.287 0.774382    
+days_deprived:Subject351 -13.1681     5.5703  -2.364 0.019867 *  
+days_deprived:Subject352 -14.4019     5.5703  -2.585 0.011057 *  
+days_deprived:Subject369  -7.8948     5.5703  -1.417 0.159273    
+days_deprived:Subject370  -1.0495     5.5703  -0.188 0.850912    
+days_deprived:Subject371  -9.3443     5.5703  -1.678 0.096334 .  
+days_deprived:Subject372 -10.6041     5.5703  -1.904 0.059613 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 25.53 on 108 degrees of freedom
+Multiple R-squared:  0.849, Adjusted R-squared:  0.8001 
+F-statistic: 17.35 on 35 and 108 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<div class="notes">
+<p>also uses lm()</p>
+<p>intercept and slope = 308, other values are deviations from 308</p>
+<p>This model does not give us an overall intercept and slope! (Can average of course…) -&gt; suboptimal if we want to generalize to new participants!</p>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>all_intercepts <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">coef</span>(np_model)[<span class="st">"(Intercept)"</span>],</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">coef</span>(np_model)[<span class="dv">3</span><span class="sc">:</span><span class="dv">19</span>] <span class="sc">+</span> <span class="fu">coef</span>(np_model)[<span class="st">"(Intercept)"</span>])</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>all_slopes  <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">coef</span>(np_model)[<span class="st">"days_deprived"</span>],</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">coef</span>(np_model)[<span class="dv">20</span><span class="sc">:</span><span class="dv">36</span>] <span class="sc">+</span> <span class="fu">coef</span>(np_model)[<span class="st">"days_deprived"</span>])</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>ids <span class="ot">&lt;-</span> sleep2 <span class="sc">%&gt;%</span> <span class="fu">pull</span>(Subject) <span class="sc">%&gt;%</span> <span class="fu">levels</span>() <span class="sc">%&gt;%</span> <span class="fu">factor</span>()</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="co"># make a tibble with the data extracted above</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>np_coef <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">Subject =</span> ids,</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>                  <span class="at">intercept =</span> all_intercepts,</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>                  <span class="at">slope =</span> all_slopes)</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>np_coef</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 18 × 3
+   Subject intercept slope
+   &lt;fct&gt;       &lt;dbl&gt; &lt;dbl&gt;
+ 1 308          288. 21.7 
+ 2 309          200.  4.36
+ 3 310          226.  3.90
+ 4 330          273.  8.01
+ 5 331          298.  4.87
+ 6 332          316.  2.40
+ 7 333          285. 10.9 
+ 8 334          238. 18.1 
+ 9 335          263. -4.21
+10 337          313. 22.4 
+11 349          229. 16.4 
+12 350          248. 23.3 
+13 351          264.  8.52
+14 352          331.  7.29
+15 369          267. 13.8 
+16 370          235. 20.6 
+17 371          258. 12.3 
+18 372          291. 11.1 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(sleep2, <span class="fu">aes</span>(<span class="at">x =</span> days_deprived, <span class="at">y =</span> Reaction)) <span class="sc">+</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">data =</span> np_coef,</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">intercept =</span> intercept,</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>                            <span class="at">slope =</span> slope),</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> <span class="st">'blue'</span>) <span class="sc">+</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">7</span>) <span class="sc">+</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>Subject) <span class="sc">+</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Reaction Time"</span>, <span class="at">x =</span> <span class="st">"Days deprived of sleep (0 = baseline)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="W12_LMM_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="partial-pooling" class="level2">
+<h2 class="anchored" data-anchor-id="partial-pooling">Partial Pooling</h2>
+<p>Neither the complete or no-pooling approach is satisfactory.</p>
+<p>It would be desirable to improve our estimates for individual participants by taking advantage of what we know about the other participants.</p>
+<p>. . .</p>
+<p>This is called <strong>partial pooling</strong>: We treat a factor (e.g.&nbsp;<code>subject</code>) as <strong>random</strong> instead of as fixed.</p>
+<p>A <strong>random factor</strong> is a factor whose levels are considered to represent a proper subset of all the levels in the population (remember <em>sampling</em>!).</p>
+<p>. . .</p>
+<p>In <strong>partial pooling</strong> used in LMMs, estimates at each factor level (i.e.&nbsp;subject) become informed by the information at other levels.</p>
+<p>The model estimates values for the population, and pulls the estimates for individual subjects toward those values, a statistical phenomenon known as <strong>shrinkage</strong>.</p>
+<p>. . .</p>
+<p>We thus estimate a model like this:<br>
+<span class="math inline">\(Y_{sd} = \gamma_{0} + S_{0s} + \left(\gamma_{1} + S_{1s}\right) X_{sd} + e_{sd}\)</span></p>
+<p>where <span class="math inline">\(\gamma_{0}\)</span> is the “overall”/population intercept and <span class="math inline">\(\gamma_{1}\)</span> is the population slope. These are the <strong>fixed effects</strong> which are usually of interest and they are estimated from the data.<br>
+<span class="math inline">\(S_{0s}\)</span> are the <strong>random intercepts</strong> per participant and <span class="math inline">\(S_{1s}\)</span> the <strong>random slopes</strong> for <span class="math inline">\(X_{sd}\)</span> per participant. These values vary over subjects and are the offsets from the fixed effects (i.e.&nbsp;how much do individuals differ from the overall intercept/slope? Some subjects will have slower RTs, for some the effect of sleep deprivation will be stronger…).</p>
+<p>(See <a href="https://psyteachr.github.io/stat-models-v1/introducing-linear-mixed-effects-models.html">textbook</a> for further mathematical formula descriptions and details!)</p>
+<div class="notes">
+<p>Will help us distinguish signal from error for each participant</p>
+<p>improve generalization to the population</p>
+<p>especially important if we have missing data</p>
+<p>---</p>
+<p>RF: result of sampling, want to generalize beyond those levels</p>
+<p>---</p>
+<p>FE: assume that they reflect true pop para, don’t vary from sample to sample</p>
+</div>
+</section>
+<section id="partial-pooling-2" class="level2">
+<h2 class="anchored" data-anchor-id="partial-pooling-2">Partial Pooling 2</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.tjmahr.com/plotting-partial-pooling-in-mixed-effects-models/"><img src="images/partialpooling.png" class="img-fluid figure-img"></a></p>
+<figcaption class="figure-caption">Different Pooling Models</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.tjmahr.com/plotting-partial-pooling-in-mixed-effects-models/"><img src="images/shrinkage.png" class="img-fluid figure-img"></a></p>
+<figcaption class="figure-caption">Shrinkage</figcaption>
+</figure>
+</div>
+<div class="notes">
+<p>the further away (the more “unnormal), the more changed/drawn towards overall estimates/penalized.</p>
+<p>The fewer observations in a cluster, the more information borrowed from others, greater pull (373 and 374)</p>
+<p>Avoids overfitting by taming extreme estimates!</p>
+</div>
+</section>
+<section id="fitting-the-model-1" class="level2">
+<h2 class="anchored" data-anchor-id="fitting-the-model-1">Fitting the Model</h2>
+<p>To fit a LMM, we can use the function <code>lmer()</code> from the <code>lme4</code> package (you could also use functions from the <code>afex</code> package, which might be more user friendly).</p>
+<p>The notation is very similar to that of fitting <code>lm()</code> models, we only need to add the random effects:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>pp_mod <span class="ot">&lt;-</span> <span class="fu">lmer</span>(Reaction <span class="sc">~</span> days_deprived <span class="sc">+</span> (days_deprived <span class="sc">|</span> Subject), sleep2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>. . .</p>
+<p>Here we can see that we only have one <strong>predictor/IV/fixed effect</strong>: <code>days_deprived</code>.</p>
+<p><strong>Random effects</strong> are denoted in the parentheses (). On the <em>right</em> side of the |, you write down what uniquely identifies the clustering variable, e.g.&nbsp;<code>Subjects</code>. On the <em>left</em> side of the |, you put the effects that you want to vary over the levels of the clustering variable. The right side thus denotes the <strong>random intercept</strong>, the left side the <strong>random slope</strong>.</p>
+<p>. . .</p>
+<p>There are a number of ways to specify random effects. The most common you will see are:</p>
+<table class="table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 66%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Syntax</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Random intercepts only</td>
+<td><code>Reaction ~ days_deprived + (1 | Subject)</code></td>
+</tr>
+<tr class="even">
+<td>Random intercepts and slopes</td>
+<td><p><code>Reaction ~ days_deprived + (1 + days_deprived | Subject)</code></p>
+<p>(or the one above, which is identical)</p></td>
+</tr>
+</tbody>
+</table>
+<p>Random-intercepts-only models are appropriate if you have within-subjects factors without pseudo-replications (i.e.&nbsp;one measurement per subject/level). If you have more than one observation per subject per cell, you need random slopes.</p>
+<div class="notes">
+<p>always good to include random slopes, but sometimes the model does not converge –&gt; only random intercepts</p>
+<p>rmANOVA ~ random intercept model</p>
+<p>You can add other random effects!</p>
+</div>
+</section>
+<section id="interpreting-the-model---fixed-effects" class="level2">
+<h2 class="anchored" data-anchor-id="interpreting-the-model---fixed-effects">Interpreting the Model - Fixed Effects</h2>
+<p>Let’s look at the model output:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(pp_mod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Linear mixed model fit by REML ['lmerMod']
+Formula: Reaction ~ days_deprived + (days_deprived | Subject)
+   Data: sleep2
+
+REML criterion at convergence: 1404.1
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-4.0157 -0.3541  0.0069  0.4681  5.0732 
+
+Random effects:
+ Groups   Name          Variance Std.Dev. Corr
+ Subject  (Intercept)   958.35   30.957       
+          days_deprived  45.78    6.766   0.18
+ Residual               651.60   25.526       
+Number of obs: 144, groups:  Subject, 18
+
+Fixed effects:
+              Estimate Std. Error t value
+(Intercept)    267.967      8.266  32.418
+days_deprived   11.435      1.845   6.197
+
+Correlation of Fixed Effects:
+            (Intr)
+days_deprvd -0.062</code></pre>
+</div>
+</div>
+<p>The section called <code>Fixed effects</code> is similar to what you have seen so far for <code>lm()</code> models. This is also the section that will likely be of main interest to you.</p>
+<p>You can see that the estimated mean reaction time for participants at Day 0 was about 268 milliseconds, with each day of sleep deprivation adding an additional 11 milliseconds to the response time, on average.</p>
+<p>. . .</p>
+<p>You might also notice that you don’t see <em>p</em>-values in the output. There is a huge discussion on how to best estimate the <em>degrees of freedom</em> for these models… If you don’t want to go into the details, one option is to use the <code>lmerTest</code> package to obtain <em>p</em>-values:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lmerTest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attache Paket: 'lmerTest'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Das folgende Objekt ist maskiert 'package:lme4':
+
+    lmer</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Das folgende Objekt ist maskiert 'package:stats':
+
+    step</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>pp_mod <span class="ot">&lt;-</span> <span class="fu">lmer</span>(Reaction <span class="sc">~</span> days_deprived <span class="sc">+</span> (days_deprived <span class="sc">|</span> Subject), sleep2)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(pp_mod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Linear mixed model fit by REML. t-tests use Satterthwaite's method [
+lmerModLmerTest]
+Formula: Reaction ~ days_deprived + (days_deprived | Subject)
+   Data: sleep2
+
+REML criterion at convergence: 1404.1
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-4.0157 -0.3541  0.0069  0.4681  5.0732 
+
+Random effects:
+ Groups   Name          Variance Std.Dev. Corr
+ Subject  (Intercept)   958.35   30.957       
+          days_deprived  45.78    6.766   0.18
+ Residual               651.60   25.526       
+Number of obs: 144, groups:  Subject, 18
+
+Fixed effects:
+              Estimate Std. Error      df t value Pr(&gt;|t|)    
+(Intercept)    267.967      8.266  17.000  32.418  &lt; 2e-16 ***
+days_deprived   11.435      1.845  16.999   6.197 9.75e-06 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Correlation of Fixed Effects:
+            (Intr)
+days_deprvd -0.062</code></pre>
+</div>
+</div>
+</section>
+<section id="interpreting-the-model---random-effects" class="level2">
+<h2 class="anchored" data-anchor-id="interpreting-the-model---random-effects">Interpreting the Model - Random Effects</h2>
+<p>The random effects part of the output provides you with the <em>variance-covariance matrix</em> of the random effects and the residual variance.</p>
+<p>The <em>residual variance</em> is the variance of the residuals, i.e.&nbsp;the error variance which is not explained by the model.</p>
+<p>The <em>variance-covariance matrix</em> above gives us the variance of each random effect component as well as the correlation between random intercept and slope. Often, you would not need to interpret these effects in too much detail (unless you’re interested in floor/ceiling effect visible in a big correlation), but you should make sure the variance is not 0 or 1.</p>
+</section>
+<section id="lmm-with-crossed-random-factors" class="level2">
+<h2 class="anchored" data-anchor-id="lmm-with-crossed-random-factors">LMM with Crossed Random Factors</h2>
+<p>Often, we have a set of stimuli that we use for all subjects, e.g.&nbsp;pictures. Each specific stimulus might have its own effects, some might be more efficient in eliciting the measured response than others. In such a case, the stimuli would also explain some of the variance and would be a <em>random</em> factor.</p>
+<p>. . .</p>
+<p>Data would be clustered not only within subject but also within stimulus (more similar)</p>
+<p>Stimuli would also be assumed to be drawn randomly from a population of possible stimuli and we want to be able to generalize beyond the ones used.</p>
+<div class="notes">
+<p>why “crossed”? Every participant provides an observation (or several) for every stimulus…</p>
+</div>
+<p>. . .</p>
+<p>With lmer(), it is quite easy to add other random effects, such as crossed random effects:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>y <span class="sc">~</span> x <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> x <span class="sc">|</span> subject_id) <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> x <span class="sc">|</span> stimulus_id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="convergence-issues-and-singular-fits" class="level2">
+<h2 class="anchored" data-anchor-id="convergence-issues-and-singular-fits">Convergence Issues and Singular Fits</h2>
+<p>It often happens that you get an error message: Either your model does not converge (R tries but can’t find good estimates) or you have a singular fit (the random factors have variances close to 0 or correlate perfectly, -1 or 1, with each other).</p>
+<p>In both cases, it makes sense to simplify your random effect structure:</p>
+<ol type="1">
+<li><p>Constrain all covariance parameters to zero. This is accomplished using the double-bar <code>||</code> syntax, e.g., changing <code>(a * b | subject)</code> to <code>(a * b || subject)</code>. If you still run into estimation problems, then:</p></li>
+<li><p>Inspect the parameter estimates from the non-converging or singular model. Are any of the slope variables zero or near to zero? Remove these and re-fit the model, repeating this step until the convergence warnings / singular fit messages go away.</p></li>
+</ol>
+<div class="notes">
+<p>this might not make sense right now, but you can look at it once you run into these problems</p>
+</div>
+</section>
+<section id="example" class="level2">
+<h2 class="anchored" data-anchor-id="example">Example</h2>
+<p>Let’s fit a model with simulated data, which you can find in the file <code>dat_sim2.csv</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>dat_sim2 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"Data/dat_sim2.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 5000 Columns: 5
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (1): gender
+dbl (4): subj_id, item_id, cond, Y
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dat_sim2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 5
+  subj_id item_id  cond gender     Y
+    &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;  &lt;dbl&gt;
+1       1       1  -0.5 male   1078.
+2       1       2   0.5 male    957.
+3       1       3  -0.5 male    698.
+4       1       4   0.5 male    464.
+5       1       5  -0.5 male    497.
+6       1       6   0.5 male    787.</code></pre>
+</div>
+</div>
+<p>In the file, you can see 100 participants (<code>subj_id</code>) and 50 observations per participants, one for each stimulus (<code>item_id</code>).</p>
+<p>You can also see two predictors: <code>cond</code> and <code>gender</code>.<br>
+As you can see, <code>cond</code> is a <em>within-subject</em>, across-item variable (a categorical factor!), which means that some of the stimuli belong to one category, the others to a second category (e.g.&nbsp;positive and negative images). <code>gender</code> is a <em>between-subjects</em> variable (also a categorical factor!): Participants either identify as female or male but that doesn’t change.</p>
+<p>Finally, there is a dependent/outcome variable called <code>Y</code>, this could be reaction times.</p>
+<p>. . .</p>
+<p>If we’re interested in the effects of <code>cond</code> and <code>gender</code> (including their <code>interaction</code>) on Y, how would you specify the model? Which would be the fixed effects, which would be random effects?</p>
+<p>. . .</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make sure gender is a factor!</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>dat_sim2<span class="sc">$</span>gender <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(dat_sim2<span class="sc">$</span>gender)</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(dat_sim2<span class="sc">$</span>gender)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "female" "male"  </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>mod_sim <span class="ot">&lt;-</span> <span class="fu">lmer</span>(Y <span class="sc">~</span> cond <span class="sc">*</span> gender <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> cond <span class="sc">|</span> subj_id) <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> item_id), dat_sim2, <span class="at">REML =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod_sim)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Linear mixed model fit by maximum likelihood . t-tests use Satterthwaite's
+  method [lmerModLmerTest]
+Formula: Y ~ cond * gender + (1 + cond | subj_id) + (1 | item_id)
+   Data: dat_sim2
+
+     AIC      BIC   logLik deviance df.resid 
+ 67643.3  67702.0 -33812.7  67625.3     4991 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-3.6374 -0.6612 -0.0244  0.6779  3.7702 
+
+Random effects:
+ Groups   Name        Variance Std.Dev. Corr
+ subj_id  (Intercept)  9457.0   97.25       
+          cond          595.3   24.40   0.67
+ item_id  (Intercept)  8086.4   89.92       
+ Residual             40305.0  200.76       
+Number of obs: 5000, groups:  subj_id, 100; item_id, 50
+
+Fixed effects:
+                Estimate Std. Error      df t value Pr(&gt;|t|)    
+(Intercept)      790.541     19.157 134.091  41.267  &lt; 2e-16 ***
+cond              76.085     26.894  56.207   2.829  0.00646 ** 
+gendermale         5.503     20.261  99.624   0.272  0.78651    
+cond:gendermale    3.134     12.361  99.160   0.254  0.80035    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Correlation of Fixed Effects:
+            (Intr) cond   gndrml
+cond         0.062              
+gendermale  -0.529 -0.059       
+cond:gndrml -0.135 -0.230  0.256</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># with the anova() function, you will get the typical anova table with main effects and interaction!</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(mod_sim)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Type III Analysis of Variance Table with Satterthwaite's method
+            Sum Sq Mean Sq NumDF  DenDF F value   Pr(&gt;F)   
+cond        354738  354738     1 50.671  8.8013 0.004584 **
+gender        2973    2973     1 99.624  0.0738 0.786505   
+cond:gender   2592    2592     1 99.160  0.0643 0.800346   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</section>
+<section id="contrasts" class="level2">
+<h2 class="anchored" data-anchor-id="contrasts">Contrasts</h2>
+<p>R uses per default a coding of the factor levels called <strong>dummy coding</strong>. This means that one factor level is coded as 0, another as 1 (and if there are more than two levels, there will be several dummy coded variables used for the models).</p>
+<p>The problem with dummy coding is that the output is hard to interpret, especially if interactions are involved. Therefore, it is preferable to use <strong>effects or sum coding</strong>, which uses e.g.&nbsp;-.5 and .5 as codes for the factor levels.</p>
+<p>You can change this before running the model using:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="do">## use sum coding instead of default 'dummy' (treatment) coding</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(dat_sim2<span class="sc">$</span>gender) <span class="ot">&lt;-</span> contr.sum</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>mod_sim <span class="ot">&lt;-</span> <span class="fu">lmer</span>(Y <span class="sc">~</span> cond <span class="sc">*</span> gender <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> cond <span class="sc">|</span> subj_id) <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> item_id), dat_sim2, <span class="at">REML =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod_sim)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Linear mixed model fit by maximum likelihood . t-tests use Satterthwaite's
+  method [lmerModLmerTest]
+Formula: Y ~ cond * gender + (1 + cond | subj_id) + (1 | item_id)
+   Data: dat_sim2
+
+     AIC      BIC   logLik deviance df.resid 
+ 67643.3  67702.0 -33812.7  67625.3     4991 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-3.6374 -0.6612 -0.0244  0.6779  3.7702 
+
+Random effects:
+ Groups   Name        Variance Std.Dev. Corr
+ subj_id  (Intercept)  9457.0   97.25       
+          cond          595.3   24.40   0.67
+ item_id  (Intercept)  8086.4   89.92       
+ Residual             40305.0  200.76       
+Number of obs: 5000, groups:  subj_id, 100; item_id, 50
+
+Fixed effects:
+             Estimate Std. Error      df t value Pr(&gt;|t|)    
+(Intercept)   793.293     16.259 101.954  48.791  &lt; 2e-16 ***
+cond           77.652     26.175  50.671   2.967  0.00458 ** 
+gender1        -2.751     10.131  99.624  -0.272  0.78651    
+cond:gender1   -1.567      6.180  99.160  -0.254  0.80035    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Correlation of Fixed Effects:
+            (Intr) cond  gendr1
+cond        0.038              
+gender1     0.000  0.000       
+cond:gendr1 0.000  0.000 0.256 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(mod_sim)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Type III Analysis of Variance Table with Satterthwaite's method
+            Sum Sq Mean Sq NumDF  DenDF F value   Pr(&gt;F)   
+cond        354738  354738     1 50.671  8.8013 0.004584 **
+gender        2973    2973     1 99.624  0.0738 0.786505   
+cond:gender   2592    2592     1 99.160  0.0643 0.800346   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</section>
+<section id="assumption-check" class="level2">
+<h2 class="anchored" data-anchor-id="assumption-check">Assumption Check</h2>
+<p>We can use the check_model() function of the performance package also for LMMs:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(mod_sim)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="W12_LMM_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Looks good!</p>
+</section>
+<section id="planned-comparisons" class="level2">
+<h2 class="anchored" data-anchor-id="planned-comparisons">Planned Comparisons</h2>
+<p>You can also use the <code>emmeans</code> package for comparing different groups/factor levels. For example, you could do pairwise comparisons for the main effect of gender, if that was significant. This is especially relevant if you have more than two factor levels/groups/conditions, because with two you can already read out the effect from the <code>lmer()</code> output (the estimate for gender1 is the difference between the two genders if you use dummy coding, and 2* the estimate if you use sum coding!). We would use the emmeans() function:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>emm1 <span class="ot">=</span> <span class="fu">emmeans</span>(mod_sim, <span class="at">specs =</span> pairwise <span class="sc">~</span> gender)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>You could also investigate further in which direction an interaction goes. If you have a categorical and a continuous predictor, we would probably use <code>emtrends()</code> to see how the slope of the continuous variable differs between groups of the categorical variable.</p>
+<p>If we have two categorical variables, like we have in our example, we can use <code>emmeans()</code> similarly to the code above, only that we include the interaction:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>emm1 <span class="ot">=</span> <span class="fu">emmeans</span>(mod_sim, <span class="at">specs =</span> pairwise <span class="sc">~</span> cond<span class="sc">:</span>gender)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Note: D.f. calculations have been disabled because the number of observations exceeds 3000.
+To enable adjustments, add the argument 'pbkrtest.limit = 5000' (or larger)
+[or, globally, 'set emm_options(pbkrtest.limit = 5000)' or larger];
+but be warned that this may result in large computation time and memory use.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Note: D.f. calculations have been disabled because the number of observations exceeds 3000.
+To enable adjustments, add the argument 'lmerTest.limit = 5000' (or larger)
+[or, globally, 'set emm_options(lmerTest.limit = 5000)' or larger];
+but be warned that this may result in large computation time and memory use.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">test</span>(emm1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$emmeans
+ cond gender emmean   SE  df z.ratio p.value
+ -0.5 female    752 22.7 Inf  33.134  &lt;.0001
+  0.5 female    829 24.1 Inf  34.410  &lt;.0001
+ -0.5 male      756 22.7 Inf  33.307  &lt;.0001
+  0.5 male      836 24.1 Inf  34.703  &lt;.0001
+
+Degrees-of-freedom method: asymptotic 
+
+$contrasts
+ contrast                            estimate   SE  df z.ratio p.value
+ (cond-0.5 female) - cond0.5 female    -76.08 26.9 Inf  -2.829  0.0241
+ (cond-0.5 female) - (cond-0.5 male)    -3.94 19.6 Inf  -0.201  0.9971
+ (cond-0.5 female) - cond0.5 male      -83.15 33.1 Inf  -2.512  0.0580
+ cond0.5 female - (cond-0.5 male)       72.15 33.1 Inf   2.180  0.1289
+ cond0.5 female - cond0.5 male          -7.07 22.6 Inf  -0.312  0.9895
+ (cond-0.5 male) - cond0.5 male        -79.22 26.9 Inf  -2.946  0.0170
+
+Degrees-of-freedom method: asymptotic 
+P value adjustment: tukey method for comparing a family of 4 estimates </code></pre>
+</div>
+</div>
+<p>You would then select the comparisons in the <code>$contrasts</code> output that are of interest (you can also run only those, but that’s a bit more difficult).</p>
+<p>You can also use the <code>emmip()</code> function to make interaction plots, e.g.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">emmip</span>(mod_sim, cond <span class="sc">~</span> gender)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Note: D.f. calculations have been disabled because the number of observations exceeds 3000.
+To enable adjustments, add the argument 'pbkrtest.limit = 5000' (or larger)
+[or, globally, 'set emm_options(pbkrtest.limit = 5000)' or larger];
+but be warned that this may result in large computation time and memory use.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Note: D.f. calculations have been disabled because the number of observations exceeds 3000.
+To enable adjustments, add the argument 'lmerTest.limit = 5000' (or larger)
+[or, globally, 'set emm_options(lmerTest.limit = 5000)' or larger];
+but be warned that this may result in large computation time and memory use.</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="W12_LMM_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p><strong>But since the interaction is not significant, we don’t need to do any post-hoc comparisons!</strong></p>
+</section>
+<section id="effect-sizes" class="level2">
+<h2 class="anchored" data-anchor-id="effect-sizes">Effect Sizes</h2>
+<p>You can calculate the R², the explained variance of the DV Y, as an overall model fit index. For LMMs, you can calculate two R²: One for the fixed effects only (<em>marginal</em>), one when also accounting for the random effect (i.e.&nbsp;the individual differences, <em>conditional</em>).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use r2() from the performance package:</span></span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a><span class="fu">r2</span>(mod_sim)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># R2 for Mixed Models
+
+  Conditional R2: 0.323
+     Marginal R2: 0.025</code></pre>
+</div>
+</div>
+<p>In addition, you can calculate the effect sizes per effect. This is not as straight-forward for LMMs, but you could use the following function from the <code>effectsize</code> package to obtain the partial eta² (you would have to manually - or with R code - plug in the F values etc. from the ANOVA table!):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(effectsize)</span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">es.use_symbols =</span> <span class="cn">TRUE</span>) <span class="co"># get nice symbols when printing! (On Windows, requires R &gt;= 4.2.0)</span></span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a><span class="fu">F_to_eta2</span>(</span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">f =</span> <span class="fu">c</span>(<span class="fl">8.8013</span>, <span class="fl">0.0738</span>, <span class="fl">0.0643</span>),</span>
+<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">df =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>),</span>
+<span id="cb63-7"><a href="#cb63-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">df_error =</span> <span class="fu">c</span>(<span class="fl">50.671</span>, <span class="fl">99.624</span>,<span class="fl">99.160</span>)</span>
+<span id="cb63-8"><a href="#cb63-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>η² (partial) |       95% CI
+---------------------------
+0.15         | [0.03, 1.00]
+7.40e-04     | [0.00, 1.00]
+6.48e-04     | [0.00, 1.00]
+
+- One-sided CIs: upper bound fixed at [1.00].</code></pre>
+</div>
+</div>
+</section>
+<section id="interpretation" class="level2">
+<h2 class="anchored" data-anchor-id="interpretation">Interpretation</h2>
+<p>We ran a linear mixed model with condition and gender as fixed effect, Y as dependent variable, and random slopes for condition for each subject, as well as random intercepts for subjects and items. All assumptions of linear mixed models were met (see figure…) and the model explains 32,3% of the variance in Y if accounting for the random effects (marginal R²) and 2,5% if only accounting for the fixed effects (conditional R²).</p>
+<p>We found a main effect of condition (F(1, 50.67) = 8.8, p = .005, partial η² = 0.15), but neither a main effect of gender (F(…, …) = .. , p = …, partial η² = …) nor a significant interaction between gender and condition (F(…, …) = .. , p = …, partial η² = …).</p>
+<p>The Ys in one cond (-.5) are significantly lower (Mean = 754, SD =…) than in the other cond (.5; mean = 832, SD = …, see also figure …).</p>
+<p>[Add visualization where you can see the difference between conditions!]</p>
+</section>
+</section>
+<section id="generalized-linear-mixed-models" class="level1">
+<h1><em>Generalized</em> Linear (Mixed) Models</h1>
+<p>It is possible to use LMs and LMMs also for data, where the outcome variable is <strong>not</strong> <strong>continuous</strong> and <strong>numeric,</strong> but rather <strong>discrete.</strong> These could be:</p>
+<ul>
+<li><p>Binary responses, such as “yes”/“no”</p></li>
+<li><p>Ordinal data: Likert scale ordered responses, such as “not at all”/“somewhat”/“a lot”</p></li>
+<li><p>Nominal data: Unordered categories, such as which food is ordered (“chicken”/“tofu”/“beef”)</p></li>
+<li><p>Count data: Number of occurences</p></li>
+<li><p>…</p></li>
+</ul>
+<p>It is possible to also use a form of linear (mixed) model for these data, but these models are called <strong>generalized linear (mixed) models</strong>!</p>
+<section id="why-not-model-discrete-data-as-continuous" class="level2">
+<h2 class="anchored" data-anchor-id="why-not-model-discrete-data-as-continuous">Why not Model Discrete Data as Continuous?</h2>
+<p>This is actually what happens a lot (you can see it in published papers): Researchers treat percentages, counts, or (sums of) responses on a Likert scale as continuous data and simply run a linear model.</p>
+<p>But there are a number of reasons why this is a bad idea:</p>
+<ul>
+<li><p><strong>Bounded scale</strong>: There are usually no negative numbers and often an upper limit as well. A normal linear model would try to assign probability to these impossible values. This can lead to spurious interaction effects (think of improvements from 90% - there’s a ceiling effect)!</p></li>
+<li><p><strong>Variance depends on mean</strong>: In LMs, the variance is independent from the mean (related to the assumption of homogeneity of variance). This is not necessarily the case for discrete data (e.g.&nbsp;binary or count data).</p></li>
+</ul>
+<p>It thus makes sense to model the data as best as possible.</p>
+</section>
+<section id="how-to-run-a-generalized-linear-model" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-run-a-generalized-linear-model">How to run a Generalized Linear Model</h2>
+<p>The basic idea is to use a <strong>link function</strong> that transforms the response space so that we can perform our usual linear regression. The parameters will be hard to interpret because they are in the model space (~different units), but we can transform them back to our response space (data units) using an <strong>inverse link function</strong>.</p>
+<p>. . .</p>
+<p>There are a lot of different kinds of generalized linear models that you would use depending on your data. The most common ones are the <strong>logistic regression</strong> (for <em>binary</em> data) and the <strong>Poisson regression</strong> (for <em>count</em> data).</p>
+<p>I will just give you an example with logistic regression.</p>
+</section>
+<section id="logistic-regression" class="level2">
+<h2 class="anchored" data-anchor-id="logistic-regression">Logistic Regression</h2>
+<p>Definitions:</p>
+<table class="table">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 81%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Bernoulli trial</td>
+<td>An event with an binary outcome, with one outcome being considered “success”</td>
+</tr>
+<tr class="even">
+<td>proportion</td>
+<td>The ratio of successes to the total number of Bernoulli trials</td>
+</tr>
+<tr class="odd">
+<td>odds</td>
+<td>The ratio of successes to failures</td>
+</tr>
+<tr class="even">
+<td>log odds</td>
+<td>The (natural) log of the odds</td>
+</tr>
+</tbody>
+</table>
+<p>In logisitc regression, we are modeling the relationship between response (DV) and predictors (IVs) in log odds space (= model space).</p>
+<p>. . .</p>
+<p>Logistic regression is used when the individual outcomes are <strong>Bernoulli trials</strong>. The outcome of a sequence of trials is communicated as a <strong>proportion</strong>:</p>
+<p>If we flip a coin 100 times and get 47 heads, we have a proportion of .47. This is our estimate of the probability of the event.</p>
+<p>. . .</p>
+<p>We can also calculate the (natural) <strong>odds</strong> of heads: 47:53 = .89 (heads:not heads).</p>
+<p>The <strong>natural log of the odds</strong> or <strong>logit</strong> is the scale of the logistic regression.</p>
+<p>Recall that the logarithm of some value Y gives the exponent that would yield Y for a given base. For instance, the log2 (log to the base 2) of 16 is 4, because 2<sup>4</sup> = 16.</p>
+<p>In logistic regression, the base is usually <em>e</em> (Euler’s number). To get the log odds from the natural odds, we can use <code>log()</code> and to get the inverse, the natural from the log odds, we can use <code>exp()</code>.</p>
+<div class="notes">
+<p>Bernoulli: 0,1 / success, failure… arbitrary what is success!</p>
+<p>odds = p/1-p</p>
+<p>0 to +inf</p>
+<p><strong>nice properties</strong> of log odds:</p>
+<ul>
+<li><p>symmetric around 0</p></li>
+<li><p>0 = max. uncertainty, both outcomes equally likely</p></li>
+<li><p>pos: success more likely than failure</p></li>
+</ul>
+</div>
+</section>
+<section id="link-function" class="level2">
+<h2 class="anchored" data-anchor-id="link-function">Link Function</h2>
+<p>The link function for logistic regression is:</p>
+<p><span class="math inline">\(\eta = \log \left(\frac{p}{1-p}\right)\)</span></p>
+<p>The inverse link function is:</p>
+<p><span class="math inline">\(p = \frac{1}{1 + e^{-\eta}}\)</span></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://psyteachr.github.io/stat-models-v1/generalized-linear-mixed-effects-models.html"><img src="images/logistic.jpg" class="img-fluid figure-img"></a></p>
+<figcaption class="figure-caption">Model vs.&nbsp;response space</figcaption>
+</figure>
+</div>
+<div class="notes">
+<p>eta = outcome variable?!</p>
+</div>
+</section>
+<section id="estimating-logistic-regression-in-r" class="level2">
+<h2 class="anchored" data-anchor-id="estimating-logistic-regression-in-r">Estimating Logistic Regression in R</h2>
+<p>Estimating logistic regressions is not very difficult in R (the interpretation might be, though), because you simply use the function <code>glm()</code> instead of <code>lm()</code> or <code>glmer()</code> instead of <code>lmer()</code>.</p>
+<p>In addition, you’d add an argument to the function, which specifies the link function. For logistic regression, this would be <code>family = binomial(link = "logit")</code> or <code>family = binomial</code> would be sufficient if you want to use the default logit link.</p>
+<p>So the code would look like this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glm</span>(DV <span class="sc">~</span> IV1 <span class="sc">+</span> IV2 <span class="sc">+</span> ..., data, <span class="at">family =</span> binomial)</span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a><span class="co"># for multi-level data:</span></span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a><span class="fu">glmer</span>(DV <span class="sc">~</span> IV1 <span class="sc">+</span> IV2 <span class="sc">+</span> <span class="fu">...</span> (<span class="dv">1</span> <span class="sc">|</span> subject), data, <span class="at">family =</span> binomial)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="thanks" class="level1">
+<h1>Thanks</h1>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

@@ -11,8 +11,7 @@ format:
     scrollable: true
     slide-number: true
     theme: serif
-    standalone: true
-    self-contained: true
+    chalkboard: true
 from: markdown+emoji
 ---
 

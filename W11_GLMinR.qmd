@@ -42,7 +42,17 @@ library(report)
 library(tidyverse)
 ```
 
+<<<<<<< HEAD
 Last session, we have used **one-way ANOVAs** to analyze data for which we were interested in differences between levels of one factor (between-subjects groups) on a continuous dependent variable.
+=======
+::: notes
+start recording
+:::
+
+# Factorial ANOVA
+
+Last R session, we have used **one-way ANOVAs** to analyze data where we were interested in differences between levels of one factor (between-subjects groups) on a continuous dependent variable.
+>>>>>>> 749fecb8c683ff61febc9926ae76317f3da1b599
 
 . . .
 

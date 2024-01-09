@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.353">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Dr.&nbsp;Mario Reutter (slides adapted from Dr.&nbsp;Lea Hildebrandt)">
+
+<title>Biostatistics - 01a Introduction to Biostatistics</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating slimcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">
+      Biostatistics
+      </li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Biostatistics</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../W1_Intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">01a Introduction to Biostatistics</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../W1b_IntroR.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">01b Intro to R</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../W2_Models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">02 Models</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../W3_DataWranglingR.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">03 Data Wrangling</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../W4_DataVizR.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">04 Data Visualization</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../W5_Sampling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">05 Probabilities &amp; Sampling</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../W6_ProbabilityR.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">06 Probability &amp; Sampling in R</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../W7_Hypothesis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">07 Hypothesis Testing</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../W8_ModelingRelationships.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">08 Modeling Relationships</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../W9_FirstAnalysisR.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">09 Statistical Analyses in R</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../W10_GLM.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">10 The General Linear Model &amp; Multivariate Statistics</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../W11_GLMinR.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">11 ANOVA &amp; the General Linear Model in R</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../W12_LMM.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">12 Linear Mixed Models</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../W15_RepResearchR.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">15 Reproducible Research</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        
+    <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="W1_intro.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">01a Introduction to Biostatistics</h1>
+<p class="subtitle lead"></p><p>Julius-Maximilians-University Würzburg<br>
+Course: “Biostatistics”<br>
+Translational Neuroscience</p><p></p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Dr.&nbsp;Mario Reutter (slides adapted from Dr.&nbsp;Lea Hildebrandt) </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="welcome" class="level1 page-columns page-full">
+<h1>Welcome!</h1>
+<section id="hello" class="level2">
+<h2 class="anchored" data-anchor-id="hello">Hello!</h2>
+<p>Who am I?</p>
+<p>. . .</p>
+<p>Who are you?</p>
+<ul>
+<li><p>What is your background?</p></li>
+<li><p>Do you have experience with data analysis?</p></li>
+<li><p>What’s your attitude towards statistics?</p></li>
+</ul>
+<!-- . . .
+
+Today, I'm feeling...
+
+![](images/moodmeter_en.jpg){fig-alt="Moodmeter"} -->
+<div class="notes">
+<p>Survey (Zoom) + Moodmeter (pick a stamp - top of screen, select annotate…)</p>
+<p>Too many people to have an introduction round!</p>
+<p>I know that you probably don’t know each other yet, there will be some break-out sessions where you can get to know each other a bit (and talk about stats!) ;)</p>
+<p>Stats Anxiety: It will be packed, but it will be ok (You can always reach me with questions!)!</p>
+</div>
+</section>
+<section id="using-the-slides" class="level2">
+<h2 class="anchored" data-anchor-id="using-the-slides">Using the Slides</h2>
+<ul>
+<li>These slides are created directly in R with the quarto extension.</li>
+<li>You can jump to a slide by clicking the three dashes in the bottom left.</li>
+<li>You can conveniently copy R code from the slides with one click and paste it into your RStudio.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"Hello World"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Hello World"</code></pre>
+</div>
+</div>
+</section>
+<section id="organizational-issues" class="level2">
+<h2 class="anchored" data-anchor-id="organizational-issues">Organizational Issues</h2>
+<p>. . .</p>
+<!-- -   *Warning*: The course only lasts until mid-December - but we have to squeeze the content of the full semester in these 8 weeks!
+
+    -   This means, we'll have two sessions per week, Statistics (Input) on Tuesdays and R Programming (Hands-on) on Wednesdays -->
+<ul>
+<li><p>Attendance is mandatory! (I don’t make the rules :) )</p>
+<ul>
+<li><p>You may miss one session without giving reasons (recommendation: don’t waste it early!)</p></li>
+<li><p>If you miss additional sessions, please write an email with an explanation (further proof may be required, e.g.&nbsp;doctor’s certificate)</p></li>
+</ul></li>
+</ul>
+<p>. . .</p>
+<ul>
+<li><p>The course will take place in person</p>
+<ul>
+<li>Only for students who are not in Würzburg yet, there is an option via Zoom</li>
+</ul></li>
+</ul>
+<p>. . .</p>
+<ul>
+<li><p>We will use these textbooks (Open Educational Resources - freely available online, also linked in WueCampus):</p>
+<ul>
+<li><p>Statistical Thinking for the 21st Century: <a href="https://statsthinking21.github.io/statsthinking21-core-site/index.html" class="uri">https://statsthinking21.github.io/statsthinking21-core-site/index.html</a></p></li>
+<li><p>For the R part: Fundamentals of Quantitative Analysis: <a href="https://psyteachr.github.io/quant-fun-v2/" class="uri">https://psyteachr.github.io/quant-fun-v2/</a></p></li>
+</ul></li>
+</ul>
+<!-- -   Should we use MS Teams?
+
+    -   Advantage: You can ask questions and discuss there!
+
+    -   Disadvantage: One more program to use/check...-->
+<div class="notes">
+<p>Online: Participation, videos, chat…</p>
+<p>Or R Session on Tuesday and video before? Some can’t make it on Wednesdays… (chat or speak out)</p>
+<p>Attendance: If 2x per week sync: max. 3 missed classes, if 1x per week: max. 2 missed classes (unless I know your reasons for missing Wednesdays!) –&gt; if you missed more, I can’t admit you for the exam/report</p>
+<p>The input and hands-on sessions will be highly based on these two textbooks. You don’t need to read the textbooks, but it will of course help if you either read the chapter before or after the sessions: Repetition is always helpful!</p>
+</div>
+</section>
+<section id="contents" class="level2">
+<h2 class="anchored" data-anchor-id="contents">Contents</h2>
+<div class="incremental">
+<ul class="incremental">
+<li>From basic probability to (Generalized) Linear Mixed Models
+<ul class="incremental">
+<li>Some things may be repetitive for you but this course aims to provide a common starting position for your next semesters</li>
+</ul></li>
+<li>Input (lecture style) with hands-on R sessions <!-- -   Input could be video based that you should watch before the (R) session --></li>
+<li>In addition, you should read a few pages in the text books<br>
+(<a href="https://statsthinking21.github.io/statsthinking21-core-site/">Statistical Thinking for the 21st Century</a>, and possibly <a href="https://psyteachr.github.io/quant-fun-v2/">Fundamentals of Quantitative Analysis</a>)</li>
+<li>Project: Independently analyze a dataset (exam with pass or fail grading)</li>
+</ul>
+</div>
+<div class="notes">
+<p>For some, e.g.&nbsp;the psychologists, it will be more of a repetition - but you will also learn R.</p>
+<p>Slides might be text heavy –&gt; so that you can go through the slides afterwards again (but textbook might also be helpful)</p>
+</div>
+</section>
+<section id="project" class="level2">
+<h2 class="anchored" data-anchor-id="project">Project</h2>
+<p>. . .</p>
+<ul>
+<li><p>Find a dataset that can answer a question you are interested in</p>
+<ul>
+<li><a href="https://ourworldindata.org/" class="uri">https://ourworldindata.org/</a></li>
+<li><a href="https://www.destatis.de/">Statistisches Bundesamt</a></li>
+<li>Your own, e.g., from an internship</li>
+</ul></li>
+</ul>
+<p>. . .</p>
+<ul>
+<li><p>preprocess/wrangle it,</p></li>
+<li><p>analyze the data,</p></li>
+<li><p>and write a short (min. 2-page) report!</p>
+<ul>
+<li>short intro incl.&nbsp;research question and hypothesis</li>
+<li>methods (both how the data were acquired and how they are analyzed)</li>
+<li>results (incl.&nbsp;at least one plot)</li>
+<li>and a short discussion.
+<ul>
+<li><em>All</em> these parts should be <em>at least half a page</em> long.</li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="calender" class="level2 scrollable smaller page-columns page-full">
+<h2 class="scrollable smaller anchored" data-anchor-id="calender">Calender</h2>
+<table class="table">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 26%">
+<col style="width: 23%">
+<col style="width: 27%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Date</th>
+<th>Topic</th>
+<th>Reading</th>
+<th>Project Deadlines</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>17.10.</td>
+<td>General &amp; R Intro</td>
+<td>ST21: 1-3, QF: 1-3</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>24.10.</td>
+<td>Probability</td>
+<td>ST21: 4, QF: 4-6</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>31.10.</td>
+<td>Data Wrangling</td>
+<td>ST21: 4, QF: 4-6</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>07.11.</td>
+<td>Data Visualization</td>
+<td>QF: 7</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>14.11.</td>
+<td>Sampling</td>
+<td>ST21: 7-8, QF: 8</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>21.11.</td>
+<td>Probability &amp; Sampling in R</td>
+<td>ST21: 7-8, QF: 8</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>28.11.</td>
+<td>Hypothesis Testing</td>
+<td>ST21: 9-10</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>05.12.</td>
+<td>Comparing Means &amp; Categories</td>
+<td>ST21: 12, 15</td>
+<td>Dataset</td>
+</tr>
+<tr class="odd">
+<td>12.12.</td>
+<td>Exercises (t-Tests, Chi²)</td>
+<td>ST21: 12, 15</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>19.12.</td>
+<td>(Generalized) Linear Models</td>
+<td>ST21: 12-13</td>
+<td>Research Question &amp; Hypotheses</td>
+</tr>
+<tr class="odd">
+<td>26.12. &amp; 02.01.</td>
+<td><em>Christmas &amp; New Year’s</em></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>09.01.</td>
+<td>Exercises (GLM)</td>
+<td>ST21: 12-13</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>16.01.</td>
+<td>Linear Mixed Models</td>
+<td>ST21: 14</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>23.01.</td>
+<td>Exercises (LMM)</td>
+<td>ST21: 14</td>
+<td>Analysis</td>
+</tr>
+<tr class="odd">
+<td>30.01.</td>
+<td>Troubleshooting Your Report</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>06.02.</td>
+<td>Reproducible Research</td>
+<td>ST21: 18</td>
+<td>Report</td>
+</tr>
+</tbody>
+</table>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p>ST21: Statistical Thinking for the 21st Century<br>
+QF: Fundamentals of Quantitative Analysis (QuantFun)</p>
+</div></div><div class="notes">
+<p>The first four weeks will be basics, the next 4 will be analyses.</p>
+</div>
+</section>
+</section>
+<section id="why-statistics" class="level1">
+<h1>Why Statistics?</h1>
+<section id="why-is-it-important-that-you-know-statistics" class="level2">
+<h2 class="anchored" data-anchor-id="why-is-it-important-that-you-know-statistics">Why is it important that YOU know statistics?</h2>
+<div class="incremental smaller">
+<ul class="incremental">
+<li><p>You’re doing a <em>research</em> master!</p>
+<ul class="incremental">
+<li>Research = Reading &amp; understanding papers (esp.&nbsp;the analyses)</li>
+<li>Designing your own experiments, analyze data, interpret results</li>
+</ul></li>
+<li><p>We live in an increasingly data-centric world</p>
+<ul class="incremental">
+<li>Knowing how to wrangle and analyze data is a valuable skill</li>
+</ul></li>
+<li><p>Facts &amp; data literacy matter more than ever!</p>
+<ul class="incremental">
+<li><p>Fake News, “Lying with stats”, Reproducibility Crisis</p></li>
+<li><p>Being able to call bullshit (<a href="https://www.callingbullshit.org/" class="uri">https://www.callingbullshit.org/</a>)</p></li>
+</ul></li>
+<li><p>“I only believe in statistics that I doctored myself” ― Winston S. Churchill</p>
+<ul class="incremental">
+<li>However: “It is easy to lie with statistics, but easier to lie without them” ― Frederick Mosteller</li>
+</ul></li>
+</ul>
+</div>
+<div class="notes">
+<p>break-out session, 3 min.<br>
+–&gt; Afterwards: write in chat or speak, what did you come up with?</p>
+<p>possibly show empirical cycle or the like to indicate that stats are necessary at almost every step</p>
+</div>
+</section>
+<section id="what-is-statistical-thinking" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-statistical-thinking">What is Statistical Thinking?</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p>“a systematic way of thinking about how we describe the world and <strong>use data [to] make decisions and predictions</strong>, all in the context of the inherent <strong>uncertainty</strong> that exists in the real world.” (Poldrack, Preface of ST21)</p></li>
+<li><p>“Statistical thinking is a way of <strong>understanding</strong> a complex world by describing it in relatively <strong>simple terms</strong> that nonetheless capture <strong>essential aspects</strong> of its structure or function, and that also provide us some idea of how <strong>uncertain</strong> we are about that knowledge.” (Poldrack, Chapter 1)</p></li>
+</ul>
+</div>
+<div class="notes">
+<p>break down complexity, include uncertainty</p>
+</div>
+</section>
+<section id="why-is-statistical-thinking-important" class="level2">
+<h2 class="anchored" data-anchor-id="why-is-statistical-thinking-important">Why is Statistical Thinking Important?</h2>
+<div class="incremental">
+<ul class="incremental">
+<li>data literacy vs.&nbsp;intuition/heuristics/anecdotal evidence
+<ul class="incremental">
+<li>Public discourse about Covid-19, migration, etc. (e.g., “50% of people in intensive care are vaccinated”)</li>
+</ul></li>
+</ul>
+</div>
+<p>. . .</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://thedecisionlab.com/biases/base-rate-fallacy"><img src="images/BaseRate.jpg" class="img-fluid figure-img" width="600"></a></p>
+<figcaption class="figure-caption">Base Rate Fallacy</figcaption>
+</figure>
+</div>
+<div class="notes">
+<p>Write in chat! (after first bullet point!)</p>
+<p>example availability heuristic from book (or any other example where intuition is wrong, i.e.&nbsp;vaccinations/covid…)</p>
+<p>--&gt; test in class? Ask for opinion/intuition, show data</p>
+</div>
+</section>
+<section id="what-can-statistics-do-for-us" class="level2">
+<h2 class="anchored" data-anchor-id="what-can-statistics-do-for-us">What can Statistics Do For Us?</h2>
+<ul>
+<li><p><strong>Describe</strong> patterns by summarizing/breaking down data (“descriptive statistics”)</p></li>
+<li><p><strong>Decide</strong> whether one thing is better than another, given the uncertainty (“inferential statistics”)</p></li>
+<li><p><strong>Predict</strong> how other people would “behave” (generalize to new observations)</p></li>
+</ul>
+<div class="notes">
+<p>describe: not useful to look at every single data point/person, but we need s.th. like tendencies/trends…</p>
+</div>
+</section>
+<section id="the-big-ideas" class="level2">
+<h2 class="anchored" data-anchor-id="the-big-ideas">The Big Ideas</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p><strong>Learning from data</strong>: Update our beliefs</p></li>
+<li><p><strong>Aggregation</strong>: How to summarize the data to draw meaningful conclusions?</p></li>
+<li><p><strong>Uncertainty</strong>: Probabilistic evidence</p></li>
+<li><p><strong>Sampling from the population</strong>: Which people etc. do we select?</p></li>
+</ul>
+</div>
+<div class="notes">
+<p>ask for every point what I could mean w/ it?</p>
+<p>LfD: gather new knowledge</p>
+<p>Agg: Can’t look at all ind data points, need to find trends etc. (should not go to far! throwing out data)</p>
+<p>uncert: stats = tools for making decisions under uncert, we can never prove anything but provide evidence, there is no 100% certainty for an outcome (cancer)</p>
+<p>sampling: how do we represent the population? What is the population? how much data do we need? More is better, but payoff decreases…</p>
+</div>
+</section>
+<section id="causality" class="level2">
+<h2 class="anchored" data-anchor-id="causality">Causality</h2>
+<p>Correlation does not imply causation… but is a hint!</p>
+<p>. . .</p>
+<p>Example: Smoking = less risk for Parkinson’s disease? (<a href="http://dx.doi.org/10.1136/jnnp.45.7.577">Godwin-Austen et al., 1982</a>; <a href="https://doi.org/10.1212/WNL.0b013e3181d55f38">Chen et al., 2010</a>)</p>
+<p>. . .</p>
+<p>--&gt; confounding factors?</p>
+<p>. . .</p>
+<p>e.g., individual dopaminergic activity =&gt; addiction &amp; motor function</p>
+<p>. . .</p>
+<p>Randomized Controlled Trials (RCT) as the solution?</p>
+<div class="notes">
+<p>give example! Eat more fat = living longer? Confounders (richer people, healthier diets, less stress, better health care…)</p>
+<p>RCT: exp control and manipulation, removes confounds if done well<br>
+At least some more causal evidence!</p>
+<p>QUESTIONS so far?</p>
+</div>
+</section>
+<section id="what-are-data" class="level2">
+<h2 class="anchored" data-anchor-id="what-are-data">What are Data?</h2>
+<ul>
+<li>What do you think are data?</li>
+</ul>
+<div class="incremental smaller">
+<ul class="incremental">
+<li><p>qualitative vs.&nbsp;quantitative</p>
+<ul class="incremental">
+<li><p>qualitative?</p>
+<ul class="incremental">
+<li>open questions, descriptions… can potentially be coded into categories</li>
+</ul></li>
+<li><p>quantitative?</p>
+<ul class="incremental">
+<li>numeric, can be averaged etc.</li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
+<div class="notes">
+<p>Chat –&gt; after showing slide! Come up with examples for “Data”</p>
+<p>Collect: Do you have ideas? What are data you encounter in your lives/work etc? What are differences between these data?</p>
+</div>
+</section>
+<section id="what-are-data-2" class="level2">
+<h2 class="anchored" data-anchor-id="what-are-data-2">What are Data? (2)</h2>
+<div class="incremental smaller">
+<ul class="incremental">
+<li><p>Data types</p>
+<ul class="incremental">
+<li><p>character/string: text (qualitative)</p></li>
+<li><p>factors/categories</p></li>
+<li><p>types of numbers (quantitative)</p>
+<ul class="incremental">
+<li><p>binary: 0 or 1, TRUE or FALSE (logical)</p></li>
+<li><p>integers: whole numbers</p></li>
+<li><p>real numbers: decimals/fractions</p></li>
+</ul></li>
+</ul></li>
+<li><p>discrete vs.&nbsp;continuous</p>
+<ul class="incremental">
+<li><p>discrete: finite set of particular values (0 or 1, scale from 1 to 10)</p></li>
+<li><p>continuous: real numbers that fall into particular range (e.g., brain activity, visual analoge scale)</p></li>
+</ul></li>
+<li><p>What data type is <em>eye color</em>?</p></li>
+</ul>
+</div>
+<div class="notes">
+<p>discrete vs.&nbsp;continuous: question for examples or quiz</p>
+<p>Further classify data examples mentioned in chat</p>
+</div>
+</section>
+<section id="what-is-a-data-set" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-a-data-set">What is a Data Set?</h2>
+<ul>
+<li><p>a collection of data</p></li>
+<li><p>usually organized into rows and columns (like an excel spreadsheet)</p>
+<ul>
+<li><p>rows: participants/animals/cells…</p></li>
+<li><p>columns: <strong>variables</strong>!</p>
+<ul>
+<li>each variable contains one type of measurement</li>
+</ul></li>
+<li><p>table cells = unique observations of variables per participant etc.</p></li>
+</ul></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/Dataset.jpg" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">NHANES dataset</figcaption>
+</figure>
+</div>
+<div class="notes">
+<p>possibly go through columns and ask for data types?</p>
+</div>
+</section>
+<section id="what-makes-a-good-measurement" class="level2">
+<h2 class="anchored" data-anchor-id="what-makes-a-good-measurement">What Makes a Good Measurement?</h2>
+<div class="incremental smaller">
+<!-- -   Discuss! -->
+<ul class="incremental">
+<li><p>What is being measured?</p>
+<ul class="incremental">
+<li><p>constructs vs.&nbsp;proxies: need to be well-defined! (Difficult)</p></li>
+<li><p>measurement error</p>
+<ul class="incremental">
+<li><p>random: e.g., variation in reaction times of same participant across trials</p></li>
+<li><p>systematic: e.g., miscalibrated eye-tracking device</p></li>
+</ul></li>
+</ul></li>
+<li><p>Do we have a “gold standard” to compare the measurement to?</p></li>
+</ul>
+</div>
+<div class="notes">
+<p>Break-Out session: Brainstorm what makes a good vs.&nbsp;bad measurement!</p>
+<p>Group work/brainstorm:</p>
+<ul>
+<li><p>What are problems?</p></li>
+<li><p>Which kind of errors/when is data NOT good</p></li>
+<li><p>how can we minimize error?</p></li>
+</ul>
+</div>
+</section>
+<section id="reliability" class="level2">
+<h2 class="anchored" data-anchor-id="reliability">Reliability</h2>
+<p>Correlation of a measurement with “itself”</p>
+<div class="incremental smaller">
+<ul class="incremental">
+<li><p>Internal reliability (consistency)</p></li>
+<li><p>Test-retest reliability (stability)</p></li>
+<li><p>Inter-rater reliability (agreement)</p></li>
+</ul>
+</div>
+<p>. . .</p>
+<p>Correlation with other variables can’t be higher than reliability (cf., <a href="https://doi.org/10.1080/02643294.2012.753433">Wilmer et al., 2012, Table 1</a>)!</p>
+</section>
+<section id="validity" class="level2">
+<h2 class="anchored" data-anchor-id="validity">Validity</h2>
+<p>Are we measuring the construct we’re interested in?</p>
+<div class="incremental">
+<ul class="incremental">
+<li><p>Face validity: Does it intuitively make sense? First reality check!</p></li>
+<li><p>Construct validity</p>
+<ul class="incremental">
+<li><p>convergent validity: Related to similar measures that should measure the same construct</p></li>
+<li><p>divergent validity: Is it unrelated to other measures?</p></li>
+</ul></li>
+<li><p>Predictive validity: Is it predictive of other outcomes? (e.g., intelligence &amp; job success)</p></li>
+</ul>
+</div>
+<p>. . .</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/ReliabilityValidity-1.png" class="img-fluid figure-img" width="400"></p>
+<figcaption class="figure-caption">Reliability &amp; Validity</figcaption>
+</figure>
+</div>
+</section>
+<section id="summarizing-data" class="level2">
+<h2 class="anchored" data-anchor-id="summarizing-data">Summarizing Data</h2>
+<div class="incremental smaller">
+<ul class="incremental">
+<li><p>Throwing away (some of the) information!</p>
+<ul class="incremental">
+<li><p>extract the quintessence of the data (important for forming <em>models</em>)</p></li>
+<li><p>make predictions</p></li>
+</ul></li>
+<li><p>Counts, frequencies, percentages, averages</p></li>
+</ul>
+</div>
+</section>
+</section>
+<section id="thanks" class="level1 scrollable">
+<h1 class="scrollable">Thanks!</h1>
+<p>Learning objective today:</p>
+<ul>
+<li><p>Why is statistics important?</p></li>
+<li><p>What are data?</p></li>
+<li><p>What is reliability and validity?</p></li>
+</ul>
+<p>. . .</p>
+<p>Next:</p>
+<ul>
+<li><p>R session: “Intro to R”</p>
+<ul>
+<li>please <a href="https://www.r-project.org/">install R</a> &amp; <a href="https://posit.co/download/rstudio-desktop/">RStudio</a>!
+<ul>
+<li><p>Installation tutorial: <a href="https://learningstatisticswithr-bookdown.netlify.app/intror" class="uri">https://learningstatisticswithr-bookdown.netlify.app/intror</a></p></li>
+<li><p>You can also already install Rtools, which will be needed later: <a href="https://cran.r-project.org/bin/windows/Rtools/" class="uri">https://cran.r-project.org/bin/windows/Rtools/</a></p></li>
+</ul></li>
+</ul></li>
+<li><p>Theory: Models</p></li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

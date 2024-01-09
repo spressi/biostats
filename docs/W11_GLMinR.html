@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<<<<<<< HEAD
 <html lang="en"><head>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-html/tabby.min.js"></script>
@@ -411,6 +412,273 @@ Dr.&nbsp;Mario Reutter (slides adapted from Dr.&nbsp;Lea Hildebrandt)
 <section id="factorial-anova" class="title-slide slide level1 center">
 <h1>Factorial ANOVA</h1>
 <div class="cell">
+=======
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.353">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Dr.&nbsp;Mario Reutter (slides adapted from Dr.&nbsp;Lea Hildebrandt)">
+
+<title>Biostatistics - 11 ANOVA &amp; the General Linear Model in R</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./W11_GLMinR.html">11 ANOVA &amp; the General Linear Model in R</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Biostatistics</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./W1_Intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">01a Introduction to Biostatistics</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./W1b_IntroR.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">01b Intro to R</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./W2_Models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">02 Models</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./W3_DataWranglingR.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">03 Data Wrangling</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./W4_DataVizR.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">04 Data Visualization</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./W5_Sampling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">05 Probabilities &amp; Sampling</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./W6_ProbabilityR.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">06 Probability &amp; Sampling in R</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./W7_Hypothesis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">07 Hypothesis Testing</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./W8_ModelingRelationships.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">08 Modeling Relationships</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./W9_FirstAnalysisR.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">09 Statistical Analyses in R</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./W10_GLM.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">10 The General Linear Model &amp; Multivariate Statistics</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./W11_GLMinR.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">11 ANOVA &amp; the General Linear Model in R</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./W12_LMM.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">12 Linear Mixed Models</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./W15_RepResearchR.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">15 Reproducible Research</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        
+    <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="W11_GLMinR.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">11 ANOVA &amp; the General Linear Model in R</h1>
+<p class="subtitle lead"></p><p>Julius-Maximilians-University Würzburg<br>
+Course: “Biostatistics”<br>
+Translational Neuroscience</p><p></p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Dr.&nbsp;Mario Reutter (slides adapted from Dr.&nbsp;Lea Hildebrandt) </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="quiz" class="level1">
+<h1>Quiz!</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode css code-with-copy"><code class="sourceCode css"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>code<span class="fu">.sourceCode</span> {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">font-size</span>: <span class="dv">1.4</span><span class="dt">em</span><span class="op">;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>div<span class="fu">.cell-output-stdout</span> {</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">font-size</span>: <span class="dv">1.4</span><span class="dt">em</span><span class="op">;</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+>>>>>>> 749fecb8c683ff61febc9926ae76317f3da1b599
 <style type="text/css">
 code.sourceCode {
   font-size: 1.4em;
@@ -421,6 +689,7 @@ div.cell-output-stdout {
 }
 </style>
 </div>
+<<<<<<< HEAD
 <p>Last session, we have used <strong>one-way ANOVAs</strong> to analyze data for which we were interested in differences between levels of one factor (between-subjects groups) on a continuous dependent variable.</p>
 <div class="fragment">
 <p>Today, we want to turn towards the case where we have several factors as independent variables/predictors. We can do so by running a factorial ANOVA or a linear model.</p>
@@ -432,6 +701,85 @@ div.cell-output-stdout {
 <section id="setup" class="slide level2">
 <h2>Setup</h2>
 <p>We will use the data by <a href="https://doi.org/10.1177/0956797614542274">Zhang et al.&nbsp;(2014)</a>, Study 3 (<a href="https://psyteachr.github.io/quant-fun-v2/Zhang%20et%20al.%202014%20Study%203.csv">Click here to download</a>)</p>
+=======
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pwr)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rcompanion)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lsr)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Lade nötiges Paket: carData</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(afex)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Lade nötiges Paket: lme4</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Lade nötiges Paket: Matrix</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>************
+Welcome to afex. For support visit: http://afex.singmann.science/</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>- Functions for ANOVAs: aov_car(), aov_ez(), and aov_4()
+- Methods for calculating p-values with mixed(): 'S', 'KR', 'LRT', and 'PB'
+- 'afex_aov' and 'mixed' objects can be passed to emmeans() for follow-up tests
+- Get and set global package options with: afex_options()
+- Set sum-to-zero contrasts globally: set_sum_contrasts()
+- For example analyses see: browseVignettes("afex")
+************</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attache Paket: 'afex'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Das folgende Objekt ist maskiert 'package:lme4':
+
+    lmer</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(emmeans)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(see)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(performance)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(report)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.2     ✔ readr     2.1.4
+✔ forcats   1.0.0     ✔ stringr   1.5.0
+✔ ggplot2   3.4.3     ✔ tibble    3.2.1
+✔ lubridate 1.9.2     ✔ tidyr     1.3.0
+✔ purrr     1.0.2     </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ tidyr::expand() masks Matrix::expand()
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+✖ tidyr::pack()   masks Matrix::pack()
+✖ dplyr::recode() masks car::recode()
+✖ purrr::some()   masks car::some()
+✖ tidyr::unpack() masks Matrix::unpack()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+</div>
+<div class="notes">
+<p>start recording</p>
+</div>
+</section>
+<section id="factorial-anova" class="level1">
+<h1>Factorial ANOVA</h1>
+<p>Last R session, we have used <strong>one-way ANOVAs</strong> to analyze data where we were interested in differences between levels of one factor (between-subjects groups) on a continuous dependent variable.</p>
+<p>. . .</p>
+<p>Today, we want to turn towards the case where we have several factors as independent variables/predictors. We can do so by running a factorial ANOVA or a linear model.</p>
+<p>. . .</p>
+<p>One big advantage of using ANOVAs is when you have repeated measures/within-subject data. They are not easily fit in LMs (you would need Linear <em>Mixed</em> Models), but you can use repeated-measures ANOVA for these kind of data!</p>
+<section id="setup" class="level2">
+<h2 class="anchored" data-anchor-id="setup">Setup</h2>
+<p>We will use the data by Zhang et al.&nbsp;(2014): <a href="https://psyteachr.github.io/quant-fun-v2/Zhang%20et%20al.%202014%20Study%203.csv">Zhang et al.&nbsp;2014 Study 3.csv</a></p>
+>>>>>>> 749fecb8c683ff61febc9926ae76317f3da1b599
 <p>The study design was a 2x2 design:</p>
 <ul>
 <li><p><strong>time</strong> (time1, time2) - <em>within-subjects IV</em></p></li>
@@ -439,17 +787,28 @@ div.cell-output-stdout {
 <li><p><em>DV:</em> <strong>interest</strong></p></li>
 </ul>
 </section>
+<<<<<<< HEAD
 <section id="data-wrangling" class="slide level2">
 <h2>Data Wrangling</h2>
+=======
+<section id="data-wrangling" class="level2">
+<h2 class="anchored" data-anchor-id="data-wrangling">Data Wrangling</h2>
+>>>>>>> 749fecb8c683ff61febc9926ae76317f3da1b599
 <p>Tasks:</p>
 <ul>
 <li>Read in the data file<br>
 </li>
 <li>Select the three columns we need<br>
 </li>
+<<<<<<< HEAD
 <li>Add a column of subject IDs using the row number<br>
 </li>
 <li>Tidy the data: bring it into long format<br>
+=======
+<li>Add on a column of subject IDs based on the <code>row_number()</code><br>
+</li>
+<li>Tidy the data/bring it in long format<br>
+>>>>>>> 749fecb8c683ff61febc9926ae76317f3da1b599
 </li>
 <li>Recode the values of Condition from numeric to text labels<br>
 </li>
@@ -459,6 +818,7 @@ div.cell-output-stdout {
 </ul>
 <p>Replace the “NULLs” to achieve all this step by step…</p>
 <div class="cell">
+<<<<<<< HEAD
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>zhang_data2 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"Zhang et al. 2014 Study 3.csv"</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb1-2"><a href="#cb1-2"></a>  <span class="fu">select</span>(<span class="cn">NULL</span>, <span class="cn">NULL</span>, <span class="cn">NULL</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb1-3"><a href="#cb1-3"></a>  <span class="fu">mutate</span>(<span class="at">subject =</span> <span class="cn">NULL</span>) <span class="sc">%&gt;%</span> </span>
@@ -581,6 +941,146 @@ div.cell-output-stdout {
 <span id="cb7-7"><a href="#cb7-7"></a>                        <span class="at">es =</span> <span class="st">"pes"</span>) </span>
 <span id="cb7-8"><a href="#cb7-8"></a></span>
 <span id="cb7-9"><a href="#cb7-9"></a><span class="fu">anova</span>(mod_factorial) <span class="sc">%&gt;%</span> <span class="fu">tidy</span>() <span class="co">#or mod_factorial$anova_table %&gt;% tidy()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+=======
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>zhang_data2 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"Zhang et al. 2014 Study 3.csv"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="cn">NULL</span>, <span class="cn">NULL</span>, <span class="cn">NULL</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">subject =</span> <span class="cn">NULL</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="cn">NULL</span>(<span class="at">names_to =</span> <span class="st">"time"</span>, <span class="at">values_to =</span> <span class="st">"interest"</span>, <span class="at">cols =</span>  <span class="fu">c</span>(<span class="st">"T1_Predicted_Interest_Composite"</span>,<span class="st">"T2_Actual_Interest_Composite"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">time =</span> <span class="fu">recode</span>(time, <span class="at">NULL =</span> <span class="cn">NULL</span>, <span class="at">NULL =</span> <span class="cn">NULL</span>), <span class="co"># should be condition!</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">Condition =</span> <span class="fu">recode</span>(<span class="cn">NULL</span>, <span class="st">"T1_Predicted_Interest_Composite"</span> <span class="ot">=</span> <span class="st">"time1_interest"</span>, <span class="st">"T2_Actual_Interest_Composite"</span> <span class="ot">=</span> <span class="st">"time2_interest"</span>),</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">NULL =</span> <span class="fu">as.factor</span>(<span class="cn">NULL</span>),</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">time =</span> <span class="cn">NULL</span>(time))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>. . .</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>zhang_data2 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"Data/Zhang et al. 2014 Study 3.csv"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Condition, T1_Predicted_Interest_Composite, T2_Actual_Interest_Composite) <span class="sc">%&gt;%</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">subject =</span> <span class="fu">row_number</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">names_to =</span> <span class="st">"time"</span>,<span class="at">values_to =</span> <span class="st">"interest"</span>, <span class="at">cols =</span> <span class="fu">c</span>(<span class="st">"T1_Predicted_Interest_Composite"</span>,<span class="st">"T2_Actual_Interest_Composite"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Condition =</span> dplyr<span class="sc">::</span><span class="fu">recode</span>(Condition, <span class="st">"1"</span> <span class="ot">=</span> <span class="st">"Ordinary"</span>, <span class="st">"2"</span> <span class="ot">=</span> <span class="st">"Extraordinary"</span>))<span class="sc">%&gt;%</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">time =</span> dplyr<span class="sc">::</span><span class="fu">recode</span>(time, <span class="st">"T1_Predicted_Interest_Composite"</span> <span class="ot">=</span> <span class="st">"time1_interest"</span>, <span class="st">"T2_Actual_Interest_Composite"</span> <span class="ot">=</span> <span class="st">"time2_interest"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Condition =</span> <span class="fu">as.factor</span>(Condition)) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span> (<span class="at">time =</span> <span class="fu">as.factor</span>(time))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 130 Columns: 35
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+dbl (35): Condition, T1_Extraordinariness, T2_Extraordinariness, T1_Predicte...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+</div>
+<div class="notes">
+<p>Do it together</p>
+</div>
+</section>
+<section id="descriptive-statistics" class="level2">
+<h2 class="anchored" data-anchor-id="descriptive-statistics">Descriptive Statistics</h2>
+<p>Calculate descriptive statistics (mean and SD) for interest for each Condition for each time (hint: you will need to group_by() two variables) and store it in an object named sum_dat_factorial. These are known as the cells means.</p>
+<p>. . .</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>sum_dat_factorial <span class="ot">&lt;-</span> zhang_data2 <span class="sc">%&gt;%</span> </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Condition, time) <span class="sc">%&gt;%</span> </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_interest =</span> <span class="fu">mean</span>(interest, <span class="at">na.rm=</span><span class="cn">TRUE</span>),</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">sd_interest =</span> <span class="fu">sd</span>(interest, <span class="at">na.rm=</span><span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'Condition'. You can override using the
+`.groups` argument.</code></pre>
+</div>
+</div>
+</section>
+<section id="visualize-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="visualize-the-data">Visualize the data</h2>
+<section id="violin-boxplot" class="level3">
+<h3 class="anchored" data-anchor-id="violin-boxplot">Violin-Boxplot</h3>
+<p>Write the code that produces violin-boxplots for the scores in each group. time should be on the x-axis and Condition should be in different colors. The CV, interest, is on the y-axis. Such a plot is called “grouped” (e.g.&nbsp;grouped boxplot).</p>
+<pre><code>Hint 1: you will need to add in the second IV in the first call to ggplot as a fill argument (aes(x,y,fill)).  
+Hint 2: you will need to add position = position_dodge(.9) to geom_boxplot to get the plots to align.  </code></pre>
+<p>. . .</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="fu">ggplot</span>(zhang_data2, </span>
+<span id="cb20-2"><a href="#cb20-2"></a>       <span class="fu">aes</span>(<span class="at">x =</span> time , <span class="at">y =</span> interest, <span class="at">fill =</span> Condition))<span class="sc">+</span></span>
+<span id="cb20-3"><a href="#cb20-3"></a>  <span class="fu">geom_violin</span>(<span class="at">trim =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb20-4"><a href="#cb20-4"></a>              <span class="at">alpha =</span> .<span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb20-5"><a href="#cb20-5"></a>  <span class="fu">geom_boxplot</span>(<span class="at">position =</span> <span class="fu">position_dodge</span>(.<span class="dv">9</span>), </span>
+<span id="cb20-6"><a href="#cb20-6"></a>               <span class="at">width =</span> .<span class="dv">2</span>, </span>
+<span id="cb20-7"><a href="#cb20-7"></a>               <span class="at">alpha =</span> .<span class="dv">6</span>) <span class="sc">+</span></span>
+<span id="cb20-8"><a href="#cb20-8"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Time 1"</span>, <span class="st">"Time 2"</span>)) <span class="sc">+</span></span>
+<span id="cb20-9"><a href="#cb20-9"></a>  <span class="fu">scale_fill_viridis_d</span>(<span class="at">option =</span> <span class="st">"E"</span>) <span class="sc">+</span></span>
+<span id="cb20-10"><a href="#cb20-10"></a>  <span class="fu">stat_summary</span>(<span class="at">fun =</span> <span class="st">"mean"</span>, <span class="at">geom =</span> <span class="st">"point"</span>,</span>
+<span id="cb20-11"><a href="#cb20-11"></a>               <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.9</span>)) <span class="sc">+</span></span>
+<span id="cb20-12"><a href="#cb20-12"></a>  <span class="fu">stat_summary</span>(<span class="at">fun.data =</span> <span class="st">"mean_se"</span>, <span class="at">geom =</span> <span class="st">"errorbar"</span>, <span class="at">width =</span> .<span class="dv">1</span>,</span>
+<span id="cb20-13"><a href="#cb20-13"></a>               <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.9</span>)) <span class="sc">+</span></span>
+<span id="cb20-14"><a href="#cb20-14"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="W11_GLMinR_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="interaction-line-plot" class="level2">
+<h2 class="anchored" data-anchor-id="interaction-line-plot">Interaction (line) plot</h2>
+<p>In this analysis, we also want to look at the interaction between time and Condition. To see whether an interaction might be present (e.g.&nbsp;the lines are not parallel!), it is helpful to make a line plot, again with time on the x-axis, Condition as separate lines, and (mean) interest on the y-axis. We want to draw the summarized data, that’s why we use sum_dat_factorial.</p>
+<p>Here’s the code:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(sum_dat_factorial, <span class="fu">aes</span>(<span class="at">x =</span> time, <span class="at">y =</span> mean_interest, <span class="at">group =</span> Condition, <span class="at">shape =</span> Condition)) <span class="sc">+</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">linetype =</span> Condition))<span class="sc">+</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Time 1"</span>, <span class="st">"Time 2"</span>))<span class="sc">+</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="W11_GLMinR_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>There seems to be an interaction! The lines are not parallel, which means in this case that the increase in interest between time 1 and time 2 is greater in the “ordinary” condition!</p>
+<p>But is this effect significant?</p>
+</section>
+<section id="mixed-anova" class="level2">
+<h2 class="anchored" data-anchor-id="mixed-anova">Mixed ANOVA</h2>
+<p>We now want to run a mixed ANOVA. Mixed because it is a mix of within- and between-subjects independent variables.</p>
+<ul>
+<li><p>Complete the below code to run the factorial ANOVA. Remember that you will need to specify both IVs and that one of them is between-subjects and one of them is within-subjects. Look up the help documentation for aov_ez to find out how to do this.</p></li>
+<li><p>Save the ANOVA model to an object called mod_factorial</p></li>
+<li><p>Pull out the anova table, you can either do this with mod_factorial$anova_table or anova(mod_factorial) both have the same result. Save this to an object named factorial_output. You can use tidy() to save the output as a data frame, which might be useful.</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>mod_factorial <span class="ot">&lt;-</span> <span class="fu">aov_ez</span>(<span class="at">id =</span> <span class="st">"NULL"</span>,</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> <span class="cn">NULL</span>, </span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">between =</span> <span class="st">"NULL"</span>, </span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">within =</span> <span class="st">"NULL"</span>,</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">dv =</span> <span class="st">"NULL"</span>, </span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">type =</span> <span class="dv">3</span>,</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>               <span class="at">es =</span> <span class="st">"NULL"</span>) </span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>factorial_output <span class="ot">&lt;-</span> <span class="cn">NULL</span> <span class="sc">%&gt;%</span> <span class="fu">tidy</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>. . .</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>mod_factorial <span class="ot">&lt;-</span> <span class="fu">aov_ez</span>(<span class="at">id =</span> <span class="st">"subject"</span>,</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> zhang_data2, </span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">between =</span> <span class="st">"Condition"</span>, </span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">within =</span> <span class="st">"time"</span>,</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">dv =</span> <span class="st">"interest"</span>, </span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">type =</span> <span class="dv">3</span>,</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>               <span class="at">es =</span> <span class="st">"pes"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Contrasts set to contr.sum for the following variables: Condition</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>factorial_output <span class="ot">&lt;-</span> <span class="fu">anova</span>(mod_factorial) <span class="sc">%&gt;%</span> <span class="fu">tidy</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in tidy.anova(.): The following column names in ANOVA output were not
+recognized or transformed: num.Df, den.Df, MSE, ges</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># OR</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>factorial_output <span class="ot">&lt;-</span> mod_factorial<span class="sc">$</span>anova_table <span class="sc">%&gt;%</span> <span class="fu">tidy</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in tidy.anova(.): The following column names in ANOVA output were not
+recognized or transformed: num.Df, den.Df, MSE, ges</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>factorial_output</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+>>>>>>> 749fecb8c683ff61febc9926ae76317f3da1b599
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 7
   term           num.Df den.Df   MSE statistic     ges    p.value
@@ -589,6 +1089,7 @@ div.cell-output-stdout {
 2 time                1    128 0.607    25.9   0.0441  0.00000126
 3 Condition:time      1    128 0.607     4.44  0.00786 0.0370    </code></pre>
 </div>
+<<<<<<< HEAD
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>apa<span class="sc">::</span><span class="fu">anova_apa</span>(mod_factorial)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>          Effect                                                
@@ -632,11 +1133,39 @@ div.cell-output-stdout {
 <span id="cb12-2"><a href="#cb12-2"></a>car<span class="sc">::</span><span class="fu">qqPlot</span>(mod_factorial<span class="sc">$</span>lm<span class="sc">$</span>residuals)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img data-src="W11_GLMinR_files/figure-revealjs/unnamed-chunk-11-1.png" width="960"></p>
+=======
+</div>
+<p>. . .</p>
+<p>Conclusion:</p>
+<p>The main effect of time and the interaction between time and Condition are significant. Judged by visual inspection of the plot, interest inreases over time points, especially for the “ordinary” group…</p>
+</section>
+<section id="assumption-checking" class="level2">
+<h2 class="anchored" data-anchor-id="assumption-checking">Assumption checking</h2>
+<p>The assumptions for a factorial ANOVA are the same as the one-way ANOVA.</p>
+<ul>
+<li><p>The DV is continuous (interval or ratio data )</p></li>
+<li><p>The observations should be independent</p></li>
+<li><p>The residuals should be normally distributed</p></li>
+<li><p>There should be homogeneity of variance between the groups</p></li>
+</ul>
+<p>To test assumption 3, extract the residuals from the model (mod_factorial$residuals), create a qq-plot and conduct a Shapiro-Wilk test.</p>
+<p>For the final assumption, we can again use test_levene() to test homogeneity of variance.</p>
+<p>. . .</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># normality testing</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(mod_factorial<span class="sc">$</span>lm<span class="sc">$</span>residuals)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="W11_GLMinR_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+>>>>>>> 749fecb8c683ff61febc9926ae76317f3da1b599
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 203  73</code></pre>
 </div>
+<<<<<<< HEAD
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">shapiro.test</span>(mod_factorial<span class="sc">$</span>lm<span class="sc">$</span>residuals)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+=======
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(mod_factorial<span class="sc">$</span>lm<span class="sc">$</span>residuals)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+>>>>>>> 749fecb8c683ff61febc9926ae76317f3da1b599
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Shapiro-Wilk normality test
@@ -644,13 +1173,23 @@ div.cell-output-stdout {
 data:  mod_factorial$lm$residuals
 W = 0.98325, p-value = 0.003785</code></pre>
 </div>
+<<<<<<< HEAD
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="co"># levene's test</span></span>
 <span id="cb16-2"><a href="#cb16-2"></a><span class="co">#afex::test_levene(mod_factorial) #old version</span></span>
 <span id="cb16-3"><a href="#cb16-3"></a>performance<span class="sc">::</span><span class="fu">check_homogeneity</span>(mod_factorial)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+=======
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># levene's test</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">test_levene</span>(mod_factorial)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Functionality has moved to the 'performance' package.
+Calling 'performance::check_homogeneity()'.</code></pre>
+</div>
+>>>>>>> 749fecb8c683ff61febc9926ae76317f3da1b599
 <div class="cell-output cell-output-stdout">
 <pre><code>OK: There is not clear evidence for different variances across groups (Levene's Test, p = 0.893).</code></pre>
 </div>
 </div>
+<<<<<<< HEAD
 </div>
 </section>
 <section id="write-up" class="slide level2">
@@ -667,10 +1206,27 @@ W = 0.98325, p-value = 0.003785</code></pre>
 </section></section>
 <section>
 <section id="regressionlinear-model" class="title-slide slide level1 center">
+=======
+</section>
+<section id="write-up" class="level2">
+<h2 class="anchored" data-anchor-id="write-up">Write up</h2>
+<p>What do we need to report?</p>
+<p>. . .</p>
+<ul>
+<li><p>Summary statistics (means, SDs) per cell</p></li>
+<li><p>F(df1, df2) = F-value, p = p-value, effect size per effect</p></li>
+<li><p>Possibly pairwise contrasts</p></li>
+<li><p>Interpretation</p></li>
+</ul>
+</section>
+</section>
+<section id="regressionlinear-model" class="level1">
+>>>>>>> 749fecb8c683ff61febc9926ae76317f3da1b599
 <h1>Regression/Linear Model</h1>
 <p>You can run a regression with two continuous variables, one IV and one DV (similar to correlations). Check out <a href="https://psyteachr.github.io/quant-fun-v2/regression.html">Chapter 16</a> on how to do that.<br>
 You can also have categorical IVs, which would make it similar to running an ANOVA.<br>
 But most importantly, the linear model is super flexible and you can combine continuous and categorical IVs or predictors! This is called <strong>multiple regression</strong> because you have several IVs.</p>
+<<<<<<< HEAD
 </section>
 <section id="setup-1" class="slide level2">
 <h2>Setup</h2>
@@ -780,6 +1336,118 @@ Run the code below and write comments in the code that explain what each line of
 </section>
 <section id="data-wrangling-1" class="slide level2">
 <h2>Data Wrangling</h2>
+=======
+<section id="setup-1" class="level2">
+<h2 class="anchored" data-anchor-id="setup-1">Setup</h2>
+<p>We will use the data from this paper: Przybylski, A. &amp; Weinstein, N. (2017). A Large-Scale Test of the Goldilocks Hypothesis. Psychological Science, 28, 204–215</p>
+<p>In the paper, the authors investigated whether there is a “just right” amount of screen time that is associated with higher well-being.</p>
+<p>In this huge dataset (N=120000), we have the following variables that we will use for analysis:</p>
+<ul>
+<li><p>a continuous DV, well-being (Warwick-Edinburgh Mental Well-Being Scale (WEMWBS). This is a 14-item scale with 5 response categories, summed together to form a single score ranging from 14-70, so it’s not really continuous but… oh well…),</p></li>
+<li><p>a <em>continuous</em> predictor/IV: screen time,</p></li>
+<li><p>a <em>categorical</em> predictor/IV: gender.</p></li>
+</ul>
+</section>
+<section id="tasks" class="level2">
+<h2 class="anchored" data-anchor-id="tasks"><strong>Tasks:</strong></h2>
+<ul>
+<li><p>Download wellbeing.csv, participant_info.csv and screen_time.csv and save them in your Chapter folder. Make sure that you do not change the file names at all.</p></li>
+<li><p>Load the CSV datasets into variables called pinfo, wellbeing and screen using read_csv().</p></li>
+<li><p>Take a look at the data and make sure you understand what you see. The wellbeing tibble has information from the WEMWBS questionnaire; screen has information about screen time use on weekends (variables ending with we) and weekdays (variables ending with wk) for four types of activities: using a computer (variables starting with Comph; Q10 on the survey), playing video games (variables starting with Comp; Q9 on the survey), using a smartphone (variables starting with Smart; Q11 on the survey) and watching TV (variables starting with Watch; Q8 on the survey).</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># echo: true</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>pinfo <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"Data/participant_info.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 120115 Columns: 4
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+dbl (4): Serial, male, minority, deprived
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>wellbeing <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"Data/wellbeing.csv"</span>)</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>screen <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"Data/screen_time.csv"</span>)</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="co"># View(screen)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="preprocessing" class="level2">
+<h2 class="anchored" data-anchor-id="preprocessing">Preprocessing</h2>
+<p>Calculate the WEMWBS scores by taking the sum of all the items:</p>
+<ul>
+<li><p>Write the code to create a new table called wemwbs, with two variables: Serial (the participant ID), and tot_wellbeing, the total WEMWBS score.</p></li>
+<li><p>you might have to “pivot” the data from wide to long format.</p></li>
+<li><p>you probably have to use a group_by() to calculate the well-being (WEMWBS) score per person.</p></li>
+<li><p>verify for yourself that the scores all fall in the 14-70 range. Przybylski and Weinstein reported a mean of 47.52 with a standard deviation of 9.55. Can you reproduce these values?</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>wemwbs <span class="ot">&lt;-</span> wellbeing <span class="sc">%&gt;%</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">names_to =</span> <span class="st">"var"</span>, <span class="at">values_to =</span> <span class="st">"score"</span>, <span class="sc">-</span>Serial) <span class="sc">%&gt;%</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Serial) <span class="sc">%&gt;%</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">tot_wellbeing =</span> <span class="fu">sum</span>(score))</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a><span class="co"># you could also mutate(tot_wellbeing = WBOptimf + ...) %&gt;% select(Serial, tot_wellbeing)</span></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a><span class="co"># sanity check values</span></span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>wemwbs <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">mean =</span> <span class="fu">mean</span>(tot_wellbeing),</span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>                     <span class="at">sd =</span> <span class="fu">sd</span>(tot_wellbeing),</span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>                     <span class="at">min =</span> <span class="fu">min</span>(tot_wellbeing), </span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a>                     <span class="at">max =</span> <span class="fu">max</span>(tot_wellbeing))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 4
+   mean    sd   min   max
+  &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt;
+1  47.5  9.55    14    70</code></pre>
+</div>
+</div>
+</section>
+<section id="data-visualization" class="level2">
+<h2 class="anchored" data-anchor-id="data-visualization">Data visualization</h2>
+<p>We now want to visualize the relationship between screen time (for the four different technologies) and well-being.<br>
+Run the code below and write comments in the code that explain what each line of code is doing:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>screen_long <span class="ot">&lt;-</span> screen <span class="sc">%&gt;%</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">names_to =</span> <span class="st">"var"</span>, <span class="at">values_to =</span> <span class="st">"hours"</span>, <span class="sc">-</span>Serial) <span class="sc">%&gt;%</span></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(var, <span class="fu">c</span>(<span class="st">"variable"</span>, <span class="st">"day"</span>), <span class="st">"_"</span>)</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>screen2 <span class="ot">&lt;-</span> screen_long <span class="sc">%&gt;%</span></span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">variable =</span> dplyr<span class="sc">::</span><span class="fu">recode</span>(variable,</span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>               <span class="st">"Watch"</span> <span class="ot">=</span> <span class="st">"Watching TV"</span>,</span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a>               <span class="st">"Comp"</span> <span class="ot">=</span> <span class="st">"Playing Video Games"</span>,</span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>               <span class="st">"Comph"</span> <span class="ot">=</span> <span class="st">"Using Computers"</span>,</span>
+<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a>               <span class="st">"Smart"</span> <span class="ot">=</span> <span class="st">"Using Smartphone"</span>),</span>
+<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a>     <span class="at">day =</span> dplyr<span class="sc">::</span><span class="fu">recode</span>(day,</span>
+<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a>              <span class="st">"wk"</span> <span class="ot">=</span> <span class="st">"Weekday"</span>,</span>
+<span id="cb43-13"><a href="#cb43-13" aria-hidden="true" tabindex="-1"></a>              <span class="st">"we"</span> <span class="ot">=</span> <span class="st">"Weekend"</span>))</span>
+<span id="cb43-14"><a href="#cb43-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-15"><a href="#cb43-15" aria-hidden="true" tabindex="-1"></a>dat_means <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(wemwbs, screen2, <span class="st">"Serial"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb43-16"><a href="#cb43-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(variable, day, hours) <span class="sc">%&gt;%</span></span>
+<span id="cb43-17"><a href="#cb43-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_wellbeing =</span> <span class="fu">mean</span>(tot_wellbeing))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'variable', 'day'. You can override using
+the `.groups` argument.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dat_means, <span class="fu">aes</span>(hours, mean_wellbeing, <span class="at">linetype =</span> day)) <span class="sc">+</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>variable, <span class="at">nrow =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="W11_GLMinR_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Also describe what you see in the figures/plots that you get when running the code.</p>
+<p>. . .</p>
+<p>There seems to be a peak around 1h/day for max. wellbeing for all sorts of screen time.</p>
+<div class="notes">
+<p>Walk through code together!</p>
+</div>
+</section>
+<section id="data-wrangling-1" class="level2">
+<h2 class="anchored" data-anchor-id="data-wrangling-1">Data wrangling</h2>
+>>>>>>> 749fecb8c683ff61febc9926ae76317f3da1b599
 <p>We need to do a few things to get a dataset that we can use for analysis:</p>
 <ol type="1">
 <li>Create a new table, <code>smarttot</code>, that has the mean number of hours per day of smartphone use for each participant, averaged over weekends/weekdays.</li>
@@ -787,6 +1455,7 @@ Run the code below and write comments in the code that explain what each line of
 <ul>
 <li>You will need to <em>filter</em> the dataset to only include smartphone use and not other technologies.<br>
 </li>
+<<<<<<< HEAD
 <li>The final data set should have two variables: <code>Serial</code> (the participant) and <code>tothours</code>. In this step, you will need to <em>summarise</em> the data.<br>
 </li>
 <li>You will also need to group the summary by the participant ID (i.e., <code>serial</code>).<br>
@@ -877,6 +1546,93 @@ Run the code below and write comments in the code that explain what each line of
 </section>
 <section id="analysis" class="slide level2">
 <h2>Analysis</h2>
+=======
+<li>You will also need to <em>group</em> the results by the participant ID (i.e., <code>serial</code>).<br>
+</li>
+<li>The final data-set should have two variables: <code>Serial</code> (the participant) and <code>tothours</code>. In this step, you will need to <em>summarise</em> the data.<br>
+</li>
+<li>You will need to use the dataset <code>screen2</code> to do this.</li>
+</ul>
+<p>. . .</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>smarttot <span class="ot">&lt;-</span> screen2 <span class="sc">%&gt;%</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(variable <span class="sc">==</span> <span class="st">"Using Smartphone"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Serial) <span class="sc">%&gt;%</span></span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">tothours =</span> <span class="fu">mean</span>(hours))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>. . .</p>
+<ol start="2" type="1">
+<li>Next, create a new tibble called <code>smart_wb</code> that only includes (<em>filters</em>) participants from <code>smarttot</code> who used a smartphone for more than one hour per day each week, and then combine (<em>join</em>) this table with the information in <code>wemwbs</code> and <code>pinfo</code>.</li>
+</ol>
+<p>. . .</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>smart_wb <span class="ot">&lt;-</span> smarttot <span class="sc">%&gt;%</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(tothours <span class="sc">&gt;</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(wemwbs, <span class="st">"Serial"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(pinfo, <span class="st">"Serial"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="data-wrangling-2" class="level2">
+<h2 class="anchored" data-anchor-id="data-wrangling-2">Data Wrangling 2</h2>
+<ol start="2" type="1">
+<li>When you do regression analysis, it is helpful to <em>mean center</em> your continuous (independent) variables. You mean center a predictor X simply by subtracting the mean (X_centered = X - mean(X)). This has two useful consequences:</li>
+</ol>
+<ul>
+<li>the model intercept reflects the prediction for Y at the mean value of the predictor variable, rather than at the zero value of the unscaled variable;</li>
+<li>if there are interactions in the model, any lower-order effects can be given the same interpretation as they receive in ANOVA (main effects, rather than simple effects). (Don’t worry if you don’t understand what this means yet!)</li>
+</ul>
+<p>If you mean-center categorical predictors with two levels, these become coded as -.5 and .5 (because the mean of these two values is 0). This is also handy and is called <em>effects coding</em>. (Not true if unequal groups! Use if_else())</p>
+<p><strong>Tasks:</strong></p>
+<ul>
+<li><p>Use mutate to add two new variables to <code>smart_wb</code>: <code>tothours_c</code>, calculated as a mean-centered version of the <code>tothours</code> predictor; and <code>male_c</code>, recoded as -.5 for female and .5 for male.</p></li>
+<li><p>To create <code>male_c</code> you will need to use <code>if_else(male == 1, .5, -.5)</code> You can read this code as “if the variable male equals 1, recode it as .5, if not, recode it as -.5”.</p></li>
+<li><p>Finally, recode <code>male</code> and <code>male_c</code> as factors, so that R knows not to treat them as a real numbers.</p></li>
+</ul>
+<p>. . .</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>smart_wb <span class="ot">&lt;-</span> smarttot <span class="sc">%&gt;%</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(tothours <span class="sc">&gt;</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(wemwbs, <span class="st">"Serial"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(pinfo, <span class="st">"Serial"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">thours_c =</span> tothours <span class="sc">-</span> <span class="fu">mean</span>(tothours),</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">male_c =</span> <span class="fu">ifelse</span>(male <span class="sc">==</span> <span class="dv">1</span>, .<span class="dv">5</span>, <span class="sc">-</span>.<span class="dv">5</span>),</span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">male_c =</span> <span class="fu">as.factor</span>(male_c),</span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">male =</span> <span class="fu">as.factor</span>(male))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="data-visualization-2" class="level2">
+<h2 class="anchored" data-anchor-id="data-visualization-2">Data visualization 2</h2>
+<p>Try to recreate the following plot:</p>
+<p><img src="images/PlotCh17.png" class="img-fluid" alt="Relationship between mean wellbeing and smartphone use by gender"></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>smart_wb_gen <span class="ot">&lt;-</span> smart_wb <span class="sc">%&gt;%</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(tothours, male) <span class="sc">%&gt;%</span></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_wellbeing =</span> <span class="fu">mean</span>(tot_wellbeing))</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="cn">NULL</span>, <span class="fu">aes</span>(<span class="cn">NULL</span>, <span class="cn">NULL</span>, <span class="at">color =</span> <span class="cn">NULL</span>)) <span class="sc">+</span></span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_NULL</span>() <span class="sc">+</span>  <span class="co"># which geom to use for the points?</span></span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_NULL</span>(<span class="at">method =</span> <span class="st">"lm"</span>) <span class="sc">+</span> <span class="co"># which geom for the lines?</span></span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_discrete</span>(<span class="at">name =</span> <span class="st">"Gender"</span>, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Female"</span>, <span class="st">"Male"</span>))<span class="sc">+</span></span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">name =</span> <span class="st">"Total hours smartphone use"</span>) <span class="sc">+</span></span>
+<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">name =</span> <span class="st">"Mean well-being score"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>. . .</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>smart_wb_gen <span class="ot">&lt;-</span> smart_wb <span class="sc">%&gt;%</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(tothours, male) <span class="sc">%&gt;%</span></span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_wellbeing =</span> <span class="fu">mean</span>(tot_wellbeing))</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(smart_wb_gen, <span class="fu">aes</span>(tothours, mean_wellbeing, <span class="at">color =</span> male)) <span class="sc">+</span></span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>) <span class="sc">+</span></span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_discrete</span>(<span class="at">name =</span> <span class="st">"Gender"</span>, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Female"</span>, <span class="st">"Male"</span>))<span class="sc">+</span></span>
+<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">name =</span> <span class="st">"Total hours smartphone use"</span>) <span class="sc">+</span></span>
+<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">name =</span> <span class="st">"Mean well-being score"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="analysis" class="level2">
+<h2 class="anchored" data-anchor-id="analysis">Analysis</h2>
+>>>>>>> 749fecb8c683ff61febc9926ae76317f3da1b599
 <p>Try to specify the following regression model in R:</p>
 <p><span class="math inline">\(Y_i = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + \beta_3 X_{3i} + e_i\)</span></p>
 <p>where</p>
@@ -887,6 +1643,7 @@ Run the code below and write comments in the code that explain what each line of
 <li><p><span class="math inline">\(X3i\)</span> is the interaction between smartphone use and gender (=<span class="math inline">\(X1i×X2i\)</span>)</p></li>
 </ul>
 <div class="cell">
+<<<<<<< HEAD
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="cn">NULL</span> <span class="sc">~</span> <span class="cn">NULL</span>, <span class="at">data =</span> smart_wb)</span>
 <span id="cb26-2"><a href="#cb26-2"></a></span>
 <span id="cb26-3"><a href="#cb26-3"></a>mod_summary <span class="ot">&lt;-</span> <span class="fu">summary</span>(mod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -902,6 +1659,24 @@ Run the code below and write comments in the code that explain what each line of
 <pre><code>
 Call:
 lm(formula = tot_wellbeing ~ thours_c * male_c, data = smart_wb)
+=======
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="cn">NULL</span> <span class="sc">~</span> <span class="cn">NULL</span>, <span class="at">data =</span> smart_wb)</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>mod_summary <span class="ot">&lt;-</span> <span class="fu">summary</span>(mod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>. . .</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(tot_wellbeing <span class="sc">~</span> thours_c <span class="sc">+</span> male_c <span class="sc">+</span> thours_c<span class="sc">:</span>male_c, <span class="at">data =</span> smart_wb)</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="co"># mod &lt;- lm(tot_wellbeing ~ hours_c * male_c, data = smart_wb)</span></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>mod_summary <span class="ot">&lt;-</span> <span class="fu">summary</span>(mod)</span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>mod_summary</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = tot_wellbeing ~ thours_c + male_c + thours_c:male_c, 
+    data = smart_wb)
+>>>>>>> 749fecb8c683ff61febc9926ae76317f3da1b599
 
 Residuals:
     Min      1Q  Median      3Q     Max 
@@ -923,10 +1698,16 @@ F-statistic:  2451 on 3 and 71029 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 <p>By which variable in the output is the interaction between smartphone use and gender shown? Is it significant?</p>
 <p>How would you interpret the results?</p>
+<<<<<<< HEAD
 </div>
 </section>
 <section id="assumption-checking-1" class="slide level2">
 <h2>Assumption checking</h2>
+=======
+</section>
+<section id="assumption-checking-1" class="level2">
+<h2 class="anchored" data-anchor-id="assumption-checking-1">Assumption checking</h2>
+>>>>>>> 749fecb8c683ff61febc9926ae76317f3da1b599
 <p>Here are the assumptions for multiple regression:</p>
 <ol type="1">
 <li><p>The outcome/DV is continuous (interval/ratio level data)</p></li>
@@ -939,6 +1720,7 @@ F-statistic:  2451 on 3 and 71029 DF,  p-value: &lt; 2.2e-16</code></pre>
 <li><p>Multicollinearity: predictor variables should not be too highly correlated</p></li>
 </ol>
 <p>From the work we’ve done so far we know that assumptions 1 - 4 are met and we can use the functions from the <code>performance</code> package again to check the rest (this will take a while because the dataset is so huge):</p>
+<<<<<<< HEAD
 
 <img data-src="W11_GLMinR_files/figure-revealjs/unnamed-chunk-23-1.png" width="960" class="r-stretch"><p>(Note: the line in the homogeneity plot is missing due to the large amount of data. Check out the textbook for a solution as well as for further information on what these measures mean.)</p>
 </section>
@@ -949,6 +1731,26 @@ F-statistic:  2451 on 3 and 71029 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a>simple_slopes_interaction <span class="ot">&lt;-</span> <span class="fu">emtrends</span>(mod, <span class="sc">~</span>male_c<span class="sc">|</span>thours_c, <span class="at">var=</span><span class="st">"thours_c"</span>)</span>
 <span id="cb29-2"><a href="#cb29-2"></a>simple_slopes_interaction</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+=======
+<div class="cell">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>assumptions <span class="ot">&lt;-</span> <span class="fu">check_model</span>(mod, <span class="at">check =</span> <span class="fu">c</span>(<span class="st">"vif"</span>, <span class="st">"qq"</span>, <span class="st">"normality"</span>, <span class="st">"linearity"</span>, <span class="st">"homogeneity"</span>))</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>assumptions</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="W11_GLMinR_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># qqPlot(mod$residuals)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>(Note: the line in the homogeneity plot is missing due to the large amount of data. Check out the textbook for a solution as well as for further information on what these measures mean.)</p>
+</section>
+<section id="further-analysis-of-interaction" class="level2">
+<h2 class="anchored" data-anchor-id="further-analysis-of-interaction">Further Analysis of Interaction</h2>
+<p>We can use <code>emmeans</code> package to further investigate the direction of the interaction. This is especially handy if we have more than two factor levels and can’t read out the direction of the effect from the model summary.</p>
+<p>Specifically, we’re using the <code>emtrends()</code> function, because we have a continuous variable and want to know the (simple) slope/trend of this variable within each of the factor levels of the categorical variable:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>simple_slopes_interaction <span class="ot">&lt;-</span> <span class="fu">emtrends</span>(mod, <span class="sc">~</span>male_c<span class="sc">|</span>thours_c, <span class="at">var=</span><span class="st">"thours_c"</span>)</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>simple_slopes_interaction</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+>>>>>>> 749fecb8c683ff61febc9926ae76317f3da1b599
 <div class="cell-output cell-output-stdout">
 <pre><code>thours_c = -3.41e-16:
  male_c thours_c.trend     SE    df lower.CL upper.CL
@@ -957,7 +1759,11 @@ F-statistic:  2451 on 3 and 71029 DF,  p-value: &lt; 2.2e-16</code></pre>
 
 Confidence level used: 0.95 </code></pre>
 </div>
+<<<<<<< HEAD
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="fu">test</span>(simple_slopes_interaction)  <span class="co"># with the test() function, you can get the p-value to test whether the slope within each group is sign. different from 0!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+=======
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">test</span>(simple_slopes_interaction)  <span class="co"># with the test() function, you can get the p-value to test whether the slope within each group is sign. different from 0!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+>>>>>>> 749fecb8c683ff61febc9926ae76317f3da1b599
 <div class="cell-output cell-output-stdout">
 <pre><code>thours_c = -3.41e-16:
  male_c thours_c.trend     SE    df t.ratio p.value
@@ -966,11 +1772,19 @@ Confidence level used: 0.95 </code></pre>
 </div>
 </div>
 </section>
+<<<<<<< HEAD
 <section id="power-effect-size" class="slide level2">
 <h2>Power &amp; effect size</h2>
 <p>Use this code to calculate power and effect size:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="fu">pwr.f2.test</span>(<span class="at">u =</span> <span class="dv">3</span>, <span class="at">v =</span> <span class="dv">71029</span>, <span class="at">f2 =</span> <span class="cn">NULL</span>, <span class="at">sig.level =</span> .<span class="dv">05</span>, <span class="at">power =</span> .<span class="dv">99</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+=======
+<section id="power-effect-size-and-write-up" class="level2">
+<h2 class="anchored" data-anchor-id="power-effect-size-and-write-up">Power, effect size and write up</h2>
+<p>Use this code to calculate power and effect size:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pwr.f2.test</span>(<span class="at">u =</span> <span class="dv">3</span>, <span class="at">v =</span> <span class="dv">71029</span>, <span class="at">f2 =</span> <span class="cn">NULL</span>, <span class="at">sig.level =</span> .<span class="dv">05</span>, <span class="at">power =</span> .<span class="dv">99</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+>>>>>>> 749fecb8c683ff61febc9926ae76317f3da1b599
 <div class="cell-output cell-output-stdout">
 <pre><code>
      Multiple regression power calculation 
@@ -981,6 +1795,7 @@ Confidence level used: 0.95 </code></pre>
       sig.level = 0.05
           power = 0.99</code></pre>
 </div>
+<<<<<<< HEAD
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a>f2 <span class="ot">&lt;-</span> mod_summary<span class="sc">$</span>adj.r.squared<span class="sc">/</span>(<span class="dv">1</span> <span class="sc">-</span> mod_summary<span class="sc">$</span>adj.r.squared)</span>
 <span id="cb35-2"><a href="#cb35-2"></a>f2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1006,6 +1821,27 @@ explains a statistically significant and weak proportion of variance (R2 =
 0.09, F(3, 71029) = 2450.89, p &lt; .001, adj. R2 = 0.09). The model's intercept,
 corresponding to thours_c = 0 and male_c = -0.5, is at 44.87 (95% CI [44.78,
 44.96], t(71029) = 1001.87, p &lt; .001). Within this model:
+=======
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>f2 <span class="ot">&lt;-</span> mod_summary<span class="sc">$</span>adj.r.squared<span class="sc">/</span>(<span class="dv">1</span> <span class="sc">-</span> mod_summary<span class="sc">$</span>adj.r.squared)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Is the study adequately powered?</p>
+<p>For the write up, you can use this text block, including <strong>inline code (wrapped by</strong> <code>r</code> ) to directly use the output of R in your text. If you then knit your document, it will insert the values:</p>
+<blockquote class="blockquote">
+<p>All continuous predictors were mean-centered and deviation coding was used for categorical predictors. The results of the regression indicated that the model significantly predicted course engagement (F(3, 7.1029^{4}) = 2450.89, p &lt; .001, Adjusted R2 = 0.09, f<sup>2</sup> = .63), accounting for 9% of the variance. Total screen time was a significant negative predictor of wellbeing scores (β = -0.77, p &lt; .001, as was gender (β = 5.14, p &lt; .001, with girls having lower wellbeing scores than boys. Importantly, there was a significant interaction between screentime and gender (β = 0.45, p &lt; .001), smartphone use was more negatively associated with wellbeing for girls than for boys.</p>
+</blockquote>
+<p>In this example, you can also see what you need to report.</p>
+<p>You can also use the report() function from the report package to get a suggestion for what to report from your results (it would still need some editing!):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">report</span>(mod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>We fitted a linear model (estimated using OLS) to predict tot_wellbeing with
+thours_c and male_c (formula: tot_wellbeing ~ thours_c + male_c +
+thours_c:male_c). The model explains a statistically significant and weak
+proportion of variance (R2 = 0.09, F(3, 71029) = 2450.89, p &lt; .001, adj. R2 =
+0.09). The model's intercept, corresponding to thours_c = 0 and male_c = -0.5,
+is at 44.87 (95% CI [44.78, 44.96], t(71029) = 1001.87, p &lt; .001). Within this
+model:
+>>>>>>> 749fecb8c683ff61febc9926ae76317f3da1b599
 
   - The effect of thours c is statistically significant and negative (beta =
 -0.77, 95% CI [-0.82, -0.73], t(71029) = -32.96, p &lt; .001; Std. beta = -0.15,
@@ -1022,13 +1858,20 @@ version of the dataset. 95% Confidence Intervals (CIs) and p-values were
 computed using a Wald t-distribution approximation.</code></pre>
 </div>
 </div>
+<<<<<<< HEAD
 </section></section>
 <section id="thanks" class="title-slide slide level1 center">
+=======
+</section>
+</section>
+<section id="thanks" class="level1">
+>>>>>>> 749fecb8c683ff61febc9926ae76317f3da1b599
 <h1>Thanks!</h1>
 <p><strong>Learning objectives:</strong></p>
 <ul>
 <li>how to run a mixed ANOVA or a LM in R!</li>
 </ul>
+<<<<<<< HEAD
 <p><strong>Next session</strong>:</p>
 <p>Linear <em>Mixed</em> Models</p>
 
@@ -1434,5 +2277,250 @@ computed using a Wald t-distribution approximation.</code></pre>
     });
     </script>
     
+=======
+<p><strong>Next week</strong>:</p>
+<p>Linear <em>Mixed</em> Models</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+>>>>>>> 749fecb8c683ff61febc9926ae76317f3da1b599
 
 </body></html>
