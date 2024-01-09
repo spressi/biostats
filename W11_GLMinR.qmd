@@ -42,17 +42,7 @@ library(report)
 library(tidyverse)
 ```
 
-<<<<<<< HEAD
-Last session, we have used **one-way ANOVAs** to analyze data for which we were interested in differences between levels of one factor (between-subjects groups) on a continuous dependent variable.
-=======
-::: notes
-start recording
-:::
-
-# Factorial ANOVA
-
 Last R session, we have used **one-way ANOVAs** to analyze data where we were interested in differences between levels of one factor (between-subjects groups) on a continuous dependent variable.
->>>>>>> 749fecb8c683ff61febc9926ae76317f3da1b599
 
 . . .
 
@@ -104,7 +94,7 @@ zhang_data2 <- read_csv("Zhang et al. 2014 Study 3.csv") %>%
   
 ```
 
-. . .
+## Data Wrangling: Solution
 
 ```{r}
 #| eval: true
@@ -112,16 +102,31 @@ zhang_data2 <- read_csv("Zhang et al. 2014 Study 3.csv") %>%
 zhang_data2 <- read_csv("Data/Zhang et al. 2014 Study 3.csv") %>%
   select(Condition, T1_Predicted_Interest_Composite, T2_Actual_Interest_Composite) %>%
   mutate(subject = row_number()) %>%
-  pivot_longer(names_to = "time",values_to = "interest", 
+  pivot_longer(names_to = "time", values_to = "interest", 
                cols = c(T1_Predicted_Interest_Composite, T2_Actual_Interest_Composite)) %>%
   mutate(Condition = Condition %>% recode("1" = "Ordinary", "2" = "Extraordinary") %>% as.factor(),
-         time = time %>% recode("T1_Predicted_Interest_Composite" = "Time 1 (Predicted)", 
-                                "T2_Actual_Interest_Composite" = "Time 2 (Actual)") %>% as.factor())
+         time = time %>% recode("T1_Predicted_Interest_Composite" = "Time 1", 
+                                "T2_Actual_Interest_Composite" = "Time 2") %>% as.factor())
 ```
 
-::: notes
-Do it together
-:::
+. . .
+
+\
+If you plan ahead, you can also use `rename` prior to `pivot_longer` to substitute the `recode` of `time`. This has the advantage that you can use the shorter names already in `pivot_longer` (but may be harder to read because the recoding of `time` and `Condition` now occur in different places):
+
+```{r}
+#| eval: true
+#| echo: true
+zhang_data2 <- read_csv("Data/Zhang et al. 2014 Study 3.csv") %>%
+  select(Condition, T1_Predicted_Interest_Composite, T2_Actual_Interest_Composite) %>%
+  mutate(subject = row_number()) %>%
+  rename(`Time 1` = T1_Predicted_Interest_Composite, #use backticks for column names that include spaces
+         `Time 2` = T2_Actual_Interest_Composite) %>% 
+  pivot_longer(names_to = "time", values_to = "interest", 
+               cols = c("Time 1", "Time 2")) %>%
+  mutate(Condition = Condition %>% recode("1" = "Ordinary", "2" = "Extraordinary") %>% as.factor(),
+         time = time %>%  as.factor())
+```
 
 ## Descriptive Statistics
 
@@ -136,13 +141,14 @@ sum_dat_factorial <- zhang_data2 %>%
             sd_interest = sd(interest, na.rm=TRUE),
             n = interest %>% na.omit() %>% length(), #can also use n() but works incorrectly if NA values exist
             .by = c(Condition, time))
+sum_dat_factorial
 ```
 
 ## Visualize the data: Violin-Boxplot
 
 Write the code that produces violin-boxplots for the scores in each group. `time` should be on the x-axis and `Condition` should be in different colors; `interest` is on the y-axis. Such plots are called "grouped" (e.g., grouped boxplot).
 
-Hint: You want to add `position = position_dodge(width = 0.9)` to everything except the violin plot for alignment.
+*Hint*: You want to add `position = position_dodge(width = 0.9)` to everything except the violin part to achieve alignment of all parts.
 
 . . .
 
@@ -154,7 +160,7 @@ ggplot(zhang_data2,
   geom_violin(trim = FALSE, alpha = .4) +
   geom_boxplot(position = position_dodge(.9), 
                width = .2, alpha = .6) +
-  #scale_x_discrete(labels = c("Time 1", "Time 2")) +
+  #scale_x_discrete(labels = c("Time 1 (Predicted)", "Time 2 (Actual)")) + 
   scale_fill_viridis_d(option = "E") +
   stat_summary(fun = "mean", geom = "point",
                position = position_dodge(width = 0.9)) +
@@ -184,7 +190,9 @@ lineplot
 
 The increase in `interest` between time 1 and 2 seems greater in the **ordinary** condition! But is this interaction effect significant?
 
-*Note*: The (between-subject) errorbars are only helpful to interpret the significance of the between-subject effect `Condition` (at each `time` point). For the within-subject effect of `time`, we would need the mean and standard error of the paired differences (but this is very hard to visualize).
+*Note*: You may want to add `position = position_dodge(.5)` to all `geom`s to avoid an overlap of errorbars.
+
+*Note2*: The (between-subject) errorbars are only helpful to interpret the significance of the between-subject effect `Condition` (at each `time` point). For the within-subject effect of `time`, we would need the mean and standard error of the paired differences (but this is very hard to visualize).
 
 ## Mixed ANOVA
 
@@ -206,7 +214,6 @@ mod_factorial <- aov_ez(id = "NULL",
                         dv = "NULL", 
                         type = 3,
                         es = "NULL") 
-
 NULL %>% tidy()
 ```
 
@@ -221,9 +228,8 @@ mod_factorial <- aov_ez(id = "subject",
                         dv = "interest", 
                         type = 3,
                         es = "pes") 
-
 anova(mod_factorial) %>% tidy() #or mod_factorial$anova_table %>% tidy()
-apa::anova_apa(mod_factorial)
+apa::anova_apa(mod_factorial) #or use this for apa format
 ```
 
 ## Mixed ANOVA Results
@@ -235,9 +241,9 @@ apa::anova_apa(mod_factorial)
 ```
 . . .
 
-**Conclusion**: The main effect of `time` and the interaction between `time` and `Condition` are significant. Judged by visual inspection of the plot, interest increases over time, especially for the "ordinary" group.
+**Conclusion**: The main effect of `time` and the interaction between `time` and `Condition` are significant. Judged by visual inspection of the plot, `interest` increases over `time`, especially for the "ordinary" group.
 
-## Assumption checking
+## Assumption Checking
 
 The assumptions for a factorial ANOVA are the same as the one-way ANOVA.
 
@@ -264,19 +270,45 @@ shapiro.test(mod_factorial$lm$residuals)
 performance::check_homogeneity(mod_factorial)
 ```
 
-## Write up
+## Write Up
 
 What do we need to report?
 
 . . .
 
--   Summary statistics (means, SDs) per cell
+-   Summary statistics (means, SDs, N) per cell
 
--   F(df1, df2) = F-value, p = p-value, effect size per effect (`apa` package!)
+-   *F*(df1, df2) = F-value, *p* = p-value, effect size per effect (`apa` package!)
 
--   Possibly pairwise contrasts (or t-tests)
+-   A visualization of the most important effect(s) in the data
+
+-   Possibly pairwise contrasts (or *t*-tests)
 
 -   Interpretation (direction of effect and theoretical meaning)
+
+. . .
+
+Example how to use the `apa` package for reporting (you want `print=F` and :
+
+````{verbatim, lang = "rmarkdown"}
+#| eval: false
+We found a main effect of time (`r apa::anova_apa(mod_factorial, print=F, format="markdown") %>% filter(effect=="time") %>% pull(text)`) with interest increasing from the first time point (*M* = `r zhang_data2 %>% summarise(m = mean(interest, na.rm=TRUE), .by = c(time)) %>% filter(time %>% grepl("1", ., fixed=T)) %>% pull(m) %>% signif(3)`) to the second (*M* = `r zhang_data2 %>% summarise(m = mean(interest, na.rm=TRUE), .by = c(time)) %>% filter(time %>% grepl("1", ., fixed=T)) %>% pull(m) %>% signif(3)`). This effect was superseded by an interaction of time and condition (`r apa::anova_apa(mod_factorial, print=F, format="markdown") %>% filter(effect=="Condition:time") %>% pull(text)`) [...].
+````
+
+We found a main effect of time (`r apa::anova_apa(mod_factorial, print=F, format="markdown") %>% filter(effect=="time") %>% pull(text)`) with interest increasing from the first time point (*M* = `r zhang_data2 %>% summarise(m = mean(interest, na.rm=TRUE), .by = c(time)) %>% filter(time %>% grepl("1", ., fixed=T)) %>% pull(m) %>% signif(3)`) to the second (*M* = `r zhang_data2 %>% summarise(m = mean(interest, na.rm=TRUE), .by = c(time)) %>% filter(time %>% grepl("1", ., fixed=T)) %>% pull(m) %>% signif(3)`). This effect was superseded by an interaction of time and condition (`r apa::anova_apa(mod_factorial, print=F, format="markdown") %>% filter(effect=="Condition:time") %>% pull(text)`) [...].
+
+. . .
+
+\
+*Hint*: You can add `gsub` to insert the greek letter for eta: `gsub("petasq", "$\\eta_p^2$", ., fixed=T)`
+
+````{verbatim, lang = "rmarkdown"}
+#| eval: false
+We found a main effect of time (`r apa::anova_apa(mod_factorial, print=F, format="markdown") %>% filter(effect=="time") %>% pull(text) %>% gsub("petasq", "$\\eta_p^2$", ., fixed=T)`) [...]
+````
+
+We found a main effect of time (`r apa::anova_apa(mod_factorial, print=F, format="markdown") %>% filter(effect=="time") %>% pull(text) %>% gsub("petasq", "$\\eta_p^2$", ., fixed=T)`) [...]
+
 
 # Regression/Linear Model
 
@@ -300,7 +332,7 @@ In this huge dataset ($N=120,000$), we have the following variables that we will
 
 ## Tasks
 
--   Download [wellbeing.csv](https://psyteachr.github.io/quant-fun-v2/wellbeing.csv), [participant_info.csv](https://psyteachr.github.io/quant-fun-v2/participant_info.csv) and [screen_time.csv](https://psyteachr.github.io/quant-fun-v2/screen_time.csv) and save them in your Chapter folder. Make sure that you do not change the file names at all.
+-   Download [wellbeing.csv](https://psyteachr.github.io/quant-fun-v2/wellbeing.csv), [participant_info.csv](https://psyteachr.github.io/quant-fun-v2/participant_info.csv) and [screen_time.csv](https://psyteachr.github.io/quant-fun-v2/screen_time.csv) and save them in your project folder. Make sure that you do not change the file names at all.
 
 -   Load the CSV datasets into variables called `pinfo`, `wellbeing`, and `screen` using `read_csv()`.
 
@@ -340,6 +372,8 @@ Calculate the WEMWBS scores by taking the sum of all the items:
 -   you might have to "pivot" the data from wide to long format and use `.by` to calculate the well-being (WEMWBS) score per person.
 
 -   verify for yourself that the scores all fall in the 14-70 range. Przybylski and Weinstein reported a mean of 47.52 with a standard deviation of 9.55. Can you reproduce these values?
+
+. . .
 
 ```{r}
 #| echo: true
@@ -382,21 +416,24 @@ screen2 <- screen_long %>%
 dat_means <- inner_join(wemwbs, screen2, "Serial") %>%
   summarise(mean_wellbeing = mean(tot_wellbeing), .by=c(variable, day, hours))
 
-dat_means %>% ggplot(aes(hours, mean_wellbeing, linetype = day)) +
+meanplot = dat_means %>% ggplot(aes(hours, mean_wellbeing, linetype = day)) +
   geom_line() +
   geom_point() +
   facet_wrap(vars(variable), nrow = 2)
 ```
 
-Also describe what you see in the figures/plots that you get when running the code.
+## Data Visualization: Interpretation
+
+Describe what you see in the figures/plots that you get when running the code.
+
+```{r}
+#| echo: false
+meanplot
+```
 
 . . .
 
-There seems to be a peak around 1h/day for max. wellbeing for all sorts of screen time.
-
-::: notes
-Walk through code together!
-:::
+There seems to be a peak at roughly 1h/day for well-being for all sorts of screen time.
 
 ## Data Wrangling
 
@@ -464,7 +501,7 @@ smart_wb <- smarttot %>%
          male = as_factor(male))
 ```
 
-## Data Visualization 2 
+## Data Visualization 2
 
 Try to recreate the following plot:
 
@@ -498,11 +535,11 @@ ggplot(NULL, aes(NULL, NULL, color = NULL)) +
   theme_bw()
 ```
 
-. . .
+## Data Visualization 2: Solution
 
 ```{r}
 #| echo: true
-#| eval: false
+#| eval: true
 smart_wb_gen <- smart_wb %>%
   summarise(mean_wellbeing = mean(tot_wellbeing), .by = c(tothours, male))
 
@@ -527,7 +564,7 @@ where
 
 -   $X1i$ is the mean-centered smartphone use variable for participant i;
 
--   $X2i$ is gender (-.5 = female, .5 = male);
+-   $X2i$ is gender ($-.5$ = female, $.5$ = male);
 
 -   $X3i$ is the interaction between smartphone use and gender (=$X1i×X2i$)
 
@@ -539,7 +576,7 @@ mod <- lm(NULL ~ NULL, data = smart_wb)
 mod_summary <- summary(mod)
 ```
 
-. . .
+## Analysis: Result
 
 ```{r}
 #| echo: true
@@ -575,14 +612,14 @@ Here are the assumptions for multiple regression:
 
 8.  Multicollinearity: predictor variables should not be too highly correlated
 
-From the work we've done so far we know that assumptions 1 - 4 are met and we can use the functions from the `performance` package again to check the rest (this will take a while because the dataset is so huge):
+From the work we've done so far we know that assumptions 1 - 4 are met and we can use the functions from the `performance` package again to check the rest (this will take a while because the dataset is so huge)
+
+## Assumption checking 2
 
 ```{r}
-assumptions <- check_model(mod, check = c("vif", "qq", "normality", "linearity", "homogeneity"))
-
-assumptions
-
+#| echo: true
 # qqPlot(mod$residuals)
+check_model(mod, check = c("vif", "qq", "normality", "linearity", "homogeneity"))
 ```
 
 (Note: the line in the homogeneity plot is missing due to the large amount of data. Check out the textbook for a solution as well as for further information on what these measures mean.)
@@ -601,23 +638,24 @@ simple_slopes_interaction
 test(simple_slopes_interaction)  # with the test() function, you can get the p-value to test whether the slope within each group is sign. different from 0!
 ```
 
-## Power & effect size
+## Power & Effect Size
 
-Use this code to calculate power and effect size:
+Use this code to calculate the minimum effect size for $99\%$ power and the empirical effect size:
 
 ```{r}
 #| echo: true
+#minimum effect size needed: set f2 (effect size) to NULL so it will be calculated
 pwr.f2.test(u = 3, v = 71029, f2 = NULL, sig.level = .05, power = .99)
 
-f2 <- mod_summary$adj.r.squared/(1 - mod_summary$adj.r.squared)
-f2
+f2.empirical <- mod_summary$adj.r.squared/(1 - mod_summary$adj.r.squared)
+f2.empirical #empirical effect size
 ```
 
 Is the study adequately powered?
 
 ## Write Up
 
-For the write up, you can use this text block, including **inline code (wrapped by** `R`) to directly use the output of R in your text. If you then knit your document, it will insert the values:
+For the write up, you can copy this text block, including **inline code** (wrapped by `R`) to directly use the output of R in your text. If you then knit your document, it will insert the values:
 
 ````{verbatim, lang = "rmarkdown"}
 #| eval: false
@@ -625,6 +663,8 @@ All continuous predictors were mean-centered and deviation coding was used for c
 ````
 
 > All continuous predictors were mean-centered and deviation coding was used for categorical predictors. The results of the regression indicated that the model significantly predicted course engagement (*F*(`r mod_summary$fstatistic[2]`, `r mod_summary$fstatistic[3] %>% round(2)`) = `r mod_summary$fstatistic[1] %>% round(2)`, *p* \< .001, adjusted *R*^2 = `r mod_summary$adj.r.squared %>% round(2)`, f^2^ = .63), accounting for `r (mod_summary$adj.r.squared %>% round(2))*100`% of the variance. Total screen time was a significant negative predictor of wellbeing scores (β = `r mod$coefficients[2] %>% round(2)`, *p* \< .001), as was gender (β = `r mod$coefficients[3] %>% round(2)`, *p* \< .001), with girls having lower wellbeing scores than boys. Importantly, there was a significant interaction between screentime and gender (β = `r mod$coefficients[4] %>% round(2)`, *p* \< .001): Smartphone use was more negatively associated with wellbeing for girls than for boys.
+
+## Write Up 2
 
 You can also use the `report()` function from the report package to get a suggestion for what to report from your results (it would still need some editing!):
 
