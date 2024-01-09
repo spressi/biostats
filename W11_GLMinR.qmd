@@ -15,7 +15,7 @@ format:
 from: markdown+emoji
 ---
 
-# Quiz!
+# Factorial ANOVA
 
 ```{css}
 code.sourceCode {
@@ -42,25 +42,19 @@ library(report)
 library(tidyverse)
 ```
 
-::: notes
-start recording
-:::
-
-# Factorial ANOVA
-
-Last week, we have used **one-way ANOVAs** to analyze data where we were interested in differences between levels of one factor (between-subjects groups) on a continuous dependent variable.
+Last session, we have used **one-way ANOVAs** to analyze data for which we were interested in differences between levels of one factor (between-subjects groups) on a continuous dependent variable.
 
 . . .
 
-Today, we want to turn towards the case where we have several factors as independent variables/preditors. We can do so by running a factorial ANOVA or a linear model.
+Today, we want to turn towards the case where we have several factors as independent variables/predictors. We can do so by running a factorial ANOVA or a linear model.
 
 . . .
 
-One big advantage of using ANOVAs is when you have repeated measures/within-subject data. They are not easily fit in LMs (you would need Linear *Mixed* Models), but you can use repeated-measures ANOVA for these kind of data!
+One big advantage of using ANOVAs is when you have repeated measures/within-subject data. They are not easily fit in LMs (you would need Linear *Mixed* Models), but you can use repeated-measures ANOVA for this kind of data!
 
 ## Setup
 
-We will use the data by Zhang et al. (2014): [Zhang et al. 2014 Study 3.csv](https://psyteachr.github.io/quant-fun-v2/Zhang%20et%20al.%202014%20Study%203.csv)
+We will use the data by [Zhang et al. (2014)](https://doi.org/10.1177/0956797614542274), Study 3 ([Click here to download](https://psyteachr.github.io/quant-fun-v2/Zhang%20et%20al.%202014%20Study%203.csv))
 
 The study design was a 2x2 design:
 
@@ -76,8 +70,8 @@ Tasks:
 
 -   Read in the data file\
 -   Select the three columns we need\
--   Add on a column of subject IDs based on the `row_number()`\
--   Tidy the data/bring it in long format\
+-   Add a column of subject IDs using the row number\
+-   Tidy the data: bring it into long format\
 -   Recode the values of Condition from numeric to text labels\
 -   Recode the values of time to be easier to read/write\
 -   Change the data type of Condition and time to be factors!
@@ -90,11 +84,12 @@ Replace the "NULLs" to achieve all this step by step...
 zhang_data2 <- read_csv("Zhang et al. 2014 Study 3.csv") %>% 
   select(NULL, NULL, NULL) %>% 
   mutate(subject = NULL) %>% 
-  NULL(names_to = "time", values_to = "interest", cols =  c("T1_Predicted_Interest_Composite","T2_Actual_Interest_Composite")) %>%
-  mutate(time = recode(time, NULL = NULL, NULL = NULL), # should be condition!
-         Condition = recode(NULL, "T1_Predicted_Interest_Composite" = "time1_interest", "T2_Actual_Interest_Composite" = "time2_interest"),
-         NULL = as.factor(NULL),
-         time = NULL(time))
+  NULL(names_to = "time", values_to = "interest", 
+       cols = c(T1_Predicted_Interest_Composite, T2_Actual_Interest_Composite)) %>%
+  mutate(Condition = Condition %>% NULL("1" = "Ordinary", "2" = "Extraordinary"),
+         time = time %>% NULL("T1_Predicted_Interest_Composite" = "Time 1 (Predicted)", 
+                              "T2_Actual_Interest_Composite" = "Time 2 (Actual)"),
+         NULL = as.factor(NULL))
   
   
 ```
@@ -107,11 +102,11 @@ zhang_data2 <- read_csv("Zhang et al. 2014 Study 3.csv") %>%
 zhang_data2 <- read_csv("Data/Zhang et al. 2014 Study 3.csv") %>%
   select(Condition, T1_Predicted_Interest_Composite, T2_Actual_Interest_Composite) %>%
   mutate(subject = row_number()) %>%
-  pivot_longer(names_to = "time",values_to = "interest", cols = c("T1_Predicted_Interest_Composite","T2_Actual_Interest_Composite")) %>%
-  mutate(Condition = dplyr::recode(Condition, "1" = "Ordinary", "2" = "Extraordinary"))%>%
-  mutate(time = dplyr::recode(time, "T1_Predicted_Interest_Composite" = "time1_interest", "T2_Actual_Interest_Composite" = "time2_interest")) %>%
-  mutate(Condition = as.factor(Condition)) %>% 
-  mutate (time = as.factor(time))
+  pivot_longer(names_to = "time",values_to = "interest", 
+               cols = c(T1_Predicted_Interest_Composite, T2_Actual_Interest_Composite)) %>%
+  mutate(Condition = Condition %>% recode("1" = "Ordinary", "2" = "Extraordinary") %>% as.factor(),
+         time = time %>% recode("T1_Predicted_Interest_Composite" = "Time 1 (Predicted)", 
+                                "T2_Actual_Interest_Composite" = "Time 2 (Actual)") %>% as.factor())
 ```
 
 ::: notes
@@ -120,28 +115,24 @@ Do it together
 
 ## Descriptive Statistics
 
-Calculate descriptive statistics (mean and SD) for interest for each Condition for each time (hint: you will need to group_by() two variables) and store it in an object named sum_dat_factorial. These are known as the cells means.
+Calculate descriptive statistics (mean, SD, and N) for `interest` summarized for each Condition and each time. Store the results in a variable called `sum_dat_factorial`.
 
 . . .
 
 ```{r}
 #| echo: true
 sum_dat_factorial <- zhang_data2 %>% 
-  group_by(Condition, time) %>% 
   summarise(mean_interest = mean(interest, na.rm=TRUE),
-            sd_interest = sd(interest, na.rm=TRUE))
+            sd_interest = sd(interest, na.rm=TRUE),
+            n = interest %>% na.omit() %>% length(), #can also use n() but works incorrectly if NA values exist
+            .by = c(Condition, time))
 ```
 
-## Visualize the data
+## Visualize the data: Violin-Boxplot
 
-### Violin-Boxplot
+Write the code that produces violin-boxplots for the scores in each group. `time` should be on the x-axis and `Condition` should be in different colors; `interest` is on the y-axis. Such plots are called "grouped" (e.g., grouped boxplot).
 
-Write the code that produces violin-boxplots for the scores in each group. time should be on the x-axis and Condition should be in different colors. The CV, interest, is on the y-axis. Such a plot is called "grouped" (e.g. grouped boxplot).
-
-```         
-Hint 1: you will need to add in the second IV in the first call to ggplot as a fill argument (aes(x,y,fill)).  
-Hint 2: you will need to add position = position_dodge(.9) to geom_boxplot to get the plots to align.  
-```
+Hint: You want to add `position = position_dodge(width = 0.9)` to everything except the violin plot for alignment.
 
 . . .
 
@@ -150,12 +141,10 @@ Hint 2: you will need to add position = position_dodge(.9) to geom_boxplot to ge
 #| code-line-numbers: 1-7
 ggplot(zhang_data2, 
        aes(x = time , y = interest, fill = Condition))+
-  geom_violin(trim = FALSE, 
-              alpha = .4) +
+  geom_violin(trim = FALSE, alpha = .4) +
   geom_boxplot(position = position_dodge(.9), 
-               width = .2, 
-               alpha = .6) +
-  scale_x_discrete(labels = c("Time 1", "Time 2")) +
+               width = .2, alpha = .6) +
+  #scale_x_discrete(labels = c("Time 1", "Time 2")) +
   scale_fill_viridis_d(option = "E") +
   stat_summary(fun = "mean", geom = "point",
                position = position_dodge(width = 0.9)) +
@@ -166,46 +155,49 @@ ggplot(zhang_data2,
 
 ## Interaction (line) plot
 
-In this analysis, we also want to look at the interaction between time and Condition. To see whether an interaction might be present (e.g. the lines are not parallel!), it is helpful to make a line plot, again with time on the x-axis, Condition as separate lines, and (mean) interest on the y-axis. We want to draw the summarized data, that's why we use sum_dat_factorial.
-
-Here's the code:
+In this visualization, we want to look at `time` and `Condition` to see whether an interaction might be present. It is helpful to make a line plot with `time` on the x-axis, `Condition` as separate lines, and (mean) `interest` on the y-axis.
 
 ```{r}
 #| eval: true
 #| echo: true
-ggplot(sum_dat_factorial, aes(x = time, y = mean_interest, group = Condition, shape = Condition)) +
-  geom_point(size = 3) +
-  geom_line(aes(linetype = Condition))+
-  scale_x_discrete(labels = c("Time 1", "Time 2"))+
+lineplot = sum_dat_factorial %>% mutate(se_interest = sd_interest / sqrt(n)) %>% 
+  ggplot(aes(x = time, y = mean_interest, group = Condition, shape = Condition)) +
+  geom_errorbar(aes(ymin = mean_interest - se_interest, ymax = mean_interest + se_interest), width=.5) +
+  geom_point(size = 5) +
+  geom_line(aes(linetype = Condition)) +
+  #scale_x_discrete(labels = c("Time 1", "Time 2")) + #this is how you could change x-axis labels
   theme_classic()
+lineplot
 ```
 
-There seems to be an interaction! The lines are not parallel, which means in this case that the increase in interest between time 1 and time 2 is greater in the "ordinary" condition!
+. . .
 
-But is this effect significant?
+The increase in `interest` between time 1 and 2 seems greater in the **ordinary** condition! But is this interaction effect significant?
+
+*Note*: The (between-subject) errorbars are only helpful to interpret the significance of the between-subject effect `Condition` (at each `time` point). For the within-subject effect of `time`, we would need the mean and standard error of the paired differences (but this is very hard to visualize).
 
 ## Mixed ANOVA
 
-We now want to run a mixed ANOVA. Mixed because it is a mix of within- and between-subjects independent variables.
+We now want to run a mixed ANOVA. It is called "mixed" because it includes both between- and within-subjects factors.
 
 -   Complete the below code to run the factorial ANOVA. Remember that you will need to specify both IVs and that one of them is between-subjects and one of them is within-subjects. Look up the help documentation for aov_ez to find out how to do this.
 
 -   Save the ANOVA model to an object called mod_factorial
 
--   Pull out the anova table, you can either do this with mod_factorial\$anova_table or anova(mod_factorial) both have the same result. Save this to an object named factorial_output. You can use tidy() to save the output as a data frame, which might be useful.
+-   Run the code and inspect the result. Now, try to pull out the ANOVA table only. You can either do this with `mod_factorial$anova_table` or `anova(mod_factorial)`. *Hint*: You can use tidy() to save the output table as a data frame, which might be useful.
 
 ```{r}
 #| echo: true
 #| eval: false
 mod_factorial <- aov_ez(id = "NULL",
-               data = NULL, 
-               between = "NULL", 
-               within = "NULL",
-               dv = "NULL", 
-               type = 3,
-               es = "NULL") 
+                        data = NULL, 
+                        between = "NULL", 
+                        within = "NULL",
+                        dv = "NULL", 
+                        type = 3,
+                        es = "NULL") 
 
-factorial_output <- NULL %>% tidy()
+NULL %>% tidy()
 ```
 
 . . .
@@ -213,54 +205,53 @@ factorial_output <- NULL %>% tidy()
 ```{r}
 #| echo: true
 mod_factorial <- aov_ez(id = "subject",
-               data = zhang_data2, 
-               between = "Condition", 
-               within = "time",
-               dv = "interest", 
-               type = 3,
-               es = "pes") 
+                        data = zhang_data2, 
+                        between = "Condition", 
+                        within = "time",
+                        dv = "interest", 
+                        type = 3,
+                        es = "pes") 
 
-factorial_output <- anova(mod_factorial) %>% tidy()
-
-# OR
-
-factorial_output <- mod_factorial$anova_table %>% tidy()
-
-factorial_output
+anova(mod_factorial) %>% tidy() #or mod_factorial$anova_table %>% tidy()
+apa::anova_apa(mod_factorial)
 ```
 
+## Mixed ANOVA Results
+
+```{r}
+#| echo: false
+lineplot
+apa::anova_apa(mod_factorial)
+```
 . . .
 
-Conclusion:
-
-The main effect of time and the interaction between time and Condition are significant. Judged by visual inspection of the plot, interest inreases over time points, especially for the "ordinary" group...
+**Conclusion**: The main effect of `time` and the interaction between `time` and `Condition` are significant. Judged by visual inspection of the plot, interest increases over time, especially for the "ordinary" group.
 
 ## Assumption checking
 
 The assumptions for a factorial ANOVA are the same as the one-way ANOVA.
 
--   The DV is continuous (interval or ratio data )
+1.   The DV is continuous (interval or ratio data)
 
--   The observations should be independent
+2.   The observations should be independent
 
--   The residuals should be normally distributed
+3.   The residuals should be normally distributed
 
--   There should be homogeneity of variance between the groups
+4.   There should be homogeneity of variance between the groups
 
-To test assumption 3, extract the residuals from the model (mod_factorial\$residuals), create a qq-plot and conduct a Shapiro-Wilk test.
-
-For the final assumption, we can again use test_levene() to test homogeneity of variance.
+To test assumption 3, extract the residuals from the model, create a QQ-Plot and conduct a Shapiro-Wilk test. For assumption 4, we use the Levene test for homogeneity of variance.
 
 . . .
 
 ```{r}
+#| echo: true
 # normality testing
-qqPlot(mod_factorial$lm$residuals)
+car::qqPlot(mod_factorial$lm$residuals)
 shapiro.test(mod_factorial$lm$residuals)
 
 # levene's test
-test_levene(mod_factorial)
-
+#afex::test_levene(mod_factorial) #old version
+performance::check_homogeneity(mod_factorial)
 ```
 
 ## Write up
@@ -271,11 +262,11 @@ What do we need to report?
 
 -   Summary statistics (means, SDs) per cell
 
--   F(df1, df2) = F-value, p = p-value, effect size per effect
+-   F(df1, df2) = F-value, p = p-value, effect size per effect (`apa` package!)
 
--   Possibly pairwise contrasts
+-   Possibly pairwise contrasts (or t-tests)
 
--   Interpretation
+-   Interpretation (direction of effect and theoretical meaning)
 
 # Regression/Linear Model
 
@@ -285,25 +276,41 @@ But most importantly, the linear model is super flexible and you can combine con
 
 ## Setup
 
-We will use the data from this paper: Przybylski, A. & Weinstein, N. (2017). A Large-Scale Test of the Goldilocks Hypothesis. Psychological Science, 28, 204--215
+We will use the data from this paper: [Przybylski, A. & Weinstein, N. (2017). A Large-Scale Test of the Goldilocks Hypothesis](https://doi.org/10.1177/0956797616678438).
 
 In the paper, the authors investigated whether there is a "just right" amount of screen time that is associated with higher well-being.
 
-In this huge dataset (N=120000), we have the following variables that we will use for analysis:
+In this huge dataset ($N=120,000$), we have the following variables that we will use for analysis:
 
--   a continuous DV, well-being (Warwick-Edinburgh Mental Well-Being Scale (WEMWBS). This is a 14-item scale with 5 response categories, summed together to form a single score ranging from 14-70, so it's not really continuous but... oh well...),
+-   a continuous DV, `well-being` (Warwick-Edinburgh Mental Well-Being Scale; WEMWBS). This is a 14-item scale with 5 response categories, summed together to form a single score ranging from 14-70 (so it's not completely continuous...),
 
--   a *continuous* predictor/IV: screen time,
+-   a *continuous* predictor/IV: `screen time`,
 
--   a *categorical* predictor/IV: gender.
+-   a *categorical* predictor/IV: `gender`.
 
-## **Tasks:**
+## Tasks
 
--   Download wellbeing.csv, participant_info.csv and screen_time.csv and save them in your Chapter folder. Make sure that you do not change the file names at all.
+-   Download [wellbeing.csv](https://psyteachr.github.io/quant-fun-v2/wellbeing.csv), [participant_info.csv](https://psyteachr.github.io/quant-fun-v2/participant_info.csv) and [screen_time.csv](https://psyteachr.github.io/quant-fun-v2/screen_time.csv) and save them in your Chapter folder. Make sure that you do not change the file names at all.
 
--   Load the CSV datasets into variables called pinfo, wellbeing and screen using read_csv().
+-   Load the CSV datasets into variables called `pinfo`, `wellbeing`, and `screen` using `read_csv()`.
 
--   Take a look at the data and make sure you understand what you see. The wellbeing tibble has information from the WEMWBS questionnaire; screen has information about screen time use on weekends (variables ending with we) and weekdays (variables ending with wk) for four types of activities: using a computer (variables starting with Comph; Q10 on the survey), playing video games (variables starting with Comp; Q9 on the survey), using a smartphone (variables starting with Smart; Q11 on the survey) and watching TV (variables starting with Watch; Q8 on the survey).
+-   Take a look at the data and make sure you understand what you see.
+
+. . .
+
+\ 
+
+-   The `wellbeing` tibble has information from the WEMWBS questionnaire, 
+        
+-   `screen` has information about screen time use on weekends (variables ending with "we") and weekdays (variables ending with "wk") for four types of activities:
+        
+    - using a computer (variables starting with "Comph"; Q10 on the survey)
+            
+    - playing video games (variables starting with "Comp"; Q9 on the survey)
+            
+    - using a smartphone (variables starting with "Smart"; Q11 on the survey), and 
+            
+    - watching TV (variables starting with "Watch"; Q8 on the survey).
 
 ```{r}
 # echo: true
@@ -318,22 +325,23 @@ screen <- read.csv("Data/screen_time.csv")
 
 Calculate the WEMWBS scores by taking the sum of all the items:
 
--   Write the code to create a new table called wemwbs, with two variables: Serial (the participant ID), and tot_wellbeing, the total WEMWBS score.
+-   Write the code to create a new table called `wemwbs` with two variables: `Serial` (the participant ID), and `tot_wellbeing`, the total WEMWBS score.
 
--   you might have to "pivot" the data from wide to long format.
-
--   you probably have to use a group_by() to calculate the well-being (WEMWBS) score per person.
+-   you might have to "pivot" the data from wide to long format and use `.by` to calculate the well-being (WEMWBS) score per person.
 
 -   verify for yourself that the scores all fall in the 14-70 range. Przybylski and Weinstein reported a mean of 47.52 with a standard deviation of 9.55. Can you reproduce these values?
 
 ```{r}
 #| echo: true
-wemwbs <- wellbeing %>%
-  pivot_longer(names_to = "var", values_to = "score", -Serial) %>%
-  group_by(Serial) %>%
-  summarise(tot_wellbeing = sum(score))
+wemwbs = wellbeing %>%
+  pivot_longer(names_to = "var", values_to = "score", cols = -Serial) %>%
+  summarise(tot_wellbeing = sum(score), .by=Serial)
 
-# you could also mutate(tot_wellbeing = WBOptimf + ...) %>% select(Serial, tot_wellbeing)
+# you could also mutate(tot_wellbeing = WBOptimf + ...) 
+# but it is easier to use "across" and "filter" the variable names
+
+wemwbs = wellbeing %>% mutate(tot_wellbeing = rowSums(across(starts_with("WB")))) %>% 
+  select(Serial, tot_wellbeing)
 
 # sanity check values
 
@@ -343,7 +351,7 @@ wemwbs %>% summarise(mean = mean(tot_wellbeing),
                      max = max(tot_wellbeing))
 ```
 
-## Data visualization
+## Data Visualization
 
 We now want to visualize the relationship between screen time (for the four different technologies) and well-being.\
 Run the code below and write comments in the code that explain what each line of code is doing:
@@ -355,23 +363,19 @@ screen_long <- screen %>%
   separate(var, c("variable", "day"), "_")
 
 screen2 <- screen_long %>%
-  mutate(variable = dplyr::recode(variable,
-               "Watch" = "Watching TV",
-               "Comp" = "Playing Video Games",
-               "Comph" = "Using Computers",
-               "Smart" = "Using Smartphone"),
-     day = dplyr::recode(day,
-              "wk" = "Weekday",
-              "we" = "Weekend"))
+  mutate(variable = variable %>% recode("Watch" = "Watching TV",
+                                        "Comp" = "Playing Video Games",
+                                        "Comph" = "Using Computers",
+                                        "Smart" = "Using Smartphone"),
+         day = day %>% recode("wk" = "Weekday", "we" = "Weekend"))
 
 dat_means <- inner_join(wemwbs, screen2, "Serial") %>%
-  group_by(variable, day, hours) %>%
-  summarise(mean_wellbeing = mean(tot_wellbeing))
+  summarise(mean_wellbeing = mean(tot_wellbeing), .by=c(variable, day, hours))
 
-ggplot(dat_means, aes(hours, mean_wellbeing, linetype = day)) +
+dat_means %>% ggplot(aes(hours, mean_wellbeing, linetype = day)) +
   geom_line() +
   geom_point() +
-  facet_wrap(~variable, nrow = 2)
+  facet_wrap(vars(variable), nrow = 2)
 ```
 
 Also describe what you see in the figures/plots that you get when running the code.
@@ -384,15 +388,15 @@ There seems to be a peak around 1h/day for max. wellbeing for all sorts of scree
 Walk through code together!
 :::
 
-## Data wrangling
+## Data Wrangling
 
 We need to do a few things to get a dataset that we can use for analysis:
 
 1.  Create a new table, `smarttot`, that has the mean number of hours per day of smartphone use for each participant, averaged over weekends/weekdays.
 
 -   You will need to *filter* the dataset to only include smartphone use and not other technologies.\
--   You will also need to *group* the results by the participant ID (i.e., `serial`).\
--   The final data-set should have two variables: `Serial` (the participant) and `tothours`. In this step, you will need to *summarise* the data.\
+-   The final data set should have two variables: `Serial` (the participant) and `tothours`. In this step, you will need to *summarise* the data.\
+-   You will also need to group the summary by the participant ID (i.e., `serial`).\
 -   You will need to use the dataset `screen2` to do this.
 
 . . .
@@ -401,13 +405,12 @@ We need to do a few things to get a dataset that we can use for analysis:
 #| echo: true
 smarttot <- screen2 %>%
   filter(variable == "Using Smartphone") %>%
-  group_by(Serial) %>%
-  summarise(tothours = mean(hours))
+  summarise(tothours = mean(hours), .by=Serial)
 ```
 
 . . .
 
-2.  Next, create a new tibble called `smart_wb` that only includes (*filters*) participants from `smarttot` who used a smartphone for more than one hour per day each week, and then combine (*join*) this table with the information in `wemwbs` and `pinfo`.
+2.  Next, create a new tibble called `smart_wb` that only includes participants from `smarttot` who used a smartphone for more than one hour per day each week and then combine (*join*) this table with the information in `wemwbs` and `pinfo`.
 
 . . .
 
@@ -421,20 +424,21 @@ smart_wb <- smarttot %>%
 
 ## Data Wrangling 2
 
-2.  When you do regression analysis, it is helpful to *mean center* your continuous (independent) variables. You mean center a predictor X simply by subtracting the mean (X_centered = X - mean(X)). This has two useful consequences:
+When you do regression analysis, it is helpful to *mean center* your continuous (independent) variables. You mean center a predictor X simply by subtracting the mean (`X_centered = X - mean(X)`). This has two useful consequences:
 
--   the model intercept reflects the prediction for Y at the mean value of the predictor variable, rather than at the zero value of the unscaled variable;
+-   the model intercept reflects the prediction for Y at the mean value of the predictor variable, rather than at the zero value of the original variable;
 -   if there are interactions in the model, any lower-order effects can be given the same interpretation as they receive in ANOVA (main effects, rather than simple effects). (Don't worry if you don't understand what this means yet!)
 
-If you mean-center categorical predictors with two levels, these become coded as -.5 and .5 (because the mean of these two values is 0). This is also handy and is called *effects coding*. (Not true if unequal groups! Use if_else())
+If you mean-center categorical predictors with two levels, these become coded as $-.5$ and $.5$ (because the mean of these two values is 0). This is also handy and is called *effects coding*. (Not exactly true for unequal group sizes! So rather use `if_else()` function and assign $-.5$ and $.5$)
 
-**Tasks:**
+## Tasks
 
--   Use mutate to add two new variables to `smart_wb`: `tothours_c`, calculated as a mean-centered version of the `tothours` predictor; and `male_c`, recoded as -.5 for female and .5 for male.
+-   Use mutate to add two new variables to `smart_wb`: `tothours_c`, calculated as a mean-centered version of the `tothours` predictor; and `male_c`, recoded as $-.5$ for female and $.5$ for male.
 
--   To create `male_c` you will need to use `if_else(male == 1, .5, -.5)` You can read this code as "if the variable male equals 1, recode it as .5, if not, recode it as -.5".
+-   To create `male_c` you will need to use `if_else(male == 1, .5, -.5)` \
+(Read as: "If the variable male equals 1, switch it to $.5$, if not, switch it to $-.5$".)
 
--   Finally, recode `male` and `male_c` as factors, so that R knows not to treat them as a real numbers.
+-   Finally, recode `male` and `male_c` as factors, so that R knows not to treat them as real numbers.
 
 . . .
 
@@ -445,30 +449,43 @@ smart_wb <- smarttot %>%
   inner_join(wemwbs, "Serial") %>%
   inner_join(pinfo, "Serial") %>%
   mutate(thours_c = tothours - mean(tothours),
-         male_c = ifelse(male == 1, .5, -.5),
-         male_c = as.factor(male_c),
-         male = as.factor(male))
+         #thours_c = tothours %>% scale(), #alternative, also scales the variable to SD=1
+         male_c = if_else(male == 1, .5, -.5) %>% as_factor(),
+         male = as_factor(male))
 ```
 
-## Data visualization 2
+## Data Visualization 2 
 
 Try to recreate the following plot:
 
-![](images/PlotCh17.png){alt="Relationship between mean wellbeing and smartphone use by gender"}
+```{r}
+#| echo: false
+#| eval: true
+smart_wb_gen <- smart_wb %>%
+  summarise(mean_wellbeing = mean(tot_wellbeing), .by = c(tothours, male))
+
+ggplot(smart_wb_gen, aes(tothours, mean_wellbeing, color = male)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  scale_color_discrete(name = "Gender", labels = c("Female", "Male"))+
+  scale_x_continuous(name = "Total hours smartphone use") +
+  scale_y_continuous(name = "Mean well-being score") + 
+  theme_bw()
+```
 
 ```{r}
 #| echo: true
 #| eval: false
 smart_wb_gen <- smart_wb %>%
-  group_by(tothours, male) %>%
-  summarise(mean_wellbeing = mean(tot_wellbeing))
+  summarise(mean_wellbeing = mean(tot_wellbeing), .by= c(tothours, male))
 
 ggplot(NULL, aes(NULL, NULL, color = NULL)) +
   geom_NULL() +  # which geom to use for the points?
   geom_NULL(method = "lm") + # which geom for the lines?
   scale_color_discrete(name = "Gender", labels = c("Female", "Male"))+
   scale_x_continuous(name = "Total hours smartphone use") +
-  scale_y_continuous(name = "Mean well-being score")
+  scale_y_continuous(name = "Mean well-being score") + 
+  theme_bw()
 ```
 
 . . .
@@ -477,15 +494,15 @@ ggplot(NULL, aes(NULL, NULL, color = NULL)) +
 #| echo: true
 #| eval: false
 smart_wb_gen <- smart_wb %>%
-  group_by(tothours, male) %>%
-  summarise(mean_wellbeing = mean(tot_wellbeing))
+  summarise(mean_wellbeing = mean(tot_wellbeing), .by = c(tothours, male))
 
 ggplot(smart_wb_gen, aes(tothours, mean_wellbeing, color = male)) +
   geom_point() +
   geom_smooth(method = "lm") +
   scale_color_discrete(name = "Gender", labels = c("Female", "Male"))+
   scale_x_continuous(name = "Total hours smartphone use") +
-  scale_y_continuous(name = "Mean well-being score")
+  scale_y_continuous(name = "Mean well-being score") + 
+  theme_bw()
 ```
 
 ## Analysis
@@ -517,8 +534,8 @@ mod_summary <- summary(mod)
 ```{r}
 #| echo: true
 #| eval: true
-mod <- lm(tot_wellbeing ~ thours_c + male_c + thours_c:male_c, data = smart_wb)
-# mod <- lm(tot_wellbeing ~ hours_c * male_c, data = smart_wb)
+mod <- lm(tot_wellbeing ~ thours_c * male_c, data = smart_wb)
+#mod <- lm(tot_wellbeing ~ thours_c + male_c + thours_c:male_c, data = smart_wb)
 
 mod_summary <- summary(mod)
 mod_summary
@@ -574,7 +591,7 @@ simple_slopes_interaction
 test(simple_slopes_interaction)  # with the test() function, you can get the p-value to test whether the slope within each group is sign. different from 0!
 ```
 
-## Power, effect size and write up
+## Power & effect size
 
 Use this code to calculate power and effect size:
 
@@ -583,19 +600,26 @@ Use this code to calculate power and effect size:
 pwr.f2.test(u = 3, v = 71029, f2 = NULL, sig.level = .05, power = .99)
 
 f2 <- mod_summary$adj.r.squared/(1 - mod_summary$adj.r.squared)
+f2
 ```
 
 Is the study adequately powered?
 
-For the write up, you can use this text block, including **inline code (wrapped by** `r` ) to directly use the output of R in your text. If you then knit your document, it will insert the values:
+## Write Up
 
-> All continuous predictors were mean-centered and deviation coding was used for categorical predictors. The results of the regression indicated that the model significantly predicted course engagement (F(`r mod_summary$fstatistic[2]`, `r mod_summary$fstatistic[3] %>% round(2)`) = `r mod_summary$fstatistic[1] %>% round(2)`, p \< .001, Adjusted R2 = `r mod_summary$adj.r.squared %>% round(2)`, f^2^ = .63), accounting for `r (mod_summary$adj.r.squared %>% round(2))*100`% of the variance. Total screen time was a significant negative predictor of wellbeing scores (β = `r mod$coefficients[2] %>% round(2)`, p \< .001, as was gender (β = `r mod$coefficients[3] %>% round(2)`, p \< .001, with girls having lower wellbeing scores than boys. Importantly, there was a significant interaction between screentime and gender (β = `r mod$coefficients[4] %>% round(2)`, p \< .001), smartphone use was more negatively associated with wellbeing for girls than for boys.
+For the write up, you can use this text block, including **inline code (wrapped by** `R`) to directly use the output of R in your text. If you then knit your document, it will insert the values:
 
-In this example, you can also see what you need to report.
+````{verbatim, lang = "rmarkdown"}
+#| eval: false
+All continuous predictors were mean-centered and deviation coding was used for categorical predictors. The results of the regression indicated that the model significantly predicted course engagement (*F*(`r mod_summary$fstatistic[2]`, `r mod_summary$fstatistic[3] %>% round(2)`) = `r mod_summary$fstatistic[1] %>% round(2)`, *p* \< .001, adjusted *R*^2 = `r mod_summary$adj.r.squared %>% round(2)`, f^2^ = .63), accounting for `r (mod_summary$adj.r.squared %>% round(2))*100`% of the variance. Total screen time was a significant negative predictor of wellbeing scores (β = `r mod$coefficients[2] %>% round(2)`, *p* \< .001), as was gender (β = `r mod$coefficients[3] %>% round(2)`, *p* \< .001), with girls having lower wellbeing scores than boys. Importantly, there was a significant interaction between screentime and gender (β = `r mod$coefficients[4] %>% round(2)`, *p* \< .001): Smartphone use was more negatively associated with wellbeing for girls than for boys.
+````
 
-You can also use the report() function from the report package to get a suggestion for what to report from your results (it would still need some editing!):
+> All continuous predictors were mean-centered and deviation coding was used for categorical predictors. The results of the regression indicated that the model significantly predicted course engagement (*F*(`r mod_summary$fstatistic[2]`, `r mod_summary$fstatistic[3] %>% round(2)`) = `r mod_summary$fstatistic[1] %>% round(2)`, *p* \< .001, adjusted *R*^2 = `r mod_summary$adj.r.squared %>% round(2)`, f^2^ = .63), accounting for `r (mod_summary$adj.r.squared %>% round(2))*100`% of the variance. Total screen time was a significant negative predictor of wellbeing scores (β = `r mod$coefficients[2] %>% round(2)`, *p* \< .001), as was gender (β = `r mod$coefficients[3] %>% round(2)`, *p* \< .001), with girls having lower wellbeing scores than boys. Importantly, there was a significant interaction between screentime and gender (β = `r mod$coefficients[4] %>% round(2)`, *p* \< .001): Smartphone use was more negatively associated with wellbeing for girls than for boys.
+
+You can also use the `report()` function from the report package to get a suggestion for what to report from your results (it would still need some editing!):
 
 ```{r}
+#| echo: true
 report(mod)
 ```
 
@@ -605,6 +629,6 @@ report(mod)
 
 -   how to run a mixed ANOVA or a LM in R!
 
-**Next week**:
+**Next session**:
 
 Linear *Mixed* Models
