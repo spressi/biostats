@@ -677,7 +677,7 @@ report(mod)
 
 **Learning objectives:**
 
--   how to run a mixed ANOVA or a LM in R!
+-   how to run a mixed ANOVA or an LM in R!
 
 **Next session**:
 
