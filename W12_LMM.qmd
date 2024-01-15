@@ -12,11 +12,10 @@ format:
     slide-number: true
     theme: serif
     chalkboard: true
-editor: visual
 from: markdown+emoji
 ---
 
-# Linear Mixed Models
+# Linear *Mixed* Models
 
 ```{css}
 code.sourceCode {
@@ -28,7 +27,7 @@ This week will be based on parts of a different textbook: [Learning Statistical 
 
 . . .
 
-We will cover *Linear Mixed-Effects Models,* which are a generalization of linear models, but they allow us to include **random effects**, e.g. for subjects. This is especially helpful if we have within-subject variables. LMMs are a lot more flexible than (repeated-measures) ANOVAs.
+We will cover *Linear Mixed-Effects Models* (LMM), which are a generalization of linear models, but they allow us to include so-called **random effects**, e.g., for the deviation of subjects from the average effects. This is especially helpful if we have within-subject variables. LMMs are a lot more flexible than (repeated-measures) ANOVAs.
 
 ```{r}
 library(performance)
@@ -46,53 +45,25 @@ We will use a package called `lme4` for the statistical models. The package incl
 
 library(lme4)
 
-head(sleepstudy)
-
 # for information about the dataset, check out:
 # ?sleepstudy
 
 ```
 
-```         
-Description:
+> Description:\
+     The average reaction time per day (in milliseconds) for subjects in a sleep deprivation study.\
+     Days 0-1 were adaptation and training (T1/T2), day 2 was baseline (B); sleep deprivation started after day 2.
 
-     The average reaction time per day (in milliseconds) for subjects
-     in a sleep deprivation study.
+> Format:\
+A data frame with 180 observations on the following 3 variables.\
+     ‘Reaction’ Average reaction time (ms)\
+     ‘Days’ Number of days of sleep deprivation\
+     ‘Subject’ Subject number on which the observation was made.\
 
-     Days 0-1 were adaptation and training (T1/T2), day 2 was baseline
-     (B); sleep deprivation started after day 2.
-
-Format:
-
-     A data frame with 180 observations on the following 3 variables.
-
-     ‘Reaction’ Average reaction time (ms)
-
-     ‘Days’ Number of days of sleep deprivation
-
-     ‘Subject’ Subject number on which the observation was made.
-```
 
 ## Multilevel Data
 
-Multilevel data are **nested** data, which means that the are clustered:
-
-::: incremental
--   For example, repeated measures of the same subjects will result in data that are more strongly correlated *within* subjects than *between.*
--   But LMMs can also account for other kinds of nesting/clustering, such as patients who share therapists or mice from the same cage/experimenter.
-:::
-
-. . .
-
-Data is usually multilevel for one of the three reasons below (multiple reasons could simultaneously apply):
-
-1.  you have a within-subject factor, and/or
-
-2.  you have **pseudoreplications** (several trials/measurements), and/or
-
-3.  you have multiple stimulus items.
-
-. . .
+Multilevel data are **nested** data, which means that they are clustered:
 
 ::: columns
 ::: column
@@ -104,25 +75,48 @@ Data is usually multilevel for one of the three reasons below (multiple reasons 
 :::
 :::
 
-. . .
-
-These kind of data are extremely common in neuroscientific research!
-
-. . .
-
-Unfortunately, LMMs are hardly every covered in statistics classes. Instead, these data are often analyzed using t-tests or ANOVAs, but sometimes these models are not sufficient (e.g. because they only allow for categorical predictors, but `time` in our example data is continuous...).
+::: incremental
+-   For example, repeated measures of the same subjects will result in data that are often more strongly correlated *within* subjects than *between*.
+-   But LMMs can also account for other kinds of nesting/clustering, such as patients who share therapists or mice from the same cage/experimenter.
+:::
 
 . . .
+
+Data is usually multilevel for one of the three reasons below (multiple reasons could simultaneously apply):
+
+1.  you have a within-subject factor, and/or
+
+2.  you have **pseudoreplications** (several trials/measurements), and/or
+
+3.  you have multiple stimulus items (this rarely is accounted for in a statistical model :( ).
+
+
+
+## Multilevel Data 2
+
+Multilevel data are **nested** data, which means that they are clustered:
+
+::: columns
+::: column
+![Levels of a Multilevel Model](images/LMM.png){width="378"}
+:::
+
+::: column
+[![3-level LMM](images/LMM2.png){width="376"}](https://rpsychologist.com/r-guide-longitudinal-lme-lmer)
+:::
+:::
+
+\
+Multilevel data are extremely common in neuroscientific research!
+
+Unfortunately, LMMs are hardly every covered in statistics classes. Instead, these data are often analyzed using t-tests or ANOVAs, but sometimes these models are not sufficient.
 
 Moreover, LMMs have less of a problem with **missing data**.
 
-::: notes
-We can often use t-tests or ANOVAs, but we might have to calculate the means per condition or the like before we run the analysis. This means throwing away a lot of information!
-:::
 
 ## The Sleepstudy Data
 
-In the dataset, we have measurements of 18 participants across 10 days of sleep deprivation. Each day, the participants performed a "psychomotor vigilance test" where they had to monitor a display and press a button as quickly as possible as soon as a stimulus appeared.
+In the dataset, we have measurements of 18 participants across 10 days of sleep deprivation. Each day, the participants performed a "psychomotor vigilance test" during which they had to monitor a display and press a button as quickly as possible as soon as a stimulus appeared.
 
 The dependent measure (DV) is response times (RT).
 
@@ -153,6 +147,7 @@ We have some more information about the model that is helpful:
 
 We thus have to remove the first two days, as they might bias our results.
 
+\
 **Task**:
 
 -   Remove (filter) observations where `Days` is `0` or `1`.
@@ -169,8 +164,6 @@ We thus have to remove the first two days, as they might bias our results.
 sleep2 <- sleepstudy %>%
   filter(Days >= 2) %>%
   mutate(days_deprived = Days - 2)
-
-head(sleep2)
 ```
 
 ## Fitting the Model
@@ -187,7 +180,7 @@ ggplot(sleep2, aes(x = days_deprived, y = Reaction)) +
 
 . . .
 
-It looks like we could fit an (increasing) line to each participant's data.
+It looks like we could fit a different line to each participant's data.
 
 Remember the general formula for fitting lines:
 
@@ -197,16 +190,14 @@ where $\beta_0$ is the y-intercept and $\beta_1$ is the slope, which we both est
 
 . . .
 
-If we fit such a line for every participant, the lines will differ in their intercept (mean RT at baseline, people differ in RTs!) and slope (the change in RT with each additional day of sleep deprivation).
+If we fit such a line **for every participant**, the lines will differ in their intercept (*individual* mean RT at baseline) and slope (the *individual* change in RT with each additional day of sleep deprivation).
 
 Should we fit the same line for every participant? Or individual lines? Or something in between?\
 These three approaches are also called **complete pooling**, **no pooling**, and **partial pooling**.
 
 ## Complete Pooling
 
-With complete pooling, we would estimate the same intercept and slope for every participant ("one size fits all"). This approach ignores that certain data points belong to certain individuals and just fits a line across all data points.
-
-We could fit such a model simply with `lm()`, which means we ignore the repeated measures within person and pretend that all observations are independent:
+With complete pooling, we would estimate the same intercept and slope for every participant ("one size fits all"). This approach ignores diversity among participants (average RT and sensitivity to sleep deprivation):
 
 ```{r}
 #| echo: true
@@ -229,20 +220,18 @@ ggplot(sleep2, aes(x = days_deprived, y = Reaction)) +
 ```
 
 ::: notes
-Fits the data badly!
+Finds significant effects but fits the data poorly!
+
+This is usually never done - even repeated measures ANOVAs at least provide a random intercept (but not slope).
 
 the predicted mean response time on Day 0 is about 268 milliseconds, with an increase of about 11 milliseconds per day of deprivation, on average. We can't trust the standard errors for our regression coefficients, however, because we are assuming that all of the observations are independent (technically, that the residuals are). However, we can be pretty sure this is a bad assumption.
 :::
 
 ## No Pooling
 
-Another approach would be to fit separate lines for each participant.
+Another approach would be to fit completely separate lines for each participant. This approach implies that the estimates for one participant are completely uninformed by the estimates for the other participants - we could fit 18 separate models.
 
-This approach implies that the estimates for one participant are completely uninformed by the estimates for the other participants - we could fit 18 separate models.
-
-We could also include `Subject` as a *predictor*, or a so-called **fixed effect**.
-
-For this approach, we have to make sure `Subject` is a factor (because the subject ID is meaningless, 310 is not 1 better than 309 etc.).
+We could also include `Subject` as a *predictor*, or a so-called **fixed effect**. For this approach, we have to make sure `Subject` is a factor (and not a continuous predictor).
 
 ```{r}
 #| echo: true
@@ -250,7 +239,7 @@ str(sleep2)
 
 # fit the model
 
-np_model <- lm(Reaction ~ days_deprived + Subject + days_deprived:Subject, data = sleep2)
+np_model <- lm(Reaction ~ days_deprived * Subject, data = sleep2)
 
 summary(np_model)
 ```
@@ -263,12 +252,22 @@ intercept and slope = 308, other values are deviations from 308
 This model does not give us an overall intercept and slope! (Can average of course...) -\> suboptimal if we want to generalize to new participants!
 :::
 
-```{r}
-all_intercepts <- c(coef(np_model)["(Intercept)"],
-                    coef(np_model)[3:19] + coef(np_model)["(Intercept)"])
+## No Pooling 2
 
-all_slopes  <- c(coef(np_model)["days_deprived"],
-                 coef(np_model)[20:36] + coef(np_model)["days_deprived"])
+```{r}
+#| echo: false
+coefs = np_model %>% coef() %>% bind_rows() %>% pivot_longer(cols=everything())
+all_intercepts <- c(0, #leading zero for mean intercept
+                    coefs %>% filter(name %>% grepl("Subject", ., fixed=T), #only effects with Subject
+                                     name %>% grepl(":", ., fixed=T) == F) %>% #no interactions
+                      pull(value)) +
+  c(coefs %>% filter(name == "(Intercept)") %>% pull(value)) #add mean intercept to all
+
+all_slopes  <- c(0, #leading zero for mean slope
+                    coefs %>% filter(name %>% grepl("Subject", ., fixed=T), #only effects with Subject
+                                     name %>% grepl(":", ., fixed=T)) %>% #only interactions
+                      pull(value)) +
+  c(coefs %>% filter(name == "days_deprived") %>% pull(value)) #add mean slope to all
 
 ids <- sleep2 %>% pull(Subject) %>% levels() %>% factor()
 
@@ -277,7 +276,7 @@ np_coef <- tibble(Subject = ids,
                   intercept = all_intercepts,
                   slope = all_slopes)
 
-np_coef
+str(np_coef)
 
 ggplot(sleep2, aes(x = days_deprived, y = Reaction)) +
   geom_abline(data = np_coef,
@@ -289,24 +288,17 @@ ggplot(sleep2, aes(x = days_deprived, y = Reaction)) +
   facet_wrap(~Subject) +
   labs(y = "Reaction Time", x = "Days deprived of sleep (0 = baseline)")
 ```
+:::notes
+Subject 335 has a negative slope (faster with **more** sleep deprivation). While it is not impossible, it seems highly unlikely given what we know about sleep deprivation and/or looking at the rest of the data.
+:::
 
 ## Partial Pooling
 
-Neither the complete or no-pooling approach is satisfactory.
-
-It would be desirable to improve our estimates for individual participants by taking advantage of what we know about the other participants.
+Neither the complete nor no-pooling approach are satisfactory. It would be desirable to improve our estimates for individual participants ($1/18$th of the total data) by taking advantage of what we know about other participants.
 
 . . .
 
-This is called **partial pooling**: We treat a factor (e.g. `subject`) as **random** instead of as fixed.
-
-A **random factor** is a factor whose levels are considered to represent a proper subset of all the levels in the population (remember *sampling*!).
-
-. . .
-
-In **partial pooling** used in LMMs, estimates at each factor level (i.e. subject) become informed by the information at other levels.
-
-The model estimates values for the population, and pulls the estimates for individual subjects toward those values, a statistical phenomenon known as **shrinkage**.
+This is called **partial pooling**: We treat a factor (e.g., `subject`) as implementing *random* deviations from its higher level *fixed* effect - with larger deviations being less likely (think: normal distribution). Consequently, we bias the random effect estimate (individual level) towards the fixed effect estimate (group level). This procedure is also called **shrinkage** for we are downsizing the individual's deviation from the group mean.
 
 . . .
 
@@ -314,7 +306,7 @@ We thus estimate a model like this:\
 $Y_{sd} = \gamma_{0} + S_{0s} + \left(\gamma_{1} + S_{1s}\right) X_{sd} + e_{sd}$
 
 where $\gamma_{0}$ is the "overall"/population intercept and $\gamma_{1}$ is the population slope. These are the **fixed effects** which are usually of interest and they are estimated from the data.\
-$S_{0s}$ are the **random intercepts** per participant and $S_{1s}$ the **random slopes** for $X_{sd}$ per participant. These values vary over subjects and are the offsets from the fixed effects (i.e. how much do individuals differ from the overall intercept/slope? Some subjects will have slower RTs, for some the effect of sleep deprivation will be stronger...).
+$S_{0s}$ are the **random intercepts** per participant and $S_{1s}$ the **random slopes** for $X_{sd}$ per participant. These values vary over subjects (thus the $s$ in the index) and are the *offsets* from the fixed effects (i.e., how much do individuals differ from the overall intercept/slope? Some subjects will have slower RTs than average, for some the effect of sleep deprivation will be stronger than average, etc.).
 
 (See [textbook](https://psyteachr.github.io/stat-models-v1/introducing-linear-mixed-effects-models.html) for further mathematical formula descriptions and details!)
 
@@ -327,21 +319,29 @@ especially important if we have missing data
 
 \-\--
 
-RF: result of sampling, want to generalize beyond those levels
+Random effects: result of sampling, want to generalize beyond those levels
 
-\-\--
-
-FE: assume that they reflect true pop para, don't vary from sample to sample
+Fixed effects: assume that they reflect true pop para, don't vary from sample to sample
 :::
 
-## Partial Pooling 2
+## Partial Pooling: Shrinkage
 
-[![Different Pooling Models](images/partialpooling.png)](https://www.tjmahr.com/plotting-partial-pooling-in-mixed-effects-models/)
-
-[![Shrinkage](images/shrinkage.png)](https://www.tjmahr.com/plotting-partial-pooling-in-mixed-effects-models/)
+[![Shrinkage](images/shrinkage.png)](https://www.tjmahr.com/plotting-partial-pooling-in-mixed-effects-models/#its-shrinkage)
 
 ::: notes
-the further away (the more "unnormal), the more changed/drawn towards overall estimates/penalized.
+the further away from the population estimate, the more biased.
+
+The fewer observations in a cluster, the more information borrowed from others, greater pull (373 and 374)
+
+Avoids overfitting by taming extreme estimates!
+:::
+
+## Comparison of Pooling Methods
+
+[![Different Pooling Models](images/partialpooling.png)](https://www.tjmahr.com/plotting-partial-pooling-in-mixed-effects-models/#:~:text=%22left%22)-,p_model_comparison,-If%20we%20stare)
+
+::: notes
+the further away from the population estimate, the more biased.
 
 The fewer observations in a cluster, the more information borrowed from others, greater pull (373 and 374)
 
@@ -350,7 +350,7 @@ Avoids overfitting by taming extreme estimates!
 
 ## Fitting the Model
 
-To fit a LMM, we can use the function `lmer()` from the `lme4` package (you could also use functions from the `afex` package, which might be more user friendly).
+To fit an LMM, we can use the function `lmer()` from the `lme4` package (you could also use functions from the `afex` package, which might be more user friendly).
 
 The notation is very similar to that of fitting `lm()` models, we only need to add the random effects:
 
@@ -375,19 +375,19 @@ There are a number of ways to specify random effects. The most common you will s
 +==============================+============================================================+
 | Random intercepts only       | `Reaction ~ days_deprived + (1 | Subject)`                 |
 +------------------------------+------------------------------------------------------------+
-| Random intercepts and slopes | `Reaction ~ days_deprived + (1 + days_deprived | Subject)` |
-|                              |                                                            |
-|                              | (or the one above, which is identical)                     |
+| Random intercepts and slopes | `Reaction ~ days_deprived + (days_deprived | Subject)`     |
 +------------------------------+------------------------------------------------------------+
 
-Random-intercepts-only models are appropriate if you have within-subjects factors without pseudo-replications (i.e. one measurement per subject/level). If you have more than one observation per subject per cell, you need random slopes.
+Random-intercepts-only models are appropriate if you have within-subjects factors without pseudo-replications (i.e., one measurement per subject/level). If you have more than one observation per subject and fixed effect conditions, you can estimate random slopes.
 
 ::: notes
+repeated-measures ANOVA is equivalent to a random intercept model!
+
 always good to include random slopes, but sometimes the model does not converge --\> only random intercepts
 
-rmANOVA \~ random intercept model
+You can add other random effects, e.g., stimulus
 
-You can add other random effects!
+You can't have a random slope without a random intercept (you could but it wouldn't make sense)
 :::
 
 ## Interpreting the Model - Fixed Effects
@@ -403,14 +403,15 @@ The section called `Fixed effects` is similar to what you have seen so far for `
 
 You can see that the estimated mean reaction time for participants at Day 0 was about 268 milliseconds, with each day of sleep deprivation adding an additional 11 milliseconds to the response time, on average.
 
-. . .
+## Interpreting the Model - Fixed Effects 2
 
-You might also notice that you don't see *p*-values in the output. There is a huge discussion on how to best estimate the *degrees of freedom* for these models... If you don't want to go into the details, one option is to use the `lmerTest` package to obtain *p*-values:
+You might notice that you didn't see *p*-values in the output. There is a huge discussion on how to best estimate the *degrees of freedom* for these models... If you don't want to go into the details, one option is to use the `lmerTest` package to obtain *p*-values:
 
 ```{r}
 #| echo: true
 library(lmerTest)
 pp_mod <- lmer(Reaction ~ days_deprived + (days_deprived | Subject), sleep2)
+#you can also call lmerTest::lmer explicitly to highlight the distinction to lme4::lmer
 summary(pp_mod)
 ```
 
@@ -418,27 +419,24 @@ summary(pp_mod)
 
 The random effects part of the output provides you with the *variance-covariance matrix* of the random effects and the residual variance.
 
-The *residual variance* is the variance of the residuals, i.e. the error variance which is not explained by the model.
+The *residual variance* is the error variance which is not explained by the model.
 
-The *variance-covariance matrix* above gives us the variance of each random effect component as well as the correlation between random intercept and slope. Often, you would not need to interpret these effects in too much detail (unless you're interested in floor/ceiling effect visible in a big correlation), but you should make sure the variance is not 0 or 1.
+The *variance-covariance matrix* above gives us the variance of each random effect component as well as the correlation between random intercept and slope. Often, you would not need to interpret these effects in too much detail (unless you're interested in floor/ceiling effects visible in a big correlation). 
+
+If the variance of a random effect is close to 0, it means that there is not much diversity of the sample with respect to predictors. In other words: Each random effect is very similar to its fixed effect.
+
 
 ## LMM with Crossed Random Factors
 
-Often, we have a set of stimuli that we use for all subjects, e.g. pictures. Each specific stimulus might have its own effects, some might be more efficient in eliciting the measured response than others. In such a case, the stimuli would also explain some of the variance and would be a *random* factor.
+Often, we have a set of stimuli that we use for all subjects, e.g., pictures. Each specific stimulus might have its own effects, some might be more efficient in eliciting the intended response than others. In such a case, the stimuli would also explain some of the variance and would be a *random* factor.
 
 . . .
 
-Data would be clustered not only within subject but also within stimulus (more similar)
-
-Stimuli would also be assumed to be drawn randomly from a population of possible stimuli and we want to be able to generalize beyond the ones used.
-
-::: notes
-why "crossed"? Every participant provides an observation (or several) for every stimulus...
-:::
+Data would be clustered not only within subjects but also within stimuli
 
 . . .
 
-With lmer(), it is quite easy to add other random effects, such as crossed random effects:
+With `lmer()`, it is quite easy to add other random effects, such as crossed random effects:
 
 ```{r}
 #| echo: true
@@ -448,15 +446,23 @@ y ~ x + (1 + x | subject_id) + (1 + x | stimulus_id)
 
 ```
 
+. . .
+
+Why are they "crossed"? \
+If you look at the data of all trials, you can average them for every subject (i.e., across stimuli) or for every stimulus (i.e., across subjects). These provide different perspectives of the data from two different "angles".
+
+
 ## Convergence Issues and Singular Fits
 
-It often happens that you get an error message: Either your model does not converge (R tries but can't find good estimates) or you have a singular fit (the random factors have variances close to 0 or correlate perfectly, -1 or 1, with each other).
+It often happens that you get an error message: Either your model does not converge (`R` tries but can't find stable estimates) or you have a singular fit (the random factors have variances close to 0 or correlate perfectly with each other, i.e. $-1$ or $+1$).
 
-In both cases, it makes sense to simplify your random effect structure:
+In both cases, it makes sense to simplify your random effect structure to reduce overfitting:
 
 1.  Constrain all covariance parameters to zero. This is accomplished using the double-bar `||` syntax, e.g., changing `(a * b | subject)` to `(a * b || subject)`. If you still run into estimation problems, then:
 
 2.  Inspect the parameter estimates from the non-converging or singular model. Are any of the slope variables zero or near to zero? Remove these and re-fit the model, repeating this step until the convergence warnings / singular fit messages go away.
+
+Note: We usually start with simplifying the random effects structure because it is much more complicated (e.g., one slope per subject!) and thus provides way more potential for overfitting.
 
 ::: notes
 this might not make sense right now, but you can look at it once you run into these problems
@@ -464,25 +470,26 @@ this might not make sense right now, but you can look at it once you run into th
 
 ## Example
 
-Let's fit a model with simulated data, which you can find in the file `dat_sim2.csv`.
+Let's fit a model with simulated data.
 
 ```{r}
 dat_sim2 <- read_csv("Data/dat_sim2.csv")
 head(dat_sim2)
 ```
 
-In the file, you can see 100 participants (`subj_id`) and 50 observations per participants, one for each stimulus (`item_id`).
+We have 100 participants (`subj_id`) and 50 observations per participant, one for each stimulus (`item_id`).
 
 You can also see two predictors: `cond` and `gender`.\
-As you can see, `cond` is a *within-subject*, across-item variable (a categorical factor!), which means that some of the stimuli belong to one category, the others to a second category (e.g. positive and negative images). `gender` is a *between-subjects* variable (also a categorical factor!): Participants either identify as female or male but that doesn't change.
+As you can see, `cond` is a *within-subject*, across-item variable (a categorical factor!), which means that some of the stimuli belong to one category, the others to a second category (e.g., positive and negative images). \
+`gender` is a *between-subjects* variable (also a categorical factor!): Participants either identified as female or male but that didn't change across the experiment.
 
-Finally, there is a dependent/outcome variable called `Y`, this could be reaction times.
-
-. . .
-
-If we're interested in the effects of `cond` and `gender` (including their `interaction`) on Y, how would you specify the model? Which would be the fixed effects, which would be random effects?
+Finally, there is a dependent/outcome variable called `Y`, representing reaction times.
 
 . . .
+
+If we're interested in the effects of `cond` and `gender` (including their `interaction`) on `Y`, how would you specify the model? Which would be the fixed effects, which would be random effects?
+
+## Example 2
 
 ```{r}
 #| echo: true
@@ -500,9 +507,10 @@ anova(mod_sim)
 
 ## Contrasts
 
-R uses per default a coding of the factor levels called **dummy coding**. This means that one factor level is coded as 0, another as 1 (and if there are more than two levels, there will be several dummy coded variables used for the models).
+`R`, by default, uses a coding of the factor levels called **dummy coding**. This means that one factor level is coded as $0$, another as $1$ (and if there are more than two levels, there will be several dummy coded variables used for the models).
 
-The problem with dummy coding is that the output is hard to interpret, especially if interactions are involved. Therefore, it is preferable to use **effects or sum coding**, which uses e.g. -.5 and .5 as codes for the factor levels.
+The problem with dummy coding is that the output is hard to interpret, especially if interactions are involved. Therefore, it is preferable to use **effects or sum coding**, which uses $-.5$ and $.5$ as codes for the factor levels. \
+(For more details, see the example on Regression/Linear Model from last session)
 
 You can change this before running the model using:
 
@@ -522,18 +530,20 @@ anova(mod_sim)
 
 ## Assumption Check
 
-We can use the check_model() function of the performance package also for LMMs:
+We can use the `check_model()` function of the `performance` package also for LMMs:
 
 ```{r}
 #| echo: true
 check_model(mod_sim)
 ```
 
+:::notes
 Looks good!
+:::
 
 ## Planned Comparisons
 
-You can also use the `emmeans` package for comparing different groups/factor levels. For example, you could do pairwise comparisons for the main effect of gender, if that was significant. This is especially relevant if you have more than two factor levels/groups/conditions, because with two you can already read out the effect from the `lmer()` output (the estimate for gender1 is the difference between the two genders if you use dummy coding, and 2\* the estimate if you use sum coding!). We would use the emmeans() function:
+You can also use the `emmeans` package for comparing different groups/factor levels. For example, you could do pairwise comparisons for the main effect of gender, if that was significant. This is especially relevant if you have more than two factor levels/groups/conditions, because with two you can already read out the effect from the `lmer()` output (the estimate for gender1 is the difference between the two genders if you use dummy coding, and 2\* the estimate if you use sum coding!). We would use the `emmeans()` function:
 
 ```{r}
 #| echo: true
@@ -562,9 +572,13 @@ emmip(mod_sim, cond ~ gender)
 
 **But since the interaction is not significant, we don't need to do any post-hoc comparisons!**
 
+:::notes
+The reason these functions exist is that we cannot simply calculate means to visualize the effects once we include random slopes using shrinkage. We have to predict values using the whole fitted model to make inference about partial effects.
+:::
+
 ## Effect Sizes
 
-You can calculate the R², the explained variance of the DV Y, as an overall model fit index. For LMMs, you can calculate two R²: One for the fixed effects only (*marginal*), one when also accounting for the random effect (i.e. the individual differences, *conditional*).
+You can calculate R², the explained variance of the DV Y, as an overall model fit index. For LMMs, you can calculate two R²: One for the fixed effects only (*marginal*), one when also accounting for the random effect (i.e., the individual differences, *conditional*).
 
 ```{r}
 #| echo: true
@@ -573,13 +587,15 @@ You can calculate the R², the explained variance of the DV Y, as an overall mod
 r2(mod_sim)
 ```
 
-In addition, you can calculate the effect sizes per effect. This is not as straight-forward for LMMs, but you could use the following function from the `effectsize` package to obtain the partial eta² (you would have to manually - or with R code - plug in the F values etc. from the ANOVA table!):
+. . .
+
+In addition, you can calculate the effect sizes per effect. This is not as straight-forward for LMMs, but you could use the following function from the `effectsize` package to obtain the partial eta² (you will have to plug in the *F* values etc. from the ANOVA table):
 
 ```{r}
 #| echo: true
 
 library(effectsize)
-options(es.use_symbols = TRUE) # get nice symbols when printing! (On Windows, requires R >= 4.2.0)
+options(es.use_symbols = TRUE) #get nice symbols when printing!
 
 F_to_eta2(
   f = c(8.8013, 0.0738, 0.0643),
@@ -589,31 +605,39 @@ F_to_eta2(
 
 ```
 
-## Interpretation
+## Reporting & Interpretation
 
-We ran a linear mixed model with condition and gender as fixed effect, Y as dependent variable, and random slopes for condition for each subject, as well as random intercepts for subjects and items. All assumptions of linear mixed models were met (see figure...) and the model explains 32,3% of the variance in Y if accounting for the random effects (marginal R²) and 2,5% if only accounting for the fixed effects (conditional R²).
+We ran a linear mixed model with condition and gender as fixed effect, Y as dependent variable, and random slopes for condition for each subject, as well as random intercepts for subjects and items. All assumptions of linear mixed models were met and the model explains $32.3\%$ of the variance in Y if accounting for the random effects (marginal R²) and $2.5\%$ if only accounting for the fixed effects (conditional R²).
 
-We found a main effect of condition (F(1, 50.67) = 8.8, p = .005, partial η² = 0.15), but neither a main effect of gender (F(..., ...) = .. , p = ..., partial η² = ...) nor a significant interaction between gender and condition (F(..., ...) = .. , p = ..., partial η² = ...).
+We found a main effect of condition (*F*(1, 50.67) = 8.8, *p* = .005, partial η² = .15), but neither a main effect of gender (*F*(..., ...) = ... , *p* = ..., partial η² = ...) nor a significant interaction between gender and condition (*F*(..., ...) = .. , *p* = ..., partial η² = ...) emerged.
 
-The Ys in one cond (-.5) are significantly lower (Mean = 754, SD =...) than in the other cond (.5; mean = 832, SD = ..., see also figure ...).
+The reaction times in the first condition are significantly lower (*M* = 754 ms, *SD* = ...) than in the other condidtion (*M* = 832 ms, *SD* = ...). The effects are summarized in Figure 2.
 
 \[Add visualization where you can see the difference between conditions!\]
 
+:::notes
+The ANOVA, as a fixed effects model, would have only accounted for 2.5% of variance instead of almost a third due to its neglect of random effects
+:::
+
 # *Generalized* Linear (Mixed) Models
 
-It is possible to use LMs and LMMs also for data, where the outcome variable is **not** **continuous** and **numeric,** but rather **discrete.** These could be:
+It is possible to use LMs and LMMs also for data, for which the outcome variable is not continuous and numeric, but rather **discrete.** These could be:
 
 -   Binary responses, such as "yes"/"no"
 
 -   Ordinal data: Likert scale ordered responses, such as "not at all"/"somewhat"/"a lot"
 
--   Nominal data: Unordered categories, such as which food is ordered ("chicken"/"tofu"/"beef")
+-   Nominal data: Unordered categories, such as which food is preferred ("chicken"/"tofu"/"beef")
 
--   Count data: Number of occurences
+-   Count data: Number of occurrences
 
 -   ...
 
-It is possible to also use a form of linear (mixed) model for these data, but these models are called **generalized linear (mixed) models**!
+It is possible to also use a form of linear (mixed) model for these data, but these models are called **generalized linear (mixed) models** (GzLM).
+
+:::notes
+Abbreviation sometimes also GLM (cf. `R` functions) but may be confused with the "General Linear Model" = GLM, which we just called "LM" here
+:::
 
 ## Why not Model Discrete Data as Continuous?
 
@@ -621,7 +645,7 @@ This is actually what happens a lot (you can see it in published papers): Resear
 
 But there are a number of reasons why this is a bad idea:
 
--   **Bounded scale**: There are usually no negative numbers and often an upper limit as well. A normal linear model would try to assign probability to these impossible values. This can lead to spurious interaction effects (think of improvements from 90% - there's a ceiling effect)!
+-   **Bounded scale**: There are usually no negative numbers and often an upper limit as well. A normal linear model would try to assign probability to these impossible values. This can lead to spurious interaction effects (think of improvements from $90\%$ - there's a ceiling)!
 
 -   **Variance depends on mean**: In LMs, the variance is independent from the mean (related to the assumption of homogeneity of variance). This is not necessarily the case for discrete data (e.g. binary or count data).
 
@@ -650,7 +674,7 @@ Definitions:
 +-----------------+------------------------------------------------------------------------------+
 | odds            | The ratio of successes to failures                                           |
 +-----------------+------------------------------------------------------------------------------+
-| log odds        | The (natural) log of the odds                                                |
+| log odds        | The (natural) logarithm of the odds                                                |
 +-----------------+------------------------------------------------------------------------------+
 
 In logisitc regression, we are modeling the relationship between response (DV) and predictors (IVs) in log odds space (= model space).
@@ -663,7 +687,7 @@ If we flip a coin 100 times and get 47 heads, we have a proportion of .47. This 
 
 . . .
 
-We can also calculate the (natural) **odds** of heads: 47:53 = .89 (heads:not heads).
+We can also calculate the (natural) **odds** of heads: $47/53 = .89$ (heads:not heads).
 
 The **natural log of the odds** or **logit** is the scale of the logistic regression.
 
@@ -723,3 +747,4 @@ glmer(DV ~ IV1 + IV2 + ... (1 | subject), data, family = binomial)
 
 # Thanks
 
+Next: RMarkdown for writing your report
