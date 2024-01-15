@@ -22,6 +22,7 @@ website:
       - W10_GLM.qmd
       - W11_GLMinR.qmd
       - W12_LMM.qmd
+      - W13_RMarkdown.qmd
       - W15_RepResearchR.qmd
 
 format:
