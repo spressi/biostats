@@ -1,12 +1,12 @@
-## R Markdown
+# R Markdown
 
 R scripts are a good way to save your code. However, you'd better heavily comment in your scripts, so that future you (and potentially collaborators) know what happens in your script.
 
-An alternative is an **R Markdown file**. This is also a sort of script, but you can write text (like in a word processor) and mix it with code chunks, where you can write your R code. R Markdown is the "language" you use to write in these files, which is a variety of the *Markdown* language.
+An extension is an **R Markdown file**. This is also a sort of script, but the main focus is on writing text (like in a word processor) and mix it with code chunks, in which you can write your R code. R Markdown is the "language" you use to write in these files, which is a variety of the *Markdown* language.
 
-The advantage of R Markdown files (ending with `.Rmd`) is that they increase reproducibility. For example, you can write whole reports in R Markdown (and also these slides are made with it!).
+The advantage of R Markdown files (ending with `.Rmd`), in comparison to Word or LaTeX files, is that they increase reproducibility. For example, you can (and will) write whole reports in R Markdown.
 
-A newer variant is called *quarto*, which works very similar to R Markdown (but is more flexible).
+A newer variant is called *quarto*, which works very similar to R Markdown (but is more flexible). These slides are written with it.
 
 ## R Markdown 2
 
