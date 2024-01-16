@@ -1,3 +1,20 @@
+---
+title: "13 R Markdown"
+subtitle: |
+   | Julius-Maximilians-University Würzburg 
+   | Course: "Biostatistics"    
+   | Translational Neuroscience
+author: "Dr. Mario Reutter (slides adapted from Dr. Lea Hildebrandt)"
+format: 
+  revealjs:
+    smaller: true
+    scrollable: true
+    slide-number: true
+    theme: serif
+    chalkboard: true
+from: markdown+emoji
+---
+
 # R Markdown
 
 R scripts are a good way to save your code. However, you'd better heavily comment in your scripts, so that future you (and potentially collaborators) know what happens in your script.
