@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Dr.&nbsp;Mario Reutter (slides adapted from Dr.&nbsp;Lea Hildebrandt)">
 
-<title>Biostatistics</title>
+<title>Biostatistics - 13 R Markdown</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -62,7 +63,7 @@ ul.task-list li input[type="checkbox"] {
 
 </head>
 
-<body class="nav-sidebar floating fullcontent">
+<body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -71,9 +72,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">
-      Biostatistics
-      </li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./W13_RMarkdown.html">13 R Markdown</a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -178,7 +177,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./W13_RMarkdown.html" class="sidebar-item-text sidebar-link">
+  <a href="./W13_RMarkdown.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">13 R Markdown</span></a>
   </div>
 </li>
@@ -193,19 +192,30 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        
+    <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="W13_RMarkdown.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Biostatistics</h1>
+<h1 class="title">13 R Markdown</h1>
+<p class="subtitle lead"></p><p>Julius-Maximilians-University Würzburg<br>
+Course: “Biostatistics”<br>
+Translational Neuroscience</p><p></p>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Dr.&nbsp;Mario Reutter (slides adapted from Dr.&nbsp;Lea Hildebrandt) </p>
+          </div>
+  </div>
     
   
     
@@ -214,124 +224,62 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<p>Welcome to the website of the course “Biostatistics” of the master’s programme “Translational Neuroscience” of the Julius-Maximilians-University Würzburg.</p>
-<p>Please use the navigation on the left to select the slides for each session (recommendation: Open in new tab).</p>
-<table class="table">
-<colgroup>
-<col style="width: 17%">
-<col style="width: 30%">
-<col style="width: 20%">
-<col style="width: 32%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Date</th>
-<th>Topic</th>
-<th>Reading</th>
-<th>Project Deadlines</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>17.10.</td>
-<td>General &amp; R Intro</td>
-<td>ST21: 1-3, QF: 1-3</td>
-<td></td>
-</tr>
-<tr class="even">
-<td>24.10.</td>
-<td>Probability</td>
-<td>ST21: 4, QF: 4-6</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>31.10.</td>
-<td>Data Wrangling</td>
-<td>ST21: 4, QF: 4-6</td>
-<td></td>
-</tr>
-<tr class="even">
-<td>07.11.</td>
-<td>Data Visualization</td>
-<td>QF: 7</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>14.11.</td>
-<td>Sampling</td>
-<td>ST21: 7-8, QF: 8</td>
-<td></td>
-</tr>
-<tr class="even">
-<td>21.11.</td>
-<td>Probability &amp; Sampling in R</td>
-<td>ST21: 7-8, QF: 8</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>28.11.</td>
-<td>Hypothesis Testing</td>
-<td>ST21: 9-10</td>
-<td></td>
-</tr>
-<tr class="even">
-<td>05.12.</td>
-<td>Comparing Means &amp; Categories</td>
-<td>ST21: 12, 15</td>
-<td>Dataset</td>
-</tr>
-<tr class="odd">
-<td>12.12.</td>
-<td>Exercises (t-Tests, Chi²)</td>
-<td>ST21: 12, 15</td>
-<td></td>
-</tr>
-<tr class="even">
-<td>19.12.</td>
-<td>(General) Linear Models</td>
-<td>ST21: 12-13</td>
-<td>Research Question &amp; Hypotheses</td>
-</tr>
-<tr class="odd">
-<td>26.12. &amp; 02.01.</td>
-<td><em>Christmas &amp; New Year’s</em></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="even">
-<td>09.01.</td>
-<td>Exercises (GLM)</td>
-<td>ST21: 12-13</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>16.01.</td>
-<td>Linear Mixed Models</td>
-<td>ST21: 14</td>
-<td></td>
-</tr>
-<tr class="even">
-<td>23.01.</td>
-<td>R Markdown for Reports</td>
-<td></td>
-<td>Analysis (with R scripts)</td>
-</tr>
-<tr class="odd">
-<td>30.01.</td>
-<td>Troubleshooting Your Report</td>
-<td></td>
-<td></td>
-</tr>
-<tr class="even">
-<td>06.02.</td>
-<td>Reproducible Research</td>
-<td>ST21: 18</td>
-<td>Report (with R Markdown)</td>
-</tr>
-</tbody>
-</table>
+<section id="r-markdown" class="level1">
+<h1>R Markdown</h1>
+<p>R scripts are a good way to save your code. However, you’d better heavily comment in your scripts, so that future you (and potentially collaborators) know what happens in your script.</p>
+<p>An extension is an <strong>R Markdown file</strong>. This is also a sort of script, but the main focus is on writing text (like in a word processor) and mix it with code chunks, in which you can write your R code. R Markdown is the “language” you use to write in these files, which is a variety of the <em>Markdown</em> language.</p>
+<p>The advantage of R Markdown files (ending with <code>.Rmd</code>), in comparison to Word or LaTeX files, is that they increase reproducibility. For example, you can (and will) write whole reports in R Markdown.</p>
+<p>A newer variant is called <em>quarto</em>, which works very similar to R Markdown (but is more flexible). These slides are written with it.</p>
+<section id="r-markdown-2" class="level2">
+<h2 class="anchored" data-anchor-id="r-markdown-2">R Markdown 2</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/Rscript.jpg" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">R script</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/Rmd.jpg" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">R Markdown</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/rmdrendered.jpg" class="img-fluid figure-img" width="400"></p>
+<figcaption class="figure-caption">R Markdown rendered as html report</figcaption>
+</figure>
+</div>
+</section>
+<section id="r-markdown-3" class="level2">
+<h2 class="anchored" data-anchor-id="r-markdown-3">R Markdown 3</h2>
+<p><strong>Assignment</strong>:</p>
+<ul>
+<li><p>Open a new .Rmd file, change/insert the title and author.</p></li>
+<li><p>Check out the content of it.</p></li>
+<li><p>Delete and add some of the text on the white background. Change the Header (indicated by <code>##</code>) to “About me” and write something about yourself underneath.</p></li>
+<li><p>Switch between “Source” and “Visual” in the top left. What changes? What is “Visual”?</p></li>
+<li><p>In the grey boxes (“code chunks”), add some code. Try to find out how you can add a new code chunk.</p></li>
+<li><p>Save the file with a sensible name.</p></li>
+<li><p>What happens when you click on “Knit” (top of Script pane)?</p></li>
+</ul>
+<div class="notes">
+<ul>
+<li>hint: The green C with the + on the top right will do so (or using “insert” in the visual view)</li>
+<li>Click on the little arrow next to knit and select “Knit to PDF”</li>
+<li>insert inline code</li>
+</ul>
+</div>
+</section>
+<section id="r-markdown-4" class="level2">
+<h2 class="anchored" data-anchor-id="r-markdown-4">R Markdown 4</h2>
+<p>There are many useful things you can do with R Markdown: Adding different headers, adding inline code, knitting as a PDF, adding pictures or tables…You can also decide whether the code chunks should be visible in the output etc.</p>
+<p><strong>You will need R Markdown for your report!</strong></p>
+<p>For further information, check out the R Markdown cheatsheet: <a href="https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf" class="uri">https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf</a></p>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

@@ -801,8 +801,8 @@ F-statistic: 17.35 on 35 and 108 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>There are a number of ways to specify random effects. The most common you will see are:</p>
 <table>
 <colgroup>
-<col style="width: 33%">
-<col style="width: 66%">
+<col style="width: 34%">
+<col style="width: 65%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -1288,36 +1288,33 @@ P value adjustment: tukey method for comparing a family of 4 estimates </code></
 <section id="logistic-regression" class="slide level2">
 <h2>Logistic Regression</h2>
 <p>Definitions:</p>
-<table style="width:99%;">
+<table>
 <colgroup>
-<col style="width: 17%">
-<col style="width: 75%">
-<col style="width: 5%">
+<col style="width: 19%">
+<col style="width: 80%">
 </colgroup>
+<thead>
+<tr class="header">
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
-<td rowspan="2"><h1 id="term">Term</h1>
-<p>Bernoulli trial</p></td>
-<td rowspan="2"><h1 id="definition">Definition</h1>
-<p>An event with an binary outcome, with one outcome being considered “success”</p></td>
-<td></td>
+<td>Bernoulli trial</td>
+<td>An event with a binary outcome, one outcome being considered “success”</td>
 </tr>
 <tr class="even">
-<td></td>
-</tr>
-<tr class="odd">
 <td>proportion</td>
 <td>The ratio of successes to the total number of Bernoulli trials</td>
-<td></td>
-</tr>
-<tr class="even">
-<td>odds</td>
-<td>The ratio of successes to failures</td>
-<td></td>
 </tr>
 <tr class="odd">
+<td>odds</td>
+<td>The ratio of successes to failures</td>
+</tr>
+<tr class="even">
 <td>log odds</td>
-<td colspan="2">The (natural) logarithm of the odds</td>
+<td>The (natural) logarithm of the odds</td>
 </tr>
 </tbody>
 </table>
@@ -1389,7 +1386,15 @@ P value adjustment: tukey method for comparing a family of 4 estimates </code></
 </section></section>
 <section id="thanks" class="title-slide slide level1 center">
 <h1>Thanks</h1>
-<p>Next: RMarkdown for writing your report</p>
+<p><strong>Learning objectives:</strong></p>
+<ul>
+<li><p>Know the difference between models with only fixed effects (e.g., ANOVA) and a linear mixed model (including random effects)</p></li>
+<li><p>Understand the difference between fixed effects (e.g., group-level effects) and random effects (e.g., subject-level deviations from the group-level effect)</p></li>
+<li><p>The advantage of partial pooling and shrinkage for informing the estimate of individual random effects by the fixed effect</p></li>
+<li><p>You can generalize an L(M)M to non-continuous dependent variable by using a link function =&gt; GzL(M)M</p></li>
+</ul>
+<p><strong>Next session</strong>:</p>
+<p>RMarkdown for writing your report</p>
 
 <div class="footer footer-default">
 

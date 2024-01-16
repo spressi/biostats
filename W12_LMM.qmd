@@ -51,15 +51,14 @@ library(lme4)
 ```
 
 > Description:\
-     The average reaction time per day (in milliseconds) for subjects in a sleep deprivation study.\
-     Days 0-1 were adaptation and training (T1/T2), day 2 was baseline (B); sleep deprivation started after day 2.
+> The average reaction time per day (in milliseconds) for subjects in a sleep deprivation study.\
+> Days 0-1 were adaptation and training (T1/T2), day 2 was baseline (B); sleep deprivation started after day 2.
 
 > Format:\
-A data frame with 180 observations on the following 3 variables.\
-     ‘Reaction’ Average reaction time (ms)\
-     ‘Days’ Number of days of sleep deprivation\
-     ‘Subject’ Subject number on which the observation was made.\
-
+> A data frame with 180 observations on the following 3 variables.\
+> 'Reaction' Average reaction time (ms)\
+> 'Days' Number of days of sleep deprivation\
+> 'Subject' Subject number on which the observation was made.\
 
 ## Multilevel Data
 
@@ -90,8 +89,6 @@ Data is usually multilevel for one of the three reasons below (multiple reasons 
 
 3.  you have multiple stimulus items (this rarely is accounted for in a statistical model :( ).
 
-
-
 ## Multilevel Data 2
 
 Multilevel data are **nested** data, which means that they are clustered:
@@ -112,7 +109,6 @@ Multilevel data are extremely common in neuroscientific research!
 Unfortunately, LMMs are hardly every covered in statistics classes. Instead, these data are often analyzed using t-tests or ANOVAs, but sometimes these models are not sufficient.
 
 Moreover, LMMs have less of a problem with **missing data**.
-
 
 ## The Sleepstudy Data
 
@@ -288,7 +284,8 @@ ggplot(sleep2, aes(x = days_deprived, y = Reaction)) +
   facet_wrap(~Subject) +
   labs(y = "Reaction Time", x = "Days deprived of sleep (0 = baseline)")
 ```
-:::notes
+
+::: notes
 Subject 335 has a negative slope (faster with **more** sleep deprivation). While it is not impossible, it seems highly unlikely given what we know about sleep deprivation and/or looking at the rest of the data.
 :::
 
@@ -370,13 +367,10 @@ Here we can see that we only have one **predictor/IV/fixed effect**: `days_depri
 
 There are a number of ways to specify random effects. The most common you will see are:
 
-+------------------------------+------------------------------------------------------------+
-| Model                        | Syntax                                                     |
-+==============================+============================================================+
-| Random intercepts only       | `Reaction ~ days_deprived + (1 | Subject)`                 |
-+------------------------------+------------------------------------------------------------+
-| Random intercepts and slopes | `Reaction ~ days_deprived + (days_deprived | Subject)`     |
-+------------------------------+------------------------------------------------------------+
+| Model                        | Syntax                                                 |
+|-------------------------|-----------------------------------------------|
+| Random intercepts only       | `Reaction ~ days_deprived + (1 | Subject)`             |
+| Random intercepts and slopes | `Reaction ~ days_deprived + (days_deprived | Subject)` |
 
 Random-intercepts-only models are appropriate if you have within-subjects factors without pseudo-replications (i.e., one measurement per subject/level). If you have more than one observation per subject and fixed effect conditions, you can estimate random slopes.
 
@@ -421,10 +415,9 @@ The random effects part of the output provides you with the *variance-covariance
 
 The *residual variance* is the error variance which is not explained by the model.
 
-The *variance-covariance matrix* above gives us the variance of each random effect component as well as the correlation between random intercept and slope. Often, you would not need to interpret these effects in too much detail (unless you're interested in floor/ceiling effects visible in a big correlation). 
+The *variance-covariance matrix* above gives us the variance of each random effect component as well as the correlation between random intercept and slope. Often, you would not need to interpret these effects in too much detail (unless you're interested in floor/ceiling effects visible in a big correlation).
 
 If the variance of a random effect is close to 0, it means that there is not much diversity of the sample with respect to predictors. In other words: Each random effect is very similar to its fixed effect.
-
 
 ## LMM with Crossed Random Factors
 
@@ -448,9 +441,8 @@ y ~ x + (1 + x | subject_id) + (1 + x | stimulus_id)
 
 . . .
 
-Why are they "crossed"? \
+Why are they "crossed"?\
 If you look at the data of all trials, you can average them for every subject (i.e., across stimuli) or for every stimulus (i.e., across subjects). These provide different perspectives of the data from two different "angles".
-
 
 ## Convergence Issues and Singular Fits
 
@@ -480,7 +472,7 @@ head(dat_sim2)
 We have 100 participants (`subj_id`) and 50 observations per participant, one for each stimulus (`item_id`).
 
 You can also see two predictors: `cond` and `gender`.\
-As you can see, `cond` is a *within-subject*, across-item variable (a categorical factor!), which means that some of the stimuli belong to one category, the others to a second category (e.g., positive and negative images). \
+As you can see, `cond` is a *within-subject*, across-item variable (a categorical factor!), which means that some of the stimuli belong to one category, the others to a second category (e.g., positive and negative images).\
 `gender` is a *between-subjects* variable (also a categorical factor!): Participants either identified as female or male but that didn't change across the experiment.
 
 Finally, there is a dependent/outcome variable called `Y`, representing reaction times.
@@ -509,7 +501,7 @@ anova(mod_sim)
 
 `R`, by default, uses a coding of the factor levels called **dummy coding**. This means that one factor level is coded as $0$, another as $1$ (and if there are more than two levels, there will be several dummy coded variables used for the models).
 
-The problem with dummy coding is that the output is hard to interpret, especially if interactions are involved. Therefore, it is preferable to use **effects or sum coding**, which uses $-.5$ and $.5$ as codes for the factor levels. \
+The problem with dummy coding is that the output is hard to interpret, especially if interactions are involved. Therefore, it is preferable to use **effects or sum coding**, which uses $-.5$ and $.5$ as codes for the factor levels.\
 (For more details, see the example on Regression/Linear Model from last session)
 
 You can change this before running the model using:
@@ -537,7 +529,7 @@ We can use the `check_model()` function of the `performance` package also for LM
 check_model(mod_sim)
 ```
 
-:::notes
+::: notes
 Looks good!
 :::
 
@@ -572,7 +564,7 @@ emmip(mod_sim, cond ~ gender)
 
 **But since the interaction is not significant, we don't need to do any post-hoc comparisons!**
 
-:::notes
+::: notes
 The reason these functions exist is that we cannot simply calculate means to visualize the effects once we include random slopes using shrinkage. We have to predict values using the whole fitted model to make inference about partial effects.
 :::
 
@@ -615,7 +607,7 @@ The reaction times in the first condition are significantly lower (*M* = 754 ms,
 
 \[Add visualization where you can see the difference between conditions!\]
 
-:::notes
+::: notes
 The ANOVA, as a fixed effects model, would have only accounted for 2.5% of variance instead of almost a third due to its neglect of random effects
 :::
 
@@ -635,7 +627,7 @@ It is possible to use LMs and LMMs also for data, for which the outcome variable
 
 It is possible to also use a form of linear (mixed) model for these data, but these models are called **generalized linear (mixed) models** (GzLM).
 
-:::notes
+::: notes
 Abbreviation sometimes also GLM (cf. `R` functions) but may be confused with the "General Linear Model" = GLM, which we just called "LM" here
 :::
 
@@ -665,17 +657,12 @@ I will just give you an example with logistic regression.
 
 Definitions:
 
-+-----------------+------------------------------------------------------------------------------+
-| Term            | Definition                                                                   |
-+=================+==============================================================================+
-| Bernoulli trial | An event with an binary outcome, with one outcome being considered "success" |
-+-----------------+------------------------------------------------------------------------------+
-| proportion      | The ratio of successes to the total number of Bernoulli trials               |
-+-----------------+------------------------------------------------------------------------------+
-| odds            | The ratio of successes to failures                                           |
-+-----------------+------------------------------------------------------------------------------+
-| log odds        | The (natural) logarithm of the odds                                                |
-+-----------------+------------------------------------------------------------------------------+
+| Term            | Definition                                                             |
+|-----------------|------------------------------------------------------------------------|
+| Bernoulli trial | An event with a binary outcome, one outcome being considered "success" |
+| proportion      | The ratio of successes to the total number of Bernoulli trials         |
+| odds            | The ratio of successes to failures                                     |
+| log odds        | The (natural) logarithm of the odds                                    |
 
 In logisitc regression, we are modeling the relationship between response (DV) and predictors (IVs) in log odds space (= model space).
 
@@ -747,4 +734,16 @@ glmer(DV ~ IV1 + IV2 + ... (1 | subject), data, family = binomial)
 
 # Thanks
 
-Next: RMarkdown for writing your report
+**Learning objectives:**
+
+-   Know the difference between models with only fixed effects (e.g., ANOVA) and a linear mixed model (including random effects)
+
+-   Understand the difference between fixed effects (e.g., group-level effects) and random effects (e.g., subject-level deviations from the group-level effect)
+
+-   The advantage of partial pooling and shrinkage for informing the estimate of individual random effects by the fixed effect
+
+-   You can generalize an L(M)M to non-continuous dependent variable by using a link function =\> GzL(M)M
+
+**Next session**:
+
+RMarkdown for writing your report
