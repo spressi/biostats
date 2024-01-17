@@ -497,8 +497,8 @@ You can also specify the dimensions of your plot to be saved:
 #| echo: true
 #| eval: false
 ggsave("violin-boxplot.png",
-       width = 8.5, #width of a typical page in inches (according to APA format)
-       height = 8.5 / sqrt(2), #golden ratio :)
+       width = 6.5, #width of a typical page in inches minus border (according to APA format)
+       height = 6.5 / sqrt(2), #golden ratio :)
        units = "in")
 ```
 or
