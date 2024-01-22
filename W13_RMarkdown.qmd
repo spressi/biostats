@@ -77,7 +77,7 @@ A newer variant is called *quarto*, which works very similar to R Markdown (but 
 -   insert inline code
 :::
 
-## R Markdown: Advantages
+## R Markdown Advantages
 
 There are many useful things you can do with R Markdown (adding different headers, adding inline code, knitting as a PDF, adding pictures or tables...). You can also decide whether the code chunks should be visible in the output, etc.
 
@@ -91,17 +91,29 @@ For further information, check out the R Markdown cheatsheet: <https://www.rstud
 Examples:
 
 ````{verbatim}
-```{r}
-#| eval: false
-#your code here
-```
-````
-
-````{verbatim}
 ```{r, eval=FALSE}
 #your code here
 ```
 ````
+
+## Code Chunk Options
+
+**Options for your code chunks:**
+
+![](images/Rmd Options.png)
+
+You can change these default values for code chunks for the rest of your document:
+
+````{verbatim}
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+  comment = "#>", echo = FALSE, fig.width = 6
+)
+```
+````
+
+Fore more information, see <https://bookdown.org/yihui/rmarkdown-cookbook/chunk-options.html>
+
 
 ## From an R script to R Markdown
 

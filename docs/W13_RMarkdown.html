@@ -496,20 +496,28 @@ code.sourceCode {
 </div>
 </section>
 <section id="r-markdown-advantages" class="slide level2">
-<h2>R Markdown: Advantages</h2>
+<h2>R Markdown Advantages</h2>
 <p>There are many useful things you can do with R Markdown (adding different headers, adding inline code, knitting as a PDF, adding pictures or tables…). You can also decide whether the code chunks should be visible in the output, etc.</p>
 <p>For further information, check out the R Markdown cheatsheet: <a href="https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf" class="uri">https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf</a></p>
 <p><br>
 <strong>Options for your code chunks:</strong></p>
 
 <img data-src="images/Rmd Options.png" class="r-stretch"><p>Examples:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource default number-lines code-with-copy"><code class="sourceCode default"><span id="cb1-1"><a href="#cb1-1"></a>```{r}</span>
-<span id="cb1-2"><a href="#cb1-2"></a>#| eval: false</span>
-<span id="cb1-3"><a href="#cb1-3"></a>#your code here</span>
-<span id="cb1-4"><a href="#cb1-4"></a>```</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource default number-lines code-with-copy"><code class="sourceCode default"><span id="cb2-1"><a href="#cb2-1"></a>```{r, eval=FALSE}</span>
-<span id="cb2-2"><a href="#cb2-2"></a>#your code here</span>
-<span id="cb2-3"><a href="#cb2-3"></a>```</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource default number-lines code-with-copy"><code class="sourceCode default"><span id="cb1-1"><a href="#cb1-1"></a>```{r, eval=FALSE}</span>
+<span id="cb1-2"><a href="#cb1-2"></a>#your code here</span>
+<span id="cb1-3"><a href="#cb1-3"></a>```</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="code-chunk-options" class="slide level2">
+<h2>Code Chunk Options</h2>
+<p><strong>Options for your code chunks:</strong></p>
+
+<img data-src="images/Rmd Options.png" class="r-stretch"><p>You can change these default values for code chunks for the rest of your document:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource default number-lines code-with-copy"><code class="sourceCode default"><span id="cb2-1"><a href="#cb2-1"></a>```{r, include=FALSE}</span>
+<span id="cb2-2"><a href="#cb2-2"></a>knitr::opts_chunk$set(</span>
+<span id="cb2-3"><a href="#cb2-3"></a>  comment = "#&gt;", echo = FALSE, fig.width = 6</span>
+<span id="cb2-4"><a href="#cb2-4"></a>)</span>
+<span id="cb2-5"><a href="#cb2-5"></a>```</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Fore more information, see <a href="https://bookdown.org/yihui/rmarkdown-cookbook/chunk-options.html" class="uri">https://bookdown.org/yihui/rmarkdown-cookbook/chunk-options.html</a></p>
 </section>
 <section id="from-an-r-script-to-r-markdown" class="slide level2">
 <h2>From an R script to R Markdown</h2>
@@ -547,7 +555,7 @@ code.sourceCode {
 <span id="cb6-2"><a href="#cb6-2"></a>data = tibble(rt = rnorm(n=100, mean=.5, sd=.2))</span>
 <span id="cb6-3"><a href="#cb6-3"></a>```</span>
 <span id="cb6-4"><a href="#cb6-4"></a>We observed an average reaction time of `r data %&gt;% pull(rt) %&gt;% mean() %&gt;% signif(digits=3)` seconds.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>We observed an average reaction time of 0.534 seconds.</p>
+<p>We observed an average reaction time of 0.463 seconds.</p>
 </div>
 <div class="fragment">
 <div class="sourceCode" id="cb7"><pre class="sourceCode numberSource rmarkdown number-lines code-with-copy"><code class="sourceCode"><span id="cb7-1"><a href="#cb7-1"></a>```{r}</span>
@@ -560,7 +568,7 @@ code.sourceCode {
 <span id="cb7-8"><a href="#cb7-8"></a>(`r mytest %&gt;% apa::t_apa(print=F, format="rmarkdown")`). In condition A, reaction times were higher </span>
 <span id="cb7-9"><a href="#cb7-9"></a>(*M* = `r data %&gt;% pull(a) %&gt;% mean() %&gt;% signif(3)` s, *SD* = `r data %&gt;% pull(a) %&gt;% sd() %&gt;% signif(3)` s)</span>
 <span id="cb7-10"><a href="#cb7-10"></a>compared to condition B  (*M* = `r data %&gt;% pull(b) %&gt;% mean() %&gt;% signif(3)` s, *SD* = `r data %&gt;% pull(b) %&gt;% sd() %&gt;% signif(3)` s).</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>We performed a paired <em>t</em>-test and found a significant difference between both conditions (<em>t</em>(99) = 3.42, <em>p</em> &lt; .001, <em>d</em> = 0.34). In condition A, reaction times were higher (<em>M</em> = 0.527 s, <em>SD</em> = 0.209 s) compared to condition B (<em>M</em> = 0.428 s, <em>SD</em> = 0.193 s).</p>
+<p>We performed a paired <em>t</em>-test and found a significant difference between both conditions (<em>t</em>(99) = 1.86, <em>p</em> = .066, <em>d</em> = 0.19). In condition A, reaction times were higher (<em>M</em> = 0.46 s, <em>SD</em> = 0.202 s) compared to condition B (<em>M</em> = 0.407 s, <em>SD</em> = 0.185 s).</p>
 </div>
 <div class="fragment">
 <p><br>
