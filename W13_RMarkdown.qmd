@@ -17,35 +17,55 @@ from: markdown+emoji
 
 # R Markdown
 
-R scripts are a good way to save your code. However, you'd better heavily comment in your scripts, so that future you (and potentially collaborators) know what happens in your script.
+```{css}
+code.sourceCode {
+  font-size: 1.4em;
+}
+```
 
-An extension is an **R Markdown file**. This is also a sort of script, but the main focus is on writing text (like in a word processor) and mix it with code chunks, in which you can write your R code. R Markdown is the "language" you use to write in these files, which is a variety of the *Markdown* language.
+```{r}
+library(tidyverse)
+```
 
-The advantage of R Markdown files (ending with `.Rmd`), in comparison to Word or LaTeX files, is that they increase reproducibility. For example, you can (and will) write whole reports in R Markdown.
+R scripts (`.R`) are a good way to save your code. However, you'd better heavily comment in your scripts, so that future you (and potentially collaborators) know what happens where in your script.
+
+An extension is an **R Markdown file** (`.Rmd`). This is also a sort of script, but the main focus is on writing text (like in a word processor) and mix it with code chunks, in which you can write your R code. R Markdown is the "language" you use to write in these files, which is a variety of the *Markdown* language.
+
+The advantage of R Markdown files, in comparison to Word or LaTeX files, is that they increase reproducibility of your statistical results. For example, you can (and will) write whole reports in R Markdown.
 
 A newer variant is called *quarto*, which works very similar to R Markdown (but is more flexible). These slides are written with it.
 
-## R Markdown 2
+## Comparison: R vs. R Markdown 1
 
 ![R script](images/Rscript.jpg)
+
+. . .
+
+![R Markdown](images/Rmd.jpg)
+
+## Comparison: R vs. R Markdown 2
 
 ![R Markdown](images/Rmd.jpg)
 
 ![R Markdown rendered as html report](images/rmdrendered.jpg){width="400"}
 
-## R Markdown 3
+## Your First R Markdown Script
 
-**Assignment**:
+-   Open a new `.Rmd` file, change/insert the title and author.
 
--   Open a new .Rmd file, change/insert the title and author.
+-   Check out the content of it. What different parts do you see?
 
--   Check out the content of it.
-
--   Delete and add some of the text on the white background. Change the Header (indicated by `##`) to "About me" and write something about yourself underneath.
+. . .
 
 -   Switch between "Source" and "Visual" in the top left. What changes? What is "Visual"?
 
+. . .
+
+-   Delete and add some of the text on the white background. Change the Header (indicated by `##`) to "About me" and write something about yourself underneath.
+
 -   In the grey boxes ("code chunks"), add some code. Try to find out how you can add a new code chunk.
+
+. . .
 
 -   Save the file with a sensible name.
 
@@ -57,11 +77,117 @@ A newer variant is called *quarto*, which works very similar to R Markdown (but 
 -   insert inline code
 :::
 
-## R Markdown 4
+## R Markdown: Advantages
 
-There are many useful things you can do with R Markdown: Adding different headers, adding inline code, knitting as a PDF, adding pictures or tables...You can also decide whether the code chunks should be visible in the output etc.
-
-**You will need R Markdown for your report!**
+There are many useful things you can do with R Markdown (adding different headers, adding inline code, knitting as a PDF, adding pictures or tables...). You can also decide whether the code chunks should be visible in the output, etc.
 
 For further information, check out the R Markdown cheatsheet: <https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf>
 
+\
+**Options for your code chunks:**
+
+![](images/Rmd Options.png)
+
+Examples:
+
+````{verbatim}
+```{r}
+#| eval: false
+#your code here
+```
+````
+
+````{verbatim}
+```{r, eval=FALSE}
+#your code here
+```
+````
+
+## From an R script to R Markdown
+
+Previously, we have just worked with `.R` scripts. If you have a full R script with your entire analysis (or even several scripts), how do you include them in an R Markdown file?
+
+. . .
+
+1.  Copy all code into **one giant code chunk**:
+
+````{verbatim}
+```{r}
+#copy all code here
+```
+````
+
+You can break this code chunk apart into smaller ones by copying this into a new line of the code chunk:
+
+````{verbatim}
+```
+
+```{r}
+````
+
+. . .
+
+\
+2.  "Import" the R script and run it with the `source` function:
+
+````{verbatim}
+```{r message=FALSE, warning=FALSE}
+source("analysis.R", #your R script here (same folder as your project)
+       local = knitr::knit_global())
+```
+````
+
+You can now use all variables that you have created in your R script.
+
+## Your Second R Markdown Script
+1.  Use one of the two methods described before to include any R script from a previous R code session in your R Markdown document.
+2.  Output the content of any variable of your R script and include it as **inline code** in some text ([Cheat Sheet](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf)).
+
+. . .
+
+````{verbatim, lang = "rmarkdown"}
+```{r}
+data = tibble(rt = rnorm(n=100, mean=.5, sd=.2))
+```
+We observed an average reaction time of `r data %>% pull(rt) %>% mean() %>% signif(digits=3)` seconds.
+````
+
+```{r}
+data = tibble(rt = rnorm(n=100, mean=.5, sd=.2))
+```
+We observed an average reaction time of `r data %>% pull(rt) %>% mean() %>% signif(digits=3)` seconds.
+
+. . .
+
+````{verbatim, lang = "rmarkdown"}
+```{r}
+data = tibble(a = rnorm(n=100, mean=.5, sd=.2), b = rnorm(n=100, mean=.4, sd=.2))
+mytest = with(data, t.test(a, b, paired=T))
+#mytest %>% apa::t_apa()
+```
+We performed a paired *t*-test and found a significant difference between both conditions 
+(`r mytest %>% apa::t_apa(print=F, format="rmarkdown")`). In condition A, reaction times were higher 
+(*M* = `r data %>% pull(a) %>% mean() %>% signif(3)` s, *SD* = `r data %>% pull(a) %>% sd() %>% signif(3)` s)
+compared to condition B  (*M* = `r data %>% pull(b) %>% mean() %>% signif(3)` s, *SD* = `r data %>% pull(b) %>% sd() %>% signif(3)` s).
+````
+```{r}
+data = tibble(a = rnorm(n=100, mean=.5, sd=.2), b = rnorm(n=100, mean=.4, sd=.2))
+mytest = with(data, t.test(a, b, paired=T))
+#mytest %>% apa::t_apa()
+```
+We performed a paired *t*-test and found a significant difference between both conditions (`r mytest %>% apa::t_apa(print=F, format="rmarkdown")`). In condition A, reaction times were higher (*M* = `r data %>% pull(a) %>% mean() %>% signif(3)` s, *SD* = `r data %>% pull(a) %>% sd() %>% signif(3)` s) compared to condition B (*M* = `r data %>% pull(b) %>% mean() %>% signif(3)` s, *SD* = `r data %>% pull(b) %>% sd() %>% signif(3)` s).
+
+. . .
+
+\
+3.  Knit the document and open the output with a double click.
+
+# Thanks
+
+**Learning objectives:**
+
+-   Know how you can create an R Markdown report from your R script(s)
+
+**Next session**:
+
+Troubleshooting your report
