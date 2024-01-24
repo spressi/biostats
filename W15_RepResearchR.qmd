@@ -1,7 +1,10 @@
 ---
 title: "15 Reproducible Research"
-subtitle: "Good Research Practices"
-author: "Dr. Lea Hildebrandt"
+subtitle: |
+   | Julius-Maximilians-University Würzburg 
+   | Course: "Biostatistics"    
+   | Translational Neuroscience
+author: "Dr. Mario Reutter (slides adapted from Dr. Lea Hildebrandt)"
 format: 
   revealjs:
     smaller: true
