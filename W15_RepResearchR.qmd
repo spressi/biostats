@@ -35,7 +35,7 @@ Traditionally, there has been a lot of trust in scientific results. In the last 
 1.  You have a hypothesis
     -   Branding food with popular characters causes children to choose "healthy" food
 2.  You collect some data
-    -   Children can choose between cookie and apple with either Elmo-sticker or control
+    -   Children can choose between cookie and apple with either Elmo-sticker or control condition
 3.  You do statistics (often to test the null hypothesis)
     -   "The preplanned comparison shows Elmo-branded apples were associated with an increase in a child's selection of an apple over a cookie, from 20.7% to 33.8% (χ2=5.158; P=.02)" ([Wansink, Just, and Payne 2012](https://statsthinking21.github.io/statsthinking21-core-site/doing-reproducible-research.html#ref-wans:just:payn:2012))
 4.  You make a conclusion based on the data
@@ -66,11 +66,11 @@ Wansink eventually resigned after a number of his papers had been retracted.
 
 ## The Reproducibility Crisis in Science
 
-In 2015, the paper "Estimating the reproducibility of psychological science"([Open Science Collaboration 2015](https://statsthinking21.github.io/statsthinking21-core-site/doing-reproducible-research.html#ref-open:2015)) was published. It showed that out of 100 published studies with originally 97% significant results, only 37% could be replicated (i.e. were also significant in the replication).
+In 2015, the paper "Estimating the reproducibility of psychological science"([Open Science Collaboration, 2015](https://doi.org/10.1126/science.aac4716)) was published. It showed that out of 100 published studies with originally 97% significant results, only 37% could be replicated (i.e., were also significant in the replication). Also, the average effect size replicated was **half** of the average original publication.
 
 . . .
 
-This was actually predicted already in 2005 in a paper by the (now in-)famous John Ioannidis. In the paper "Why most published research findings are false", he argued that the use of Null Hypothesis Significance Testing (NHST) will necessarily lead to high levels of false results
+This was actually predicted already in 2005 in a paper by the (now in-)famous John Ioannidis. In the paper "Why most published research findings are false", he argued that the use of Null Hypothesis Significance Testing (NHST) will necessarily lead to high levels of false results.
 
 ## Positive Predictive Value and Statistical Significance
 
@@ -80,7 +80,7 @@ This was actually predicted already in 2005 in a paper by the (now in-)famous Jo
 
 **Type II error**/**False negatives**: How many of the non-significant findings do we expect to actually be true effects? Usually something like $\beta=0.20$.
 
-Statistical **Power**: How likely are we with our study design to actually find a true effect? I.e. if we have a power of 50%, we would only find a true effect at chance level. Power is the inverse of the Type II error: e.g. $\text{power} = 1$ $- \beta = .80$.\
+Statistical **Power**: How likely is it for our study design to actually find a true effect? I.e., if we have a power of 50%, we would only find a true effect at chance level. Power is the inverse of the Type II error: e.g. $\text{power} = 1$ $- \beta$.\
 We can increase power with increasing sample size!
 
 . . .
@@ -91,15 +91,12 @@ $$P(\text{true positive result}) = P(\text{H is true}) * Power$$
 
 $$P(\text{false positive result}) = (1 - P(\text{H is true})) * \alpha$$
 
-We don't know $P(\text{H is true})$! But we can assume how likely it is for the specific research field...
-
-. . .
-
-[PPV App](http://shinyapps.org/showapp.php?app=https://shiny.psy.lmu.de/felix/PPV&by=Michael%20Zehetleitner%20and%20Felix%20Sch%C3%B6nbrodt&title=When%20does%20a%20significant%20p-value%20indicate%20a%20true%20effect?&shorttitle=When%20does%20a%20significant%20p-value%20indicate%20a%20true%20effect?)
+We don't know $P(\text{H is true})$! But we can assume how likely it is for the specific research field: [PPV App](http://shinyapps.org/showapp.php?app=https://shiny.psy.lmu.de/felix/PPV)
 
 ## The Winner's Curse
 
-Effect sizes estimated from a significant result are usually an overestimate of the true effect size!
+Effect sizes estimated from a significant result are usually an overestimate of the true effect size!\
+We have simulated experiments with a true effect size of $.2$ (red dotted line) and varying statistical power. For every power, we select the highest effect size found (the "winner" in an explorative analysis).
 
 ```{r}
 library(tidyverse)
@@ -154,27 +151,31 @@ p2 <- ggplot(df,aes(estimate,fill=significant)) +
 plot_grid(p1, p2)
 ```
 
-On the left, you can see that Effect Sizes are especially overestimated for low-power studies (dotted line is true ES). On the right is a histogram showing effect size estimates for a number of samples from a dataset with sign. results shown in blue/non-sign. in red.
+In the left plot, you can see that *estimated* effect sizes (sampling error!) are especially overestimated for studies with low power. \
+On the right is a histogram showing effect size *estimates* for a number of simulated experiments. Non-significant results are shown in red, significant ones in blue.
 
 ::: notes
+Significance depends on effect size and sample size (standard error => `sqrt(n)`).
+
 This shows us that only if power is high and the effect is large will the ES estimate be close to realistic.
 :::
 
 ## Questionable Research Practices
 
-Bem in "The Compleat Academic: A Career Guide", ([Darley, Zanna, and Roediger 2004](https://statsthinking21.github.io/statsthinking21-core-site/doing-reproducible-research.html#ref-darl:zann:roed:2004))
+Bem in "The Compleat Academic: A Career Guide", ([Darley, Zanna, & Roediger, 2004](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3592591/))
 
 > **Which article should you write?** There are two possible articles you can write: (1) the article you planned to write when you designed your study or (2) the article that makes the most sense now that you have seen the results. They are rarely the same, and the correct answer is (2).
 
-. .
+. . .
 
-This is highly problematic!
+This is ***HIGHLY*** problematic! 🙈
 
-**HARKing**: Hypothesizing After the Results are Known - reframing a post-hoc conclusion as an a priori prediction (in which we have stronger faith). Results --\> Theory instead of Theory --\> Predictions.
+**HARKing**: Hypothesizing After the Results are Known \
+reframing a *post-hoc* conclusion as an *a priori* prediction (in which we have stronger faith).
 
 . . .
 
-> **Analyzing data** Examine them from every angle. Analyze the sexes separately. Make up new composite indices. If a datum suggests a new hypothesis, try to find further evidence for it elsewhere in the data. If you see dim traces of interesting patterns, try to reorganize the data to bring them into bolder relief. If there are participants you don't like, or trials, observers, or interviewers who gave you anomalous results,drop them (temporarily). Go on a fishing expedition for something --- anything --- interesting. No, this is not immoral.
+> **Analyzing data** Examine them from every angle. Analyze the sexes separately. Make up new composite indices. If a datum suggests a new hypothesis, try to find further evidence for it elsewhere in the data. If you see dim traces of interesting patterns, try to reorganize the data to bring them into bolder relief. If there are participants you don't like, or trials, observers, or interviewers who gave you anomalous results, drop them (temporarily). Go on a fishing expedition for something --- anything --- interesting. No, this is not immoral.
 
 . . .
 
@@ -208,15 +209,15 @@ p-hacking:
 
 ## Preregistration
 
-One submits a detailed description of a study (incl. all data analyses) to a trusted, time-stamped repository (osf.io or aspredicted.org).
+Submit a detailed description of a study (incl. all data analyses) to a trusted, time-stamped repository (<https://osf.io/> or <https://aspredicted.org/>).
 
--\> Provides greater transparency and trust that the analyses are not p-hacked or other QRPs were used.
+-\> Provides greater transparency and trust that the analyses are not p-hacked or other questionable research practices were used.
 
--\> Resulted in increase in published non-significant findings.
+-\> Resulted in an increase in published non-significant findings (good because they are not lost in the "file drawer" and remain available for meta-analyses).
 
 ## Reproducible Practices
 
-Simmons, Nelson, and Simonsohn ([2011](https://statsthinking21.github.io/statsthinking21-core-site/doing-reproducible-research.html#ref-simm:nels:simo:2011)) suggested the following standards for making research more reproducible:
+[Simmons, Nelson, and Simonsohn (2011)](https://doi.org/10.1177/0956797611417632) suggested the following standards for making research more reproducible:
 
 ::: incremental
 -   Authors must decide the rule for terminating data collection before data collection begins and report this rule in the article.
@@ -229,7 +230,7 @@ Simmons, Nelson, and Simonsohn ([2011](https://statsthinking21.github.io/statsth
 
 -   If observations are eliminated, authors must also report what the statistical results are if those observations are included.
 
--   If an analysis include a covariate, authors must report the statistical results of the analysis without the covariate.
+-   If an analysis includes a covariate, authors must report the statistical results of the analysis without the covariate.
 :::
 
 ## Replication
@@ -240,17 +241,17 @@ Other researchers should be able to perform the same study and obtain the same r
 
 It would be a good practice to replicate your own finding in a new (sufficiently powered) sample. Not every replication will be successful (80% power = 1/5 chance of getting a non-significant finding although there is a true effect!).
 
-A small p-value does not provide stronger evidence for your hypothesis (it is about the probability of the null hypothesis)! (Although a p-value close to .05 is not very strong evidence...).
+A small p-value does not necessarily provide stronger evidence for your hypothesis! (Although a p-value close to .05 is never strong evidence...).
 
-# Doing Reproducible Data Analysis
+## Doing Reproducible Data Analysis
 
 Replicating another lab's findings is crucial, but another aspect of reproducibility is to be able to reproduce someone's analysis on their own data: **computational reproducibility**.
 
-. . .
-
 For this, it is of course necessary that data and code are openly shared (on e.g. Github, osf.io, Zenodo, OpenNeuro...). Furthermore, scripted analyses, e.g using R, are highly preferred over point-and-click software, because it doesn't document what was actually clicked (and you can't comment it - there are some exceptions).
 
-There are a number of ways to make you code even more reproducible, such as using version control (Git) and containers or virtual environments, which ensure e.g. that the same version of the software (and packages etc.) was used.
+## Doing Reproducible Data Analysis 2
+
+There are a number of ways to make you code even more reproducible, such as using version control (Git/Github) and containers or virtual environments, which ensure e.g. that the same version of the software (and packages etc.) was used.
 
 [![The Turing Way of Reproducible Research](images/TuringRepRes.jpg){width="366"}](https://the-turing-way.netlify.app/)
 
