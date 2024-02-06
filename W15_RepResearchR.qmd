@@ -70,7 +70,7 @@ In 2015, the paper "Estimating the reproducibility of psychological science"([Op
 
 . . .
 
-This was actually predicted already in 2005 in a paper by the (now in-)famous John Ioannidis. In the paper "Why most published research findings are false", he argued that the use of Null Hypothesis Significance Testing (NHST) will necessarily lead to high levels of false results.
+This was actually predicted already in 2005 in a paper by the (now in-)famous John Ioannidis. In the paper "[Why most published research findings are false](https://doi.org/10.1371/journal.pmed.0020124)", he argued that the use of Null Hypothesis Significance Testing (NHST) will necessarily lead to high levels of false results.
 
 ## Positive Predictive Value and Statistical Significance
 
@@ -162,7 +162,7 @@ This shows us that only if power is high and the effect is large will the ES est
 
 ## Questionable Research Practices
 
-Bem in "The Compleat Academic: A Career Guide", ([Darley, Zanna, & Roediger, 2004](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3592591/))
+Bem in "The Compleat Academic: A Career Guide" (published by [Darley, Zanna, & Roediger, 2004](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3592591/))
 
 > **Which article should you write?** There are two possible articles you can write: (1) the article you planned to write when you designed your study or (2) the article that makes the most sense now that you have seen the results. They are rarely the same, and the correct answer is (2).
 
