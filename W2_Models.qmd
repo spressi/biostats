@@ -4,7 +4,7 @@ subtitle: |
    | Julius-Maximilians-University Würzburg 
    | Course: "Biostatistics"    
    | Translational Neuroscience
-author: "Dr. Mario Reutter (slides adapted from Dr. Lea Hildebrandt)"
+author: "Dr. Lea Hildebrandt"
 format: 
   revealjs:
     smaller: true
@@ -76,36 +76,16 @@ Two parts:
 -   one portion that is described by a statistical model, which expresses the values that we expect the data to take given our knowledge,
 
 -   *error* that reflects the difference between the model's predictions and the observed data.
+
+Example? (Average) age in classroom? All prior knowledge goes into model
 :::
-
-## Statistical Models
-
-In general, we want to predict single observations (denoted by i) from the model. The fact that we are looking at predictions of observations and not actual values of the data is denoted by the "hat":
-
-$$
-\widehat{data_i} = model_i
-$$ The error is then simply the deviation of the actual data from the predicted values:
-
-$$ 
-error_i = data_i - \widehat{data_i}
-$$ If this doesn't make much sense yet, let's look at an example.
-
-::: notes
-This means that the predicted value of the data for observation i is equal to the value of the model for that observation.
-:::
-
-## Some Data
-
-Let's say we want to have a model of height of children based on the NHANES dataset (also used in ST21). What would you do?
-
-Here is how (the beginning of) the dataset looks like:
-
-![](images/NHANES.png){fig-alt="NHANES data set"}
 
 ## A Simple Model
 
-What do you think would be a good model for the height of a person? \
-(Or: Which value should we guess for a particular child?)
+Let's say we want to have a model of height of students in this Biostatistics class (or height of children based on the NHANES dataset, as used in ST21, see below).
+
+What do you think would be a good model for the height of a student/child?\
+(Or: Which value should we guess for a particular or new student/child?)
 
 . . .
 
@@ -131,9 +111,31 @@ NHANES_child %>%
   ylab("Absolute Frequency") + xlab("Height (cm)") + theme_bw()
 ```
 
+::: notes
+Have them guess the height of an anonymous new student, discuss what could be relevant information. Gender = not known (prior knowledge!).
+
+Mean = model?
+:::
+
+## Statistical Models
+
+In general, we want to predict single observations (denoted by i) from the model. The fact that we are looking at predictions and not actual values of the data/observations is denoted by the "hat":
+
+$$
+\widehat{data_i} = model_i
+$$ The error is then simply the deviation of the actual data from the predicted values:
+
+$$ 
+error_i = data_i - \widehat{data_i}
+$$
+
+::: notes
+This means that the predicted value of the data for observation i is equal to the value of the model for that observation.
+:::
+
 ## A Simple Model 2
 
-The simplest model would be to predict the *mean* of the height values for *every* child! This would imply that individual deviations of the mean would be interpreted to be (prediction) errors in such a model.
+The simplest model would be to predict the *mean* of the height values for *every* student/child! This would imply that individual deviations of the mean would be interpreted to be (prediction) errors in such a model.
 
 We can write such a simple model as a formula:
 
@@ -157,7 +159,7 @@ $$
 error_i = y_i - \hat{y_i}
 $$
 
-If we select a predicted value of 400cm, all individuals' errors would hugely deviate (because no one is 4m tall). If we average these errors, it would still be a big value.
+If we select a predicted value (or mean) of 400cm, all individuals' errors would hugely deviate (because no one is 4m tall). If we average these errors, it would still be a big value.
 
 A better candidate for such a simple model is thus the arithmetic mean or average:
 
@@ -239,7 +241,7 @@ B: only age (linear relationship)\
 C: intercept/constant\
 D: also account for gender
 
-\--\> line fits data increasingly better!
+--\> line fits data increasingly better!
 :::
 
 ## A Slightly More Complex Model 2
@@ -673,11 +675,11 @@ Z of x
 x_i is single value/data point\
 mu, sigma
 
-z-scores: Now you can compare apples to oranges! Imagine two siblings from different classes battling it out on test results: \
-- I got 70 points, you got only 60! \
-- My test only had 70 points in total, yours had 85. I got 86% correct, you only 82%! \
-- My test was harder! The average result was 60 with a standard deviation of 10, so I am 1 SD above the class average! \
-- On my test, an average of 52 was achieved with an SD of 8, so I am also 1 SD above the class average. But people in your class are really stupid so that's a very low standard to compare yourself. \
+z-scores: Now you can compare apples to oranges! Imagine two siblings from different classes battling it out on test results:\
+- I got 70 points, you got only 60!\
+- My test only had 70 points in total, yours had 85. I got 86% correct, you only 82%!\
+- My test was harder! The average result was 60 with a standard deviation of 10, so I am 1 SD above the class average!\
+- On my test, an average of 52 was achieved with an SD of 8, so I am also 1 SD above the class average. But people in your class are really stupid so that's a very low standard to compare yourself.\
 Narrator: And this was the end of comparability between apples and oranges :)
 :::
 
