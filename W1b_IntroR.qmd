@@ -320,7 +320,7 @@ Now run the code (either by pressing "run" at the top right of the script or `ct
 
 ## Read in Data
 
-To read in data files, you need to know which format these files have, e.g. .txt. or .csv files or some other (proprietary) format. There are packages that enable you to read in data of different formats.
+To read in data files, you need to know which format these files have, e.g. .txt. or .csv files or some other (proprietary) format. There are packages that enable you to read in data of different formats like Excel (.xlsx).
 
 We will use the files from [Fundamentals of Quantitative Analysis](https://psyteachr.github.io/quant-fun-v2/starting-with-data.html): `ahi-cesd.csv` and `participant-info.csv`. Save these directly in your project folder on your computer (do not open them!).
 
