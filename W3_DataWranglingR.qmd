@@ -482,7 +482,7 @@ The goal of data wrangling is often to summarize (or aggregate) the data, e.g. t
 
 . . .
 
-You can do so using the function `summarise()`:
+You can do so using the function `summarize()`:
 
 ```{r}
 #| echo: true
@@ -493,22 +493,22 @@ dat <- babynames %>%
          sex == "F")
 
 # summarize the data, calculating the number of oberservations:
-dat_sum <- dat %>% summarise(total = sum(n))
+dat_sum <- dat %>% summarize(total = sum(n))
 dat_sum
 ```
 
 As you can see, a new variable named total is created, which contains the total number of observations (in this case, it is different from the number of rows because each row already contains a count `n`). \
-There's just one row in the resulting data frame, because `summarise()` reduces the data frame (to only include the necessary information)!
+There's just one row in the resulting data frame, because `summarize()` reduces the data frame (to only include the necessary information)!
 
 ## Grouping and Summarizing
 
-Often, we want to summarize data for specific subgroups. For this aim, `summarise()` has the `.by` parameter:
+Often, we want to summarize data for specific subgroups. For this aim, `summarize()` has the `.by` parameter:
 
 ```{r}
 #| echo: true
 #| eval: true
 
-group_sum <- dat %>% summarise(total = sum(n), .by=name) 
+group_sum <- dat %>% summarize(total = sum(n), .by=name) 
 group_sum
 ```
 . . .
@@ -519,30 +519,30 @@ You can also subgroup by a combination of variables:
 #| eval: true
 
 babynames %>% filter(name %in% c("Emily", "Kathleen", "Alexandra", "Beverly")) %>% #we start with the 4 names regardless of sex
-  summarise(total = sum(n), .by=c(name, sex)) #and then summarise by name, separated for sex
+  summarize(total = sum(n), .by=c(name, sex)) #and then summarize by name, separated for sex
 ```
 
 ## Grouping and Summarizing 2
 
-In earlier versions, we had to use `summarise()` together with `group_by()`:
+In earlier versions, we had to use `summarize()` together with `group_by()`:
 
 ```{r}
 #| echo: true
 #| eval: true
 
-group_sum <- dat %>% group_by(name) %>% summarise(total = sum(n)) 
+group_sum <- dat %>% group_by(name) %>% summarize(total = sum(n)) 
 group_sum
 ```
 
 We avoid using `group_by()` because it can have unintended side effects. \
 It is just part of this class because you will likely encounter it in somebody else's (old) code. \
 \
-If you do have to use it, make sure to `ungroup()` after `summarise()` (or `mutate()`) to avoid unintended effects:
+If you do have to use it, make sure to `ungroup()` after `summarize()` (or `mutate()`) to avoid unintended effects:
 ```{r}
 #| echo: true
 #| eval: false
 
-group_sum <- dat %>% group_by(name) %>% summarise(total = sum(n)) %>% ungroup()
+group_sum <- dat %>% group_by(name) %>% summarize(total = sum(n)) %>% ungroup()
 ```
 
 <!-- ## Ungrouping
@@ -561,7 +561,7 @@ babynames %>%
                      "Alexandra",
                      "Beverly"), sex=="F") %>%
   group_by(name) %>% 
-  summarise(n = n()) %>% 
+  summarize(n = n()) %>% 
   ungroup()
 ```
 --> 
@@ -575,7 +575,7 @@ Use the `baby_decades` data frame to calculate the mean and median number of obs
 ```{r}
 #| echo: true
 
-baby_decades %>% summarise(mean_year = mean(n),
+baby_decades %>% summarize(mean_year = mean(n),
                            median_year = median(n),
                            .by=c(sex, decade))
 
@@ -583,17 +583,17 @@ baby_decades %>% summarise(mean_year = mean(n),
 
 ## Counting Data
 
-There are several ways to get the number of rows per group. You can use the function `n()` within a call to `summarise()` (or `mutate()`). A shortcut is to use `count()`:
+There are several ways to get the number of rows per group. You can use the function `n()` within a call to `summarize()` (or `mutate()`). A shortcut is to use `count()`:
 
 ```{r}
 #| echo: true
 
-dat %>% summarise(n = n(), .by=name)
+dat %>% summarize(n = n(), .by=name)
 
 dat %>% count(name)
 ```
 
-Interestingly, the order of the output may vary. `summarise()` leaves the data in the original order (i.e., by `prop`, which (likely) translates to an order by `n()`). `count()` arranges the output by the variables for which the counting is done (here: alphabetically by `name`).
+Interestingly, the order of the output may vary. `summarize()` leaves the data in the original order (i.e., by `prop`, which (likely) translates to an order by `n()`). `count()` arranges the output by the variables for which the counting is done (here: alphabetically by `name`).
 
 ## Bigger Pipes!
 
@@ -606,7 +606,7 @@ pipe_summary <- babynames %>%
   mutate(decade = floor(year/10) *10) %>%
   filter(name %in% c("Emily", "Kathleen", "Alexandra", "Beverly"), 
          sex=="F") %>%
-  summarise(mean_decade = mean(n), .by=c(name, decade))
+  summarize(mean_decade = mean(n), .by=c(name, decade))
 ```
 
 It's not easy to decide which intermediate steps to save and which not. Usually, it involves some sort of trial and error. Sometimes you go back and break a pipe apart. Sometimes you get overwhelmed by the number of variables in your environment and create bigger pipes. \
@@ -899,14 +899,14 @@ How do we need to group and summarize the data to get a sum score per person? (I
 
 ```{r}
 #| echo: true
-aq_scores <- rscores %>% summarise(AQ = sum(NULL), .by=NULL)
+aq_scores <- rscores %>% summarize(AQ = sum(NULL), .by=NULL)
 ```
 
 . . .
 
 ```{r}
 #| echo: true
-aq_scores <- rscores %>% summarise(AQ = sum(Score), .by=Id) # sum column Score to obtain AQ scores.
+aq_scores <- rscores %>% summarize(AQ = sum(Score), .by=Id) # sum column Score to obtain AQ scores.
 ```
 
 ## Pipe it all together!
@@ -920,7 +920,7 @@ aq_scores2 <- responses %>%
                values_to = "Response") %>%  
   inner_join(qformats, "Question") %>% 
   inner_join(scoring, c("QFormat", "Response")) %>% 
-  summarise(AQ = sum(Score), .by=Id) 
+  summarize(AQ = sum(Score), .by=Id) 
 ```
 
 # Optional Exercises
@@ -968,7 +968,7 @@ new_pong_data <- pong_data %>%
   
   # summarize (use old data frame because we removed variables)
 pong_data_hits <- pong_data %>% 
-  summarise(total_hits = sum(HitOrMiss, na.rm = TRUE),
+  summarize(total_hits = sum(HitOrMiss, na.rm = TRUE),
             meanhits = mean(HitOrMiss, na.rm = TRUE),
             .by=c(BackgroundColor, PaddleLength))
 ```
