@@ -139,9 +139,6 @@ summarydata1 %>% pull(educ) %>% unique()
 
 A simple change to a factor is not always helpful. We still don't know what a `1` in `sex` or a `5` in `educ` stands for:
 
-:::aside
-There is very sparse information on the variables at <https://doi.org/10.5334/jopd.35>, so I guesstimated some of the factor levels.
-:::
 
 -   `sex`: 1 = *female*, 2 = *male*
 
@@ -149,36 +146,46 @@ There is very sparse information on the variables at <https://doi.org/10.5334/jo
 
 -   `income`: 1 = *low*, 2 = *middle*, 3 = *high*
 
+:::aside
+There is very sparse information on the variables at <https://doi.org/10.5334/jopd.35>, so I guesstimated some of the factor levels.
+:::
+
+## Transform Data Type 3
+
+A simple change to a factor is not always helpful. We still don't know what a `1` in `sex` or a `5` in `educ` stands for:
+
 ```{r}
 #| echo: true
-summarydata2 = summarydata1 %>% mutate(sex = sex %>% recode("1" = "female", "2" = "male"),
-                                       educ = educ %>% recode("1" = "no graduation",
-                                                              "2" = "school graduation",
-                                                              "3" = "vocational training",
-                                                              "4" = "bachelor's degree",
-                                                              "5" = "post grad"),
-                                       income = income %>% recode("1" = "low",
-                                                                  "2" = "middle",
-                                                                  "3" = "high"))
+summarydata2 = summarydata1 %>% 
+  mutate(sex = sex %>% recode("1" = "female", "2" = "male"),
+         educ = educ %>% recode("1" = "no graduation",
+                                "2" = "school graduation",
+                                "3" = "vocational training",
+                                "4" = "bachelor's degree",
+                                "5" = "post grad"),
+         income = income %>% recode("1" = "low",
+                                    "2" = "middle",
+                                    "3" = "high"))
 
 #glimpse(summarydata2)
 summarydata2 %>% pull(educ) %>% unique()
 ```
 
-## Transform Data Type 3
+## Transform Data Type 4
 
 `recode()` only works with data that are already factors. What if we start with the original data (i.e., `summarydata` instead of `summarydata1`)?
 
 ```{r}
 #| echo: true
 # no factors yet => refer to original data as numbers WITHOUT quotation marks
-summarydata3 = summarydata %>% mutate(sex = if_else(sex==1, "female", "male") %>% as_factor(), #could also use case_match
-                       educ = educ %>% case_match(1 ~ "no graduation",
-                                                  2 ~ "school graduation",
-                                                  3 ~ "vocational training",
-                                                  4 ~ "bachelor's degree",
-                                                  5 ~ "post grad") %>% as_factor(),
-                       income = income %>% case_match(1 ~ "low", 2 ~ "middle", 3 ~ "high") %>% as_factor())
+summarydata3 = summarydata %>% 
+  mutate(sex = if_else(sex==1, "female", "male") %>% as_factor(), #could also use case_match
+         educ = educ %>% case_match(1 ~ "no graduation",
+                                    2 ~ "school graduation",
+                                    3 ~ "vocational training",
+                                    4 ~ "bachelor's degree",
+                                    5 ~ "post grad") %>% as_factor(),
+         income = income %>% case_match(1 ~ "low", 2 ~ "middle", 3 ~ "high") %>% as_factor())
 
 #glimpse(summarydata3)
 summarydata3 %>% pull(educ) %>% unique()
@@ -188,10 +195,23 @@ summarydata3 %>% pull(educ) %>% unique()
 
 Factor is now ordered by occurrence in data! :(
 
-. . .
+## Transform Data: Summary
 
--   If data are **factors coded as numbers**, do `as_factor()` first and then `recode()`
--   If data are **factors coded as characters**, make sure that the ordering is correct (use `arrange()` for alphabetical order) or create a new `factor()` with explicit ordering: `income %>% factor(levels=c("low", "middle", "high"))`)
+-   If data are **factors coded as numbers**, do `as_factor()` first (implicitly sorts levels ascendingly) and then `recode()`
+-   If data are **factors coded as characters**, make sure that the ordering is correct (e.g., use `arrange()` for alphabetical order) or create a new `factor()` with explicit ordering: 
+
+```{r, eval=F, echo=T}
+income = income %>% factor(levels=c("low", "middle", "high")) 
+#not as_factor but just factor to supply levels explicitly
+```
+
+\
+
+-   Warning: If numbers are represented as characters (`"1"` instead of just `1`), handle them as characters or cast them to a number: 
+
+```{r, eval=F, echo=T}
+income = income %>% as.integer() %>% as_factor() %>% recode(...)
+```
 
 # Activity 3: Barplot
 

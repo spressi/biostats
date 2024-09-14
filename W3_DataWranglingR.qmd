@@ -350,7 +350,7 @@ The data starts at 2001! :(
 
 The second argument, `year > 2000`, is a *Boolean* or *logical expression*, which means that it results in a value of either TRUE or FALSE. `filter()` runs this expression and then removes all values/rows that contain FALSE.
 
-There are also other Boolean expressions:
+## Detour: Boolean Expressions 2
 
 | Operator | Name                  | is TRUE if and only if                    |
 |------------------|-------------------|-----------------------------------|
@@ -365,7 +365,7 @@ There are also other Boolean expressions:
 : Boolean expressions
 
 ::: aside
-A double equality sign `==` is a comparison, a single equals `=` is a variable or parameter assignment. \
+A double equality sign `==` is a **comparison**, a single equals `=` is a variable or parameter **assignment**. \
 This is why R users like to make the distinction even bigger by using `<-` for variable assignment (your environment in the top right pane) and `=` for parameter assignment in functions (a hidden so-called *local* environment only visible to the function).
 :::
 
