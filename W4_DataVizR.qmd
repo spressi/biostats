@@ -13,7 +13,7 @@ format:
     theme: serif
     chalkboard: true
     width: 1280
-    height: 720s
+    height: 720
 from: markdown+emoji
 ---
 
@@ -609,7 +609,7 @@ If plot is assigned to object, it won't be displayed unless you type `viobox` in
 
 Check out [Chapter 13 of QuantFun](https://psyteachr.github.io/quant-fun-v2/visualisation.html) for further exercises and tips for data visualization!
 
-The free book [R for data science](https://r4ds.had.co.nz/) was written by (some of) the creators of the `tidyverse`, and includes lots of plotting and data science exercises. (For more advanced plotting, check the [ggplot2 book](https://ggplot2-book.org/).)
+The free book [R for data science](https://r4ds.hadley.nz/) was written by (some of) the creators of the `tidyverse`, and includes lots of plotting and data science exercises. (For more advanced plotting, check the [ggplot2 book](https://ggplot2-book.org/).)
 
 Also keep in mind: Coding is a lot of googling things!
 
