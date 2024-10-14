@@ -796,7 +796,7 @@ NHANES_sample_tidy <-
 ```{r}
 #| echo: true
 
-t.test(BPsys ~ timepoint, data = NHANES_sample_tidy, paired = TRUE)
+with(NHANES_sample, t.test(BPSys1, BPSys2, paired = TRUE))
 ```
 
 Side note: A paired $t$-test is equivalent to a one-sample $t$-test, when using the paired differences as $\hat{X}$ and testing them against a value of 0 (if we expect no difference for $H_0$) for $\mu$.

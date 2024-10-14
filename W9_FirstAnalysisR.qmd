@@ -198,7 +198,8 @@ t.test(NULL ~ NULL,
 t.test(reaction_times ~ group,
        data = sim_data_t,
        alternative = "greater", #depends on ALPHABETICAL order of groups in data!
-       paired = FALSE) #in the future, we only specify this IF the data are paired
+       #paired = FALSE # this is the default, so no need to specify it
+)
 ```
 
 . . .
@@ -212,7 +213,7 @@ When changing the name "treatment" to "a", the results change:
 t.test(reaction_times ~ group,
        data = sim_data_t %>% mutate(group = ifelse(group=="treatment", "a", group)),
        alternative = "greater", #depends on order of groups in data! 1st group > 2nd group
-       paired = FALSE, var.equal=T) %>% apa::t_apa()
+       var.equal = TRUE) %>% apa::t_apa()
 ```
 :::
 
@@ -437,10 +438,9 @@ Any ideas how you would specify the paired samples *t*-test in R?
 #| eval: false
 
 
-t.test(NULL ~ NULL,
-       paired = NULL,
-       data = NULL,
-       alternative = NULL)
+with(gaze, t.test(NULL, NULL,
+                  paired = NULL,
+                  alternative = NULL))
 ```
 
 . . .
@@ -449,11 +449,9 @@ t.test(NULL ~ NULL,
 #| echo: true
 #| eval: true
 
-
-t.test(looking_time ~ phase, #this assumes that data are ordered by subject!
-       paired = TRUE,
-       data = gaze_tidy,
-       alternative = "two.sided")
+with(gaze, t.test(baseline, test,
+                  paired = TRUE,
+                  alternative = "two.sided"))
 ```
 
 ## Effect Size for the *t*-Test
@@ -465,8 +463,7 @@ For the *t*-tests, you would calculate **Cohen's d** (using the function from th
 ```{r}
 #| echo: true
 
-effectsize::cohens_d(looking_time ~ phase, paired=T, data=gaze_tidy)
-
+with(gaze, effectsize::cohens_d(baseline, test, paired=T))
 ```
 
 . . .

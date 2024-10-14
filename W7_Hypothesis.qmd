@@ -183,7 +183,7 @@ meanDiff <-
 # and inactive individuals; we'll use this later to calculate the t-statistic
 sumVariance <- 
   sampleSummary %>% 
-  select(
+  dplyr::select(
     PhysActive,
     N,
     sd
@@ -470,7 +470,7 @@ print(plot)
 shuffleBMIstat <- function() {
   bmiDataShuffled <- 
     NHANES_sample %>%
-    select(BMI, PhysActive) %>%
+    dplyr::select(BMI, PhysActive) %>%
     mutate(
       BMI = sample(BMI) #randomly shuffle BMI values
     )
