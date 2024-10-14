@@ -40,15 +40,6 @@ Today, I'm feeling...
 
 ![](images/moodmeter_en.jpg){fig-alt="Moodmeter"} -->
 ```
-::: notes
-Survey (Zoom) + Moodmeter (pick a stamp - top of screen, select annotate...)
-
-Too many people to have an introduction round!
-
-I know that you probably don't know each other yet, there will be some break-out sessions where you can get to know each other a bit (and talk about stats!) ;)
-
-Stats Anxiety: It will be packed, but it will be ok (You can always reach me with questions!)!
-:::
 
 ## Using the Slides
 
@@ -99,15 +90,6 @@ print("Hello World")
 
     -   Disadvantage: One more program to use/check...-->
 ```
-::: notes
-Online: Participation, videos, chat...
-
-Or R Session on Tuesday and video before? Some can't make it on Wednesdays... (chat or speak out)
-
-Attendance: If 2x per week sync: max. 3 missed classes, if 1x per week: max. 2 missed classes (unless I know your reasons for missing Wednesdays!) --\> if you missed more, I can't admit you for the exam/report
-
-The input and hands-on sessions will be highly based on these two textbooks. You don't need to read the textbooks, but it will of course help if you either read the chapter before or after the sessions: Repetition is always helpful!
-:::
 
 ## Contents
 
@@ -123,7 +105,7 @@ The input and hands-on sessions will be highly based on these two textbooks. You
 ::: notes
 For some, e.g. the psychologists, it will be more of a repetition - but you will also learn R.
 
-Slides might be text heavy --\> so that you can go through the slides afterwards again (but textbook might also be helpful)
+Slides might be text heavy &rarr; so that you can go through the slides afterwards again (but textbook might also be helpful)
 :::
 
 ## Project
@@ -202,13 +184,6 @@ QF: Fundamentals of Quantitative Analysis (QuantFun)
     -   However: "It is easy to lie with statistics, but easier to lie without them" ― Frederick Mosteller
 :::
 
-::: notes
-break-out session, 3 min.\
---\> Afterwards: write in chat or speak, what did you come up with?
-
-possibly show empirical cycle or the like to indicate that stats are necessary at almost every step
-:::
-
 ## What is Statistical Thinking?
 
 ::: incremental
@@ -233,11 +208,7 @@ break down complexity, include uncertainty
 [![Base Rate Fallacy](images/BaseRate.jpg){fig-align="center" width="600"}](https://thedecisionlab.com/biases/base-rate-fallacy)
 
 ::: notes
-Write in chat! (after first bullet point!)
-
 example availability heuristic from book (or any other example where intuition is wrong, i.e. vaccinations/covid...)
-
-\--\> test in class? Ask for opinion/intuition, show data
 :::
 
 ## What can Statistics Do For Us?
@@ -267,11 +238,11 @@ describe: not useful to look at every single data point/person, but we need s.th
 ::: notes
 ask for every point what I could mean w/ it?
 
-LfD: gather new knowledge
+Learning from data: gather new knowledge or even just hypotheses
 
-Agg: Can't look at all ind data points, need to find trends etc. (should not go to far! throwing out data)
+Aggregation: Can't look at all ind data points, need to find trends etc. (should not go too far! throwing out data)
 
-uncert: stats = tools for making decisions under uncert, we can never prove anything but provide evidence, there is no 100% certainty for an outcome (cancer)
+Uncertainty: stats = tools for making decisions under uncertainty, we can never prove anything but provide evidence, there is no 100% certainty for an outcome
 
 sampling: how do we represent the population? What is the population? how much data do we need? More is better, but payoff decreases...
 :::
@@ -286,19 +257,17 @@ Example: Smoking = less risk for Parkinson's disease? (<a href="http://dx.doi.or
 
 . . .
 
-\--\> confounding factors?
+&rarr; confounding factors?
 
 . . .
 
-e.g., individual dopaminergic activity =\> addiction & motor function
+e.g., individual dopaminergic activity &rArr; addiction & motor function
 
 . . .
 
 Randomized Controlled Trials (RCT) as the solution?
 
 ::: notes
-give example! Eat more fat = living longer? Confounders (richer people, healthier diets, less stress, better health care...)
-
 RCT: exp control and manipulation, removes confounds if done well\
 At least some more causal evidence!
 
@@ -322,7 +291,7 @@ QUESTIONS so far?
 :::
 
 ::: notes
-Chat --\> after showing slide! Come up with examples for "Data"
+Chat &rarr; after showing slide! Come up with examples for "Data"
 
 Collect: Do you have ideas? What are data you encounter in your lives/work etc? What are differences between these data?
 :::
