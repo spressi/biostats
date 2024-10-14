@@ -19,6 +19,16 @@ from: markdown+emoji
 
 # Welcome!
 
+```{css}
+code.sourceCode {
+  font-size: 1.4em;
+}
+
+div.cell-output-stdout {
+  font-size: 1.4em;
+}
+```
+
 ## Hello!
 
 Who am I?
@@ -79,17 +89,11 @@ print("Hello World")
 
 -   We will use these textbooks (Open Educational Resources - freely available online, also linked in WueCampus):
 
-    -   Statistical Thinking for the 21st Century: <https://statsthinking21.github.io/statsthinking21-core-site/index.html>
+    -   [Statistical Thinking for the 21st Century](https://statsthinking21.github.io/statsthinking21-core-site/index.html)
 
-    -   For the R part: Fundamentals of Quantitative Analysis: <https://psyteachr.github.io/quant-fun-v2/>
-
-```{=html}
-<!-- -   Should we use MS Teams?
-
-    -   Advantage: You can ask questions and discuss there!
-
-    -   Disadvantage: One more program to use/check...-->
-```
+    -   For the R part: [Fundamentals of Quantitative Analysis](https://psyteachr.github.io/quant-fun-v2/)
+    
+    -   (Additional Resource: [R for Data Science](https://r4ds.hadley.nz/))
 
 ## Contents
 
@@ -132,7 +136,9 @@ Slides might be text heavy &rarr; so that you can go through the slides afterwar
     -   and a short discussion.
         -   *All* these parts should be *at least half a page* long.
 
-## Calendar {.scrollable .smaller}
+## Schedule {.scrollable .smaller}
+
+The up-to-date version can be found at <https://spressi.github.io/biostats/>
 
 | Date            | Topic                        | Reading            | Lecturer           | Project Deadlines              |
 |-----------------|------------------------------|--------------------|--------------------|--------------------------------|
@@ -323,9 +329,7 @@ Collect: Do you have ideas? What are data you encounter in your lives/work etc? 
 :::
 
 ::: notes
-discrete vs. continuous: question for examples or quiz
-
-Further classify data examples mentioned in chat
+eye color can be categorical (e.g., "brown", "blue", "green") or numerical (wave length in nm)
 :::
 
 ## What is a Data Set?
@@ -410,7 +414,7 @@ Are we measuring the construct we're interested in?
 -   Predictive validity: Is it predictive of other outcomes? (e.g., intelligence & job success)
 :::
 
-. . .
+## Validity & Reliability
 
 ![Reliability & Validity](images/ReliabilityValidity-1.png){width="400"}
 
