@@ -142,7 +142,7 @@ The up-to-date version can be found at <https://spressi.github.io/biostats/>
 
 | Date            | Topic                        | Reading            | Lecturer           | Project Deadlines              |
 |-----------------|------------------------------|--------------------|--------------------|--------------------------------|
-| 16.10.          | General & R Intro            | ST21: 1-3, QF: 1-3 | Reutter            | R & Rstudio installed          |
+| 16.10.          | General & R Intro            | ST21: 1-3, QF: 1-3 | Reutter            | R & RStudio installed          |
 | 23.10.          | Probability                  | ST21: 4, QF: 4-6   | Hildebrandt        |                                |
 | 30.10.          | Data Wrangling               | ST21: 4, QF: 4-6   | Reutter            |                                |
 | 06.11.          | Data Visualization           | QF: 7              | Reutter            |                                |
