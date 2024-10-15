@@ -4,7 +4,7 @@ subtitle: |
    | Julius-Maximilians-University Würzburg 
    | Course: "Biostatistics"    
    | Translational Neuroscience
-author: "Dr. Mario Reutter (slides adapted from Dr. Lea Hildebrandt)"
+author: "Dr. Lea Hildebrandt"
 format: 
   revealjs:
     smaller: true
@@ -12,6 +12,8 @@ format:
     slide-number: true
     theme: serif
     chalkboard: true
+    width: 1280
+    height: 720
 from: markdown+emoji
 ---
 

@@ -4,7 +4,7 @@ subtitle: |
    | Julius-Maximilians-University Würzburg 
    | Course: "Biostatistics"    
    | Translational Neuroscience
-author: "Dr. Mario Reutter (slides adapted from Dr. Lea Hildebrandt)"
+author: "Dr. Lea Hildebrandt"
 format: 
   revealjs:
     smaller: true
@@ -12,6 +12,8 @@ format:
     slide-number: true
     theme: serif
     chalkboard: true
+    width: 1280
+    height: 720
 from: markdown+emoji
 ---
 
@@ -173,7 +175,7 @@ $\beta_0$ = *intercept*: the overall offset of the line when $x=0$ (this cannot 
 $\beta_x$ = *slope*: how much do we expect $y$ to change with each change in $x$?\
 $y$ = *DV*\
 $x$ = *IV* or *predictor\
-$\epsilon$ = *error term* or *resudials*: whatever variance is left once the model is fit (Think of the model as the blue line and the residuals are the vertical deviations of the data points from the line)
+*$\epsilon$ = error term\* or *resudials*: whatever variance is left once the model is fit (Think of the model as the blue line and the residuals are the vertical deviations of the data points from the line)
 
 (If we refer to *predicted* $y$-values, after we have estimated the model, we can drop the error term: $\hat{y} = \hat{\beta_0} + x * \hat{\beta_x}$.)
 :::
@@ -213,7 +215,7 @@ $covariance_{xy} = \hat{r} * s_x * s_y$
 
 $\hat{\beta_x} = \frac{\hat{r} * s_x * s_y}{s_x * s_x} = r * \frac{s_y}{s_x}$
 
-\--\> Regression slope = correlation multiplied by ratio of SDs (if SDs are equal, $r$ = $\hat{\beta}$ )
+--\> Regression slope = correlation multiplied by ratio of SDs (if SDs are equal, $r$ = $\hat{\beta}$ )
 
 ::: notes
 Estimation of GLM:
@@ -284,7 +286,7 @@ Usually, we would just let R do the calculations:
 summary(lmResult)
 ```
 
-The intercept is significantly different from zero (which is usually not very relevant: with 0 study time, you don't get 0%) and the effect of `studyTime` is not (or only "marginally") significant. So for every hour that we study more, the effect on the grade is *descriptively* rather small (~4%) but possibly not present at all (because it is not *statistically* significant).
+The intercept is significantly different from zero (which is usually not very relevant: with 0 study time, you don't get 0%) and the effect of `studyTime` is not (or only "marginally") significant. So for every hour that we study more, the effect on the grade is *descriptively* rather small (\~4%) but possibly not present at all (because it is not *statistically* significant).
 
 ::: notes
 $t$ ratio of $\beta$ to its $SE$!
@@ -408,7 +410,7 @@ How can we tell from the plot that both IVs might have an effect?
 
 ## Interactions Between Variables
 
-We previously assumed that the effect of `studyTime` on `grade` was the same for both groups - but sometimes we expect that this regression slope differs per group! 
+We previously assumed that the effect of `studyTime` on `grade` was the same for both groups - but sometimes we expect that this regression slope differs per group!
 
 E.g., due to prior knowledge from another class, it may be *easier* to profit from studying the new materials (i.e., steeper slope). Or it may be *harder* due to diminishing marginal returns (i.e., flatter slope).
 
@@ -421,6 +423,7 @@ Thus, `priorClass` can have a **main effect** on `grade` (i.e., independent of `
 But it can also **interact** with `studyTime`: "Due to my prior knowledge, I can study more efficiently."
 
 ## Interaction Example
+
 Example: What is the effect of caffeine on public speaking?
 
 \
@@ -505,7 +508,7 @@ In other words: We need to have a model that allows to fit different regression 
 ::: notes
 explain additive effects: look at average caffeine effect, then add mean for anxiety groups (but: both not significant here!)
 
-problem of independent main effects: also if you bring together two findings from two different papers => no information about interaction of predictors
+problem of independent main effects: also if you bring together two findings from two different papers =\> no information about interaction of predictors
 :::
 
 ## Interaction Example: Full model
@@ -681,10 +684,10 @@ Usually, the distinction between dependent and independent variables is not very
 
 ::: incremental
 1.  **Clustering**: Understand the structure that exists in the data, find clusters of observations or variables that are similar.\
-=> From dimensions to categories
+    =\> From dimensions to categories
 
 2.  **Dimensionality reduction**: Reduce a large set of variables to fewer, retaining as much information as possible.\
-=> From many dimensions to fewer dimensions
+    =\> From many dimensions to fewer dimensions
 :::
 
 . . .
@@ -698,7 +701,7 @@ Supervised: we know the value of the DV that we're trying to predict (try to fin
 
 Unsupervised: we don't have specific value to predict, we try to discover (patterns that help understand). Requires some assumptions about pattern.
 
-\--\> does not necessarily have a "right" answer!
+--\> does not necessarily have a "right" answer!
 :::
 
 ## Multivariate Data: An Example
@@ -857,7 +860,7 @@ Euclidean Dist: Pythagorean theorem\
 
 Scale: calculate z-score, standardizing
 
-Example: Relation between height and weight => it shouldn't make a difference if we rescale the data from m to cm or from kg to pounds.
+Example: Relation between height and weight =\> it shouldn't make a difference if we rescale the data from m to cm or from kg to pounds.
 :::
 
 ## K-Means Clustering
@@ -970,7 +973,7 @@ table(labels, countries$Continent)
 ```
 
 Note: usually we don't know the ground truth (i.e. which continent) in unsupervised learning!\
-=> confusion matrix cannot be estimated
+=\> confusion matrix cannot be estimated
 
 Note 2: Every time we run the iterative process, we will get a different result if we use random starting points. Make sure the result is robust, e.g. by running the Clustering algorithm several times.)
 :::
@@ -1041,15 +1044,14 @@ Colored lines: different cutoffs.
 . . .
 
 There seems to be a high degree of similarity within each variable set (SSRT and UPPS) compared to between sets.\
-=> The first split separates UPPS vs. SSRT perfectly.
+=\> The first split separates UPPS vs. SSRT perfectly.
 
 Within UPPS, sensation seeking stands out as the most different to the rest.
 
 ::: notes
 average linkage: average of all distances between each data point in each of two clusters.
 
-Can read diagram from left to right: One supercluster that is split up more and more.
-Or right to left: Individual points that get joint together into bigger and bigger clusters.
+Can read diagram from left to right: One supercluster that is split up more and more. Or right to left: Individual points that get joint together into bigger and bigger clusters.
 
 colored lines: different cutoff values
 :::
