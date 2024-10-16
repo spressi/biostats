@@ -61,6 +61,14 @@ Definitions:
 
 -   **Event**: Subset of the sample space, an outcome
 
+. . .
+
+-   **Experiment**: e.g. roll a die
+
+-   **Sample space**: six-sided die: {1,2,3,4,5,6}
+
+-   **Event**: e.g. 3
+
 ::: notes
 Hand out dice, coins etc to pairs.
 
@@ -94,11 +102,13 @@ Formal features of probability theory:
 
 ::: notes
 What is N and E's in dice/coins case?
+
+Do the 3 features make sense in their own example? Height e.g. is difficult
 :::
 
 ## Determine Probabilities
 
-How would you determine probabilities? E.g. how likely is it that you roll a 6 or toss head?
+How would you determine probabilities? E.g. how likely is it that you roll a 6 or toss head? (Think about your own example!)
 
 . . .
 
@@ -145,6 +155,8 @@ Ask for every point how they would try to figure it out with dice/coins
 $\neg A$ = "not A", derives from Axioms above: Sum must be 1
 
 $\cap$ = or; $\cup$ = and
+
+addition: difference 1 vs. 2 dice!
 :::
 
 ## Classical Probability 2
@@ -173,9 +185,11 @@ $$P(A|B) = \frac{P(A \cap B)}{P(B)}$$
 
 . . .
 
-Example: The conditional probability of being infected with Covid-19 given a positive test result (it could be a false positive!). This will be illustrated in more detail in conjunction with *Bayes' Rule*.
+Example: The conditional probability of being infected with Covid-19, given a positive test result (it could be a false positive!). This will be illustrated in more detail in conjunction with *Bayes' Rule*.
 
 ::: notes
+How likely to roll a 6 if previously a 5? NO, independent events!
+
 How likely is it that you pass the class if you have taken the course?
 
 Probability that both things are true given that the one being conditioned upon is true

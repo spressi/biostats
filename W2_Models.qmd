@@ -19,6 +19,10 @@ from: markdown+emoji
 
 # Fitting Models to Data
 
+. . .
+
+Form groups of 3-4 and collect the height of each member!
+
 ```{css}
 code.sourceCode {
   font-size: 1.4em;
@@ -47,11 +51,20 @@ set.seed(123456) # set random seed to exactly replicate results
 ```
 
 ::: notes
-no interactions planned, a lot of input
+"Fitting" "Models" to "Data", let's start with collecting data! \
+Form teams of 4 and collect the height of each of the team members.
 
-but feel free to ask questions anytime! It's important that you understand the concepts!
+Tricky content, some formulas, feel free to ask questions anytime! It's important that you understand the concepts!
 
 (We might not manage to go through all the slides, but still ask questions - slides/video online)
+:::
+
+## Why do we need Models?
+
+What can we do with data only? Where can a model be helpful?
+
+::: notes
+summarize/simplify, generalize, explain
 :::
 
 ## What is a Model?
@@ -64,7 +77,44 @@ but feel free to ask questions anytime! It's important that you understand the c
 
 **Aim**: Find the model that efficiently and accurately summarizes the data.
 
-Basic structure of statistical models:
+## A Simple Model
+
+Let's say we want to have a model of height of students in this Biostatistics class (or height of children based on the NHANES dataset, as used in ST21, see below).
+
+What do you think would be a good model for the height of a student/child?\
+(Or: Which value should we guess for a particular or new student/child?)
+
+. . .
+
+```{r}
+#| echo: false 
+#| warning: false 
+#| message: false  
+#| 
+# drop duplicates 
+NHANES <- NHANES %>%    
+  dplyr::distinct(ID, .keep_all = TRUE)  
+
+# select the appropriate children with good height measurements 
+NHANES_child <- NHANES %>%   
+  drop_na(Height) %>%   
+  subset(Age < 18) 
+
+NHANES_child %>%  
+  ggplot(aes(Height)) +    
+  geom_histogram(binwidth = 1, fill="grey", color="black") +   
+  ylab("Absolute Frequency") + 
+  xlab("Height (cm)") + 
+  theme_bw()
+```
+
+::: notes
+Have them guess the height of an anonymous new student, discuss what could be relevant information. Gender = not known (prior knowledge!).
+
+Mean = model?
+:::
+
+## Basic structure of statistical models
 
 $$
 data=model+error
@@ -82,58 +132,15 @@ Two parts:
 Example? (Average) age in classroom? All prior knowledge goes into model
 :::
 
-## A Simple Model
-
-Let's say we want to have a model of height of students in this Biostatistics class (or height of children based on the NHANES dataset, as used in ST21, see below).
-
-What do you think would be a good model for the height of a student/child?\
-(Or: Which value should we guess for a particular or new student/child?)
-
 . . .
 
-```{r}
-#| echo: false
-#| warning: false
-#| message: false
+In general, we want to predict single observations (denoted by i) from the model. The fact that we are looking at predictions and not at actual values of the data/observations is denoted by the "hat":
 
-# drop duplicates
-NHANES <- 
-  NHANES %>% 
-  dplyr::distinct(ID, .keep_all = TRUE)
+$$ \widehat{data_i} = model_i $$ The error is then simply the deviation of the actual data from the predicted values:
 
-# select the appropriate children with good height measurements
-NHANES_child <- 
-  NHANES %>%
-  drop_na(Height) %>%
-  subset(Age < 18)
-NHANES_child %>% 
-  ggplot(aes(Height)) + 
-  #geom_histogram(bins = 100) + #same result but less clear: bins have a width of 1 cm (because data is binned that way)
-  geom_histogram(binwidth = 1, fill="grey", color="black") +
-  ylab("Absolute Frequency") + xlab("Height (cm)") + theme_bw()
-```
+$$  error_i = data_i - \widehat{data_i} $$
 
-::: notes
-Have them guess the height of an anonymous new student, discuss what could be relevant information. Gender = not known (prior knowledge!).
-
-Mean = model?
-:::
-
-## Statistical Models
-
-In general, we want to predict single observations (denoted by i) from the model. The fact that we are looking at predictions and not actual values of the data/observations is denoted by the "hat":
-
-$$
-\widehat{data_i} = model_i
-$$ The error is then simply the deviation of the actual data from the predicted values:
-
-$$ 
-error_i = data_i - \widehat{data_i}
-$$
-
-::: notes
 This means that the predicted value of the data for observation i is equal to the value of the model for that observation.
-:::
 
 ## A Simple Model 2
 
@@ -147,9 +154,15 @@ $$
 
 $y_i$ denotes the individual observations (hence the $i$) of heights, $\beta$ is a so-called *parameter*, and $\epsilon$ is the error term. In this example, the parameter $\beta$ would be the same value (= the mean height) for everyone (hence it doesn't need an $i$ subscript). *Parameters* are values that we optimize to find the best model.
 
+::: notes
+What would be Yi, beta and error for the height example?
+:::
+
 ## A Simple Model 3
 
 How do we find parameters that belong to the best fitting model?
+
+How did you come up with model for heights, e.g. the mean?
 
 . . .
 
@@ -287,6 +300,10 @@ Can be conflicting!
 . . .
 
 Where does error come from?
+
+Any ideas? Where could the error come from in your height model?
+
+. . .
 
 ::: incremental
 -   measurement error (noise): random variation in data
@@ -455,10 +472,16 @@ plot_new_data  <-
 plot_grid(plot_original_data, plot_new_data)
 ```
 
+. . .
+
+How would overfitting look like in your height examples?
+
 ::: notes
 same formula, different noise (simulation) \~ different individuals
 
 simpler model fits new data better!
+
+overfitting in height examples?
 :::
 
 # Summarizing Data
@@ -514,7 +537,7 @@ $$
 
 . . .
 
-**Standard Deviation** = Root Mean Squared Error
+**Standard Deviation** ≈ Root Mean Squared Error
 
 $$
 SD = \sigma = \sqrt{\sigma^2}

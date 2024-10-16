@@ -952,27 +952,27 @@ div.cell-output-stdout {
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a><span class="co">#1</span></span>
 <span id="cb1-2"><a></a><span class="fu">runif</span>(<span class="at">n=</span><span class="dv">1</span>) <span class="co">#default parameters are already set to min=0 and max=1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.09641606</code></pre>
+<pre><code>[1] 0.3395096</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a></a><span class="co">#2</span></span>
 <span id="cb3-2"><a></a><span class="fu">runif</span>(<span class="at">n=</span><span class="dv">100</span>, <span class="at">max=</span><span class="dv">10</span>) <span class="sc">%&gt;%</span> <span class="fu">mean</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 4.911006</code></pre>
+<pre><code>[1] 5.144142</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a></a><span class="co">#3</span></span>
 <span id="cb5-2"><a></a><span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">size=</span><span class="dv">50</span>, <span class="at">replace=</span>T) <span class="sc">%&gt;%</span> <span class="fu">mean</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 5.62</code></pre>
+<pre><code>[1] 5.14</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a></a><span class="co">#4</span></span>
 <span id="cb7-2"><a></a><span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"Anna"</span>, <span class="st">"Barbara"</span>, <span class="st">"Christina"</span>, <span class="st">"Dana"</span>), <span class="at">size=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "Christina"</code></pre>
+<pre><code>[1] "Dana"</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a></a><span class="co">#5</span></span>
 <span id="cb9-2"><a></a><span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"Anna"</span>, <span class="st">"Barbara"</span>, <span class="st">"Christina"</span>, <span class="st">"Dana"</span>)) <span class="co">#by default, sample draws all elements in random order</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "Anna"      "Barbara"   "Dana"      "Christina"</code></pre>
+<pre><code>[1] "Dana"      "Barbara"   "Anna"      "Christina"</code></pre>
 </div>
 </div>
 </div>
@@ -1520,9 +1520,9 @@ you want to find out whether the coin is fair and ask yourself: <strong>What is 
         // The "normal" size of the presentation, aspect ratio will be preserved
         // when the presentation is scaled to fit different resolutions. Can be
         // specified using percentage units.
-        width: 1050,
+        width: 1280,
 
-        height: 700,
+        height: 720,
 
         // Factor of the display size that should remain empty around the content
         margin: 0.1,

@@ -13,7 +13,7 @@ Please use the navigation on the left to select the slides for each session (rec
 | 23.10.          | Models                       | ST21: 4, QF: 4-6   | Hildebrandt        |                                |
 | 30.10.          | Data Wrangling               | ST21: 4, QF: 4-6   | Reutter            |                                |
 | 06.11.          | Data Visualization           | QF: 7              | Reutter            |                                |
-| 13.11.          | Sampling                     | ST21: 7-8, QF: 8   | Hildebrandt        | Dataset                        |
+| 13.11.          | Probability                  | ST21: 7-8, QF: 8   | Hildebrandt        | Dataset                        |
 | 20.11.          | *Penance Day*                |                    |                    |                                |
 | 27.11.          | Sampling                     | ST21: 7-8, QF: 8   | Hildebrandt        |                                |
 | 04.12.          | Hypothesis Testing           | ST21: 9-10         | Reutter            |                                |

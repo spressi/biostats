@@ -346,6 +346,8 @@ Dr.&nbsp;Lea Hildebrandt
 <section>
 <section id="fitting-models-to-data" class="title-slide slide level1 center">
 <h1>Fitting Models to Data</h1>
+<div class="fragment">
+<p>Form groups of 3-4 and collect the height of each member!</p>
 <div class="cell">
 <style type="text/css">
 code.sourceCode {
@@ -358,9 +360,28 @@ div.cell-output-stdout {
 </style>
 </div>
 <aside class="notes">
-<p>no interactions planned, a lot of input</p>
-<p>but feel free to ask questions anytime! It’s important that you understand the concepts!</p>
+<p>“Fitting” “Models” to “Data”, let’s start with collecting data!<br>
+Form teams of 4 and collect the height of each of the team members.</p>
+<p>Tricky content, some formulas, feel free to ask questions anytime! It’s important that you understand the concepts!</p>
 <p>(We might not manage to go through all the slides, but still ask questions - slides/video online)</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="why-do-we-need-models" class="slide level2">
+<h2>Why do we need Models?</h2>
+<p>What can we do with data only? Where can a model be helpful?</p>
+<aside class="notes">
+<p>summarize/simplify, generalize, explain</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -381,62 +402,12 @@ div.cell-output-stdout {
 </blockquote>
 <p>(ST21, Ch 5)</p>
 <p><strong>Aim</strong>: Find the model that efficiently and accurately summarizes the data.</p>
-<p>Basic structure of statistical models:</p>
-<p><span class="math display">\[
-data=model+error
-\]</span></p>
-<aside class="notes">
-<p>a statistical model is generally much simpler than the data being described; it is meant to capture the structure of the data as simply as possible.</p>
-<p>Two parts:</p>
-<ul>
-<li><p>one portion that is described by a statistical model, which expresses the values that we expect the data to take given our knowledge,</p></li>
-<li><p><em>error</em> that reflects the difference between the model’s predictions and the observed data.</p></li>
-</ul>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
-<section id="statistical-models" class="slide level2">
-<h2>Statistical Models</h2>
-<p>In general, we want to predict single observations (denoted by i) from the model. The fact that we are looking at predictions of observations and not actual values of the data is denoted by the “hat”:</p>
-<p><span class="math display">\[
-\widehat{data_i} = model_i
-\]</span> The error is then simply the deviation of the actual data from the predicted values:</p>
-<p><span class="math display">\[
-error_i = data_i - \widehat{data_i}
-\]</span> If this doesn’t make much sense yet, let’s look at an example.</p>
-<aside class="notes">
-<p>This means that the predicted value of the data for observation i is equal to the value of the model for that observation.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="some-data" class="slide level2">
-<h2>Some Data</h2>
-<p>Let’s say we want to have a model of height of children based on the NHANES dataset (also used in ST21). What would you do?</p>
-<p>Here is how (the beginning of) the dataset looks like:</p>
-
-<img data-src="images/NHANES.png" alt="NHANES data set" class="r-stretch"></section>
 <section id="a-simple-model" class="slide level2">
 <h2>A Simple Model</h2>
-<p>What do you think would be a good model for the height of a person?<br>
-(Or: Which value should we guess for a particular child?)</p>
+<p>Let’s say we want to have a model of height of students in this Biostatistics class (or height of children based on the NHANES dataset, as used in ST21, see below).</p>
+<p>What do you think would be a good model for the height of a student/child?<br>
+(Or: Which value should we guess for a particular or new student/child?)</p>
 <div class="fragment">
 <div class="cell">
 <div class="cell-output-display">
@@ -447,27 +418,86 @@ error_i = data_i - \widehat{data_i}
 </div>
 </div>
 </div>
+<aside class="notes">
+<p>Have them guess the height of an anonymous new student, discuss what could be relevant information. Gender = not known (prior knowledge!).</p>
+<p>Mean = model?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="basic-structure-of-statistical-models" class="slide level2">
+<h2>Basic structure of statistical models</h2>
+<p><span class="math display">\[
+data=model+error
+\]</span></p>
+<aside class="notes">
+<p>a statistical model is generally much simpler than the data being described; it is meant to capture the structure of the data as simply as possible.</p>
+<p>Two parts:</p>
+<ul>
+<li><p>one portion that is described by a statistical model, which expresses the values that we expect the data to take given our knowledge,</p></li>
+<li><p><em>error</em> that reflects the difference between the model’s predictions and the observed data.</p></li>
+</ul>
+<p>Example? (Average) age in classroom? All prior knowledge goes into model</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<div class="fragment">
+<p>In general, we want to predict single observations (denoted by i) from the model. The fact that we are looking at predictions and not at actual values of the data/observations is denoted by the “hat”:</p>
+<p><span class="math display">\[ \widehat{data_i} = model_i \]</span> The error is then simply the deviation of the actual data from the predicted values:</p>
+<p><span class="math display">\[  error_i = data_i - \widehat{data_i} \]</span></p>
+<p>This means that the predicted value of the data for observation i is equal to the value of the model for that observation.</p>
 </div>
 </section>
 <section id="a-simple-model-2" class="slide level2">
 <h2>A Simple Model 2</h2>
-<p>The simplest model would be to predict the <em>mean</em> of the height values for <em>every</em> child! This would imply that individual deviations of the mean would be interpreted to be (prediction) errors in such a model.</p>
+<p>The simplest model would be to predict the <em>mean</em> of the height values for <em>every</em> student/child! This would imply that individual deviations of the mean would be interpreted to be (prediction) errors in such a model.</p>
 <p>We can write such a simple model as a formula:</p>
 <p><span class="math display">\[
 y_i = \beta + \epsilon
 \]</span></p>
 <p><span class="math inline">\(y_i\)</span> denotes the individual observations (hence the <span class="math inline">\(i\)</span>) of heights, <span class="math inline">\(\beta\)</span> is a so-called <em>parameter</em>, and <span class="math inline">\(\epsilon\)</span> is the error term. In this example, the parameter <span class="math inline">\(\beta\)</span> would be the same value (= the mean height) for everyone (hence it doesn’t need an <span class="math inline">\(i\)</span> subscript). <em>Parameters</em> are values that we optimize to find the best model.</p>
+<aside class="notes">
+<p>What would be Yi, beta and error for the height example?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="a-simple-model-3" class="slide level2">
 <h2>A Simple Model 3</h2>
 <p>How do we find parameters that belong to the best fitting model?</p>
+<p>How did you come up with model for heights, e.g.&nbsp;the mean?</p>
 <div class="fragment">
 <p>We try to minimize the error!</p>
 <p>Remember, the error is the difference between the actual and predicted values of <span class="math inline">\(y\)</span> (height):</p>
 <p><span class="math display">\[
 error_i = y_i - \hat{y_i}
 \]</span></p>
-<p>If we select a predicted value of 400cm, all individuals’ errors would hugely deviate (because no one is 4m tall). If we average these errors, it would still be a big value.</p>
+<p>If we select a predicted value (or mean) of 400cm, all individuals’ errors would hugely deviate (because no one is 4m tall). If we average these errors, it would still be a big value.</p>
 <p>A better candidate for such a simple model is thus the arithmetic mean or average:</p>
 <p><span class="math display">\[
 \bar{X} = \frac{\sum_{i=1}^{n}x_i}{n}
@@ -505,7 +535,7 @@ For example, to account for age might be a good idea: Older children are likely 
 B: only age (linear relationship)<br>
 C: intercept/constant<br>
 D: also account for gender</p>
-<p>--&gt; line fits data increasingly better!</p>
+<p>–&gt; line fits data increasingly better!</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -559,6 +589,9 @@ y = intercept + slope * x
 <p>Can be conflicting!</p>
 <div class="fragment">
 <p>Where does error come from?</p>
+<p>Any ideas?</p>
+</div>
+<div class="fragment">
 <div>
 <ul>
 <li class="fragment"><p>measurement error (noise): random variation in data</p>
@@ -951,9 +984,9 @@ Narrator: And this was the end of comparability between apples and oranges :)</p
         // The "normal" size of the presentation, aspect ratio will be preserved
         // when the presentation is scaled to fit different resolutions. Can be
         // specified using percentage units.
-        width: 1050,
+        width: 1280,
 
-        height: 700,
+        height: 720,
 
         // Factor of the display size that should remain empty around the content
         margin: 0.1,
