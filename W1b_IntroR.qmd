@@ -171,7 +171,7 @@ word <- "Hello"
 ::: {.incremental}
 -   `<-` is used to assign values to variables (`=` is also possible, but discouraged in `R`)
 
--   `a`, `multi` etc. are the variable names <span style="font-size: 16px;">(some naming rules, e.g., no whitespace, must not start with an number, many special characters not allowed)</span>
+-   `a`, `multi` etc. are the variable names <span style="font-size: 16px;">(some naming rules, e.g., no whitespace, must not start with a number, many special characters not allowed)</span>
 
     -   You can find those now in your Environment! (top right panel)
     -   No feedback in the console for saving variables (`2*3` outputs `6`, but `multi <- 2*3` doesn't)
@@ -229,7 +229,7 @@ a
 
 ## Functions
 
-This code with `sqrt(9)` looked unfamiliar. `sqrt()` is an R function that calculates the square root of a number. `9` is the *argument* that we hand over to the function.
+This code with `sqrt(9)` looked unfamiliar. `sqrt()` is an R *function* that calculates the square root of a number. `9` is the *argument* that we hand over to the function.
 
 If you want to know what a function does, which arguments it takes, or which output it generates, you can type into the console: `?functionname`
 
@@ -256,6 +256,8 @@ Do this now! Anything unclear?
 ## Functions
 
 Functions often take more than one argument (which have names):
+
+<!-- TODO: different example? The randomness makes it harder to understand equivalence of function calls -->
 
 ```{r}
 #| echo: true
@@ -344,7 +346,7 @@ possibly necessary to install Rtools!
 - Create a new project by clicking on "*File*" on the top left and then "*New Project...*"
 - Select "*New Directory*" <span style="font-size: 16px">(if you already have a folder for this course, you can choose "*Existing directory*" and select that folder)</span> and then choose "*New Project*" at the top of the list.
 - Choose a project name, e.g., as "*Biostats*" (this will create a folder in which the project lives)
-- Browse where you want to put your project folder (in my case, "*C:/r_stuff/*")
+- Browse where you want to put your project folder (e.g., "*D:/Documents/Studies/Translational Neuroscience/*")
 :::
 
 . . .
@@ -495,7 +497,7 @@ What is the difference to the objects/variables, that you assigned/saved in your
 
 . . .
 
-The two objects we just read in are data frames, which are "tables" of data (they can contain entire data sets). The objects we assigned earlier were simpler (single values, or "one-dimensional" vectors).
+The two objects we just read in are **data frames**, which are "tables" of data (they can contain entire data sets). The objects we assigned earlier were simpler (single values, or "one-dimensional" vectors).
 
 Data frames usually have several rows and columns. The columns are the *variables* and the rows are the *observations* (more about that later).
 
@@ -503,7 +505,7 @@ Data frames usually have several rows and columns. The columns are the *variable
 
 That's the lesson on "Getting started with R"! If you have any questions, feel free to approach me before or after class or send an email.
 
-**Managing expectations**: You will learn a new (programming) language. Don't expect to "speak" it fluently right away. During this class, it is more important that you can roughly comprehend written code and "translate" it into natural language. The second step is to be able to make small adjustments to code that is given to you. Only then, the last step is to be able to produce code yourself (with the help of Google, Stackoverflow, templates of this course, etc. :) ), which will be needed for your research project at the end of the semester.
+**Managing expectations**: You are learning a new (programming) language. You won't "speak" it fluently right away. As long as you roughly understand what a piece of code is supposed to be doing, you will be fine. Writing code usually is a lot of trial and error before it works completely.
 
 \
 Next: 

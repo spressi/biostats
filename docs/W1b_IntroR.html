@@ -606,7 +606,7 @@ Remember: You can navigate through the slides quickly by clicking on the three d
 <div>
 <ul>
 <li class="fragment"><p><code>&lt;-</code> is used to assign values to variables (<code>=</code> is also possible, but discouraged in <code>R</code>)</p></li>
-<li class="fragment"><p><code>a</code>, <code>multi</code> etc. are the variable names <span style="font-size: 16px;">(some naming rules, e.g., no whitespace, must not start with an number, many special characters not allowed)</span></p>
+<li class="fragment"><p><code>a</code>, <code>multi</code> etc. are the variable names <span style="font-size: 16px;">(some naming rules, e.g., no whitespace, must not start with a number, many special characters not allowed)</span></p>
 <ul>
 <li class="fragment">You can find those now in your Environment! (top right panel)</li>
 <li class="fragment">No feedback in the console for saving variables (<code>2*3</code> outputs <code>6</code>, but <code>multi &lt;- 2*3</code> doesn’t)</li>
@@ -678,7 +678,7 @@ What happens if we type in <code>a</code> in the console?</p>
 </section>
 <section id="functions" class="slide level2">
 <h2>Functions</h2>
-<p>This code with <code>sqrt(9)</code> looked unfamiliar. <code>sqrt()</code> is an R function that calculates the square root of a number. <code>9</code> is the <em>argument</em> that we hand over to the function.</p>
+<p>This code with <code>sqrt(9)</code> looked unfamiliar. <code>sqrt()</code> is an R <em>function</em> that calculates the square root of a number. <code>9</code> is the <em>argument</em> that we hand over to the function.</p>
 <p>If you want to know what a function does, which arguments it takes, or which output it generates, you can type into the console: <code>?functionname</code></p>
 <p><br><br></p>
 <div class="cell">
@@ -705,6 +705,7 @@ What happens if we type in <code>a</code> in the console?</p>
 <section id="functions-1" class="slide level2">
 <h2>Functions</h2>
 <p>Functions often take more than one argument (which have names):</p>
+<!-- TODO: different example? The randomness makes it harder to understand equivalence of function calls -->
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a></a><span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">6</span>, <span class="at">mean =</span> <span class="dv">3</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
 <span id="cb21-2"><a></a><span class="fu">rnorm</span>(<span class="dv">6</span>, <span class="dv">3</span>, <span class="dv">1</span>) <span class="co"># this outputs the same as above</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -786,7 +787,7 @@ What happens if we type in <code>a</code> in the console?</p>
 <li class="fragment">Create a new project by clicking on “<em>File</em>” on the top left and then “<em>New Project…</em>”</li>
 <li class="fragment">Select “<em>New Directory</em>” <span style="font-size: 16px">(if you already have a folder for this course, you can choose “<em>Existing directory</em>” and select that folder)</span> and then choose “<em>New Project</em>” at the top of the list.</li>
 <li class="fragment">Choose a project name, e.g., as “<em>Biostats</em>” (this will create a folder in which the project lives)</li>
-<li class="fragment">Browse where you want to put your project folder (in my case, “<em>C:/r_stuff/</em>”)</li>
+<li class="fragment">Browse where you want to put your project folder (e.g., “<em>D:/Documents/Studies/Translational Neuroscience/</em>”)</li>
 </ul>
 </div>
 <div class="fragment">
@@ -934,14 +935,14 @@ Now run the code (either by pressing "run" at the top right of the script or `ct
 <p>What is the difference to the objects/variables, that you assigned/saved in your Environment earlier and these objects?</p>
 
 <img data-src="images/rstudioEnvironment.png" class="r-stretch quarto-figure-center"><p class="caption">RStudio’s Environment panel</p><div class="fragment">
-<p>The two objects we just read in are data frames, which are “tables” of data (they can contain entire data sets). The objects we assigned earlier were simpler (single values, or “one-dimensional” vectors).</p>
+<p>The two objects we just read in are <strong>data frames</strong>, which are “tables” of data (they can contain entire data sets). The objects we assigned earlier were simpler (single values, or “one-dimensional” vectors).</p>
 <p>Data frames usually have several rows and columns. The columns are the <em>variables</em> and the rows are the <em>observations</em> (more about that later).</p>
 </div>
 </section></section>
 <section id="thanks" class="title-slide slide level1 center">
 <h1>Thanks!</h1>
 <p>That’s the lesson on “Getting started with R”! If you have any questions, feel free to approach me before or after class or send an email.</p>
-<p><strong>Managing expectations</strong>: You will learn a new (programming) language. Don’t expect to “speak” it fluently right away. During this class, it is more important that you can roughly comprehend written code and “translate” it into natural language. The second step is to be able to make small adjustments to code that is given to you. Only then, the last step is to be able to produce code yourself (with the help of Google, Stackoverflow, templates of this course, etc. :) ), which will be needed for your research project at the end of the semester.</p>
+<p><strong>Managing expectations</strong>: You are learning a new (programming) language. You won’t “speak” it fluently right away. As long as you roughly understand what a piece of code is supposed to be doing, you will be fine. Writing code usually is a lot of trial and error before it works completely.</p>
 <p><br>
 Next:</p>
 <ul>
