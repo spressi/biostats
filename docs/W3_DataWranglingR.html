@@ -590,7 +590,7 @@ Use either name or index of column!</p>
 <p>When wrangling your data in R, you often want to access/use different columns, e.g.&nbsp;to calculate new ones. There are a number of ways you can do that:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a></a><span class="co"># tidy versions (see next slides)</span></span>
-<span id="cb24-2"><a></a><span class="co"># library(tidyverse) # load tidyverse (if not already done)</span></span>
+<span id="cb24-2"><a></a><span class="fu">library</span>(tidyverse) <span class="co"># load tidyverse (if not already done)</span></span>
 <span id="cb24-3"><a></a><span class="fu">pull</span>(testdata, a) <span class="co"># same as testdata$a but can be used better in pipes (see next slide)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1 2 3</code></pre>
@@ -1102,16 +1102,16 @@ Also, there are slight differences between <code>&lt;-</code> and <code>=</code>
 <pre><code># A tibble: 10 × 2
     year decade
    &lt;dbl&gt;  &lt;dbl&gt;
- 1  1881   1880
- 2  1898   1890
- 3  1909   1900
- 4  1918   1910
- 5  1920   1920
- 6  1967   1960
- 7  1976   1970
- 8  1977   1970
- 9  1984   1980
-10  1987   1980</code></pre>
+ 1  1905   1900
+ 2  1914   1910
+ 3  1924   1920
+ 4  1930   1930
+ 5  1934   1930
+ 6  1938   1930
+ 7  1948   1940
+ 8  1950   1950
+ 9  1987   1980
+10  2004   2000</code></pre>
 </div>
 </div>
 </div>
