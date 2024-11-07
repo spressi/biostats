@@ -329,28 +329,6 @@ $P(A|B)/P(A)$ = how likely the data are given B relative to overall marginal lik
 $P(B)$ = how likely we thought it was to have Covid before we knew the test result
 :::
 
-## Probability Distributions
-
-**Probability distribution** = probability of all possible outcomes in an experiment.
-
-. . .
-
-Helps us answer questions like: How likely is it that event X occurs/we find specific value of X? ($P(X = x_i)$)
-
-. . .
-
-**Cumulative Probability Distribution**
-
---\> how likely is it to find a value that is as extreme or larger (or as small or smaller!)? ($P(X \geq x_i)$)
-
-::: notes
-examples:\
-- die: uniform\
-- height: normal dist
-
-draw dists, cutoff, all the area under curve before, CPD
-:::
-
 ## Sum Up
 
 Models and probability are central to statistics, as we will see.
@@ -366,11 +344,25 @@ Freq: Difficult to wrap ones' head around if an event occurs only once.
 Bayes: Bit more subjective
 :::
 
-# Probability
+# Probability Distributions
 
 We already covered classic probability theory, including conditional probability.
 
 Today, we will go more into depth about different **probability distributions**.
+
+. . .
+
+**Probability distribution** = probability of all possible outcomes in an experiment.
+
+. . .
+
+Helps us answer questions like: How likely is it that event X occurs/we find specific value of X? ($P(X = x_i)$)
+
+. . .
+
+**Cumulative Probability Distribution**
+
+--\> how likely is it to find a value that is as extreme or larger (or as small or smaller!)? ($P(X \geq x_i)$)
 
 . . .
 
@@ -826,12 +818,6 @@ qnorm(p = .05, mean = 176.2, sd = 6.748, lower.tail = FALSE)
 
 **Learning objectives**:
 
--   Describe the basic equation for statistical models ($data = model + error$)
-
--   Describe different measures of central tendency and dispersion, how they are computed, and which are appropriate under what circumstances.
-
--   Compute a Z-score and describe why they are useful.
-
 -   Understand different concepts of probability:
 
     -   joint and conditional probability
@@ -842,12 +828,8 @@ qnorm(p = .05, mean = 176.2, sd = 6.748, lower.tail = FALSE)
 
     -   probability distributions
 
--   Understand why and how we sample from a population
-
--   Understand resampling: Monte-Carlo Simulations and Bootstrapping
+-   Understand and use different probability distributions in R
 
 **Next**:
 
--   R: Probability distributions and resampling/simulations
-
--   Theory: Statistical Analysis / Hypothesis Testing
+-   Sampling and resampling/simulations

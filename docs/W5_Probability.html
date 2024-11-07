@@ -455,6 +455,12 @@ div.cell-output-stdout {
 <li><p><strong>Sample space</strong>: Set of possible outcomes for an experiment (six-sided die: {1,2,3,4,5,6})</p></li>
 <li><p><strong>Event</strong>: Subset of the sample space, an outcome</p></li>
 </ul>
+<div class="fragment">
+<ul>
+<li><p><strong>Experiment</strong>: e.g.&nbsp;roll a die</p></li>
+<li><p><strong>Sample space</strong>: six-sided die: {1,2,3,4,5,6}</p></li>
+<li><p><strong>Event</strong>: e.g.&nbsp;3</p></li>
+</ul>
 <aside class="notes">
 <p>Hand out dice, coins etc to pairs.</p>
 <p>Ask what Experiment, Sample Space and Event is in each case.</p>
@@ -469,6 +475,7 @@ div.cell-output-stdout {
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
+</div>
 </section>
 <section id="probability-theory-2" class="slide level2 scrollable">
 <h2>Probability Theory 2</h2>
@@ -490,6 +497,7 @@ P(X = E_i) \]</span></p>
 </div>
 <aside class="notes">
 <p>What is N and E’s in dice/coins case?</p>
+<p>Do the 3 features make sense in their own example? Height e.g.&nbsp;is difficult</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -505,7 +513,7 @@ P(X = E_i) \]</span></p>
 </section>
 <section id="determine-probabilities" class="slide level2">
 <h2>Determine Probabilities</h2>
-<p>How would you determine probabilities? E.g. how likely is it that you roll a 6 or toss head?</p>
+<p>How would you determine probabilities? E.g. how likely is it that you roll a 6 or toss head? (Think about your own example!)</p>
 <div class="fragment">
 <div>
 <ul>
@@ -568,6 +576,7 @@ P(X = E_i) \]</span></p>
 <p>Ask for every point how they would try to figure it out with dice/coins</p>
 <p><span class="math inline">\(\neg A\)</span> = “not A”, derives from Axioms above: Sum must be 1</p>
 <p><span class="math inline">\(\cap\)</span> = or; <span class="math inline">\(\cup\)</span> = and</p>
+<p>addition: difference 1 vs.&nbsp;2 dice!</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -607,8 +616,9 @@ P(X = E_i) \]</span></p>
 <p><span class="math display">\[P(A|B) = \frac{P(A \cap B)}{P(B)}\]</span></p>
 <p>“The conditional probability of A given B is the joint probability divided by the overall probability of B”.</p>
 <div class="fragment">
-<p>Example: The conditional probability of being infected with Covid-19 given a positive test result (it could be a false positive!). This will be illustrated in more detail in conjunction with <em>Bayes’ Rule</em>.</p>
+<p>Example: The conditional probability of being infected with Covid-19, given a positive test result (it could be a false positive!). This will be illustrated in more detail in conjunction with <em>Bayes’ Rule</em>.</p>
 <aside class="notes">
+<p>How likely to roll a 6 if previously a 5? NO, independent events!</p>
 <p>How likely is it that you pass the class if you have taken the course?</p>
 <p>Probability that both things are true given that the one being conditioned upon is true</p>
 <style type="text/css">
@@ -952,17 +962,17 @@ div.cell-output-stdout {
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a><span class="co">#1</span></span>
 <span id="cb1-2"><a></a><span class="fu">runif</span>(<span class="at">n=</span><span class="dv">1</span>) <span class="co">#default parameters are already set to min=0 and max=1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.3395096</code></pre>
+<pre><code>[1] 0.1866345</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a></a><span class="co">#2</span></span>
 <span id="cb3-2"><a></a><span class="fu">runif</span>(<span class="at">n=</span><span class="dv">100</span>, <span class="at">max=</span><span class="dv">10</span>) <span class="sc">%&gt;%</span> <span class="fu">mean</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 5.144142</code></pre>
+<pre><code>[1] 5.00822</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a></a><span class="co">#3</span></span>
 <span id="cb5-2"><a></a><span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">size=</span><span class="dv">50</span>, <span class="at">replace=</span>T) <span class="sc">%&gt;%</span> <span class="fu">mean</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 5.14</code></pre>
+<pre><code>[1] 5.58</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a></a><span class="co">#4</span></span>
 <span id="cb7-2"><a></a><span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"Anna"</span>, <span class="st">"Barbara"</span>, <span class="st">"Christina"</span>, <span class="st">"Dana"</span>), <span class="at">size=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -972,7 +982,7 @@ div.cell-output-stdout {
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a></a><span class="co">#5</span></span>
 <span id="cb9-2"><a></a><span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"Anna"</span>, <span class="st">"Barbara"</span>, <span class="st">"Christina"</span>, <span class="st">"Dana"</span>)) <span class="co">#by default, sample draws all elements in random order</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "Dana"      "Barbara"   "Anna"      "Christina"</code></pre>
+<pre><code>[1] "Dana"      "Anna"      "Christina" "Barbara"  </code></pre>
 </div>
 </div>
 </div>
