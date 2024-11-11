@@ -8,7 +8,7 @@
 <link href="site_libs/quarto-html/light-border.css" rel="stylesheet">
 <link href="site_libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.4.555">
+  <meta name="generator" content="quarto-1.3.353">
 
   <meta name="author" content="Dr.&nbsp;Mario Reutter (slides adapted from Dr.&nbsp;Lea Hildebrandt)">
   <title>Biostatistics - 04 Data Visualization</title>
@@ -31,7 +31,7 @@
     }
     /* CSS for syntax highlighting */
     pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
     pre > code.sourceCode > span:empty { height: 1.2em; }
     .sourceCode { overflow: visible; }
     code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -223,8 +223,7 @@
   }
 
   .callout.callout-titled .callout-body > .callout-content > :last-child {
-    padding-bottom: 0.5rem;
-    margin-bottom: 0;
+    margin-bottom: 0.5rem;
   }
 
   .callout.callout-titled .callout-icon::before {
@@ -395,9 +394,9 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">04 Data Visualization</h1>
-  <p class="subtitle"></p><div class="line-block">Julius-Maximilians-University Würzburg<br>
+  <p class="subtitle"></p><p>Julius-Maximilians-University Würzburg<br>
 Course: “Biostatistics”<br>
-Translational Neuroscience</div><p></p>
+Translational Neuroscience</p><p></p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -440,7 +439,7 @@ div.cell-output-stdout {
 <p><code>ggplot2</code> follows the <a href="https://ggplot2-book.org/mastery">“grammar of graphics” by Leland Wilkinson</a>, a formal guide to visualization principles. A core feature are the <em>layers</em> each plot consists of. The main function to “start” plotting is <code>ggplot()</code> - we will then add layers of data and layers to tweak the appearance.</p>
 
 <img data-src="images/ggplotlayers.PNG" alt="Depiction of how a plot is built up from different layers in ggplot2" width="502" class="r-stretch quarto-figure-center"><p class="caption">Layers of a ggplot</p></section>
-<section id="activity-1-set-up" class="slide level2 scrollable">
+<section id="activity-1-set-up" class="slide level2">
 <h2>Activity 1: Set Up</h2>
 <ol type="1">
 <li><p>Within your biostats project in RStudio, create a new script called <code>DataVisualisation1.R</code>.</p></li>
@@ -448,33 +447,33 @@ div.cell-output-stdout {
 <li><p>Copy and run the code below to load the <code>tidyverse</code> package and the data files:</p></li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a><span class="fu">library</span>(tidyverse) </span>
-<span id="cb1-2"><a></a></span>
-<span id="cb1-3"><a></a>dat <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"ahi-cesd.csv"</span>)</span>
-<span id="cb1-4"><a></a>pinfo <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"participant-info.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(tidyverse) </span>
+<span id="cb1-2"><a href="#cb1-2"></a></span>
+<span id="cb1-3"><a href="#cb1-3"></a>dat <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"ahi-cesd.csv"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4"></a>pinfo <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"participant-info.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="activity-1-set-up-1" class="slide level2 scrollable">
+<section id="activity-1-set-up-1" class="slide level2">
 <h2>Activity 1: Set Up</h2>
 <ol start="4" type="1">
 <li>Run the following code to combine both files and select our variables of interest:</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a></a>all_dat <span class="ot">&lt;-</span> </span>
-<span id="cb2-2"><a></a>  dat <span class="sc">%&gt;%</span> </span>
-<span id="cb2-3"><a></a>  <span class="fu">inner_join</span>(</span>
-<span id="cb2-4"><a></a>    pinfo, <span class="co"># combine dat with pinfo</span></span>
-<span id="cb2-5"><a></a>    <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"id"</span>, <span class="st">"intervention"</span>) <span class="co"># common variables that tell R which data belongs together</span></span>
-<span id="cb2-6"><a></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-7"><a></a>  <span class="fu">arrange</span>(id, occasion) <span class="co">#joining messes up the order of the data frame =&gt; arrange again</span></span>
-<span id="cb2-8"><a></a></span>
-<span id="cb2-9"><a></a><span class="co"># we throw out several variables even though they would be important for a comprehensive data analysis</span></span>
-<span id="cb2-10"><a></a>summarydata <span class="ot">&lt;-</span> </span>
-<span id="cb2-11"><a></a>  all_dat <span class="sc">%&gt;%</span> </span>
-<span id="cb2-12"><a></a>  <span class="fu">select</span>(</span>
-<span id="cb2-13"><a></a>    id, ahiTotal, cesdTotal, <span class="co"># ID &amp; questionnaire scores</span></span>
-<span id="cb2-14"><a></a>    sex, age, educ, income <span class="co"># demographic variables</span></span>
-<span id="cb2-15"><a></a>  ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>all_dat <span class="ot">&lt;-</span> </span>
+<span id="cb2-2"><a href="#cb2-2"></a>  dat <span class="sc">%&gt;%</span> </span>
+<span id="cb2-3"><a href="#cb2-3"></a>  <span class="fu">inner_join</span>(</span>
+<span id="cb2-4"><a href="#cb2-4"></a>    pinfo, <span class="co"># combine dat with pinfo</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a>    <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"id"</span>, <span class="st">"intervention"</span>) <span class="co"># common variables that tell R which data belongs together</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-7"><a href="#cb2-7"></a>  <span class="fu">arrange</span>(id, occasion) <span class="co">#joining messes up the order of the data frame =&gt; arrange again</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a></span>
+<span id="cb2-9"><a href="#cb2-9"></a><span class="co"># we throw out several variables even though they would be important for a comprehensive data analysis</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a>summarydata <span class="ot">&lt;-</span> </span>
+<span id="cb2-11"><a href="#cb2-11"></a>  all_dat <span class="sc">%&gt;%</span> </span>
+<span id="cb2-12"><a href="#cb2-12"></a>  <span class="fu">select</span>(</span>
+<span id="cb2-13"><a href="#cb2-13"></a>    id, ahiTotal, cesdTotal, <span class="co"># ID &amp; questionnaire scores</span></span>
+<span id="cb2-14"><a href="#cb2-14"></a>    sex, age, educ, income <span class="co"># demographic variables</span></span>
+<span id="cb2-15"><a href="#cb2-15"></a>  ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <aside class="notes">
 <p>what happens in the code chunk?</p>
@@ -494,7 +493,7 @@ div.cell-output-stdout {
 <h2>Look at the Data</h2>
 <p>Have a look at the types of data:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a></a><span class="fu">glimpse</span>(summarydata)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">glimpse</span>(summarydata)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 992
 Columns: 7
@@ -520,13 +519,13 @@ We should convert these data to factor. Checking and adjusting data types (as pa
 <h2>Activity 2: Transform to factor</h2>
 <p>Copy and run the below code to change the categories to factors.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a></a>summarydata1 <span class="ot">&lt;-</span> </span>
-<span id="cb5-2"><a></a>  summarydata <span class="sc">%&gt;%</span></span>
-<span id="cb5-3"><a></a>  <span class="fu">mutate</span>(</span>
-<span id="cb5-4"><a></a>    <span class="at">sex =</span> <span class="fu">as_factor</span>(sex),</span>
-<span id="cb5-5"><a></a>    <span class="at">educ =</span> <span class="fu">as_factor</span>(educ),</span>
-<span id="cb5-6"><a></a>    <span class="at">income =</span> <span class="fu">as_factor</span>(income)</span>
-<span id="cb5-7"><a></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>summarydata1 <span class="ot">&lt;-</span> </span>
+<span id="cb5-2"><a href="#cb5-2"></a>  summarydata <span class="sc">%&gt;%</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb5-4"><a href="#cb5-4"></a>    <span class="at">sex =</span> <span class="fu">as_factor</span>(sex),</span>
+<span id="cb5-5"><a href="#cb5-5"></a>    <span class="at">educ =</span> <span class="fu">as_factor</span>(educ),</span>
+<span id="cb5-6"><a href="#cb5-6"></a>    <span class="at">income =</span> <span class="fu">as_factor</span>(income)</span>
+<span id="cb5-7"><a href="#cb5-7"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="fragment">
 <ul>
@@ -535,7 +534,7 @@ We should convert these data to factor. Checking and adjusting data types (as pa
 </div>
 <div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a></a><span class="fu">glimpse</span>(summarydata1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">glimpse</span>(summarydata1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 992
 Columns: 7
@@ -553,7 +552,7 @@ $ income    &lt;fct&gt; 3, 3, 1, 1, 1, 1, 1, 1, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2,
 <section id="activity-2-transform-to-factor-1" class="slide level2">
 <h2>Activity 2: Transform to factor</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a></a><span class="fu">glimpse</span>(summarydata1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">glimpse</span>(summarydata1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 992
 Columns: 7
@@ -568,7 +567,7 @@ $ income    &lt;fct&gt; 3, 3, 1, 1, 1, 1, 1, 1, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2,
 </div>
 <div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a></a>summarydata1 <span class="sc">%&gt;%</span> <span class="fu">pull</span>(educ) <span class="sc">%&gt;%</span> <span class="fu">unique</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>summarydata1 <span class="sc">%&gt;%</span> <span class="fu">pull</span>(educ) <span class="sc">%&gt;%</span> <span class="fu">unique</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 5 1 4 2 3
 Levels: 1 2 3 4 5</code></pre>
@@ -597,29 +596,29 @@ Levels: 1 2 3 4 5</code></pre>
 <h2>Set labels</h2>
 <p><code>match_case()</code> allows us to label our numeric data with more human-readable descriptions. <code>if_else()</code> is a useful shorthand for cases where we only have two categories.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a></a>summarydata2 <span class="ot">&lt;-</span> </span>
-<span id="cb12-2"><a></a>  summarydata <span class="sc">%&gt;%</span> </span>
-<span id="cb12-3"><a></a>  <span class="fu">mutate</span>(</span>
-<span id="cb12-4"><a></a>    <span class="at">sex =</span> <span class="fu">if_else</span>(sex <span class="sc">==</span> <span class="dv">1</span>, <span class="st">"female"</span>, <span class="st">"male"</span>) <span class="sc">%&gt;%</span> <span class="fu">as_factor</span>(),</span>
-<span id="cb12-5"><a></a>    <span class="at">educ =</span> educ <span class="sc">%&gt;%</span> </span>
-<span id="cb12-6"><a></a>      <span class="fu">case_match</span>(</span>
-<span id="cb12-7"><a></a>        <span class="dv">1</span> <span class="sc">~</span> <span class="st">"no graduation"</span>,</span>
-<span id="cb12-8"><a></a>        <span class="dv">2</span> <span class="sc">~</span> <span class="st">"school graduation"</span>,</span>
-<span id="cb12-9"><a></a>        <span class="dv">3</span> <span class="sc">~</span> <span class="st">"vocational training"</span>,</span>
-<span id="cb12-10"><a></a>        <span class="dv">4</span> <span class="sc">~</span> <span class="st">"bachelor's degree"</span>,</span>
-<span id="cb12-11"><a></a>        <span class="dv">5</span> <span class="sc">~</span> <span class="st">"post grad"</span></span>
-<span id="cb12-12"><a></a>      ) <span class="sc">%&gt;%</span></span>
-<span id="cb12-13"><a></a>      <span class="fu">as_factor</span>(), <span class="co"># need to transform to factor in the end</span></span>
-<span id="cb12-14"><a></a>    <span class="at">income =</span> income <span class="sc">%&gt;%</span> </span>
-<span id="cb12-15"><a></a>      <span class="fu">case_match</span>(<span class="dv">1</span> <span class="sc">~</span> <span class="st">"low"</span>, <span class="dv">2</span> <span class="sc">~</span> <span class="st">"middle"</span>, <span class="dv">3</span> <span class="sc">~</span> <span class="st">"high"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb12-16"><a></a>      <span class="fu">as_factor</span>()</span>
-<span id="cb12-17"><a></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12" data-code-line-numbers="5-13|4|14-16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>summarydata2 <span class="ot">&lt;-</span> </span>
+<span id="cb12-2"><a href="#cb12-2"></a>  summarydata <span class="sc">%&gt;%</span> </span>
+<span id="cb12-3"><a href="#cb12-3"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb12-4"><a href="#cb12-4"></a>    <span class="at">sex =</span> <span class="fu">if_else</span>(sex <span class="sc">==</span> <span class="dv">1</span>, <span class="st">"female"</span>, <span class="st">"male"</span>) <span class="sc">%&gt;%</span> <span class="fu">as_factor</span>(), <span class="co">#wrong if non-binary entries exist</span></span>
+<span id="cb12-5"><a href="#cb12-5"></a>    <span class="at">educ =</span> educ <span class="sc">%&gt;%</span> </span>
+<span id="cb12-6"><a href="#cb12-6"></a>      <span class="fu">case_match</span>(</span>
+<span id="cb12-7"><a href="#cb12-7"></a>        <span class="dv">1</span> <span class="sc">~</span> <span class="st">"no graduation"</span>,</span>
+<span id="cb12-8"><a href="#cb12-8"></a>        <span class="dv">2</span> <span class="sc">~</span> <span class="st">"school graduation"</span>,</span>
+<span id="cb12-9"><a href="#cb12-9"></a>        <span class="dv">3</span> <span class="sc">~</span> <span class="st">"vocational training"</span>,</span>
+<span id="cb12-10"><a href="#cb12-10"></a>        <span class="dv">4</span> <span class="sc">~</span> <span class="st">"bachelor's degree"</span>,</span>
+<span id="cb12-11"><a href="#cb12-11"></a>        <span class="dv">5</span> <span class="sc">~</span> <span class="st">"post grad"</span></span>
+<span id="cb12-12"><a href="#cb12-12"></a>      ) <span class="sc">%&gt;%</span></span>
+<span id="cb12-13"><a href="#cb12-13"></a>      <span class="fu">as_factor</span>(), <span class="co"># need to transform to factor in the end</span></span>
+<span id="cb12-14"><a href="#cb12-14"></a>    <span class="at">income =</span> income <span class="sc">%&gt;%</span> </span>
+<span id="cb12-15"><a href="#cb12-15"></a>      <span class="fu">case_match</span>(<span class="dv">1</span> <span class="sc">~</span> <span class="st">"low"</span>, <span class="dv">2</span> <span class="sc">~</span> <span class="st">"middle"</span>, <span class="dv">3</span> <span class="sc">~</span> <span class="st">"high"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-16"><a href="#cb12-16"></a>      <span class="fu">as_factor</span>()</span>
+<span id="cb12-17"><a href="#cb12-17"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="set-labels-2" class="slide level2">
 <h2>Set labels</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a></a>summarydata2 <span class="sc">%&gt;%</span> <span class="fu">pull</span>(educ) <span class="sc">%&gt;%</span> <span class="fu">unique</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>summarydata2 <span class="sc">%&gt;%</span> <span class="fu">pull</span>(educ) <span class="sc">%&gt;%</span> <span class="fu">unique</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] post grad           no graduation       bachelor's degree  
 [4] school graduation   vocational training
@@ -632,32 +631,56 @@ Levels: 1 2 3 4 5</code></pre>
 <h2>Set factor order (levels)</h2>
 <p>Using <code>factor()</code>, we can explicitly order the categories using the argument <code>levels</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a></a>summarydata <span class="sc">%&gt;%</span> </span>
-<span id="cb15-2"><a></a>  <span class="fu">mutate</span>(</span>
-<span id="cb15-3"><a></a>    <span class="at">income =</span> income <span class="sc">%&gt;%</span></span>
-<span id="cb15-4"><a></a>      <span class="fu">case_match</span>(<span class="dv">1</span> <span class="sc">~</span> <span class="st">"low"</span>, <span class="dv">2</span> <span class="sc">~</span> <span class="st">"middle"</span>, <span class="dv">3</span> <span class="sc">~</span> <span class="st">"high"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb15-5"><a></a>      <span class="fu">as_factor</span>()</span>
-<span id="cb15-6"><a></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb15-7"><a></a>  <span class="fu">pull</span>(income) <span class="sc">%&gt;%</span> <span class="fu">unique</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15" data-code-line-numbers="5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>summarydata <span class="sc">%&gt;%</span> </span>
+<span id="cb15-2"><a href="#cb15-2"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb15-3"><a href="#cb15-3"></a>    <span class="at">income =</span> income <span class="sc">%&gt;%</span></span>
+<span id="cb15-4"><a href="#cb15-4"></a>      <span class="fu">case_match</span>(<span class="dv">1</span> <span class="sc">~</span> <span class="st">"low"</span>, <span class="dv">2</span> <span class="sc">~</span> <span class="st">"middle"</span>, <span class="dv">3</span> <span class="sc">~</span> <span class="st">"high"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-5"><a href="#cb15-5"></a>      <span class="fu">as_factor</span>()</span>
+<span id="cb15-6"><a href="#cb15-6"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-7"><a href="#cb15-7"></a>  <span class="fu">pull</span>(income) <span class="sc">%&gt;%</span> <span class="fu">unique</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] high   low    middle
 Levels: high low middle</code></pre>
 </div>
 </div>
-<div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a></a>summarydata <span class="sc">%&gt;%</span> </span>
-<span id="cb17-2"><a></a>  <span class="fu">mutate</span>(</span>
-<span id="cb17-3"><a></a>    <span class="at">income =</span> income <span class="sc">%&gt;%</span> </span>
-<span id="cb17-4"><a></a>      <span class="fu">case_match</span>(<span class="dv">1</span> <span class="sc">~</span> <span class="st">"low"</span>, <span class="dv">2</span> <span class="sc">~</span> <span class="st">"middle"</span>, <span class="dv">3</span> <span class="sc">~</span> <span class="st">"high"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb17-5"><a></a>      <span class="fu">factor</span>(<span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"low"</span>, <span class="st">"middle"</span>, <span class="st">"high"</span>)) <span class="co"># factor(), not as_factor()!</span></span>
-<span id="cb17-6"><a></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb17-7"><a></a>  <span class="fu">pull</span>(income) <span class="sc">%&gt;%</span> <span class="fu">unique</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17" data-code-line-numbers="5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>summarydata <span class="sc">%&gt;%</span> </span>
+<span id="cb17-2"><a href="#cb17-2"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb17-3"><a href="#cb17-3"></a>    <span class="at">income =</span> income <span class="sc">%&gt;%</span> </span>
+<span id="cb17-4"><a href="#cb17-4"></a>      <span class="fu">case_match</span>(<span class="dv">1</span> <span class="sc">~</span> <span class="st">"low"</span>, <span class="dv">2</span> <span class="sc">~</span> <span class="st">"middle"</span>, <span class="dv">3</span> <span class="sc">~</span> <span class="st">"high"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb17-5"><a href="#cb17-5"></a>      <span class="fu">factor</span>(<span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"low"</span>, <span class="st">"middle"</span>, <span class="st">"high"</span>)) <span class="co"># factor(), not as_factor()!</span></span>
+<span id="cb17-6"><a href="#cb17-6"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb17-7"><a href="#cb17-7"></a>  <span class="fu">pull</span>(income) <span class="sc">%&gt;%</span> <span class="fu">unique</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] high   low    middle
 Levels: low middle high</code></pre>
 </div>
 </div>
+</section>
+<section id="put-it-all-together" class="slide level2">
+<h2>Put it all together</h2>
+<p>In this case, we can <code>arrange</code> the data by the <em>numerical</em> values <strong>before</strong> switching them to text labels.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19" data-code-line-numbers="3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>summarydata3 <span class="ot">&lt;-</span> </span>
+<span id="cb19-2"><a href="#cb19-2"></a>  summarydata <span class="sc">%&gt;%</span> </span>
+<span id="cb19-3"><a href="#cb19-3"></a>  <span class="fu">arrange</span>(sex, educ, income) <span class="sc">%&gt;%</span> <span class="co"># can be a problem if some condition combinations don't exist</span></span>
+<span id="cb19-4"><a href="#cb19-4"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb19-5"><a href="#cb19-5"></a>    <span class="at">sex =</span> <span class="fu">if_else</span>(sex <span class="sc">==</span> <span class="dv">1</span>, <span class="st">"female"</span>, <span class="st">"male"</span>) <span class="sc">%&gt;%</span> <span class="fu">as_factor</span>(), <span class="co"># wrong if non-binary entries exist</span></span>
+<span id="cb19-6"><a href="#cb19-6"></a>    <span class="at">educ =</span> educ <span class="sc">%&gt;%</span> </span>
+<span id="cb19-7"><a href="#cb19-7"></a>      <span class="fu">case_match</span>(</span>
+<span id="cb19-8"><a href="#cb19-8"></a>        <span class="dv">1</span> <span class="sc">~</span> <span class="st">"no graduation"</span>,</span>
+<span id="cb19-9"><a href="#cb19-9"></a>        <span class="dv">2</span> <span class="sc">~</span> <span class="st">"school graduation"</span>,</span>
+<span id="cb19-10"><a href="#cb19-10"></a>        <span class="dv">3</span> <span class="sc">~</span> <span class="st">"vocational training"</span>,</span>
+<span id="cb19-11"><a href="#cb19-11"></a>        <span class="dv">4</span> <span class="sc">~</span> <span class="st">"bachelor's degree"</span>,</span>
+<span id="cb19-12"><a href="#cb19-12"></a>        <span class="dv">5</span> <span class="sc">~</span> <span class="st">"post grad"</span></span>
+<span id="cb19-13"><a href="#cb19-13"></a>      ) <span class="sc">%&gt;%</span></span>
+<span id="cb19-14"><a href="#cb19-14"></a>      <span class="fu">as_factor</span>(),</span>
+<span id="cb19-15"><a href="#cb19-15"></a>    <span class="at">income =</span> income <span class="sc">%&gt;%</span> </span>
+<span id="cb19-16"><a href="#cb19-16"></a>      <span class="fu">case_match</span>(<span class="dv">1</span> <span class="sc">~</span> <span class="st">"low"</span>, <span class="dv">2</span> <span class="sc">~</span> <span class="st">"middle"</span>, <span class="dv">3</span> <span class="sc">~</span> <span class="st">"high"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb19-17"><a href="#cb19-17"></a>      <span class="fu">as_factor</span>()</span>
+<span id="cb19-18"><a href="#cb19-18"></a>  )</span>
+<span id="cb19-19"><a href="#cb19-19"></a></span>
+<span id="cb19-20"><a href="#cb19-20"></a><span class="co"># summarydata3 %&gt;% select(sex, educ, income) %&gt;% summary()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section></section>
 <section>
@@ -675,14 +698,10 @@ Levels: low middle high</code></pre>
 </ul>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a></a><span class="fu">ggplot</span>(summarydata1, <span class="fu">aes</span>(<span class="at">x =</span> sex))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="fu">ggplot</span>(summarydata3, <span class="fu">aes</span>(<span class="at">x =</span> sex))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column fragment">
 <div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="W4_DataVizR_files/figure-revealjs/unnamed-chunk-14-1.png" width="960"></p>
-</figure>
-</div>
+<p><img data-src="W4_DataVizR_files/figure-revealjs/unnamed-chunk-15-1.png" width="960"></p>
 </div>
 </div>
 </div>
@@ -695,15 +714,11 @@ Levels: low middle high</code></pre>
 </ul>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="sourceCode cell-code" id="cb20" data-code-line-numbers="2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a></a><span class="fu">ggplot</span>(summarydata1, <span class="fu">aes</span>(<span class="at">x =</span> sex)) <span class="sc">+</span></span>
-<span id="cb20-2"><a></a>  <span class="fu">geom_bar</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21" data-code-line-numbers="2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="fu">ggplot</span>(summarydata3, <span class="fu">aes</span>(<span class="at">x =</span> sex)) <span class="sc">+</span></span>
+<span id="cb21-2"><a href="#cb21-2"></a>  <span class="fu">geom_bar</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column fragment">
 <div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="W4_DataVizR_files/figure-revealjs/unnamed-chunk-15-1.png" width="960"></p>
-</figure>
-</div>
+<p><img data-src="W4_DataVizR_files/figure-revealjs/unnamed-chunk-16-1.png" width="960"></p>
 </div>
 </div>
 </div>
@@ -711,20 +726,16 @@ Levels: low middle high</code></pre>
 <section id="the-second-layer-with-color" class="slide level2">
 <h2>The Second Layer with color</h2>
 <ul>
-<li><p>Adding <code>fill</code> to the first layer will separate the data into each level of the grouping variable and fill it with a different color. <span style="font-size: 16px;">Note that <code>fill</code> colors the inside of the bar, while <code>colour</code> colors the bar’s outlines.</span></p></li>
+<li><p>Adding <code>fill</code> to the first layer will separate the data into each level of the grouping variable and fill it with a different color. <span style="font-size: 16px;">Note that <code>fill</code> colors the inside of the bar, while <code>color</code> colors the bar’s outlines.</span></p></li>
 <li><p>We can get rid of the (in this case redundant legend) with <code>show.legend = FALSE</code>.</p></li>
 </ul>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a></a><span class="fu">ggplot</span>(summarydata2, <span class="fu">aes</span>(<span class="at">x =</span> sex, <span class="at">fill =</span> sex)) <span class="sc">+</span></span>
-<span id="cb21-2"><a></a>  <span class="fu">geom_bar</span>() <span class="co">#geom_bar(show.legend = FALSE)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22" data-code-line-numbers="1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="fu">ggplot</span>(summarydata3, <span class="fu">aes</span>(<span class="at">x =</span> sex, <span class="at">fill =</span> sex)) <span class="sc">+</span></span>
+<span id="cb22-2"><a href="#cb22-2"></a>  <span class="fu">geom_bar</span>() <span class="co">#geom_bar(show.legend = FALSE)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column fragment">
 <div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="W4_DataVizR_files/figure-revealjs/unnamed-chunk-16-1.png" width="960"></p>
-</figure>
-</div>
+<p><img data-src="W4_DataVizR_files/figure-revealjs/unnamed-chunk-17-1.png" width="960"></p>
 </div>
 </div>
 </div>
@@ -737,17 +748,13 @@ Levels: low middle high</code></pre>
 <p>Both functions can change several aspects of our axes; here, we use the argument <code>name</code> to set a new axis name.</p>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="sourceCode cell-code" id="cb22" data-code-line-numbers="3,4|5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a></a><span class="fu">ggplot</span>(summarydata2, <span class="fu">aes</span>(<span class="at">x =</span> sex, <span class="at">fill =</span> sex)) <span class="sc">+</span></span>
-<span id="cb22-2"><a></a>  <span class="fu">geom_bar</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb22-3"><a></a>  <span class="fu">scale_x_discrete</span>(<span class="at">name =</span> <span class="st">"Participant Sex"</span>) <span class="sc">+</span> </span>
-<span id="cb22-4"><a></a>  <span class="fu">scale_y_continuous</span>(<span class="at">name =</span> <span class="st">"Number of participants"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23" data-code-line-numbers="3,4|5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">ggplot</span>(summarydata3, <span class="fu">aes</span>(<span class="at">x =</span> sex, <span class="at">fill =</span> sex)) <span class="sc">+</span></span>
+<span id="cb23-2"><a href="#cb23-2"></a>  <span class="fu">geom_bar</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb23-3"><a href="#cb23-3"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">name =</span> <span class="st">"Participant Sex"</span>) <span class="sc">+</span> </span>
+<span id="cb23-4"><a href="#cb23-4"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">name =</span> <span class="st">"Number of participants"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column fragment">
 <div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="W4_DataVizR_files/figure-revealjs/unnamed-chunk-17-1.png" width="960"></p>
-</figure>
-</div>
+<p><img data-src="W4_DataVizR_files/figure-revealjs/unnamed-chunk-18-1.png" width="960"></p>
 </div>
 </div>
 </div>
@@ -772,18 +779,14 @@ Levels: low middle high</code></pre>
 <p>We will now change the default theme to <code>theme_minimal()</code>, but you can also try other themes (just type “theme_” and see what the autocomplete brings up).</p>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="sourceCode cell-code" id="cb23" data-code-line-numbers="5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a></a><span class="fu">ggplot</span>(summarydata2, <span class="fu">aes</span>(<span class="at">x =</span> sex, <span class="at">fill =</span> sex)) <span class="sc">+</span></span>
-<span id="cb23-2"><a></a>  <span class="fu">geom_bar</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb23-3"><a></a>  <span class="fu">scale_x_discrete</span>(<span class="at">name =</span> <span class="st">"Participant Sex"</span>) <span class="sc">+</span> </span>
-<span id="cb23-4"><a></a>  <span class="fu">scale_y_continuous</span>(<span class="at">name =</span> <span class="st">"Number of participants"</span>) <span class="sc">+</span></span>
-<span id="cb23-5"><a></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24" data-code-line-numbers="5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="fu">ggplot</span>(summarydata3, <span class="fu">aes</span>(<span class="at">x =</span> sex, <span class="at">fill =</span> sex)) <span class="sc">+</span></span>
+<span id="cb24-2"><a href="#cb24-2"></a>  <span class="fu">geom_bar</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb24-3"><a href="#cb24-3"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">name =</span> <span class="st">"Participant Sex"</span>) <span class="sc">+</span> </span>
+<span id="cb24-4"><a href="#cb24-4"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">name =</span> <span class="st">"Number of participants"</span>) <span class="sc">+</span></span>
+<span id="cb24-5"><a href="#cb24-5"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column fragment">
 <div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="W4_DataVizR_files/figure-revealjs/unnamed-chunk-18-1.png" width="960"></p>
-</figure>
-</div>
+<p><img data-src="W4_DataVizR_files/figure-revealjs/unnamed-chunk-19-1.png" width="960"></p>
 </div>
 </div>
 </div>
@@ -797,19 +800,15 @@ Levels: low middle high</code></pre>
 </ul>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="sourceCode cell-code" id="cb24" data-code-line-numbers="6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a></a><span class="fu">ggplot</span>(summarydata2, <span class="fu">aes</span>(<span class="at">x =</span> sex, <span class="at">fill =</span> sex)) <span class="sc">+</span></span>
-<span id="cb24-2"><a></a>  <span class="fu">geom_bar</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb24-3"><a></a>  <span class="fu">scale_x_discrete</span>(<span class="at">name =</span> <span class="st">"Participant Sex"</span>) <span class="sc">+</span></span>
-<span id="cb24-4"><a></a>  <span class="fu">scale_y_continuous</span>(<span class="at">name =</span> <span class="st">"Number of participants"</span>) <span class="sc">+</span></span>
-<span id="cb24-5"><a></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb24-6"><a></a>  <span class="fu">scale_fill_viridis_d</span>(<span class="at">option =</span> <span class="st">"E"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25" data-code-line-numbers="6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="fu">ggplot</span>(summarydata3, <span class="fu">aes</span>(<span class="at">x =</span> sex, <span class="at">fill =</span> sex)) <span class="sc">+</span></span>
+<span id="cb25-2"><a href="#cb25-2"></a>  <span class="fu">geom_bar</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb25-3"><a href="#cb25-3"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">name =</span> <span class="st">"Participant Sex"</span>) <span class="sc">+</span></span>
+<span id="cb25-4"><a href="#cb25-4"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">name =</span> <span class="st">"Number of participants"</span>) <span class="sc">+</span></span>
+<span id="cb25-5"><a href="#cb25-5"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb25-6"><a href="#cb25-6"></a>  <span class="fu">scale_fill_viridis_d</span>(<span class="at">option =</span> <span class="st">"E"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column fragment">
 <div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="W4_DataVizR_files/figure-revealjs/unnamed-chunk-19-1.png" width="960"></p>
-</figure>
-</div>
+<p><img data-src="W4_DataVizR_files/figure-revealjs/unnamed-chunk-20-1.png" width="960"></p>
 </div>
 </div>
 </div>
@@ -820,20 +819,16 @@ Levels: low middle high</code></pre>
 <p>To do so, you can simply add <code>alpha</code> to the <code>geom_bar()</code> - try changing the value of <code>alpha</code> (between 0 and 1):</p>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="sourceCode cell-code" id="cb25" data-code-line-numbers="3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a></a><span class="fu">ggplot</span>(summarydata2, <span class="fu">aes</span>(<span class="at">x =</span> sex, <span class="at">fill =</span> sex)) <span class="sc">+</span></span>
-<span id="cb25-2"><a></a>  <span class="fu">geom_bar</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>, </span>
-<span id="cb25-3"><a></a>           <span class="at">alpha =</span> .<span class="dv">8</span>) <span class="sc">+</span></span>
-<span id="cb25-4"><a></a>  <span class="fu">scale_x_discrete</span>(<span class="at">name =</span> <span class="st">"Participant Sex"</span>) <span class="sc">+</span></span>
-<span id="cb25-5"><a></a>  <span class="fu">scale_y_continuous</span>(<span class="at">name =</span> <span class="st">"Number of participants"</span>) <span class="sc">+</span></span>
-<span id="cb25-6"><a></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb25-7"><a></a>  <span class="fu">scale_fill_viridis_d</span>(<span class="at">option =</span> <span class="st">"E"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26" data-code-line-numbers="3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="fu">ggplot</span>(summarydata3, <span class="fu">aes</span>(<span class="at">x =</span> sex, <span class="at">fill =</span> sex)) <span class="sc">+</span></span>
+<span id="cb26-2"><a href="#cb26-2"></a>  <span class="fu">geom_bar</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb26-3"><a href="#cb26-3"></a>           <span class="at">alpha =</span> .<span class="dv">8</span>) <span class="sc">+</span></span>
+<span id="cb26-4"><a href="#cb26-4"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">name =</span> <span class="st">"Participant Sex"</span>) <span class="sc">+</span></span>
+<span id="cb26-5"><a href="#cb26-5"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">name =</span> <span class="st">"Number of participants"</span>) <span class="sc">+</span></span>
+<span id="cb26-6"><a href="#cb26-6"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb26-7"><a href="#cb26-7"></a>  <span class="fu">scale_fill_viridis_d</span>(<span class="at">option =</span> <span class="st">"E"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column fragment">
 <div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="W4_DataVizR_files/figure-revealjs/unnamed-chunk-20-1.png" width="960"></p>
-</figure>
-</div>
+<p><img data-src="W4_DataVizR_files/figure-revealjs/unnamed-chunk-21-1.png" width="960"></p>
 </div>
 </div>
 </div>
@@ -843,23 +838,19 @@ Levels: low middle high</code></pre>
 <p>Imagine that you have several <em>factors</em> that you want to use to group your data, such as gender and income. In this case, you could use a <strong>grouped bar plot</strong>:</p>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="sourceCode cell-code" id="cb26" data-code-line-numbers="1|4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a></a><span class="fu">ggplot</span>(summarydata2, <span class="fu">aes</span>(<span class="at">x =</span> sex, <span class="at">fill =</span> income)) <span class="sc">+</span></span>
-<span id="cb26-2"><a></a>  <span class="fu">geom_bar</span>(</span>
-<span id="cb26-3"><a></a>    <span class="co"># the default are stacked bars; we use "dodge" to put them side by side</span></span>
-<span id="cb26-4"><a></a>    <span class="at">position =</span> <span class="st">"dodge"</span>,</span>
-<span id="cb26-5"><a></a>    <span class="at">alpha =</span> .<span class="dv">8</span></span>
-<span id="cb26-6"><a></a>  ) <span class="sc">+</span></span>
-<span id="cb26-7"><a></a>  <span class="fu">scale_x_discrete</span>(<span class="at">name =</span> <span class="st">"Participant Sex"</span>) <span class="sc">+</span></span>
-<span id="cb26-8"><a></a>  <span class="fu">scale_y_continuous</span>(<span class="at">name =</span> <span class="st">"Number of participants"</span>) <span class="sc">+</span></span>
-<span id="cb26-9"><a></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb26-10"><a></a>  <span class="fu">scale_fill_viridis_d</span>(<span class="at">option =</span> <span class="st">"E"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27" data-code-line-numbers="1|4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="fu">ggplot</span>(summarydata3, <span class="fu">aes</span>(<span class="at">x =</span> sex, <span class="at">fill =</span> income)) <span class="sc">+</span></span>
+<span id="cb27-2"><a href="#cb27-2"></a>  <span class="fu">geom_bar</span>(</span>
+<span id="cb27-3"><a href="#cb27-3"></a>    <span class="co"># the default are stacked bars; we use "dodge" to put them side by side</span></span>
+<span id="cb27-4"><a href="#cb27-4"></a>    <span class="at">position =</span> <span class="st">"dodge"</span>,</span>
+<span id="cb27-5"><a href="#cb27-5"></a>    <span class="at">alpha =</span> .<span class="dv">8</span></span>
+<span id="cb27-6"><a href="#cb27-6"></a>  ) <span class="sc">+</span></span>
+<span id="cb27-7"><a href="#cb27-7"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">name =</span> <span class="st">"Participant Sex"</span>) <span class="sc">+</span></span>
+<span id="cb27-8"><a href="#cb27-8"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">name =</span> <span class="st">"Number of participants"</span>) <span class="sc">+</span></span>
+<span id="cb27-9"><a href="#cb27-9"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb27-10"><a href="#cb27-10"></a>  <span class="fu">scale_fill_viridis_d</span>(<span class="at">option =</span> <span class="st">"E"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column fragment">
 <div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="W4_DataVizR_files/figure-revealjs/unnamed-chunk-21-1.png" width="960"></p>
-</figure>
-</div>
+<p><img data-src="W4_DataVizR_files/figure-revealjs/unnamed-chunk-22-1.png" width="960"></p>
 </div>
 </div>
 </div>
@@ -881,16 +872,16 @@ Levels: low middle high</code></pre>
 <h2>Facetting</h2>
 <p>You could also use <strong>facets</strong> to divide your data visualizations into several subplots: <code>facet_wrap</code> for one variable.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27" data-code-line-numbers="7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a></a><span class="fu">ggplot</span>(summarydata2, <span class="fu">aes</span>(<span class="at">x =</span> sex, <span class="at">fill =</span> sex)) <span class="sc">+</span></span>
-<span id="cb27-2"><a></a>  <span class="fu">geom_bar</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>, <span class="at">alpha =</span> .<span class="dv">8</span>) <span class="sc">+</span></span>
-<span id="cb27-3"><a></a>  <span class="fu">scale_x_discrete</span>(<span class="at">name =</span> <span class="st">"Participant Sex"</span>) <span class="sc">+</span></span>
-<span id="cb27-4"><a></a>  <span class="fu">scale_y_continuous</span>(<span class="at">name =</span> <span class="st">"Number of participants"</span>) <span class="sc">+</span></span>
-<span id="cb27-5"><a></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb27-6"><a></a>  <span class="fu">scale_fill_viridis_d</span>(<span class="at">option =</span> <span class="st">"E"</span>)  <span class="sc">+</span></span>
-<span id="cb27-7"><a></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(income)) <span class="co"># here, you need to use vars() around variable names</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28" data-code-line-numbers="7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="fu">ggplot</span>(summarydata3, <span class="fu">aes</span>(<span class="at">x =</span> sex, <span class="at">fill =</span> sex)) <span class="sc">+</span></span>
+<span id="cb28-2"><a href="#cb28-2"></a>  <span class="fu">geom_bar</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>, <span class="at">alpha =</span> .<span class="dv">8</span>) <span class="sc">+</span></span>
+<span id="cb28-3"><a href="#cb28-3"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">name =</span> <span class="st">"Participant Sex"</span>) <span class="sc">+</span></span>
+<span id="cb28-4"><a href="#cb28-4"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">name =</span> <span class="st">"Number of participants"</span>) <span class="sc">+</span></span>
+<span id="cb28-5"><a href="#cb28-5"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb28-6"><a href="#cb28-6"></a>  <span class="fu">scale_fill_viridis_d</span>(<span class="at">option =</span> <span class="st">"E"</span>)  <span class="sc">+</span></span>
+<span id="cb28-7"><a href="#cb28-7"></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(income)) <span class="co"># here, you need to use vars() around variable names</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="W4_DataVizR_files/figure-revealjs/unnamed-chunk-22-1.png" width="960" class="r-stretch"><aside class="notes">
+<img data-src="W4_DataVizR_files/figure-revealjs/unnamed-chunk-23-1.png" width="960" class="r-stretch"><aside class="notes">
 <p>What is problematic here? We needed percentages for females and males for a better comparison</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -908,24 +899,24 @@ Levels: low middle high</code></pre>
 <h2>Facetting 2</h2>
 <p>You could also use <strong>facets</strong> to divide your data visualizations into several subplots: <code>facet_grid</code> for a matrix of (combinations of) two variables.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28" data-code-line-numbers="7-11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a></a><span class="fu">ggplot</span>(summarydata2, <span class="fu">aes</span>(<span class="at">x =</span> sex, <span class="at">fill =</span> sex)) <span class="sc">+</span></span>
-<span id="cb28-2"><a></a>  <span class="fu">geom_bar</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>, <span class="at">alpha =</span> .<span class="dv">8</span>) <span class="sc">+</span></span>
-<span id="cb28-3"><a></a>  <span class="fu">scale_x_discrete</span>(<span class="at">name =</span> <span class="st">"Participant Sex"</span>) <span class="sc">+</span></span>
-<span id="cb28-4"><a></a>  <span class="fu">scale_y_continuous</span>(<span class="at">name =</span> <span class="st">"Number of participants"</span>) <span class="sc">+</span></span>
-<span id="cb28-5"><a></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb28-6"><a></a>  <span class="fu">scale_fill_viridis_d</span>(<span class="at">option =</span> <span class="st">"E"</span>)  <span class="sc">+</span></span>
-<span id="cb28-7"><a></a>  <span class="fu">facet_grid</span>(</span>
-<span id="cb28-8"><a></a>    <span class="at">rows =</span> <span class="fu">vars</span>(income),</span>
-<span id="cb28-9"><a></a>    <span class="at">cols =</span> <span class="fu">vars</span>(educ),</span>
-<span id="cb28-10"><a></a>    <span class="at">labeller =</span> <span class="st">"label_both"</span> <span class="co"># this adds the variable name into the facet legends</span></span>
-<span id="cb28-11"><a></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29" data-code-line-numbers="7-11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="fu">ggplot</span>(summarydata3, <span class="fu">aes</span>(<span class="at">x =</span> sex, <span class="at">fill =</span> sex)) <span class="sc">+</span></span>
+<span id="cb29-2"><a href="#cb29-2"></a>  <span class="fu">geom_bar</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>, <span class="at">alpha =</span> .<span class="dv">8</span>) <span class="sc">+</span></span>
+<span id="cb29-3"><a href="#cb29-3"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">name =</span> <span class="st">"Participant Sex"</span>) <span class="sc">+</span></span>
+<span id="cb29-4"><a href="#cb29-4"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">name =</span> <span class="st">"Number of participants"</span>) <span class="sc">+</span></span>
+<span id="cb29-5"><a href="#cb29-5"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb29-6"><a href="#cb29-6"></a>  <span class="fu">scale_fill_viridis_d</span>(<span class="at">option =</span> <span class="st">"E"</span>)  <span class="sc">+</span></span>
+<span id="cb29-7"><a href="#cb29-7"></a>  <span class="fu">facet_grid</span>(</span>
+<span id="cb29-8"><a href="#cb29-8"></a>    <span class="at">rows =</span> <span class="fu">vars</span>(income),</span>
+<span id="cb29-9"><a href="#cb29-9"></a>    <span class="at">cols =</span> <span class="fu">vars</span>(educ),</span>
+<span id="cb29-10"><a href="#cb29-10"></a>    <span class="at">labeller =</span> <span class="st">"label_both"</span> <span class="co"># this adds the variable name into the facet legends</span></span>
+<span id="cb29-11"><a href="#cb29-11"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="W4_DataVizR_files/figure-revealjs/unnamed-chunk-23-1.png" width="960" class="r-stretch"></section>
+<img data-src="W4_DataVizR_files/figure-revealjs/unnamed-chunk-24-1.png" width="960" class="r-stretch"></section>
 <section id="a-closer-look" class="slide level2">
 <h2>A closer look</h2>
 
-<img data-src="W4_DataVizR_files/figure-revealjs/unnamed-chunk-24-1.png" width="960" class="r-stretch"></section></section>
+<img data-src="W4_DataVizR_files/figure-revealjs/unnamed-chunk-25-1.png" width="960" class="r-stretch"></section></section>
 <section>
 <section id="activity-4-the-violin-boxplot" class="title-slide slide level1 center">
 <h1>Activity 4: The Violin-Boxplot</h1>
@@ -937,29 +928,25 @@ Levels: low middle high</code></pre>
 <p>Let’s look at the code. How does the code differ from the one for the barplot above?</p>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="sourceCode cell-code" id="cb29" data-code-line-numbers="|2|4|6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a></a><span class="fu">ggplot</span>(summarydata1, <span class="fu">aes</span>(<span class="at">x =</span> income, </span>
-<span id="cb29-2"><a></a>                         <span class="at">y =</span> ahiTotal, <span class="co"># new variable!</span></span>
-<span id="cb29-3"><a></a>                         <span class="at">fill =</span> income)) <span class="sc">+</span></span>
-<span id="cb29-4"><a></a>  <span class="fu">geom_violin</span>(<span class="at">trim =</span> <span class="cn">FALSE</span>, <span class="co"># smooth on edges</span></span>
-<span id="cb29-5"><a></a>              <span class="at">alpha =</span> .<span class="dv">4</span>) <span class="sc">+</span></span>
-<span id="cb29-6"><a></a>  <span class="fu">geom_boxplot</span>(<span class="at">width =</span> .<span class="dv">2</span>, <span class="co"># small boxplot contained in violin</span></span>
-<span id="cb29-7"><a></a>               <span class="at">alpha =</span> .<span class="dv">7</span>) <span class="sc">+</span></span>
-<span id="cb29-8"><a></a>  <span class="fu">scale_x_discrete</span>(</span>
-<span id="cb29-9"><a></a>    <span class="at">name =</span> <span class="st">"Income"</span>,</span>
-<span id="cb29-10"><a></a>    <span class="co"># set new labels</span></span>
-<span id="cb29-11"><a></a>    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Below Average"</span>, <span class="st">"Average"</span>, <span class="st">"Above Average"</span>)) <span class="sc">+</span></span>
-<span id="cb29-12"><a></a>  <span class="fu">scale_y_continuous</span>(<span class="at">name =</span> <span class="st">"Authentic Happiness Inventory Score"</span>)<span class="sc">+</span></span>
-<span id="cb29-13"><a></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb29-14"><a></a>  <span class="co"># no need to switch of axis for every geom individually</span></span>
-<span id="cb29-15"><a></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span> </span>
-<span id="cb29-16"><a></a>  <span class="fu">scale_fill_viridis_d</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30" data-code-line-numbers="|2|4|6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a><span class="fu">ggplot</span>(summarydata3, <span class="fu">aes</span>(<span class="at">x =</span> income, </span>
+<span id="cb30-2"><a href="#cb30-2"></a>                         <span class="at">y =</span> ahiTotal, <span class="co"># new variable!</span></span>
+<span id="cb30-3"><a href="#cb30-3"></a>                         <span class="at">fill =</span> income)) <span class="sc">+</span></span>
+<span id="cb30-4"><a href="#cb30-4"></a>  <span class="fu">geom_violin</span>(<span class="at">trim =</span> <span class="cn">FALSE</span>, <span class="co"># smooth on edges</span></span>
+<span id="cb30-5"><a href="#cb30-5"></a>              <span class="at">alpha =</span> .<span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb30-6"><a href="#cb30-6"></a>  <span class="fu">geom_boxplot</span>(<span class="at">width =</span> .<span class="dv">2</span>, <span class="co"># small boxplot contained in violin</span></span>
+<span id="cb30-7"><a href="#cb30-7"></a>               <span class="at">alpha =</span> .<span class="dv">7</span>) <span class="sc">+</span></span>
+<span id="cb30-8"><a href="#cb30-8"></a>  <span class="fu">scale_x_discrete</span>(</span>
+<span id="cb30-9"><a href="#cb30-9"></a>    <span class="at">name =</span> <span class="st">"Income"</span>,</span>
+<span id="cb30-10"><a href="#cb30-10"></a>    <span class="co"># set new labels</span></span>
+<span id="cb30-11"><a href="#cb30-11"></a>    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Below Average"</span>, <span class="st">"Average"</span>, <span class="st">"Above Average"</span>)) <span class="sc">+</span></span>
+<span id="cb30-12"><a href="#cb30-12"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">name =</span> <span class="st">"Authentic Happiness Inventory Score"</span>)<span class="sc">+</span></span>
+<span id="cb30-13"><a href="#cb30-13"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb30-14"><a href="#cb30-14"></a>  <span class="co"># no need to switch of axis for every geom individually</span></span>
+<span id="cb30-15"><a href="#cb30-15"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span> </span>
+<span id="cb30-16"><a href="#cb30-16"></a>  <span class="fu">scale_fill_viridis_d</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column fragment">
 <div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="W4_DataVizR_files/figure-revealjs/unnamed-chunk-25-1.png" width="960"></p>
-</figure>
-</div>
+<p><img data-src="W4_DataVizR_files/figure-revealjs/unnamed-chunk-26-1.png" width="960"></p>
 </div>
 </div>
 </div>
@@ -983,28 +970,20 @@ Levels: low middle high</code></pre>
 <div class="columns">
 <div class="column">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a></a><span class="fu">ggplot</span>(summarydata1, <span class="fu">aes</span>(<span class="at">x =</span> income, <span class="at">y =</span> ahiTotal)) <span class="sc">+</span></span>
-<span id="cb30-2"><a></a>  <span class="fu">geom_violin</span>() <span class="sc">+</span></span>
-<span id="cb30-3"><a></a>  <span class="fu">geom_boxplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="fu">ggplot</span>(summarydata3, <span class="fu">aes</span>(<span class="at">x =</span> income, <span class="at">y =</span> ahiTotal)) <span class="sc">+</span></span>
+<span id="cb31-2"><a href="#cb31-2"></a>  <span class="fu">geom_violin</span>() <span class="sc">+</span></span>
+<span id="cb31-3"><a href="#cb31-3"></a>  <span class="fu">geom_boxplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="W4_DataVizR_files/figure-revealjs/unnamed-chunk-26-1.png" width="960"></p>
-</figure>
-</div>
+<p><img data-src="W4_DataVizR_files/figure-revealjs/unnamed-chunk-27-1.png" width="960"></p>
 </div>
 </div>
 </div><div class="column">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a></a><span class="fu">ggplot</span>(summarydata1, <span class="fu">aes</span>(<span class="at">x =</span> income, <span class="at">y =</span> ahiTotal)) <span class="sc">+</span></span>
-<span id="cb31-2"><a></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
-<span id="cb31-3"><a></a>  <span class="fu">geom_violin</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a><span class="fu">ggplot</span>(summarydata3, <span class="fu">aes</span>(<span class="at">x =</span> income, <span class="at">y =</span> ahiTotal)) <span class="sc">+</span></span>
+<span id="cb32-2"><a href="#cb32-2"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb32-3"><a href="#cb32-3"></a>  <span class="fu">geom_violin</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="W4_DataVizR_files/figure-revealjs/unnamed-chunk-27-1.png" width="960"></p>
-</figure>
-</div>
+<p><img data-src="W4_DataVizR_files/figure-revealjs/unnamed-chunk-28-1.png" width="960"></p>
 </div>
 </div>
 </div>
@@ -1015,17 +994,13 @@ Levels: low middle high</code></pre>
 <p>If we have continuous data of two variables, we often want to make a <strong>scatter plot</strong>:</p>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="sourceCode cell-code" id="cb32" data-code-line-numbers="1|2|5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a></a><span class="fu">ggplot</span>(summarydata1, <span class="fu">aes</span>(<span class="at">x =</span> age, <span class="at">y =</span> cesdTotal)) <span class="sc">+</span></span>
-<span id="cb32-2"><a></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb32-3"><a></a>  <span class="co"># if you don't want the shaded CI, add se = FALSE to this</span></span>
-<span id="cb32-4"><a></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> lm) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33" data-code-line-numbers="1|2|5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="fu">ggplot</span>(summarydata3, <span class="fu">aes</span>(<span class="at">x =</span> age, <span class="at">y =</span> cesdTotal)) <span class="sc">+</span></span>
+<span id="cb33-2"><a href="#cb33-2"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb33-3"><a href="#cb33-3"></a>  <span class="co"># if you don't want the shaded CI, add se = FALSE to this</span></span>
+<span id="cb33-4"><a href="#cb33-4"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> lm) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column fragment">
 <div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="W4_DataVizR_files/figure-revealjs/unnamed-chunk-28-1.png" width="960"></p>
-</figure>
-</div>
+<p><img data-src="W4_DataVizR_files/figure-revealjs/unnamed-chunk-29-1.png" width="960"></p>
 </div>
 </div>
 </div>
@@ -1035,23 +1010,23 @@ Levels: low middle high</code></pre>
 <p>You can use <code>ggsave()</code> to save your plots. If you don’t tell <code>ggsave()</code> which plot you want to save, by default it will save <strong>the last plot you created</strong>.</p>
 <p>You just have to enter the name of the file to be saved (in your working directory) like this:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a></a><span class="fu">ggsave</span>(<span class="st">"violin-boxplot.png"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a><span class="fu">ggsave</span>(<span class="st">"violin-boxplot.png"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Check whether indeed the last plot was saved!</p>
 <div class="fragment">
 <p>You can also specify the dimensions of your plot to be saved:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a></a><span class="fu">ggsave</span>(<span class="st">"violin-boxplot.png"</span>,</span>
-<span id="cb34-2"><a></a>       <span class="at">width =</span> <span class="fl">6.5</span>, <span class="co">#width of a typical page in inches minus border (according to APA format)</span></span>
-<span id="cb34-3"><a></a>       <span class="at">height =</span> <span class="fl">6.5</span> <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="dv">2</span>), <span class="co">#golden ratio :)</span></span>
-<span id="cb34-4"><a></a>       <span class="at">units =</span> <span class="st">"in"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a><span class="fu">ggsave</span>(<span class="st">"violin-boxplot.png"</span>,</span>
+<span id="cb35-2"><a href="#cb35-2"></a>       <span class="at">width =</span> <span class="fl">6.5</span>, <span class="co">#width of a typical page in inches minus border (according to APA format)</span></span>
+<span id="cb35-3"><a href="#cb35-3"></a>       <span class="at">height =</span> <span class="fl">6.5</span> <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="dv">2</span>), <span class="co">#golden ratio :)</span></span>
+<span id="cb35-4"><a href="#cb35-4"></a>       <span class="at">units =</span> <span class="st">"in"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>or</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a></a><span class="fu">ggsave</span>(<span class="st">"violin-boxplot.png"</span>,</span>
-<span id="cb35-2"><a></a>       <span class="at">width =</span> <span class="dv">1920</span>,</span>
-<span id="cb35-3"><a></a>       <span class="at">height =</span> <span class="dv">1080</span>,</span>
-<span id="cb35-4"><a></a>       <span class="at">units =</span> <span class="st">"px"</span>) <span class="co">#full HD picture in pixels: 1920 x 1080</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a><span class="fu">ggsave</span>(<span class="st">"violin-boxplot.png"</span>,</span>
+<span id="cb36-2"><a href="#cb36-2"></a>       <span class="at">width =</span> <span class="dv">1920</span>,</span>
+<span id="cb36-3"><a href="#cb36-3"></a>       <span class="at">height =</span> <span class="dv">1080</span>,</span>
+<span id="cb36-4"><a href="#cb36-4"></a>       <span class="at">units =</span> <span class="st">"px"</span>) <span class="co">#full HD picture in pixels: 1920 x 1080</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section>
@@ -1060,19 +1035,19 @@ Levels: low middle high</code></pre>
 <p>You can also assign the plot to a variable in your environment and then tell <code>ggsave()</code> which object to save. This is a bit safer.</p>
 <p>Run the code for the violin-boxplot again and save the plot in an object called <code>viobox</code>. You’d then have to explicitly tell <code>ggsave()</code> to save the object <code>viobox</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36" data-code-line-numbers="1,20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a></a>viobox <span class="ot">&lt;-</span> </span>
-<span id="cb36-2"><a></a>  <span class="fu">ggplot</span>(summarydata1, <span class="fu">aes</span>(<span class="at">x =</span> income, <span class="at">y =</span> ahiTotal, <span class="at">fill =</span> income)) <span class="sc">+</span></span>
-<span id="cb36-3"><a></a>  <span class="fu">geom_violin</span>(<span class="at">trim =</span> <span class="cn">FALSE</span>, <span class="at">alpha =</span> .<span class="dv">4</span>) <span class="sc">+</span></span>
-<span id="cb36-4"><a></a>  <span class="fu">geom_boxplot</span>(<span class="at">width =</span> .<span class="dv">2</span>, <span class="at">alpha =</span> .<span class="dv">7</span>) <span class="sc">+</span></span>
-<span id="cb36-5"><a></a>  <span class="fu">scale_x_discrete</span>(</span>
-<span id="cb36-6"><a></a>    <span class="at">name =</span> <span class="st">"Income"</span>,</span>
-<span id="cb36-7"><a></a>    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Below Average"</span>, <span class="st">"Average"</span>, <span class="st">"Above Average"</span>)) <span class="sc">+</span></span>
-<span id="cb36-8"><a></a>  <span class="fu">scale_y_continuous</span>(<span class="at">name =</span> <span class="st">"Authentic Happiness Inventory Score"</span>)<span class="sc">+</span></span>
-<span id="cb36-9"><a></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb36-10"><a></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span> </span>
-<span id="cb36-11"><a></a>  <span class="fu">scale_fill_viridis_d</span>()</span>
-<span id="cb36-12"><a></a></span>
-<span id="cb36-13"><a></a><span class="fu">ggsave</span>(<span class="st">"violin-boxplot-stored.png"</span>, <span class="at">plot =</span> viobox)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37" data-code-line-numbers="1,20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a>viobox <span class="ot">&lt;-</span> </span>
+<span id="cb37-2"><a href="#cb37-2"></a>  <span class="fu">ggplot</span>(summarydata3, <span class="fu">aes</span>(<span class="at">x =</span> income, <span class="at">y =</span> ahiTotal, <span class="at">fill =</span> income)) <span class="sc">+</span></span>
+<span id="cb37-3"><a href="#cb37-3"></a>  <span class="fu">geom_violin</span>(<span class="at">trim =</span> <span class="cn">FALSE</span>, <span class="at">alpha =</span> .<span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb37-4"><a href="#cb37-4"></a>  <span class="fu">geom_boxplot</span>(<span class="at">width =</span> .<span class="dv">2</span>, <span class="at">alpha =</span> .<span class="dv">7</span>) <span class="sc">+</span></span>
+<span id="cb37-5"><a href="#cb37-5"></a>  <span class="fu">scale_x_discrete</span>(</span>
+<span id="cb37-6"><a href="#cb37-6"></a>    <span class="at">name =</span> <span class="st">"Income"</span>,</span>
+<span id="cb37-7"><a href="#cb37-7"></a>    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Below Average"</span>, <span class="st">"Average"</span>, <span class="st">"Above Average"</span>)) <span class="sc">+</span></span>
+<span id="cb37-8"><a href="#cb37-8"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">name =</span> <span class="st">"Authentic Happiness Inventory Score"</span>)<span class="sc">+</span></span>
+<span id="cb37-9"><a href="#cb37-9"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb37-10"><a href="#cb37-10"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span> </span>
+<span id="cb37-11"><a href="#cb37-11"></a>  <span class="fu">scale_fill_viridis_d</span>()</span>
+<span id="cb37-12"><a href="#cb37-12"></a></span>
+<span id="cb37-13"><a href="#cb37-13"></a><span class="fu">ggsave</span>(<span class="st">"violin-boxplot-stored.png"</span>, <span class="at">plot =</span> viobox)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <aside class="notes">
 <p>Do not add <code>ggsave()</code> to the plot with a <code>+</code>. Instead run it on a separate line!</p>
@@ -1110,10 +1085,8 @@ Levels: low middle high</code></pre>
 <li>Sampling</li>
 </ul>
 
-<div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 
-</div>
 </div>
 </div>
 </section>
@@ -1144,6 +1117,7 @@ Levels: low middle high</code></pre>
       Reveal.initialize({
 'controlsAuto': true,
 'previewLinksAuto': false,
+'smaller': true,
 'pdfSeparateFragments': false,
 'autoAnimateEasing': "ease",
 'autoAnimateDuration': 1,
@@ -1330,80 +1304,42 @@ Levels: low middle high</code></pre>
       });
     </script>
     
-
     <script>
-
       // htmlwidgets need to know to resize themselves when slides are shown/hidden.
-
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
-
       // slide changes (different for each slide format).
-
       (function () {
-
         // dispatch for htmlwidgets
-
         function fireSlideEnter() {
-
           const event = window.document.createEvent("Event");
-
           event.initEvent("slideenter", true, true);
-
           window.document.dispatchEvent(event);
-
         }
-
-    
 
         function fireSlideChanged(previousSlide, currentSlide) {
-
           fireSlideEnter();
 
-    
-
           // dispatch for shiny
-
           if (window.jQuery) {
-
             if (previousSlide) {
-
               window.jQuery(previousSlide).trigger("hidden");
-
             }
-
             if (currentSlide) {
-
               window.jQuery(currentSlide).trigger("shown");
-
             }
-
           }
-
         }
-
-    
 
         // hookup for slidy
-
         if (window.w3c_slidy) {
-
           window.w3c_slidy.add_observer(function (slide_num) {
-
             // slide_num starts at position 1
-
             fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
-
           });
-
         }
 
-    
-
       })();
-
     </script>
-
-    
 
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
@@ -1481,27 +1417,10 @@ Levels: low middle high</code></pre>
         // clear code selection
         e.clearSelection();
       });
-        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-        var mailtoRegex = new RegExp(/^mailto:/);
-          var filterRegex = new RegExp('/' + window.location.host + '/');
-        var isInternal = (href) => {
-            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
-        }
-        // Inspect non-navigation links and adorn them if external
-     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
-        for (var i=0; i<links.length; i++) {
-          const link = links[i];
-          if (!isInternal(link.href)) {
-            // undo the damage that might have been done by quarto-nav.js in the case of
-            // links that we want to consider external
-            if (link.dataset.originalHref !== undefined) {
-              link.href = link.dataset.originalHref;
-            }
-          }
-        }
-      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      function tippyHover(el, contentFn) {
         const config = {
           allowHTML: true,
+          content: contentFn,
           maxWidth: 500,
           delay: 100,
           arrow: false,
@@ -1511,17 +1430,8 @@ Levels: low middle high</code></pre>
           interactive: true,
           interactiveBorder: 10,
           theme: 'light-border',
-          placement: 'bottom-start',
+          placement: 'bottom-start'
         };
-        if (contentFn) {
-          config.content = contentFn;
-        }
-        if (onTriggerFn) {
-          config.onTrigger = onTriggerFn;
-        }
-        if (onUntriggerFn) {
-          config.onUntrigger = onUntriggerFn;
-        }
           config['offset'] = [0,0];
           config['maxWidth'] = 700;
         window.tippy(el, config); 
@@ -1535,11 +1445,7 @@ Levels: low middle high</code></pre>
           try { href = new URL(href).hash; } catch {}
           const id = href.replace(/^#\/?/, "");
           const note = window.document.getElementById(id);
-          if (note) {
-            return note.innerHTML;
-          } else {
-            return "";
-          }
+          return note.innerHTML;
         });
       }
       const findCites = (el) => {

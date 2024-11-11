@@ -191,10 +191,11 @@ There is very sparse information on the variables at <https://doi.org/10.5334/jo
 
 ```{r}
 #| echo: true
+#| code-line-numbers: "5-13|4|14-16"
 summarydata2 <- 
   summarydata %>% 
   mutate(
-    sex = if_else(sex == 1, "female", "male") %>% as_factor(),
+    sex = if_else(sex == 1, "female", "male") %>% as_factor(), #wrong if non-binary entries exist
     educ = educ %>% 
       case_match(
         1 ~ "no graduation",
@@ -225,6 +226,7 @@ Using `factor()`, we can explicitly order the categories using the argument `lev
 
 ```{r}
 #| echo: true
+#| code-line-numbers: "5"
 summarydata %>% 
   mutate(
     income = income %>%
@@ -234,10 +236,10 @@ summarydata %>%
   pull(income) %>% unique()
 ```
 
-. . .
 
 ```{r}
 #| echo: true
+#| code-line-numbers: "5"
 summarydata %>% 
   mutate(
     income = income %>% 
@@ -245,6 +247,35 @@ summarydata %>%
       factor(levels = c("low", "middle", "high")) # factor(), not as_factor()!
   ) %>% 
   pull(income) %>% unique()
+```
+
+## Put it all together
+
+In this case, we can `arrange` the data by the *numerical* values **before** switching them to  text labels.
+
+```{r}
+#| echo: true
+#| code-line-numbers: "3"
+summarydata3 <- 
+  summarydata %>% 
+  arrange(sex, educ, income) %>% # can be a problem if some condition combinations don't exist
+  mutate(
+    sex = if_else(sex == 1, "female", "male") %>% as_factor(), # wrong if non-binary entries exist
+    educ = educ %>% 
+      case_match(
+        1 ~ "no graduation",
+        2 ~ "school graduation",
+        3 ~ "vocational training",
+        4 ~ "bachelor's degree",
+        5 ~ "post grad"
+      ) %>%
+      as_factor(),
+    income = income %>% 
+      case_match(1 ~ "low", 2 ~ "middle", 3 ~ "high") %>% 
+      as_factor()
+  )
+
+# summarydata3 %>% select(sex, educ, income) %>% summary()
 ```
 
 # Activity 3: Barplot
@@ -264,7 +295,7 @@ We will plot male and female participants.
 ```{r}
 #| output-location: column-fragment
 #| echo: true
-ggplot(summarydata1, aes(x = sex))
+ggplot(summarydata3, aes(x = sex))
 ```
 
 ## The Second Layer
@@ -278,13 +309,13 @@ The next layer adds a **geom** or a shape. In this case we use `geom_bar()` as w
 #| output-location: column-fragment
 #| code-line-numbers: "2"
 
-ggplot(summarydata1, aes(x = sex)) +
+ggplot(summarydata3, aes(x = sex)) +
   geom_bar()
 ```
 
 ## The Second Layer with color
 
--   Adding `fill` to the first layer will separate the data into each level of the grouping variable and fill it with a different color. <span style="font-size: 16px;">Note that `fill` colors the inside of the bar, while `colour` colors the bar's outlines.</span>
+-   Adding `fill` to the first layer will separate the data into each level of the grouping variable and fill it with a different color. <span style="font-size: 16px;">Note that `fill` colors the inside of the bar, while `color` colors the bar's outlines.</span>
 
 -   We can get rid of the (in this case redundant legend) with `show.legend = FALSE`.
 
@@ -292,7 +323,7 @@ ggplot(summarydata1, aes(x = sex)) +
 #| echo: true
 #| output-location: column-fragment
 #| code-line-numbers: "1"
-ggplot(summarydata2, aes(x = sex, fill = sex)) +
+ggplot(summarydata3, aes(x = sex, fill = sex)) +
   geom_bar() #geom_bar(show.legend = FALSE)
 ```
 
@@ -310,7 +341,7 @@ Both functions can change several aspects of our axes; here, we use the argument
 #| echo: true
 #| output-location: column-fragment
 #| code-line-numbers: "3,4|5"
-ggplot(summarydata2, aes(x = sex, fill = sex)) +
+ggplot(summarydata3, aes(x = sex, fill = sex)) +
   geom_bar(show.legend = FALSE) +
   scale_x_discrete(name = "Participant Sex") + 
   scale_y_continuous(name = "Number of participants")
@@ -330,7 +361,7 @@ We will now change the default theme to `theme_minimal()`, but you can also try 
 #| echo: true
 #| output-location: column-fragment
 #| code-line-numbers: "5"
-ggplot(summarydata2, aes(x = sex, fill = sex)) +
+ggplot(summarydata3, aes(x = sex, fill = sex)) +
   geom_bar(show.legend = FALSE) +
   scale_x_discrete(name = "Participant Sex") + 
   scale_y_continuous(name = "Number of participants") +
@@ -350,7 +381,7 @@ A popular palette is **viridis**. We can simply add a function/layer to your ggp
 #| output-location: column-fragment
 #| code-line-numbers: "6"
 
-ggplot(summarydata2, aes(x = sex, fill = sex)) +
+ggplot(summarydata3, aes(x = sex, fill = sex)) +
   geom_bar(show.legend = FALSE) +
   scale_x_discrete(name = "Participant Sex") +
   scale_y_continuous(name = "Number of participants") +
@@ -369,7 +400,7 @@ To do so, you can simply add `alpha` to the `geom_bar()` - try changing the valu
 #| output-location: column-fragment
 #| code-line-numbers: "3"
 
-ggplot(summarydata2, aes(x = sex, fill = sex)) +
+ggplot(summarydata3, aes(x = sex, fill = sex)) +
   geom_bar(show.legend = FALSE, 
            alpha = .8) +
   scale_x_discrete(name = "Participant Sex") +
@@ -387,7 +418,7 @@ Imagine that you have several *factors* that you want to use to group your data,
 #| output-location: column-fragment
 #| code-line-numbers: "1|4"
 
-ggplot(summarydata2, aes(x = sex, fill = income)) +
+ggplot(summarydata3, aes(x = sex, fill = income)) +
   geom_bar(
     # the default are stacked bars; we use "dodge" to put them side by side
     position = "dodge",
@@ -411,7 +442,7 @@ You could also use **facets** to divide your data visualizations into several su
 #| echo: true
 #| code-line-numbers: "7"
 
-ggplot(summarydata2, aes(x = sex, fill = sex)) +
+ggplot(summarydata3, aes(x = sex, fill = sex)) +
   geom_bar(show.legend = FALSE, alpha = .8) +
   scale_x_discrete(name = "Participant Sex") +
   scale_y_continuous(name = "Number of participants") +
@@ -432,7 +463,7 @@ You could also use **facets** to divide your data visualizations into several su
 #| echo: true
 #| code-line-numbers: "7-11"
 
-ggplot(summarydata2, aes(x = sex, fill = sex)) +
+ggplot(summarydata3, aes(x = sex, fill = sex)) +
   geom_bar(show.legend = FALSE, alpha = .8) +
   scale_x_discrete(name = "Participant Sex") +
   scale_y_continuous(name = "Number of participants") +
@@ -448,7 +479,7 @@ ggplot(summarydata2, aes(x = sex, fill = sex)) +
 ## A closer look
 
 ```{r}
-ggplot(summarydata2, aes(x = sex, fill = sex)) +
+ggplot(summarydata3, aes(x = sex, fill = sex)) +
   geom_bar(show.legend = FALSE, alpha = .8) +
   scale_x_discrete(name = "Participant Sex") +
   scale_y_continuous(name = "Number of participants") +
@@ -476,7 +507,7 @@ Let's look at the code. How does the code differ from the one for the barplot ab
 #| output-location: column-fragment
 #| code-line-numbers: "|2|4|6"
 
-ggplot(summarydata1, aes(x = income, 
+ggplot(summarydata3, aes(x = income, 
                          y = ahiTotal, # new variable!
                          fill = income)) +
   geom_violin(trim = FALSE, # smooth on edges
@@ -506,7 +537,7 @@ The order of layers is crucial, as the plot will be built up in that order (late
 ::: column
 ```{r}
 #| echo: true
-ggplot(summarydata1, aes(x = income, y = ahiTotal)) +
+ggplot(summarydata3, aes(x = income, y = ahiTotal)) +
   geom_violin() +
   geom_boxplot()
 ```
@@ -515,7 +546,7 @@ ggplot(summarydata1, aes(x = income, y = ahiTotal)) +
 ::: column
 ```{r}
 #| echo: true
-ggplot(summarydata1, aes(x = income, y = ahiTotal)) +
+ggplot(summarydata3, aes(x = income, y = ahiTotal)) +
   geom_boxplot() +
   geom_violin() 
 ```
@@ -531,7 +562,7 @@ If we have continuous data of two variables, we often want to make a **scatter p
 #| output-location: column-fragment
 #| code-line-numbers: "1|2|5"
 
-ggplot(summarydata1, aes(x = age, y = cesdTotal)) +
+ggplot(summarydata3, aes(x = age, y = cesdTotal)) +
   geom_point() +
   # if you don't want the shaded CI, add se = FALSE to this
   geom_smooth(method = lm) 
@@ -585,7 +616,7 @@ Run the code for the violin-boxplot again and save the plot in an object called 
 #| code-line-numbers: "1,20"
 
 viobox <- 
-  ggplot(summarydata1, aes(x = income, y = ahiTotal, fill = income)) +
+  ggplot(summarydata3, aes(x = income, y = ahiTotal, fill = income)) +
   geom_violin(trim = FALSE, alpha = .4) +
   geom_boxplot(width = .2, alpha = .7) +
   scale_x_discrete(
