@@ -1295,5 +1295,875 @@
     "crumbs": [
       "04 Data Visualization"
     ]
+  },
+  {
+    "objectID": "W7_Hypothesis.html#null-hypothesis-significance-testing",
+    "href": "W7_Hypothesis.html#null-hypothesis-significance-testing",
+    "title": "07 Hypothesis Testing",
+    "section": "Null Hypothesis Significance Testing",
+    "text": "Null Hypothesis Significance Testing\nExample: We have two groups (treatment and control). We also have a hypothesis: The treatment group has lower scores on measure X (e.g., symptoms). We have the data (X for both groups), now what?\n\n\nWe take the hypothesis (treatment = lower X than control) and negate it (Treatment not lower/equal X compared to control). This is our null hypothesis.\nThen we look at the data and determine how likely they would be if the null hypothesis were true.\nI.e., we want to know the conditional probability: \\(P(Data|H_0)\\)\nIf the data are very unlikely we reject the null hypothesis in favor of the alternative hypothesis (our hypothesis).\n(If the data are not very unlikely, we stick with - or fail to reject - the null hypothesis.)\n\n\n\nHow would you compare the two groups? Calculate the likelihood that there is a reduction in X between the groups? No, more complicated! And counterintuitive!",
+    "crumbs": [
+      "07 Hypothesis Testing"
+    ]
+  },
+  {
+    "objectID": "W7_Hypothesis.html#the-process-of-nhst",
+    "href": "W7_Hypothesis.html#the-process-of-nhst",
+    "title": "07 Hypothesis Testing",
+    "section": "The Process of NHST",
+    "text": "The Process of NHST\nTo be more precise, we can break down the process of null hypothesis testing in six steps:\n\n\nFormulate a hypothesis that embodies our prediction (before seeing the data)\nSpecify null and alternative hypotheses that reflect the hypothesis formulated in step 1\nCollect some data relevant to the hypothesis\nFit a model to the data that represents the alternative hypothesis and compute a test statistic\nCompute the probability of the observed value of that statistic assuming that the null hypothesis is true\nAssess the “statistical significance” of the result\n\n\n\nLet’s go through these steps, using the NHANES dataset and the research question: Is physical activity related to body mass index (BMI)?",
+    "crumbs": [
+      "07 Hypothesis Testing"
+    ]
+  },
+  {
+    "objectID": "W7_Hypothesis.html#step-1-formulate-a-hypothesis-of-interest",
+    "href": "W7_Hypothesis.html#step-1-formulate-a-hypothesis-of-interest",
+    "title": "07 Hypothesis Testing",
+    "section": "Step 1: Formulate a Hypothesis of Interest",
+    "text": "Step 1: Formulate a Hypothesis of Interest\nHypothesis:\n\n“BMI is greater for people who do not engage in physical activity than for those who do.”\n\nask for hypothesis?",
+    "crumbs": [
+      "07 Hypothesis Testing"
+    ]
+  },
+  {
+    "objectID": "W7_Hypothesis.html#step-2-specify-the-null-and-alternative-hypotheses",
+    "href": "W7_Hypothesis.html#step-2-specify-the-null-and-alternative-hypotheses",
+    "title": "07 Hypothesis Testing",
+    "section": "Step 2: Specify the Null and Alternative Hypotheses",
+    "text": "Step 2: Specify the Null and Alternative Hypotheses\nThe null hypothesis (\\(H_0\\)) is the baseline against which we test our hypothesis of interest.\nThe alternative hypothesis (\\(H_A\\)) describes what we expect if there is an effect.\nNHST works under the assumption that the \\(H_0\\) is true (unless the evidence shows otherwise).\n\nWe also have to decide whether we want to test a non-directional (\\(A \\neq B\\)) or directional (\\(A&gt;B\\) or \\(A&lt;B\\)) hypothesis.\nWhat do we specify if we hypothesize that “BMI is greater…”?\n\n\n\\(H_0 = BMI_{active} \\ge BMI_{inactive}\\)\n\\(H_A = BMI_{active} &lt; BMI_{inactive}\\)\n\nTest against \\(H_0\\): What would we expect the data to look like if there was no effect?\nNon-directional: no direction! :D Directional: prior knowledge",
+    "crumbs": [
+      "07 Hypothesis Testing"
+    ]
+  },
+  {
+    "objectID": "W7_Hypothesis.html#step-3-collect-data",
+    "href": "W7_Hypothesis.html#step-3-collect-data",
+    "title": "07 Hypothesis Testing",
+    "section": "Step 3: Collect Data",
+    "text": "Step 3: Collect Data\nFor this example, we sample 250 individuals from the NHANES dataset.\n\n\n\nSummary of BMI data for active versus inactive individuals\n\n\nPhysActive\nN\nmean\nsd\n\n\n\n\nNo\n131\n30.1942\n8.9851\n\n\nYes\n119\n26.6386\n5.2499",
+    "crumbs": [
+      "07 Hypothesis Testing"
+    ]
+  },
+  {
+    "objectID": "W7_Hypothesis.html#step-4-fit-a-model",
+    "href": "W7_Hypothesis.html#step-4-fit-a-model",
+    "title": "07 Hypothesis Testing",
+    "section": "Step 4: Fit a Model",
+    "text": "Step 4: Fit a Model\nWe want to compute a test statistic that helps us decide whether to reject \\(H_0\\) or not.\n\nThe model we fit needs to quantify (= provide the test statistic) the amount of evidence in favor of \\(H_A\\) relative to the variability of the data.\nThe test statistic will have a probability distribution, allowing us to determine how likely our observed value of the statistic is under \\(H_0\\).\n\n\nIn general, we want to relate an effect (e.g., a mean or a difference of means) to the amount of uncertainty in the data (e.g., the SEM).\n\n\nIn the example, we need a test statistic that tests the difference between two means (we have one BMI mean for each group): The t statistic.\n\\[t = \\frac{\\bar{X_1} - \\bar{X_2}}{\\sqrt{\\frac{S_1^2}{n_1} + \\frac{S_2^2}{n_2}}}\\]\n\\(\\bar{X_1}\\) and \\(\\bar{X_2}\\) are the means of the two group, \\(S_1^2\\) and \\(S_2^2\\) are the estimated variances of the groups, \\(n_1\\) and \\(n_2\\) are the sizes of the two groups.\n\n\n\\(\\sqrt{\\frac{S_1^2}{n_1} + \\frac{S_2^2}{n_2}}\\) is something like the pooled (“averaged”) SEM of both groups.\n\nThe t statistic is appropriate for comparing the means of two groups when the sample sizes are relatively small and the population standard deviation is unknown.\n\\(\\sqrt{\\frac{S_1^2}{n_1}}\\) alone would be the SEM of subsample 1. But we have to add first before we take the square root.\nReason for adding: The variance of a difference between (or sum of) two independent variables is the sum of the variances of each individual variable (\\(Var(A−B)=Var(A)+Var(B)\\))\none can view the the t statistic as a way of quantifying how large the difference between groups is in relation to the sampling variability of the difference between means",
+    "crumbs": [
+      "07 Hypothesis Testing"
+    ]
+  },
+  {
+    "objectID": "W7_Hypothesis.html#the-t-distribution",
+    "href": "W7_Hypothesis.html#the-t-distribution",
+    "title": "07 Hypothesis Testing",
+    "section": "The t Distribution",
+    "text": "The t Distribution\nThe t statistic is distributed according to the t distribution, which looks similar to a normal distribution (the more degrees of freedom, the more “normal”).\nDegrees of freedom for the t test: \\(observations - 2\\) = \\(n_1 + n_2 - 2\\) (when the groups are the same size).\nDegrees of freedom: values that can freely vary when estimating parameters. Usually sample size minus values that you already calculated (e.g. means for the test statistic).\n\n\n\n\n\n\n\n\n\n\nIf the group sizes are unequal: \\(\\mathrm{d.f.} = \\frac{\\left(\\frac{S_1^2}{n_1} + \\frac{S_2^2}{n_2}\\right)^2}{\\frac{\\left(S_1^2/n_1\\right)^2}{n_1-1} + \\frac{\\left(S_2^2/n_2\\right)^2}{n_2-1}}\\)\nFortunately, R does all these calculations for us :)\n\nDF: we have calculated two means and have thus given up two DFs (these are fixed already)\nWill be smaller if sample sizes unequal (here 241.12 vs 248 for equal)\nDegrees of freedom are the number of independent values that a statistical analysis can estimate. You can also think of it as the number of values that are free to vary as you estimate parameters",
+    "crumbs": [
+      "07 Hypothesis Testing"
+    ]
+  },
+  {
+    "objectID": "W7_Hypothesis.html#step-5-determine-the-probability-of-the-observed-result-under-the-null-hypothesis",
+    "href": "W7_Hypothesis.html#step-5-determine-the-probability-of-the-observed-result-under-the-null-hypothesis",
+    "title": "07 Hypothesis Testing",
+    "section": "Step 5: Determine the Probability of the Observed Result under the Null Hypothesis",
+    "text": "Step 5: Determine the Probability of the Observed Result under the Null Hypothesis\nWe do not check likelihood of the alternative distribution or likelihood that the null hypothesis is true, but rather:\nHow likely is it, given that we assume \\(H_0\\) is true, to observe a statistic at least as extreme as the one we observed.\n--&gt; We need to know the distribution of the expected statistic, assuming \\(H_0\\) is true. Then we can calculate how (un-)likely it is to find the statistic (or a more extreme value) we found in our data.\n\n\n\n\n\n\n\n\n\n\n\ncounter-intuitive: We check the nulldistribution not the one of \\(H_A\\)! But we also don’t check how likely it is that \\(H_0\\) is true, but rather the likelihood under the null hypothesis of observing a statistic at least as extreme as the one we observed.\nat least as extreme: Prob of each particular value = 0\ntry to find out how weird statistic found is (or weirder) –&gt; count all weird(er) possibilities",
+    "crumbs": [
+      "07 Hypothesis Testing"
+    ]
+  },
+  {
+    "objectID": "W7_Hypothesis.html#a-simple-example",
+    "href": "W7_Hypothesis.html#a-simple-example",
+    "title": "07 Hypothesis Testing",
+    "section": "A Simple Example",
+    "text": "A Simple Example\nIs a coin biased if we flip a coin 100x and we get 70 heads?\n\\(H_0: P(heads) \\le 0.5\\) and \\(H_A: P(heads) &gt; 0.5\\)\nTest statistic = number of heads counted.\nHow likely is it that we would observe 70 or more heads if the coin is unbiased (chance of 50% for heads)?\n\nIf we flip a (fair) coin 100 times, we would get the following distribution (100000 replications):\n\n\n\n\n\n\n\n\n\nIt is very unlikely to get 70 heads if the coin is fair!\n\nfair coin: null distribution",
+    "crumbs": [
+      "07 Hypothesis Testing"
+    ]
+  },
+  {
+    "objectID": "W7_Hypothesis.html#p-value",
+    "href": "W7_Hypothesis.html#p-value",
+    "title": "07 Hypothesis Testing",
+    "section": "P-Value",
+    "text": "P-Value\nLet’s go back to out BMI example.\nWe first need to calculate the t statistic:\n\n\n\nSummary of BMI data for active versus inactive individuals\n\n\nPhysActive\nN\nmean\nsd\n\n\n\n\nNo\n131\n30.1942\n8.9851\n\n\nYes\n119\n26.6386\n5.2499\n\n\n\n\n\n\\[t = \\frac{\\bar{X_1} - \\bar{X_2}}{\\sqrt{\\frac{S_1^2}{n_1} + \\frac{S_2^2}{n_2}}}\\]\n\\[t = \\frac{30 - 27}{\\sqrt{\\frac{9^2}{131} + \\frac{5.2^2}{119}}}\\]\n\\[t = 3.86\\]\n\nThe question is: What is the likelihood that we would find a t statistic of this size or more extreme given the number of degrees of freedom and if the true difference between the groups is zero.\n\n\n\n\\(t\\) statistics if we use the unrounded values!",
+    "crumbs": [
+      "07 Hypothesis Testing"
+    ]
+  },
+  {
+    "objectID": "W7_Hypothesis.html#p-value-2",
+    "href": "W7_Hypothesis.html#p-value-2",
+    "title": "07 Hypothesis Testing",
+    "section": "P-Value 2",
+    "text": "P-Value 2\nWe can use the t distribution to calculate this probability. We just need the degrees of freedom, which are \\(DF = 241.12\\), and we can then use all these values (e.g. in a function in R):\n\n\n[1] 7.282672e-05\n\n\nThis small probability tells us that our observed t value is relatively unlikely if \\(H_0\\) is really true.\n\nThis is the p-Value for a directional hypothesis. In this case, we only looked at the upper tail probability. With a non-directional hypothesis, we would want to account for both tail probabilities, i.e. how likely it is that a \\(t &gt; 3.86\\) OR \\(t &lt; -3.86\\) is found. In this case, we can simply multiply the p-Value found above by 2 (since it is a symmetric distribution):\n\\(p = 0.000145\\)",
+    "crumbs": [
+      "07 Hypothesis Testing"
+    ]
+  },
+  {
+    "objectID": "W7_Hypothesis.html#p-value-using-randomization",
+    "href": "W7_Hypothesis.html#p-value-using-randomization",
+    "title": "07 Hypothesis Testing",
+    "section": "P-Value using Randomization",
+    "text": "P-Value using Randomization\nWe can also use our simulation skills to determine the null distribution!\n\nWe can randomly rearrange (or permute) data so that no relationship is present, e.g. assigning group membership to the participants randomly. In this case, \\(H_0\\) should thus be true.\nWe would do this a large amount of times (e.g. 10000), calculate the t statistics for each iteration, and draw a histogram to show the distribution.",
+    "crumbs": [
+      "07 Hypothesis Testing"
+    ]
+  },
+  {
+    "objectID": "W7_Hypothesis.html#p-values-using-randomization-2",
+    "href": "W7_Hypothesis.html#p-values-using-randomization-2",
+    "title": "07 Hypothesis Testing",
+    "section": "P-Values using Randomization 2",
+    "text": "P-Values using Randomization 2\n\n# create function to shuffle BMI data\nshuffleBMIstat &lt;- function() {\n  bmiDataShuffled &lt;- \n    NHANES_sample %&gt;%\n    select(BMI, PhysActive) %&gt;%\n    mutate(\n      BMI = sample(BMI) #randomly shuffle BMI values\n    )\n  # compute the difference\n  simResult &lt;- t.test( #t.test function is more convenient than pt function!\n    BMI ~ PhysActive,\n    data = bmiDataShuffled,\n  )\n  return(simResult$statistic)\n}\n# run function 5000 times and save output\nnRuns &lt;- 5000\nmeanDiffSimDf &lt;- tibble(meanDiffSim = replicate(nRuns, shuffleBMIstat()))\n#run t test of actual data\nbmtTTest &lt;- \n  t.test(\n  BMI ~ PhysActive,\n  data = NHANES_sample,\n  alternative = \"greater\"\n)\n#compare actual data with simulation\nbmiPvalRand &lt;- \n  mean(meanDiffSimDf$meanDiffSim &gt;= bmtTTest$statistic)\n\n#plot everything\nplot = meanDiffSimDf %&gt;% \n  ggplot(aes(meanDiffSim)) +\n  geom_histogram(bins = 200) +\n  geom_vline(xintercept = bmtTTest$statistic, color = \"blue\") +\n  xlab(\"T stat: BMI difference between groups\") +\n  geom_histogram(\n    data = meanDiffSimDf %&gt;% \n      filter(meanDiffSim &gt;= bmtTTest$statistic), \n    aes(meanDiffSim), \n    bins = 200, \n    fill = \"gray\"\n  )\nprint(plot)",
+    "crumbs": [
+      "07 Hypothesis Testing"
+    ]
+  },
+  {
+    "objectID": "W7_Hypothesis.html#p-values-using-randomization-3",
+    "href": "W7_Hypothesis.html#p-values-using-randomization-3",
+    "title": "07 Hypothesis Testing",
+    "section": "P-Values using Randomization 3",
+    "text": "P-Values using Randomization 3\n\nThe blue line is the observed t statistic. We can calculate a p-Value by counting how many of the simulated t-values are at least as extreme as our observed one and dividing it by the number of simulations. The p-value obtained from randomization (0.000000) is kind of similar to the one obtained using the t distribution (0.000075).\n\nUsing simulations to get the null distribution can be helpful if the assumptions (normal distribution in each group) are violated or if we don’t know the theoretical distribution of the test statistic!\n\nexchangeability: We can use permutations if all observsations are distributed in the same way, such that we can shuffle them without changing the overall distribution.\nNot the case if we have dependent observations, e.g. siblings…",
+    "crumbs": [
+      "07 Hypothesis Testing"
+    ]
+  },
+  {
+    "objectID": "W7_Hypothesis.html#step-6-assess-the-statistical-significance-of-the-result",
+    "href": "W7_Hypothesis.html#step-6-assess-the-statistical-significance-of-the-result",
+    "title": "07 Hypothesis Testing",
+    "section": "Step 6: Assess the “Statistical Significance” of the Result",
+    "text": "Step 6: Assess the “Statistical Significance” of the Result\nIs the p-value determined small enough to reject the null hypothesis (and thus conclude that the alternative hypothesis is true)?\n\nTraditionally, we reject \\(H_0\\) if the p-value is less than 0.05. (Fisher’s approach)\n\n\n(Either there is an effect/\\(H_A\\) is true or there is a small chance (5%) that there is actually no effect but we coincidentally found such a large value –&gt; false positive)\n\n\nNeyman-Pearson approach: In the long run, we will know how often we are wrong:\n\n\\(\\alpha = .05\\) (false positives or Type I error: We reject \\(H_0\\) although it is correct),\n\\(\\beta = .2\\) (false negatives or Type II error: We accept \\(H_0\\) although it is wrong),\nWe will be correct if we reject \\(H_0\\) when it is wrong (there is actually a difference/an effect) or if we do not reject \\(H_0\\) when it is correct (and there is no difference between groups).\n\nIn both cases, a significance level of \\(\\alpha = .05\\) is usually used.\n\nHow much evidence do we require?\n0.05 Fisher never intended it to be fixed\nBefore computers, tables were used, and all tables had .05 in it!\nFisher: Evidence for hypothesis, NP: long-run error rate",
+    "crumbs": [
+      "07 Hypothesis Testing"
+    ]
+  },
+  {
+    "objectID": "W7_Hypothesis.html#what-does-a-significant-result-mean",
+    "href": "W7_Hypothesis.html#what-does-a-significant-result-mean",
+    "title": "07 Hypothesis Testing",
+    "section": "What does a significant result mean?",
+    "text": "What does a significant result mean?\nThere is a lot of discussion about the usefulness of using \\(\\alpha = .05\\) as well as about the interpretation of a significant result/certain p-value!\n\n\nA p-value of .01 does….\n\nNOT mean that the probability that \\(H_0\\) is true is 1%!\n\nWe tested \\(P(data|H_0)\\) not \\(P(H_0|data)\\)!\n\nNOT mean that the probability that you’re making a wrong decision is 1%!\n\nThis would also be \\(P(H_0|data)\\)! p-values are probabilities of data (under \\(H_0\\)), not probabilities of hypotheses! And we cannot easily use Bayes to turn the condition because we would need additional information like the prior probability of an alternative hypothesis being true.\n\nNOT mean that you would get the same significance 99% of the time if you repeated the study.\n\nThe p-value is a statement about the likelihood of one particular dataset under the null.\n\nNOT mean that you found a practically important effect.\n\nDifference between statistical significance and practical significance! Effect sizes more important. (Statistical significance depends on sample size!)",
+    "crumbs": [
+      "07 Hypothesis Testing"
+    ]
+  },
+  {
+    "objectID": "W7_Hypothesis.html#multiple-testing",
+    "href": "W7_Hypothesis.html#multiple-testing",
+    "title": "07 Hypothesis Testing",
+    "section": "Multiple Testing",
+    "text": "Multiple Testing\nNowadays, we often have huge datasets in neuroscience, e.g. collecting brain imaging data of thousands of voxels or quantifying the entire genome.\n\nLet’s look at genome-wide associations studies (GWAS). We have more than a million places in where the genome could differ. If we want to know whether schizophrenia was associated with any of these differences, we would do ~1.000.000 tests! If we simply used \\(\\alpha \\le .05\\) as a threshold, we would get a lot of (\\(1000000 * .05 = 500\\)!) false positives, even if no true effect is present at all.\n\n\nIn this case, we have a lot of dependent tests, which form a family of tests. In such a case, we need to control the family-wise error rate, e.g. by fixing it to a total of \\(\\alpha \\le .05\\) (i.e. the probability of making any Type I error in our study is controlled at .05).\n\n\nOne option is to use the Bonferroni correction, in which we divide .05 by the number of tests (e.g. 1.000.000) and use the new value (\\(\\alpha \\le .000005\\)) as threshold for each individual test.\n\n\nThis is extremely conservative and often results in false negative test results.\n\n\nFor an interesting example what can happen when not correcting for multiple comparisons, see this dead fish showing significant brain activity (Link).",
+    "crumbs": [
+      "07 Hypothesis Testing"
+    ]
+  },
+  {
+    "objectID": "W7_Hypothesis.html#confidence-intervals",
+    "href": "W7_Hypothesis.html#confidence-intervals",
+    "title": "07 Hypothesis Testing",
+    "section": "Confidence Intervals",
+    "text": "Confidence Intervals\nSingle value statistic (e.g. t-value, mean…) = point estimate\n\nWe know from the sampling error discussion that each point estimate comes with some uncertainty, described by the standard error.\nRemember, the SEM (standard error of the mean) was calculated with the sample standard deviation \\(\\hat{\\sigma}\\) and the square root of the sample size \\(n\\):\n\\[SEM = \\frac{\\hat{\\sigma}}{\\sqrt{n}}\\]\n\\(n\\) is generally under our control (\\(\\hat{\\sigma}\\) is unknown but fixed*), and we can thus decrease our uncertainty by increasing the sample size.\n\n\n\nWe can more directly describe our uncertainty with confidence intervals (CI), which provides a range of values for our parameter estimate that are consistent with our data! The wider the CI, the more uncertain we are about our estimate.\n\n\n* In practice, we can acquire homogeneous samples (like students) or heterogeneous samples (like extreme groups). This will, however, influence our generalizability.",
+    "crumbs": [
+      "07 Hypothesis Testing"
+    ]
+  },
+  {
+    "objectID": "W7_Hypothesis.html#confidence-intervals-2",
+    "href": "W7_Hypothesis.html#confidence-intervals-2",
+    "title": "07 Hypothesis Testing",
+    "section": "Confidence Intervals 2",
+    "text": "Confidence Intervals 2\nBecause the CI depends on the SEM, which decreases with sample size, the CI also gets narrower with increasing sample size:\n\n\nif we sample the whole population, we know the population parameter and there is no uncertainty at all!\nRange of possible values (estimate) in concordance with the data",
+    "crumbs": [
+      "07 Hypothesis Testing"
+    ]
+  },
+  {
+    "objectID": "W7_Hypothesis.html#confidence-intervals-3",
+    "href": "W7_Hypothesis.html#confidence-intervals-3",
+    "title": "07 Hypothesis Testing",
+    "section": "Confidence Intervals 3",
+    "text": "Confidence Intervals 3\nJust like p-values, confidence intervals can be confusing because they are counter-intuitive: A 95% CI for a statistic does NOT mean that we can have 95% confidence that the true parameter falls within this interval!\nIt is, again, the long-run probability: It will contain the true population parameter 95% of the time in the long-run.\nLet’s sample 100 times with \\(n = 250\\) from the NHANES data and calculate CIs. We use the NHANES mean as true score (dashed line) and check how often the CI misses to include it: 5% of the time.\n\n\nbut: new experiment = new estimate (under exact same conditions would work)!",
+    "crumbs": [
+      "07 Hypothesis Testing"
+    ]
+  },
+  {
+    "objectID": "W7_Hypothesis.html#calculating-the-ci",
+    "href": "W7_Hypothesis.html#calculating-the-ci",
+    "title": "07 Hypothesis Testing",
+    "section": "Calculating the CI",
+    "text": "Calculating the CI\nWe calculate the CI as follows:\n\\(CI = \\text{point estimate} \\pm \\text{critical value} * \\text{standard error}\\)\nThe “critical value” depends on the sampling distribution. Most of the time, we will use the normal distribution.\n\nCI depends on the confidence level (95%, critical value), the sample size and the variability in the data (both SE)",
+    "crumbs": [
+      "07 Hypothesis Testing"
+    ]
+  },
+  {
+    "objectID": "W7_Hypothesis.html#ci-using-the-normal-distribution",
+    "href": "W7_Hypothesis.html#ci-using-the-normal-distribution",
+    "title": "07 Hypothesis Testing",
+    "section": "CI using the Normal Distribution",
+    "text": "CI using the Normal Distribution\nThe critical value are the values of the standard normal distribution that capture 95% (in case of a 95% CI) of the distribution, i.e. the 2.5th and 97.5th percentile.\n\nqnorm(p=c(.025,.975))\n\n[1] -1.959964  1.959964\n\n\nThe CI of the mean would thus be:\n\\(CI = \\bar{X} \\pm 1.96*SE\\)\nOur mean weight in the NHANES sample was 79.92 kg and the SE was \\(\\frac{SD_{weight}}{\\sqrt{n}} = 1.35\\) (for a random \\(n=250\\) subsample)*.\n\nThe lower boundary of the CI of the mean would then be \\(CI = 79.92 - 1.96 * 1.35 = 77.28\\) and the upper \\(CI = 79.92 + 1.96 * 1.35 = 82.56\\). We would write this as [77.28, 82.56].\n\n* In practice, both the mean and standard deviation will be subject to sampling error, i.e., CIs will differ both in location and size despite having the same sample size (cf. plot 2 slides ago)",
+    "crumbs": [
+      "07 Hypothesis Testing"
+    ]
+  },
+  {
+    "objectID": "W7_Hypothesis.html#ci-using-the-t-distribution",
+    "href": "W7_Hypothesis.html#ci-using-the-t-distribution",
+    "title": "07 Hypothesis Testing",
+    "section": "CI using the t Distribution",
+    "text": "CI using the t Distribution\nIf we don’t know the population standard deviation, which is usually the case, it is more appropriate to use the t distribution.\nIn this case, we use the critical value of the t distribution:\n\nqt(p = c(.025, .975), 250) #t distribution depends on sample size! =&gt; n = 250\n\n[1] -1.969498  1.969498\n\n\nFor the NHANES weight example, the CI would be: \\(79.92 \\pm 1.97 * 1.35 = [77.15, 82.58]\\).\nThe CI for a t distribution is always larger than for a normal distribution. In practice, this difference is negligible at \\(n \\ge 30\\) (1.984 vs. 1.960).\n\nThe t distribution is wider than the normal distribution (especially for smaller samples), which means that the CI will be slightly wider -&gt; extra uncertainty smaller samples.\npopulation parameter hast a fixed value, so it either falls into CI or not. (Doesn’t make sense to talk about probability of it)",
+    "crumbs": [
+      "07 Hypothesis Testing"
+    ]
+  },
+  {
+    "objectID": "W7_Hypothesis.html#ci-using-the-bootstrap",
+    "href": "W7_Hypothesis.html#ci-using-the-bootstrap",
+    "title": "07 Hypothesis Testing",
+    "section": "CI using the Bootstrap",
+    "text": "CI using the Bootstrap\nIf we can’t assume normality or don’t know the sampling distribution, we can also use the bootstrap to compute the CI.\n\nReminder: bootstrap = resampling with replacement, using this distribution as the sampling distribution!\n\n\nIf we use an R function for bootstrapping (boot()), we get CI estimates that are fairly close to the ones calculated:\n\n\nBOOTSTRAP CONFIDENCE INTERVAL CALCULATIONS\nBased on 1000 bootstrap replicates\n\nCALL : \nboot.ci(boot.out = bs, type = \"perc\")\n\nIntervals : \nLevel     Percentile     \n95%   (78.41, 83.81 )  \nCalculations and Intervals on Original Scale\n\n\n\n\n\n\n\n\n\nMethod\nCI\n\n\n\n\nnormal distribution\n[77.28, 82.56]\n\n\nt distribution\n[77.15, 82.58]\n\n\nbootstrap\n[78.41, 83.81]\n\n\n\n\n\nNote: CIs from the normal and t distribution are always symmetrical around the mean (here: 79.92), bootstrapped intervals need not be.",
+    "crumbs": [
+      "07 Hypothesis Testing"
+    ]
+  },
+  {
+    "objectID": "W7_Hypothesis.html#relationship-of-cis-to-hypothesis-tests",
+    "href": "W7_Hypothesis.html#relationship-of-cis-to-hypothesis-tests",
+    "title": "07 Hypothesis Testing",
+    "section": "Relationship of CIs to Hypothesis Tests",
+    "text": "Relationship of CIs to Hypothesis Tests\nIf the CI does not include the value of the null hypothesis (usually 0), then the associated two-sided one sample test would be significant.\n\nIf we want to compare two conditions, it gets trickier.\n\nIf each mean is contained within the CI of the other mean, then there’s definitely no significant difference.\nIf there is no overlap between CIs, then there is certainly a significant difference (two-sidedly).\nIf the CIs overlap (but don’t contain the other mean), it depends on the relative variability of the two variables\n\nIn general, avoid this “eyeball test” and look at the p value!\nNote: Slightly overlapping CIs can still be significant (e.g., one sided hypothesis)",
+    "crumbs": [
+      "07 Hypothesis Testing"
+    ]
+  },
+  {
+    "objectID": "W7_Hypothesis.html#effect-sizes",
+    "href": "W7_Hypothesis.html#effect-sizes",
+    "title": "07 Hypothesis Testing",
+    "section": "Effect Sizes",
+    "text": "Effect Sizes\nPractical significance!\nWe need a standard way to describe the size of an effect.\nAn effect size is a standardized measurement that compares the size of an effect to e.g. the variability of the statistic. This is also referred to as signal-to-noise ratio.\nThere are many different variants of effect sizes!",
+    "crumbs": [
+      "07 Hypothesis Testing"
+    ]
+  },
+  {
+    "objectID": "W7_Hypothesis.html#cohens-d",
+    "href": "W7_Hypothesis.html#cohens-d",
+    "title": "07 Hypothesis Testing",
+    "section": "Cohen’s d",
+    "text": "Cohen’s d\nCohen’s d is used to quantify the difference between two means, in terms of their SD:\n\\[d = \\frac{\\bar{X_1} - \\bar{X}_2}{s}\\]\nwhere \\(\\hat{X_1}\\) and \\(\\hat{X_2}\\) are the means of the two groups and \\(s\\) is the pooled SD:\n\\[s = \\sqrt{\\frac{(n_1 - 1)s^2_1 + (n_2 - 1)s^2_2 }{n_1 +n_2 -2}}\\]\nwhich is a combination of both groups’ SDs (\\(s_1\\) and \\(s_2\\)) weighted by their sample size (\\(n_1\\) and \\(n_2\\)).\n\nNote that this is very similar to the t statistic, only the denominator differs:\nt = SEM, d = SD of the data\n–&gt; d will not grow with sample size but remain stable!",
+    "crumbs": [
+      "07 Hypothesis Testing"
+    ]
+  },
+  {
+    "objectID": "W7_Hypothesis.html#cohens-d-2",
+    "href": "W7_Hypothesis.html#cohens-d-2",
+    "title": "07 Hypothesis Testing",
+    "section": "Cohen’s d 2",
+    "text": "Cohen’s d 2\nThere is a commonly used interpretation of Cohen’s d (although it is criticized to use these cutoffs!):\n\n\n\nInterpetation of Cohen’s d\n\n\nd\nInterpretation\n\n\n\n\n0.0 - 0.2\nnegligible\n\n\n0.2 - 0.5\nsmall\n\n\n0.5 - 0.8\nmedium\n\n\n&gt; 0.8\nlarge\n\n\n\n\n\n\nEven with a large effect of \\(d = 1.78\\) (as in the NHANES data set), the distributions still overlap greatly!\n\n\n\n\n\n\n\n\n\n\nSmall effect but huge total impact: Psychosocial stress due to Covid-19 (deployed to a whole population)",
+    "crumbs": [
+      "07 Hypothesis Testing"
+    ]
+  },
+  {
+    "objectID": "W7_Hypothesis.html#pearsons-r",
+    "href": "W7_Hypothesis.html#pearsons-r",
+    "title": "07 Hypothesis Testing",
+    "section": "Pearson’s r",
+    "text": "Pearson’s r\nPearson’s r is a correlation coefficient, and thus a measure of the strength of a linear relationship between two continuous variables.\nr can vary from -1 to 1: -1 is a perfect negative relationship, 0 no (linear) relationship, and 1 a perfect positive relationship. Try your skills eye-balling the size of a correlation: https://www.guessthecorrelation.com/\n\n\nmore on correlations later in the semester!",
+    "crumbs": [
+      "07 Hypothesis Testing"
+    ]
+  },
+  {
+    "objectID": "W7_Hypothesis.html#odds-ratio",
+    "href": "W7_Hypothesis.html#odds-ratio",
+    "title": "07 Hypothesis Testing",
+    "section": "Odds Ratio",
+    "text": "Odds Ratio\nFor binary variables, the odds ratio is a useful effect size.\nOdds describes the relative likelihood of some event happening versus not happening:\n\\[\n\\text{odds of A} = \\frac{P(A)}{P(\\neg{A})}\n\\]\nOdds ratio is simply the ratio of two odds, i.e. \\(\\frac{\\text{odds of A}}{\\text{odds of B}}\\).\n\nExample:\n\n\n\nLung cancer occurrence separately for current smokers and those who have never smoked\n\n\nStatus\nNeverSmoked\nCurrentSmoker\n\n\n\n\nNo Cancer\n2883\n3829\n\n\nCancer\n220\n6784\n\n\n\n\n\n\\[OR = \\frac{\\frac{220}{220+2883}}{\\frac{6784}{6784+3829}} = 23.22 \\]\nThe odds ratio of 23.22 tells us that the odds of lung cancer in smokers are roughly 23x higher than that of non-smokers!",
+    "crumbs": [
+      "07 Hypothesis Testing"
+    ]
+  },
+  {
+    "objectID": "W7_Hypothesis.html#statistical-power",
+    "href": "W7_Hypothesis.html#statistical-power",
+    "title": "07 Hypothesis Testing",
+    "section": "Statistical Power",
+    "text": "Statistical Power\nRemember: Type I and Type II error!\nTolerance for Type I errors set to \\(\\alpha = 0.05\\), which is very low –&gt; we want to avoid this error!\nWhat about Type II errors?\n\nType II = failing to reject \\(H_0\\) although an effect exists (often set at \\(\\beta = 0.20\\), i.e., a statistical power of \\(80\\%\\)).\nBut \\(\\beta\\) also depends on the effect size: The likelihood of finding a large effect is higher than finding a small effect (at constant \\(n\\))!\n\n\nStatistical power is the complement of the Type II error:\nThe likelihood of finding a positive result given that it exits!\n\\[power = 1 - \\beta\\]\n\n\nStatistical power is affected by three factors:\n\nsample size (larger n = more power)\neffect size (larger effect = more power)\nType I error rate (smaller Type I error = less power)\n\n\nType I: false positives\nType II: false negatives",
+    "crumbs": [
+      "07 Hypothesis Testing"
+    ]
+  },
+  {
+    "objectID": "W7_Hypothesis.html#statistical-power-2",
+    "href": "W7_Hypothesis.html#statistical-power-2",
+    "title": "07 Hypothesis Testing",
+    "section": "Statistical Power 2",
+    "text": "Statistical Power 2\nHere, we can see how these three factors influence the power (i.e. the proportion of significant results found):\n\nThe black dotted line denotes the standard 80% power that is often aimed at.\n\nEven with \\(n = 96\\), we have only little power to detect a small effect (\\(d = 0.2\\)): Only ~25% of studies would find the true effect. This means doing this study would be futile, we would likely fail to find the true effect.\n\n\nTherefore, we would do a power analysis before we even run the study - to determine the necessary sample size for a well-powered study that would be able to find an effect if the effect is true.\nFurthermore, positive findings from an underpowered study are more likely to be false positive!\n\nMore on that in Chapter 18 of ST21!",
+    "crumbs": [
+      "07 Hypothesis Testing"
+    ]
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#chi²-test-general",
+    "href": "W8_ModelingRelationships.html#chi²-test-general",
+    "title": "08 Modeling Relationships",
+    "section": "Chi² Test: General",
+    "text": "Chi² Test: General\nWe will first focus on modeling categorical relationships (of variables that are qualitative!).\n\nThese data are usually expressed in terms of counts.\n\n\nExample: Candy colors\nBag of candy: 30 chocolates, 33 licorices, and 37 gumballs.\n\n\nIs the distribution fair (i.e., 1/3rd of the bag = each candy) and the fact that there are only 30 chocolates a random accident?\n\n\nWhat is the likelihood that the count would come out this way (or even more extreme) if the true probability of each candy type is the same?\n\nCounts: For each combination of variables, how many observations do we have?\nIf the machine really sorts on average 1/3 of each in each bag? How much is due to chance?",
+    "crumbs": [
+      "08 Modeling Relationships"
+    ]
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#chi²-test-one-variable",
+    "href": "W8_ModelingRelationships.html#chi²-test-one-variable",
+    "title": "08 Modeling Relationships",
+    "section": "Chi² Test: One Variable",
+    "text": "Chi² Test: One Variable\nThe Chi² test checks whether observed counts differ from expected values (\\(H_0\\)).\n\\[\n\\chi^2 = \\sum_i\\frac{(observed_i - expected_i)^2}{expected_i}\n\\]\n\nThe null hypothesis in our example is that the proportion of each type of candy is equal (1/3 or ~33.33).\nIf we plug in our values from above, we would calculate \\(\\chi^2\\) like this:\n\\[ \\chi^2 = \\frac{(30 - 33.33)^2}{33.33} + \\frac{(33 - 33.33)^2}{33.33} + \\frac{(37 - 33.33)^2}{33.33} = 0.74 \\]\n\ntake the difference between observed and expected (33.33), square it, divide it by expected 33.33 and add everything up",
+    "crumbs": [
+      "08 Modeling Relationships"
+    ]
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#chi²-test-general-2",
+    "href": "W8_ModelingRelationships.html#chi²-test-general-2",
+    "title": "08 Modeling Relationships",
+    "section": "Chi² Test: General 2",
+    "text": "Chi² Test: General 2\nOn its own, the \\(\\chi^2\\) statistic is not interpretable - it depends on its distribution.\nThe shape of the chi-squared distribution depends on the degrees of freedom (much like the t distribution), which is the number of category levels \\(k-1\\).\n\nFor the candy example, we use a chi-squared distribution with DFs = 2 (3 candy categories minus one). If we’d look at the distribution and found \\(\\chi^2 = .74\\) on the x-axis, we would see that it does not fall far into the tail of the distribution but is rather in the middle. If we calculate the p-value, we’d get \\(P(\\chi^2 &gt; .74) = 0.691\\).\nIt is thus not particularly surprising to find this distribution of candies and we would not reject \\(H_0\\) (equal proportions).",
+    "crumbs": [
+      "08 Modeling Relationships"
+    ]
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#contingency-tables-and-the-two-way-test",
+    "href": "W8_ModelingRelationships.html#contingency-tables-and-the-two-way-test",
+    "title": "08 Modeling Relationships",
+    "section": "Contingency Tables and the Two-Way Test",
+    "text": "Contingency Tables and the Two-Way Test\nThe \\(\\chi^2\\) test is also used to test whether two categorical variables are related to each other.\n\nExample: Are Black drivers more likely to be pulled over by police than white drivers?\nWe have two variables: Skin color (black vs white) and being pulled over (true vs. false). We can represent the data in a contingency table (remember: the count() function was helpful to do this in R):\n\n\n\nContingency table for police search data\n\n\nsearched\nBlack\nWhite\nBlack (relative)\nWhite (relative)\n\n\n\n\nFALSE\n36244\n239241\n0.1295298\n0.8550062\n\n\nTRUE\n1219\n3108\n0.0043565\n0.0111075\n\n\n\n\n\n\n\nIf there is no relationship between skin color and being searched, the frequencies of searches would be proportional to the frequencies of skin color. This would be our expected values. We can determine them using probabilities:\n\n\n\n\nBlack\nWhite\n\n\n\n\n\nNot searched\n\\(P(\\neg S)*P(B)\\)\n\\(P(\\neg S)*P(W)\\)\n\\(P(\\neg S)\\)\n\n\nSearched\n\\(P(S)*P(B)\\)\n\\(P(S)*P(W)\\)\n\\(P(S)\\)\n\n\n\n\\(P(B)\\)\n\\(P(W)\\)\n\\(100\\%\\)\n\n\n\nRemember: You can only multiply two probabilities to get their conjoint probability if they are independent. Here, we assume independence to calculate expected values and then check how much our observed values deviate from independence.\n\nProbabilities: Because we expect the variables to be unrelated, we can calculate the joint probability as the product of the marginal probabilities:\n\\(P(X \\cap Y) = P(X) * P(Y)\\)\nMarginal probabilities are the prob of each event occuring regardless of other events (in the margins of the table!)",
+    "crumbs": [
+      "08 Modeling Relationships"
+    ]
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#chi²-test-two-variables",
+    "href": "W8_ModelingRelationships.html#chi²-test-two-variables",
+    "title": "08 Modeling Relationships",
+    "section": "Chi² Test: Two Variables",
+    "text": "Chi² Test: Two Variables\nIf we compute the standardized squared difference between observed and expected values, we can sum them up to get \\(\\chi^2 = 828.3\\)\n\n\n\nContingency table for police search data\n\n\nsearched\ndriver_race\nn\nexpected\nstdSqDiff\n\n\n\n\nFALSE\nBlack\n36244\n36883.67\n11.09\n\n\nTRUE\nBlack\n1219\n579.33\n706.31\n\n\nFALSE\nWhite\n239241\n238601.33\n1.71\n\n\nTRUE\nWhite\n3108\n3747.67\n109.18\n\n\n\n\n\nWe can then compute the p-value using a chi-squared distribution with \\(DF = (levels_{var1} - 1) * (levels_{var2} - 1) = (2-1) * (2-1) = 1\\)\nWe can also calculate a \\(\\chi^2\\) test easily in R:\n\nchisq.test(summaryDf2wayTable, correct = FALSE)\n\n\n    Pearson's Chi-squared test\n\ndata:  summaryDf2wayTable\nX-squared = 828.3, df = 1, p-value &lt; 2.2e-16\n\n\nThe results indicate that the data are highly unlikely if there was no true relationship between skin color and police searches! We would thus reject \\(H_0\\).\nQuestion: What is the direction of the observed relationship?\n\nDF: computing the expected frequencies requires three values: total number of observations and marg probs each variable. thus only one of the four values can vary freely.",
+    "crumbs": [
+      "08 Modeling Relationships"
+    ]
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#standardized-residuals",
+    "href": "W8_ModelingRelationships.html#standardized-residuals",
+    "title": "08 Modeling Relationships",
+    "section": "Standardized Residuals",
+    "text": "Standardized Residuals\nIf we want to know not only whether but also how the data differ from what we would expect under \\(H_0\\), we can examine the residuals of the model.\nThe residuals tell us for each cell how much the observed data deviates from the expected data.\nTo make the residuals better comparable, we will look at the standardized residuals:\n\\[\n\\text{standardized residual}_{ij} = \\frac{observed_{ij} - expected_{ij}}{\\sqrt{expected_{ij}}}\n\\]\nwhere \\(i\\) and \\(j\\) are the rows and columns respectively.\n\nNegative residuals indicate an observed value smaller than expected.\n\n\n\nSummary of standardized residuals for police stop data\n\n\nsearched\ndriver_race\nStandardized residuals\n\n\n\n\nFALSE\nBlack\n-3.330746\n\n\nTRUE\nBlack\n26.576456\n\n\nFALSE\nWhite\n1.309550\n\n\nTRUE\nWhite\n-10.449072\n\n\n\n\n\n\nraw residuals depend on number of observations!\nBlack individuals are searched way more often than expected –&gt; helps us intepret significant results.",
+    "crumbs": [
+      "08 Modeling Relationships"
+    ]
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#odds-ratios",
+    "href": "W8_ModelingRelationships.html#odds-ratios",
+    "title": "08 Modeling Relationships",
+    "section": "Odds Ratios",
+    "text": "Odds Ratios\nAlternatively, we can represent the relative likelihood of different outcomes as odds ratios:\n\\[\nodds_{searched|black} = \\frac{N(searched\\cap black)}{N(\\neg searched \\cap black)} = \\frac{1219}{36244} = 0.034\n\\]\n\\[\nodds_{searched|white} = \\frac{N(searched \\cap white)}{N(\\neg searched \\cap white)} = \\frac{3108}{239241} = 0.013\n\\]\n\\[\nodds\\ ratio = \\frac{odds(searched|black)}{odds(searched|white)} = 2.59\n\\]\nThe odds of being searched are 2.59x higher for Black vs. white drivers!",
+    "crumbs": [
+      "08 Modeling Relationships"
+    ]
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#simpsons-paradox",
+    "href": "W8_ModelingRelationships.html#simpsons-paradox",
+    "title": "08 Modeling Relationships",
+    "section": "Simpson’s Paradox",
+    "text": "Simpson’s Paradox\nThe Simpson’s Paradox is a great example of misleading summaries.\nIf we look at the baseball data below, we see that David Justice has a better batting average in every single year, but Derek Jeter has a better overall batting average:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPlayer\n1995\n\n1996\n\n1997\n\nCombined\n\n\n\n\n\nD. Jeter\n12/48\n.250\n183/582\n.314\n190/654\n.291\n385/1284\n.300\n\n\nD. Justice\n104/411\n.253\n45/140\n.321\n163/495\n.329\n312/1046\n.298\n\n\n\nHow can this be?\n\nSimpson’s Paradox: A pattern is present in the combined dataset but may be different in subsets of the data.\n\n\nHappens if another (lurking) variable changes across subsets (e.g., the number of at-bats, i.e., the denominator).\n\nbatting average: hits/at bats\n1995: in general low batting averages, Justice a lot of at-bats =&gt; diminishes total combined value more strongly than for Jeter.",
+    "crumbs": [
+      "08 Modeling Relationships"
+    ]
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#simpsons-paradox-more-intuitive",
+    "href": "W8_ModelingRelationships.html#simpsons-paradox-more-intuitive",
+    "title": "08 Modeling Relationships",
+    "section": "Simpson’s Paradox: More intuitive",
+    "text": "Simpson’s Paradox: More intuitive\nWhile typing on a keyboard, what is the relationship between speed and accuracy (or typing errors)?\n(positive, negative, or none)\n\n\n\nIf I try to type faster, I will make more errors =&gt; speed-accuracy trade-off (negative association)\nPeople who are better at typing usually are both faster and make fewer mistakes (positive association)\n\n\n\n\nAnswer: It depends\n\nWithin a person, the relationship between speed and accuracy is negative. My own skill is limited, I can either use it for speed or accuracy.\nBetween persons, the relationship is positive due to inter-individual differences in overall typing skill.\n\n\nUsually, when leveling up, people don’t put all their skill points in only speed or accuracy.",
+    "crumbs": [
+      "08 Modeling Relationships"
+    ]
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#example-income-inequality-and-hate-crimes",
+    "href": "W8_ModelingRelationships.html#example-income-inequality-and-hate-crimes",
+    "title": "08 Modeling Relationships",
+    "section": "Example: Income Inequality and Hate Crimes",
+    "text": "Example: Income Inequality and Hate Crimes\nWe want to look at a dataset that was used for an analysis of the relationship between income inequality (Gini index) and the prevalence of hate crimes in the USA.\n\nIt looks like there is a positive relationship between the variables. How can we quantify this relationship?",
+    "crumbs": [
+      "08 Modeling Relationships"
+    ]
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#covariance-and-correlation",
+    "href": "W8_ModelingRelationships.html#covariance-and-correlation",
+    "title": "08 Modeling Relationships",
+    "section": "Covariance and Correlation",
+    "text": "Covariance and Correlation\nCovariance: How much do two variables co-vary with each other?\nVariance (single variable): \\(s^2 = \\frac{\\sum_{i=1}^n (x_i - \\bar{x})^2}{N - 1}\\)\nCovariance (two variables): \\(covariance = \\frac{\\sum_{i=1}^n (x_i - \\bar{x})(y_i - \\bar{y})}{N - 1}\\)\n(Side note: Variance is the covariance of a variable with itself.)\n\n\n\n“Is there a relation between the deviations of two different variables (from their means) across observations?”\n\n\nWill be far from 0 if data points share a relationship. Positive values for same direction, negative values for opposite directions.\n\n\nCovariance varies with overall level of variance in the data, so not that useful to describe relationships in general.\n\n\n\n\nCorrelation coefficient (Pearson correlation): Scales the covariance by the standard deviations of the two variables and thus standardizes it (=&gt; \\(r\\) varies between \\(-1\\) and \\(1\\) =&gt; comparability!)\n\\[\nr = \\frac{covariance}{s_xs_y} = \\frac{\\sum_{i=1}^n (x_i - \\bar{x})(y_i - \\bar{y})}{(N - 1)s_x s_y}\n\\]\n\nCovariance depends on dataset!",
+    "crumbs": [
+      "08 Modeling Relationships"
+    ]
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#hypothesis-testing-for-correlations",
+    "href": "W8_ModelingRelationships.html#hypothesis-testing-for-correlations",
+    "title": "08 Modeling Relationships",
+    "section": "Hypothesis Testing for Correlations",
+    "text": "Hypothesis Testing for Correlations\nThe correlation between income inequality and hate crimes is \\(r = .42\\), which seems to be a reasonably strong (positive) relationship.\n\nWe can test whether such a relationship could occur by chance, even if there is actually no relationship. In this case, our null hypothesis is \\(H_0: r = 0\\).\n\n\nTo test whether there is a significant relationship, we can transform the \\(r\\) statistic into a \\(t\\) statistic:\n\\[\nt_r = \\frac{r\\sqrt{N-2}}{\\sqrt{1-r^2}}\n\\]\nWe can compute this easily in R:\n\n# perform correlation test on hate crime data\ncor.test(\n  hateCrimes$avg_hatecrimes_per_100k_fbi,\n  hateCrimes$gini_index\n)\n\n\n    Pearson's product-moment correlation\n\ndata:  hateCrimes$avg_hatecrimes_per_100k_fbi and hateCrimes$gini_index\nt = 3.2182, df = 48, p-value = 0.002314\nalternative hypothesis: true correlation is not equal to 0\n95 percent confidence interval:\n 0.1619097 0.6261922\nsample estimates:\n      cor \n0.4212719 \n\n\nThe p-value is quite small, which indicates that it is quite unlikely to find an \\(r\\) value this high or more extreme. We would thus reject \\(H_0: r = 0\\).\nSide note: There are more beautiful / convenient ways to do this in R. We will cover this in the next session.\n\nsubsetting with $!",
+    "crumbs": [
+      "08 Modeling Relationships"
+    ]
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#robust-correlations",
+    "href": "W8_ModelingRelationships.html#robust-correlations",
+    "title": "08 Modeling Relationships",
+    "section": "Robust Correlations",
+    "text": "Robust Correlations\nIn the plot, we have seen an outlier: The District of Columbia was quite different from the other data points.\n\nThe Pearson’s correlation coefficient \\(r\\) is highly sensitive to outliers, see this hypothetical example:",
+    "crumbs": [
+      "08 Modeling Relationships"
+    ]
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#robust-correlation-2",
+    "href": "W8_ModelingRelationships.html#robust-correlation-2",
+    "title": "08 Modeling Relationships",
+    "section": "Robust Correlation 2",
+    "text": "Robust Correlation 2\nWe can use a different correlation coefficient, though, which is less sensitive to outliers: Spearman correlation.\nIt is based on ranking (i.e., ordering) the data and using the ranks (instead of the original data) for the correlation.\n\ncor.test(hateCrimes$avg_hatecrimes_per_100k_fbi,\n  hateCrimes$gini_index,\n  method = \"spearman\")\n\n\n    Spearman's rank correlation rho\n\ndata:  hateCrimes$avg_hatecrimes_per_100k_fbi and hateCrimes$gini_index\nS = 20146, p-value = 0.8221\nalternative hypothesis: true rho is not equal to 0\nsample estimates:\n       rho \n0.03261836 \n\n\nThe correlation has now dropped from \\(.42\\) to \\(.03\\) and is no longer significant. The influence of the one outlier has been greatly diminished.\nOf course, a ranked correlation can also obscure true effects that critically depend on the scale of the data. When in doubt, try both and discuss reasons for differences.\n\nWithout outlier: perfectly negative correlation, with outlier: highly positive!",
+    "crumbs": [
+      "08 Modeling Relationships"
+    ]
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#correlation-and-causation",
+    "href": "W8_ModelingRelationships.html#correlation-and-causation",
+    "title": "08 Modeling Relationships",
+    "section": "Correlation and Causation",
+    "text": "Correlation and Causation\nDoing a well controlled, randomized experiment (RCT) is extremely helpful to gather causal evidence.\nHowever, it is not always possible or ethical to do an experiment!\nWe can still collect (observational) data. However, if we correlate two variables, we can’t conclude that one causes the other: They might be related but there could also be a third variable that causes both (or even more complex causal structures).\n\nIf we have observational data, causal graphs can be helpful for interpreting causality:\n\n\n\n\n\n\n\n\n\n\n\n\nCircle: observed variables\nrectangle: latent (unobservable) variable\n\nGreen arrow: positive relationship,\nred: negative\nExamGrade and FinishTime seem negatively related if we ignore other variables!\n(“Hand in your exam early to improve your grade!”)\nKnowledge = theoretical mediator\nStudyTime = proxy for knowledge\nIf we control for StudyTime (which approximates individual knowledge), we find out that ExamGrade and FinishTime are (causally) unrelated!\n\n\n\nWe have briefly talked about causation in week 1\nThink of data/questions where it is impossible/unethical!\nabused children and brain development!\n(3rd var: family stress -&gt; less intellectual engagement –&gt; poorer brain dev)\nCorrelation: s.th. is probably causing s.th. else but not clear what causes what!\nDAG:\ngreen: pos, red: net\ncircle: observed, rect: latent (unobservable)\nExamGrade and FinishTime seem neg related if we ignore others\nknowledge = mediates\nStudyTime = proxy for knowledge, if we “control” it/hold it constant/only use people with same amount, we would see that EG and FT are unrelated!",
+    "crumbs": [
+      "08 Modeling Relationships"
+    ]
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#testing-a-single-mean-one-sample-t-test",
+    "href": "W8_ModelingRelationships.html#testing-a-single-mean-one-sample-t-test",
+    "title": "08 Modeling Relationships",
+    "section": "Testing a Single Mean (One sample t-Test)",
+    "text": "Testing a Single Mean (One sample t-Test)\nWe sometimes might want to know whether a single value, the mean of a group, differs from a specific value, e.g. whether the blood pressure in the sample differs from or is bigger than 80.\n\nWe can test this using the \\(t\\)-test, which we have already encountered in the “Hypothesis Testing” session!\n\\[\nt = \\frac{\\hat{X} - \\mu}{SEM}\n\\]\n\\[\nSEM = \\frac{\\hat{\\sigma}}{\\sqrt{n}}\n\\]\n\\(\\hat{X}\\) is the mean of our sample, \\(\\mu\\) the hypothesized population mean (e.g. the value we want to test against, such as 80 for the blood pressure example).\nWe can easily calculate the \\(t\\)-test in R:\n\nt.test(x=NHANES_adult$BPDiaAve, mu=80, alternative='greater')\n\n\n    One Sample t-test\n\ndata:  NHANES_adult$BPDiaAve\nt = -55.23, df = 4599, p-value = 1\nalternative hypothesis: true mean is greater than 80\n95 percent confidence interval:\n 69.1588     Inf\nsample estimates:\nmean of x \n 69.47239 \n\n\n\n(The \\(t\\) statistic thus asks how large the deviation of sample mean from the expected value with respect to the sampling variability of the mean!)\nWe tested the one-sided alternative (&gt;) and the blood pressure in the sample is much lower than 80, so it is far from significance\nWe can’t interpret the \\(p\\)-value as evidence in favor of \\(H_0\\) (i.e. larger \\(p\\)-value! vs non.sign) –&gt; Bayes!",
+    "crumbs": [
+      "08 Modeling Relationships"
+    ]
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#comparing-two-means-two-sample-t-test",
+    "href": "W8_ModelingRelationships.html#comparing-two-means-two-sample-t-test",
+    "title": "08 Modeling Relationships",
+    "section": "Comparing Two Means (Two sample t-Test)",
+    "text": "Comparing Two Means (Two sample t-Test)\nMore often, we want to know whether there is a difference between the means of two groups.\nExample: Do regular marijuana smokers watch more television?\nIn this example, we expect that they watch more TV, which leads us to the following directional hypotheses:\n\\(H_0\\) = marijuana smokers watch less or equally often TV,\n\\(H_A\\) = marijuana smokers watch more TV.\n\nIf the observations are independent (i.e. you really have two unrelated groups), you can use a very similar formula to calculate the \\(t\\) statistic:\n\\[\nt = \\frac{\\bar{X_1} - \\bar{X_2}}{\\sqrt{\\frac{S_1^2}{n_1} + \\frac{S_2^2}{n_2}}}\n\\]\nwhereby \\(\\hat{X_1}\\) and \\(\\hat{X_2}\\) are the group means, \\(S_1^2\\) and \\(S_2^2\\) the group variances, and \\(n_1\\) and \\(n_2\\) the group sizes.\nHere are the results from a one-tailed \\(t\\)-test in R:\n\n\n\n    Welch Two Sample t-test\n\ndata:  TVHrsNum by RegularMarij\nt = -1.2147, df = 116.9, p-value = 0.1135\nalternative hypothesis: true difference in means between group No and group Yes is less than 0\n95 percent confidence interval:\n       -Inf 0.09866006\nsample estimates:\n mean in group No mean in group Yes \n          2.02963           2.30000 \n\n\n\nDV: continuous, IV: categories\nn.s. (differs from book), although mean is higher in Yes, not significantly different!",
+    "crumbs": [
+      "08 Modeling Relationships"
+    ]
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#comparing-dependent-observations-paired-t-test",
+    "href": "W8_ModelingRelationships.html#comparing-dependent-observations-paired-t-test",
+    "title": "08 Modeling Relationships",
+    "section": "Comparing Dependent Observations (Paired t-test)",
+    "text": "Comparing Dependent Observations (Paired t-test)\nIf we have repeated observations of the same subject (i.e., a within-subject design), we might want to compare the same subject thus on multiple, repeated measurements.\n\nIf we want to test whether blood pressure differs between the first and second measurement session across individuals, we can use a paired \\(t\\)-test.\nIn R, we would run a paired-samples \\(t\\)-test like this:\n\nwith(NHANES_sample, t.test(BPSys1, BPSys2, paired = TRUE))\n\n\n    Paired t-test\n\ndata:  BPSys1 and BPSys2\nt = 2.7369, df = 199, p-value = 0.006763\nalternative hypothesis: true mean difference is not equal to 0\n95 percent confidence interval:\n 0.2850857 1.7549143\nsample estimates:\nmean difference \n           1.02 \n\n\nSide note: A paired \\(t\\)-test is equivalent to a one-sample \\(t\\)-test, when using the paired differences as \\(\\hat{X}\\) and testing them against a value of 0 (if we expect no difference for \\(H_0\\)) for \\(\\mu\\).\n\nimportant: If we run an independent sample t-test, it would probably be n.s.! (check out book)",
+    "crumbs": [
+      "08 Modeling Relationships"
+    ]
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#comparing-more-than-two-means",
+    "href": "W8_ModelingRelationships.html#comparing-more-than-two-means",
+    "title": "08 Modeling Relationships",
+    "section": "Comparing More Than Two Means",
+    "text": "Comparing More Than Two Means\nOften, we want to compare more than two means, e.g. different treatment groups or timepoints.\nExample: Different treatments for blood pressure",
+    "crumbs": [
+      "08 Modeling Relationships"
+    ]
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#analysis-of-variance-anova",
+    "href": "W8_ModelingRelationships.html#analysis-of-variance-anova",
+    "title": "08 Modeling Relationships",
+    "section": "Analysis of Variance (ANOVA)",
+    "text": "Analysis of Variance (ANOVA)\n\\(H_0\\): all means are equal\n\\(H_A\\): not all means are equal (e.g. at least one differs)\n\nWe can partition the variance in the data into different parts:\n\\(SS_{total}\\) = total variance in the data\n\\(SS_{model}\\) = Variance explained by the model*\n\\(SS_{error}\\) = Variance not explained by the model\n\n\nWe can use those to calculate the mean squares for the model and the error:\n\\(MS_{model} =\\frac{SS_{model}}{df_{model}}= \\frac{SS_{model}}{p-1}\\) (\\(p\\) is the number of factor levels)\n\\(MS_{error} = \\frac{SS_{error}}{df_{error}} = \\frac{SS_{error}}{N - p}\\)\n\n\nWe want to test whether the variance accounted for by the model is greater than expected by chance (\\(H_0\\): no difference).\n\n\nquite common analysis! We will just scratch the surface\n\n\n\n\\(SS\\) = Sum of Squares, remember that the variance is the sum of the squared deviation of an observation to the mean\n\\(MS\\) = Mean (Sum of) Squares: How much variance per degree of freedom?\n*more on that in the next session!",
+    "crumbs": [
+      "08 Modeling Relationships"
+    ]
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#anova-2",
+    "href": "W8_ModelingRelationships.html#anova-2",
+    "title": "08 Modeling Relationships",
+    "section": "ANOVA 2",
+    "text": "ANOVA 2\nIn R, we would run an ANOVA like this:\n\ndf &lt;-\n  df %&gt;% \n  mutate(group2=fct_relevel(group,c(\"placebo\",\"drug1\",\"drug2\")))\n# reorder the factor levels so that \"placebo\" is the control condition/intercept!\n  \n \n# test model without separate duymmies\nlmResultAnovaBasic &lt;- lm(sysBP ~ group2, data=df)\nsummary(lmResultAnovaBasic)\n\n\nCall:\nlm(formula = sysBP ~ group2, data = df)\n\nResiduals:\n     Min       1Q   Median       3Q      Max \n-29.0838  -7.7452  -0.0978   7.6872  23.4313 \n\nCoefficients:\n            Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)  141.595      1.656  85.502  &lt; 2e-16 ***\ngroup2drug1  -10.237      2.342  -4.371 2.92e-05 ***\ngroup2drug2   -2.027      2.342  -0.865    0.389    \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 9.936 on 105 degrees of freedom\nMultiple R-squared:  0.1695,    Adjusted R-squared:  0.1537 \nF-statistic: 10.71 on 2 and 105 DF,  p-value: 5.83e-05\n\n# emm.result &lt;- emmeans(lmResultAnovaBasic, \"group\" )",
+    "crumbs": [
+      "08 Modeling Relationships"
+    ]
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#anova-3",
+    "href": "W8_ModelingRelationships.html#anova-3",
+    "title": "08 Modeling Relationships",
+    "section": "ANOVA 3",
+    "text": "ANOVA 3\n\n\n\nCall:\nlm(formula = sysBP ~ group2, data = df)\n\nResiduals:\n     Min       1Q   Median       3Q      Max \n-29.0838  -7.7452  -0.0978   7.6872  23.4313 \n\nCoefficients:\n            Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)  141.595      1.656  85.502  &lt; 2e-16 ***\ngroup2drug1  -10.237      2.342  -4.371 2.92e-05 ***\ngroup2drug2   -2.027      2.342  -0.865    0.389    \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 9.936 on 105 degrees of freedom\nMultiple R-squared:  0.1695,    Adjusted R-squared:  0.1537 \nF-statistic: 10.71 on 2 and 105 DF,  p-value: 5.83e-05\n\n\nWe can see a \\(t\\)-test for every drug. This is because the factor group2 is automatically dummy coded by R: We always compare one drug against the intercept, which is the mean of the placebo group!\nThe \\(t\\)-test shows us that drug1 differs significantly from placebo but not drug2.\nThe \\(F\\)-statistic (also called omnibus test) actually tests our overall hypothesis of no difference between conditions.",
+    "crumbs": [
+      "08 Modeling Relationships"
+    ]
+  },
+  {
+    "objectID": "W8_ModelingRelationships.html#anova-side-notes",
+    "href": "W8_ModelingRelationships.html#anova-side-notes",
+    "title": "08 Modeling Relationships",
+    "section": "ANOVA side notes",
+    "text": "ANOVA side notes\nIn R, there are different functions that you can use to run an ANOVA besides lm(), which have different advantages and disadvantages (functions like ezANOVA() from the ez packages or functions from the afex package might be helpful).\nJust like with the \\(t\\)-test, there’s also a distinction between between-subjects and within-subjects (i.e., repeated measures ANOVA). The previous example contained just between-subjects measures, i.e. different groups without repeated measures. We will talk about other options later, but see the packages mentioned above as well for functional parameters called, e.g., within.\n\nDummy coded (explicitly):\n\n\n\nCall:\nlm(formula = sysBP ~ d1 + d2, data = df)\n\nResiduals:\n     Min       1Q   Median       3Q      Max \n-29.0838  -7.7452  -0.0978   7.6872  23.4313 \n\nCoefficients:\n            Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)  141.595      1.656  85.502  &lt; 2e-16 ***\nd1           -10.237      2.342  -4.371 2.92e-05 ***\nd2            -2.027      2.342  -0.865    0.389    \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 9.936 on 105 degrees of freedom\nMultiple R-squared:  0.1695,    Adjusted R-squared:  0.1537 \nF-statistic: 10.71 on 2 and 105 DF,  p-value: 5.83e-05\n\n\n\\(t\\)-tests: dummy coded = 0 vs. 1\n- control for multiple comparisons! (later)\n- if we wanted to compare the two drugs, we’d have to dummy code/relevel differently or use follow-up comparisons like with emmeans()\n\\(F\\): Is our model better than a simple model that just includes the intercept? In this case placebo…",
+    "crumbs": [
+      "08 Modeling Relationships"
+    ]
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#set-up",
+    "href": "W9_FirstAnalysisR.html#set-up",
+    "title": "09 Statistical Analyses in R",
+    "section": "Set Up",
+    "text": "Set Up\n\nOpen RStudio and load your Biostats R project. Create a new script called DataAnalysis1.R.\nInstall and load new packages you’ll need: car, effectsize, and apa.",
+    "crumbs": [
+      "09 Statistical Analyses in R"
+    ]
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#one-sample-chi²-test",
+    "href": "W9_FirstAnalysisR.html#one-sample-chi²-test",
+    "title": "09 Statistical Analyses in R",
+    "section": "One Sample Chi²-Test",
+    "text": "One Sample Chi²-Test\n\nlibrary(tidyverse) \n\n# Input data into R\nlever_presses &lt;- tibble(levers=c(rep(\"blue\", 5), rep(\"green\", 4), rep(\"red\", 11))) %&gt;% #data in usual format\n  count(levers) #convert to a frequency table\n\n# run Chi² test\nchi2_lever &lt;- chisq.test(lever_presses %&gt;% pivot_wider(names_from=\"levers\", values_from=\"n\")) #wide format needed\n#chi2_lever &lt;- chisq.test(tibble(blue=5, green=4, red=11)) #enter data directly as summary table\n\nchi2_lever %&gt;% apa::chisq_apa() #output results\n\nchi^2(2) = 4.30, p = .116\n\n# add expected count and residuals to data\nlever_presses %&gt;% mutate(expected = chi2_lever$expected, \n                         residuals = chi2_lever$residuals)\n\n# A tibble: 3 × 4\n  levers     n expected residuals\n  &lt;chr&gt;  &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt;\n1 blue       5     6.67    -0.645\n2 green      4     6.67    -1.03 \n3 red       11     6.67     1.68 \n\n\n\nIs sample size not important for significance here? \\[\\chi^2 = \\sum\\frac{(Observed - Expected)^2}{Expected}\\] More observations =&gt; easier to see greater absolute difference between observed and expected values =&gt; gets squared and therefore “outcompetes” denominator (what about expected reductions in sampling error?)",
+    "crumbs": [
+      "09 Statistical Analyses in R"
+    ]
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#chi²-test-2",
+    "href": "W9_FirstAnalysisR.html#chi²-test-2",
+    "title": "09 Statistical Analyses in R",
+    "section": "Chi²-Test 2",
+    "text": "Chi²-Test 2\nWe can also run a Chi²-test for two variables, such as if we want to know whether the lever presses differ per group.\nLet’s say we have a treatment and a control group and we record the different lever presses:\n\n\n\nGroup\nBlue\nGreen\nRed\nTotals\n\n\n\n\nTreatment\n3\n12\n5\n20\n\n\nControl\n5\n4\n11\n20\n\n\nTotals\n8\n16\n16\n40\n\n\n\nRemember: We use the assumption of independence to calculate the expected values.\n\n\nlever_presses2 = tibble(group=\"treatment\", blue=3, green=12, red=5) %&gt;% \n  bind_rows(tibble(group=\"control\", blue=5, green=4, red=11)) #clearest way to manually input data\n#for long data, you create the frequency table identically to previous slide but with: count(group, levers)\n\nchisq.test(lever_presses2 %&gt;% column_to_rownames(\"group\")) %&gt;% apa::chisq_apa()\n\nchi^2(2) = 6.75, p = .034",
+    "crumbs": [
+      "09 Statistical Analyses in R"
+    ]
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#assumptions-of-chi²-tests",
+    "href": "W9_FirstAnalysisR.html#assumptions-of-chi²-tests",
+    "title": "09 Statistical Analyses in R",
+    "section": "Assumptions of Chi²-Tests",
+    "text": "Assumptions of Chi²-Tests\n\n\nRandom sample\nCategorical variables, i.e., counts within (combinations of) groups\nExpected cell count: &gt;5 counts per cell\nIndependence: Each observation is independent of the others, e.g. there are no repeated measurements/paired data (within-subjects data are correlated!)\n\n\n\nIn the case of the last analysis, we got a warning because the expected cell sizes were too small. In this case, it is better to use Fisher’s exact test:\n\nfisher.test(lever_presses2 %&gt;% column_to_rownames(\"group\"))\n\n\n    Fisher's Exact Test for Count Data\n\ndata:  lever_presses2 %&gt;% column_to_rownames(\"group\")\np-value = 0.04168\nalternative hypothesis: two.sided",
+    "crumbs": [
+      "09 Statistical Analyses in R"
+    ]
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#t-test-setup",
+    "href": "W9_FirstAnalysisR.html#t-test-setup",
+    "title": "09 Statistical Analyses in R",
+    "section": "t-test setup",
+    "text": "t-test setup\nTo run a t-Test, let’s first simulate data. What happens here?\n\nset.seed(31415)\nsim_data_t &lt;- tibble(\n  group = rep(c(\"treatment\", \"control\"), each=20),\n  reaction_times = c(rnorm(20, 400, 100), rnorm(20, 450, 100)))",
+    "crumbs": [
+      "09 Statistical Analyses in R"
+    ]
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#t-test",
+    "href": "W9_FirstAnalysisR.html#t-test",
+    "title": "09 Statistical Analyses in R",
+    "section": "t-Test",
+    "text": "t-Test\nWe can use the formula notation to run the t-test. This notation usually looks like this:\ndependent variable ~ independent variable.\nReplace the NULLs:\n\nt.test(NULL ~ NULL,\n       data = NULL,\n       alternative = NULL,\n       paired = NULL) \n\n\n\nt.test(reaction_times ~ group,\n       data = sim_data_t,\n       alternative = \"greater\", #depends on ALPHABETICAL order of groups in data!\n       #paired = FALSE # this is the default, so no need to specify it\n)\n\n\n    Welch Two Sample t-test\n\ndata:  reaction_times by group\nt = 1.9841, df = 34.42, p-value = 0.02763\nalternative hypothesis: true difference in means between group control and group treatment is greater than 0\n95 percent confidence interval:\n 10.02639      Inf\nsample estimates:\n  mean in group control mean in group treatment \n               468.0592                400.3289 \n\n\n\n\nAs you can see in the output, R automatically chose to run Welch’s t-test, which does not assume variance homogeneity in contrast to Student’s t-test. For the latter, you can add the function parameter var.equal = TRUE\n\nWhen changing the name “treatment” to “a”, the results change:\n\nt.test(reaction_times ~ group,\n       data = sim_data_t %&gt;% mutate(group = ifelse(group==\"treatment\", \"a\", group)),\n       alternative = \"greater\", #depends on order of groups in data! 1st group &gt; 2nd group\n       var.equal = TRUE) %&gt;% apa::t_apa()\n\nt(38) = -1.98, p = .973, d = -0.63",
+    "crumbs": [
+      "09 Statistical Analyses in R"
+    ]
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#t-test-alternatives",
+    "href": "W9_FirstAnalysisR.html#t-test-alternatives",
+    "title": "09 Statistical Analyses in R",
+    "section": "t-Test: alternatives",
+    "text": "t-Test: alternatives\nYou can also supply two vectors of numerical values for the groups:\n\nt.test(x = sim_data_t %&gt;% filter(group==\"treatment\") %&gt;% pull(reaction_times),\n       y = sim_data_t %&gt;% filter(group==\"control\") %&gt;% pull(reaction_times),\n       alternative = \"less\") #more intuitive now because you can filter for treatment first\n\n\n    Welch Two Sample t-test\n\ndata:  sim_data_t %&gt;% filter(group == \"treatment\") %&gt;% pull(reaction_times) and sim_data_t %&gt;% filter(group == \"control\") %&gt;% pull(reaction_times)\nt = -1.9841, df = 34.42, p-value = 0.02763\nalternative hypothesis: true difference in means is less than 0\n95 percent confidence interval:\n      -Inf -10.02639\nsample estimates:\nmean of x mean of y \n 400.3289  468.0592 \n\n\n\nMore useful output with apa package (only for Student’s t-tests):\n\nt.test(x = sim_data_t %&gt;% filter(group==\"treatment\") %&gt;% pull(reaction_times),\n       y = sim_data_t %&gt;% filter(group==\"control\") %&gt;% pull(reaction_times),\n       alternative = \"less\", \n       var.equal = T) %&gt;% \n  apa::t_apa(es_ci=T) #optional: confidence interval around effect size\n\nt(38) = -1.98, p = .027, d = -0.63 [-1.26; 0.01]\n\n\n\n\nFor paired t-tests, you can also work with the wide format of data (advantage: missing values become explicit):\n\nsim_data_t_wide = sim_data_t %&gt;% mutate(subject=rep.int(1:(n()/2), 2)) %&gt;% \n  pivot_wider(names_from=\"group\", values_from=\"reaction_times\")\nt.test(x = sim_data_t_wide %&gt;% pull(treatment),\n       y = sim_data_t_wide %&gt;% pull(control),\n       alternative = \"less\", \n       paired = T) %&gt;% \n  apa::t_apa(es_ci=T) #optional: confidence interval around effect size\n\nt(19) = -1.98, p = .031, d = -0.44 [-0.90; 0.02]",
+    "crumbs": [
+      "09 Statistical Analyses in R"
+    ]
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#assumptions-of-t-tests",
+    "href": "W9_FirstAnalysisR.html#assumptions-of-t-tests",
+    "title": "09 Statistical Analyses in R",
+    "section": "Assumptions of t-Tests",
+    "text": "Assumptions of t-Tests\nBefore we run a t-test, we also want to check the assumptions for violations:\n\n\nThe dependent variable is continuous (otherwise: chi²-test)\nThe data are independent (otherwise: paired sample t-test)\nThe variance between the groups is homogeneous (only for Student’s t-test, R uses Welch’s test by default)\nThe residuals are normally distributed for each group (otherwise: wilcox.test)\n\n\n\nOftentimes, the last assumption is misquoted as: “The dependent variable needs to be normally distributed”.\nIn fact, only its sampling distribution needs to be (blue vs. grey distribution in the lecture on sampling [direct link]), which will always be the case for big enough samples due to the central limit theorem.",
+    "crumbs": [
+      "09 Statistical Analyses in R"
+    ]
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#assumptions-of-t-tests-2",
+    "href": "W9_FirstAnalysisR.html#assumptions-of-t-tests-2",
+    "title": "09 Statistical Analyses in R",
+    "section": "Assumptions of t-Tests 2",
+    "text": "Assumptions of t-Tests 2\nTest for normality of residuals (for both groups): If points fall along the line nicely, assumption is met.\n\n\ntreatment &lt;- sim_data_t %&gt;%\n  filter(group == \"treatment\") %&gt;%\n  mutate(group_resid = \n           reaction_times - mean(reaction_times)) %&gt;%\n  pull(group_resid)\n\n#base R QQ plot\nqqnorm(treatment)\nqqline(treatment)\n\n\n\n\n\n\n\n\n\n\n\n\ncontrol &lt;- sim_data_t %&gt;%\n  filter(group == \"control\") %&gt;%\n  mutate(group_resid = reaction_times - mean(reaction_times)) %&gt;%\n  pull(group_resid)\n\n#car's version highlighting (and returning) problematic values\ncar::qqPlot(control)\n\n\n\n\n\n\n\n\n\n[1] 18  4",
+    "crumbs": [
+      "09 Statistical Analyses in R"
+    ]
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#assumptions-of-t-tests-3",
+    "href": "W9_FirstAnalysisR.html#assumptions-of-t-tests-3",
+    "title": "09 Statistical Analyses in R",
+    "section": "Assumptions of t-Tests 3",
+    "text": "Assumptions of t-Tests 3\nAlternatively, we can also run a Shapiro-Wilk test to test for deviations from normality:\n\nshapiro.test(x = treatment)\n\n\n    Shapiro-Wilk normality test\n\ndata:  treatment\nW = 0.91403, p-value = 0.0761\n\nshapiro.test(x = control)\n\n\n    Shapiro-Wilk normality test\n\ndata:  control\nW = 0.96812, p-value = 0.7147\n\n\nIf the test is non-significant, then we can conclude that normality of residuals is not violated.\n\n\nTransform your data to try and normalise the distribution. Not usually recommended these days but some still use it.\nUse a non-parametric test. The non-parametric equivalent of the independent t-test is the Mann-Whitney and the equivalent of the paired-samples t-test is the Wilcoxon signed-ranks test. Though more modern permutation tests are better.\nDo nothing. Delacre, Lakens & Leys, 2017 argue that with a large enough sample (&gt;30), the Welch test is robust to deviations from assumptions. With very large samples normality is even less of an issue, so design studies with large samples.",
+    "crumbs": [
+      "09 Statistical Analyses in R"
+    ]
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#assumptions-of-the-paired-samples-t-test",
+    "href": "W9_FirstAnalysisR.html#assumptions-of-the-paired-samples-t-test",
+    "title": "09 Statistical Analyses in R",
+    "section": "Assumptions of the Paired-Samples t-Test",
+    "text": "Assumptions of the Paired-Samples t-Test\n\nThe data are continuous.\nAll participants should appear in both conditions/groups.\nThe residuals are normally distributed.\n\n\nA paired-samples t-test actually tests whether the difference between two measurements is significantly different from 0 (= no difference/effect).\nIn our example data, this means that the test values are subtracted from the baseline values, and this difference is used as data.\nTo test the assumption that residuals are normally distributed, we thus calculate the residuals as follow:\n\ngaze_residual &lt;- gaze %&gt;%\n  mutate(diff = baseline - test) %&gt;%\n  mutate(group_resid = diff - mean(diff))\n\nqqPlot(gaze_residual$group_resid)\n\n\n\n\n\n\n\n\n[1] 22 29\n\nshapiro.test(gaze_residual$group_resid)\n\n\n    Shapiro-Wilk normality test\n\ndata:  gaze_residual$group_resid\nW = 0.97818, p-value = 0.7451",
+    "crumbs": [
+      "09 Statistical Analyses in R"
+    ]
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#descriptives-visualization",
+    "href": "W9_FirstAnalysisR.html#descriptives-visualization",
+    "title": "09 Statistical Analyses in R",
+    "section": "Descriptives & Visualization",
+    "text": "Descriptives & Visualization\nFor the visualization, we need the data in long format (this is identical for between-subject groups):\n\n\ngaze_tidy &lt;- gaze %&gt;%\n  pivot_longer(names_to = \"phase\", \n               values_to = \"looking_time\", \n               cols = c(baseline, test))\n\n# boxplot\ngaze_tidy %&gt;% \n  ggplot(aes(x=phase, y=looking_time)) +\n  geom_boxplot()\n\n\n\n\n\n\n\n\n\n\n\nWe can also calculate the means and SDs per phase:\n\n\ngaze_tidy %&gt;% \n  summarise(mean_looking = mean(looking_time),\n            sd_looking = sd(looking_time),\n            n = n(),\n            .by = phase)\n\n\n# A tibble: 2 × 4\n  phase    mean_looking sd_looking     n\n  &lt;chr&gt;           &lt;dbl&gt;      &lt;dbl&gt; &lt;int&gt;\n1 baseline        0.521      0.177    32\n2 test            0.593      0.179    32",
+    "crumbs": [
+      "09 Statistical Analyses in R"
+    ]
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#paired-samples-t-test-in-r",
+    "href": "W9_FirstAnalysisR.html#paired-samples-t-test-in-r",
+    "title": "09 Statistical Analyses in R",
+    "section": "Paired Samples t-Test in R",
+    "text": "Paired Samples t-Test in R\nAny ideas how you would specify the paired samples t-test in R?\n\n\nwith(gaze, t.test(NULL, NULL,\n                  paired = NULL,\n                  alternative = NULL))\n\n\n\n\nwith(gaze, t.test(baseline, test,\n                  paired = TRUE,\n                  alternative = \"two.sided\"))\n\n\n    Paired t-test\n\ndata:  baseline and test\nt = -2.4164, df = 31, p-value = 0.02175\nalternative hypothesis: true mean difference is not equal to 0\n95 percent confidence interval:\n -0.13349698 -0.01129217\nsample estimates:\nmean difference \n    -0.07239458",
+    "crumbs": [
+      "09 Statistical Analyses in R"
+    ]
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#effect-size-for-the-t-test",
+    "href": "W9_FirstAnalysisR.html#effect-size-for-the-t-test",
+    "title": "09 Statistical Analyses in R",
+    "section": "Effect Size for the t-Test",
+    "text": "Effect Size for the t-Test\nYou can (and should!) of course calculate and report effect sizes for your test statistics to get an impression of how practically relevant the effect is.\nFor the t-tests, you would calculate Cohen’s d (using the function from the effectsize package):\n\nwith(gaze, effectsize::cohens_d(baseline, test, paired=T))\n\nCohen's d |         95% CI\n--------------------------\n-0.43     | [-0.79, -0.06]\n\n\n\n\nOr just use the apa package and you get everything in one go:\n\nwith(gaze, #the with function allows to call columns as if they were variables (but pipe function doesn't work with it)\n     t.test(baseline, test, paired = TRUE)) %&gt;% \n  apa::t_apa(es_ci=T)\n\nt(31) = -2.42, p = .022, d = -0.43 [-0.79; -0.06]",
+    "crumbs": [
+      "09 Statistical Analyses in R"
+    ]
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#summary-optional-activity",
+    "href": "W9_FirstAnalysisR.html#summary-optional-activity",
+    "title": "09 Statistical Analyses in R",
+    "section": "Summary: Optional Activity",
+    "text": "Summary: Optional Activity\n\n\nMost things are similar between independent and dependent sample t-tests\nMake sure to include paired=T for repeated measures to get correct results\nRecommendation: Use apa::t_apa() with es.ci=T to get (most of) the information you need\nIt is often a good idea to also report means and standard deviations per group (summarise with .by argument)\nPlotting: Unfortunately, (between subjects) confidence intervals are not diagnostic for the significance of dependent samples. Instead, we need the confidence interval around the paired differences (i.e., the within subject changes). Since this is not easy to do and there is little consensus yet, I will just raise awareness here.",
+    "crumbs": [
+      "09 Statistical Analyses in R"
+    ]
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#correlation-test",
+    "href": "W9_FirstAnalysisR.html#correlation-test",
+    "title": "09 Statistical Analyses in R",
+    "section": "Correlation Test",
+    "text": "Correlation Test\nWith these data, we might be interested in whether there is a relationship between the two measures of gaze, i.e., whether those children who looked at the stranger more at baseline would also be the ones who looked at the stranger more often at the follow-up test (here: indicating stability of preferences).\n\nSimilar to the paired t-Test, the continuous variables are also “paired” within subjects. Thus, we can a similar syntax that is easier for a wide format of data (gaze instead of gaze_tidy):\n\ncor.test(x = gaze %&gt;% pull(baseline), \n         y = gaze %&gt;% pull(test), \n         method = \"pearson\", \n         alternative = \"two.sided\")\n\n\n    Pearson's product-moment correlation\n\ndata:  gaze %&gt;% pull(baseline) and gaze %&gt;% pull(test)\nt = 3.5686, df = 30, p-value = 0.00123\nalternative hypothesis: true correlation is not equal to 0\n95 percent confidence interval:\n 0.2435655 0.7515352\nsample estimates:\n      cor \n0.5458966 \n\n\nNote: We don’t have to indicate paired=T because correlations only work for paired values.",
+    "crumbs": [
+      "09 Statistical Analyses in R"
+    ]
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#correlations-write-up",
+    "href": "W9_FirstAnalysisR.html#correlations-write-up",
+    "title": "09 Statistical Analyses in R",
+    "section": "Correlations: Write Up",
+    "text": "Correlations: Write Up\nOnce again, the apa package offers help to summarize the results:\n\ncor.test(x = gaze %&gt;% pull(baseline), \n         y = gaze %&gt;% pull(test), \n         method = \"pearson\", \n         alternative = \"two.sided\") %&gt;% \n  apa::cor_apa(r_ci=T)\n\nr(30) = .55 [.24; .75], p = .001\n\n\n\nYou can even use report() to get an automatic suggestion of how to report the results (works with a lot of different models!).\n\nlibrary(report)\nwith(gaze, cor.test(x = baseline, \n                    y = test, \n                    method = \"pearson\", \n                    alternative = \"two.sided\")) %&gt;% \n  report()\n\nEffect sizes were labelled following Funder's (2019) recommendations.\n\nThe Pearson's product-moment correlation between baseline and test is positive,\nstatistically significant, and very large (r = 0.55, 95% CI [0.24, 0.75], t(30)\n= 3.57, p = 0.001)\n\n\n\nWe mainly use this dataset so that you don’t have to load another one, but in practice you would either run a t-test or a correlation, not necessarily both!\nThe t-tests answers whether there is a change across all participants between the two time points, the correlation answers the question whether those who score high at one time point would also score high at the next (regardless of overall level).",
+    "crumbs": [
+      "09 Statistical Analyses in R"
+    ]
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#correlations-notes",
+    "href": "W9_FirstAnalysisR.html#correlations-notes",
+    "title": "09 Statistical Analyses in R",
+    "section": "Correlations: Notes",
+    "text": "Correlations: Notes\nThere are also some assumptions that need to be checked:\n\nAre the data continuous? (for ordinal values: Spearman’s rho)\nIs there a data point for each participant on both variables? (paired values)\nAre the residuals normally distributed?\nDoes the relationship between variables appear linear?\nDoes the spread have homoscedasticity? (Variance of residuals should be constant across x-axis)\nNote: This is very hard to judge by eye and is not the same as the confidence band around the regression line to show constant width. In fact, the latter will always be larger near the ends of the regression line due to how it is computed.\n\nPlease see the text book for how to test these assumptions.\n\nYou should - as always - report the descriptive statistics (summary statistics such as mean and SD).\n\n\nYou can also report and visualize multiple correlations at once, using a scatterplot matrix or heatmaps. Check out e.g. the corrplot package!",
+    "crumbs": [
+      "09 Statistical Analyses in R"
+    ]
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#one-way-anova",
+    "href": "W9_FirstAnalysisR.html#one-way-anova",
+    "title": "09 Statistical Analyses in R",
+    "section": "One-Way ANOVA",
+    "text": "One-Way ANOVA\nFor this activity, we will use data from a study about memory of traumatic events (see the textbook for details). In short, the authors of the paper were interested to find out whether:\n\nreconsolidation - the process during which memories become malleable when recalled - can be blocked using a cognitive task and whether such an approach can reduce these unbidden intrusions.\n\n\n\nDownload the data James Holmes_Expt 2_DATA.csv. This time, put it in a subfolder of your project called “Data”.\nAdd a column to the dataframe called subject that equals the row_number(), which will act as a participant ID.\nrename(): Days_One_to_Seven_Image_Based_Intrusions_in_Intrusion_Diary to intrusions.\nSelect only the columns subject, Condition and intrusions.\nChange the variable Condition from numeric to a factor using as.factor()\n\n\n\n\nlibrary(tidyverse)\n\ndat &lt;- read_csv(\"Data/James Holmes_Expt 2_DATA.csv\") %&gt;% \n  rownames_to_column(\"subject\") %&gt;% #mutate(subject = 1:n()) %&gt;% \n  rename(intrusions = Days_One_to_Seven_Image_Based_Intrusions_in_Intrusion_Diary) %&gt;% \n  select(subject, Condition, intrusions) %&gt;% \n  mutate(Condition = as.factor(Condition))\n\n\nwe will today only look at one-way anovas! Next week we will cover the case when we have more than one IV/predictor!",
+    "crumbs": [
+      "09 Statistical Analyses in R"
+    ]
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#one-way-anova-2",
+    "href": "W9_FirstAnalysisR.html#one-way-anova-2",
+    "title": "09 Statistical Analyses in R",
+    "section": "One-Way ANOVA 2",
+    "text": "One-Way ANOVA 2\nCreate summary/descriptive statistics and visualize the data.\nAs summary statistics, we want the mean, SD, and SE.\n\nse = function(x, na.rm = FALSE) { sd(x, na.rm) / sqrt(if(!na.rm) length(x) else sum(!is.na(x))) }\n\nsum_dat &lt;- dat %&gt;%\n  summarise(mean = mean(intrusions),\n            sd = sd(intrusions),\n            se = se(intrusions),\n            .by = Condition)\nprint(sum_dat)\n\n# A tibble: 4 × 4\n  Condition  mean    sd    se\n  &lt;fct&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;\n1 1          5.11  4.23 0.996\n2 2          1.89  1.75 0.411\n3 3          3.89  2.89 0.681\n4 4          4.83  3.33 0.785\n\n\nNote: The names of the factor levels are missing. If we wanted to plot the data, we should have added them in the previous step. For brevity, we will not do it this time.\n\n\ndon’t use a bar chart!",
+    "crumbs": [
+      "09 Statistical Analyses in R"
+    ]
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#one-way-anova-3",
+    "href": "W9_FirstAnalysisR.html#one-way-anova-3",
+    "title": "09 Statistical Analyses in R",
+    "section": "One-Way ANOVA 3",
+    "text": "One-Way ANOVA 3\n\nRun the ANOVA using lm() and formula notation.\n\n\nmod1 &lt;- lm(intrusions ~ Condition, data = dat)\nanova(mod1)\n\nAnalysis of Variance Table\n\nResponse: intrusions\n          Df Sum Sq Mean Sq F value  Pr(&gt;F)  \nCondition  3 114.82  38.273  3.7948 0.01409 *\nResiduals 68 685.83  10.086                  \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n\n\nUsing afex::aov_ez:\n\n\nlibrary(afex)\nmod &lt;- aov_ez(id = \"subject\", # the column containing the subject IDs\n              dv = \"intrusions\", # the DV \n              between = \"Condition\", # the between-subject variable\n              es = \"pes\", # can output an effect size! we want partial eta-squared\n              type = 3, # there are both reasons for 2 and 3 (not covered here)\n              include_aov = TRUE, # needed for some calculations with emmeans but takes longer\n              data = dat)\nanova(mod)\n\nAnova Table (Type 3 tests)\n\nResponse: intrusions\n          num Df den Df    MSE      F     ges  Pr(&gt;F)  \nCondition      3     68 10.086 3.7948 0.14341 0.01409 *\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1",
+    "crumbs": [
+      "09 Statistical Analyses in R"
+    ]
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#checking-the-assumptions",
+    "href": "W9_FirstAnalysisR.html#checking-the-assumptions",
+    "title": "09 Statistical Analyses in R",
+    "section": "Checking the Assumptions",
+    "text": "Checking the Assumptions\n\nlibrary(performance)\nlibrary(patchwork)\n\ncheck_model(mod1) # doesn't work for ezANOVA output!\n\n\n\n\n\n\n\n# \"manually\" check normality of residuals \n\nqqPlot(mod$aov$residuals)\n\n\n\n\n\n\n\n\n[1]  3 57\n\nshapiro.test(mod$aov$residuals)\n\n\n    Shapiro-Wilk normality test\n\ndata:  mod$aov$residuals\nW = 0.87739, p-value = 4.252e-06\n\n# check homogeneity of variance\ntest_levene(mod)\n\nWarning: Variances differ between groups (Levene's Test, p = 0.039).\n\n\nBoth assumptions are not met!\nBut ANOVAS are quite robust to (minor) deviations…\n(if the assumptions are violated more, you could…\n- run a non-parametric test (Kruskall-Wallis for between-subjects designs of Friedman for repeated measures)\n- transform the data (see Field et al., 2009)\n- use bootstrapping (see Field et al., 2009)",
+    "crumbs": [
+      "09 Statistical Analyses in R"
+    ]
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#post-hoc-tests",
+    "href": "W9_FirstAnalysisR.html#post-hoc-tests",
+    "title": "09 Statistical Analyses in R",
+    "section": "Post-Hoc Tests",
+    "text": "Post-Hoc Tests\nSo now we know that there are differences between the Conditions, but we don’t know yet which groups differ from each other. We could thus calculate pairwise comparisons or post-hoc t-tests to compare each condition to the others by by filtering the data (so that only two conditions remain) and running t-tests.\nA more convenient way is to use the emmeans() function from the package with the same name. We can also adjust the tests for multiple comparisons directly.\nWe could also define specific contrasts to test a priori (i.e., based on hypotheses). But we will skip this here.\n\nlibrary(emmeans)\nmod %&gt;% emmeans(pairwise ~ Condition, adjust = \"bonferroni\") # also works with mod1!\n\n$emmeans\n Condition emmean    SE df lower.CL upper.CL\n 1           5.11 0.749 68    3.617     6.60\n 2           1.89 0.749 68    0.395     3.38\n 3           3.89 0.749 68    2.395     5.38\n 4           4.83 0.749 68    3.340     6.33\n\nConfidence level used: 0.95 \n\n$contrasts\n contrast                estimate   SE df t.ratio p.value\n Condition1 - Condition2    3.222 1.06 68   3.044  0.0199\n Condition1 - Condition3    1.222 1.06 68   1.155  1.0000\n Condition1 - Condition4    0.278 1.06 68   0.262  1.0000\n Condition2 - Condition3   -2.000 1.06 68  -1.889  0.3787\n Condition2 - Condition4   -2.944 1.06 68  -2.781  0.0420\n Condition3 - Condition4   -0.944 1.06 68  -0.892  1.0000\n\nP value adjustment: bonferroni method for 6 tests \n\n\n\nShould we adjust for multiple comparisons? It depends. There are good reasons for either.",
+    "crumbs": [
+      "09 Statistical Analyses in R"
+    ]
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#effect-sizes-power",
+    "href": "W9_FirstAnalysisR.html#effect-sizes-power",
+    "title": "09 Statistical Analyses in R",
+    "section": "Effect Sizes & Power",
+    "text": "Effect Sizes & Power\nThe most common effect size estimate for an ANOVA is partial eta squared \\(\\eta_p^2\\) (as we calculated with afex::aov_ez before). We get one per factor and it summarizes all pairwise effects within it.\nWe could also calculate Cohen’s d for each pairwise comparison within the factor but this is tedious and gets confusing quickly (1 factor with 5 levels = 10 effects; 3 factors with 5 levels each = 30 effects). It’s still sad that emmeans doesn’t output it as one additional column.\n\n\n\nEffect sizes are important to calculate the statistical power of your study before conducting it. Use an estimated effect size based on prior research:\n\nlibrary(pwr)\npwr.anova.test(k = 4, f = .4, sig.level = .05, power = .8) #we leave out the n parameter to let it be calculated\n\n\n     Balanced one-way analysis of variance power calculation \n\n              k = 4\n              n = 18.04262\n              f = 0.4\n      sig.level = 0.05\n          power = 0.8\n\nNOTE: n is number in each group",
+    "crumbs": [
+      "09 Statistical Analyses in R"
+    ]
+  },
+  {
+    "objectID": "W9_FirstAnalysisR.html#write-up",
+    "href": "W9_FirstAnalysisR.html#write-up",
+    "title": "09 Statistical Analyses in R",
+    "section": "Write Up",
+    "text": "Write Up\nOnce again, the apa package helps us here - if we used afex::aov_ez instead of lm 😅:\n\nmod %&gt;% apa::anova_apa()\n\n       Effect                                              \n1 (Intercept) F(1, 68) = 110.29, p &lt; .001, petasq = .62 ***\n2   Condition F(3, 68) =   3.79, p = .014, petasq = .14 *  \n\n\n\n\nmod %&gt;% emmeans(\"Condition\") %&gt;% pairs(adjust=\"none\") #follow up t-tests without adjustment\n\n contrast                estimate   SE df t.ratio p.value\n Condition1 - Condition2    3.222 1.06 68   3.044  0.0033\n Condition1 - Condition3    1.222 1.06 68   1.155  0.2523\n Condition1 - Condition4    0.278 1.06 68   0.262  0.7938\n Condition2 - Condition3   -2.000 1.06 68  -1.889  0.0631\n Condition2 - Condition4   -2.944 1.06 68  -2.781  0.0070\n Condition3 - Condition4   -0.944 1.06 68  -0.892  0.3755\n\n\nLooking at contrasts including condition 1 (control group): Only condition 2 different.\nLet’s get the associated effect size of this specific contrast:\n\n\n\nlibrary(lsr)\ncohensD(intrusions ~ Condition, \n        data = filter(dat, Condition %in% c(1,2)) %&gt;% droplevels())\n\n[1] 0.9964172\n\n\n\n\n\nThere was a significant difference between groups in overall intrusion frequency in daily life, \\(F(3, 68) = 3.79, p = 0.014, \\eta_p^2 = .14\\). Pairwise comparisons demonstrated that relative to the no-task control group, only those in the reactivation-plus-Tetris group, \\(t(68) = 3.04, p &lt; 0.01, d = 1.00\\), experienced significantly fewer intrusive memories…",
+    "crumbs": [
+      "09 Statistical Analyses in R"
+    ]
+  },
+  {
+    "objectID": "W13_RMarkdown.html#comparison-r-vs.-r-markdown-1",
+    "href": "W13_RMarkdown.html#comparison-r-vs.-r-markdown-1",
+    "title": "13 R Markdown",
+    "section": "Comparison: R vs. R Markdown 1",
+    "text": "Comparison: R vs. R Markdown 1\n\n\n\nR script\n\n\n\n\n\n\nR Markdown",
+    "crumbs": [
+      "13 R Markdown"
+    ]
+  },
+  {
+    "objectID": "W13_RMarkdown.html#comparison-r-vs.-r-markdown-2",
+    "href": "W13_RMarkdown.html#comparison-r-vs.-r-markdown-2",
+    "title": "13 R Markdown",
+    "section": "Comparison: R vs. R Markdown 2",
+    "text": "Comparison: R vs. R Markdown 2\n\n\n\nR Markdown\n\n\n\n\n\nR Markdown rendered as html report",
+    "crumbs": [
+      "13 R Markdown"
+    ]
+  },
+  {
+    "objectID": "W13_RMarkdown.html#your-first-r-markdown-script",
+    "href": "W13_RMarkdown.html#your-first-r-markdown-script",
+    "title": "13 R Markdown",
+    "section": "Your First R Markdown Script",
+    "text": "Your First R Markdown Script\n\nOpen a new .Rmd file, change/insert the title and author.\nCheck out the content of it. What different parts do you see?\n\n\n\nSwitch between “Source” and “Visual” in the top left. What changes? What is “Visual”?\n\n\n\n\nDelete and add some of the text on the white background. Change the Header (indicated by ##) to “About me” and write something about yourself underneath.\nIn the grey boxes (“code chunks”), add some code. Try to find out how you can add a new code chunk.\n\n\n\n\nSave the file with a sensible name.\nWhat happens when you click on “Knit” (top of Script pane)?\n\n\n\nhint: The green C with the + on the top right will do so (or using “insert” in the visual view)\nClick on the little arrow next to knit and select “Knit to PDF”\ninsert inline code",
+    "crumbs": [
+      "13 R Markdown"
+    ]
+  },
+  {
+    "objectID": "W13_RMarkdown.html#r-markdown-advantages",
+    "href": "W13_RMarkdown.html#r-markdown-advantages",
+    "title": "13 R Markdown",
+    "section": "R Markdown Advantages",
+    "text": "R Markdown Advantages\nThere are many useful things you can do with R Markdown (adding different headers, adding inline code, knitting as a PDF, adding pictures or tables…). You can also decide whether the code chunks should be visible in the output, etc.\nFor further information, check out the R Markdown cheatsheet: https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf\n\nOptions for your code chunks:\n\nExamples:\n```{r, eval=FALSE}\n#your code here\n```",
+    "crumbs": [
+      "13 R Markdown"
+    ]
+  },
+  {
+    "objectID": "W13_RMarkdown.html#code-chunk-options",
+    "href": "W13_RMarkdown.html#code-chunk-options",
+    "title": "13 R Markdown",
+    "section": "Code Chunk Options",
+    "text": "Code Chunk Options\nOptions for your code chunks:\n\nYou can change these default values for code chunks for the rest of your document:\n```{r, include=FALSE}\nknitr::opts_chunk$set(\n  comment = \"#&gt;\", echo = FALSE, fig.width = 6\n)\n```\nFore more information, see https://bookdown.org/yihui/rmarkdown-cookbook/chunk-options.html",
+    "crumbs": [
+      "13 R Markdown"
+    ]
+  },
+  {
+    "objectID": "W13_RMarkdown.html#from-an-r-script-to-r-markdown",
+    "href": "W13_RMarkdown.html#from-an-r-script-to-r-markdown",
+    "title": "13 R Markdown",
+    "section": "From an R script to R Markdown",
+    "text": "From an R script to R Markdown\nPreviously, we have just worked with .R scripts. If you have a full R script with your entire analysis (or even several scripts), how do you include them in an R Markdown file?\n\n\nCopy all code into one giant code chunk:\n\n```{r}\n#copy all code here\n```\nYou can break this code chunk apart into smaller ones by copying this into a new line of the code chunk:\n```\n\n```{r}\n\n\n\n2. “Import” the R script and run it with the source function:\n```{r message=FALSE, warning=FALSE}\nsource(\"analysis.R\", #your R script here (same folder as your project)\n       local = knitr::knit_global())\n```\nYou can now use all variables that you have created in your R script.",
+    "crumbs": [
+      "13 R Markdown"
+    ]
+  },
+  {
+    "objectID": "W13_RMarkdown.html#your-second-r-markdown-script",
+    "href": "W13_RMarkdown.html#your-second-r-markdown-script",
+    "title": "13 R Markdown",
+    "section": "Your Second R Markdown Script",
+    "text": "Your Second R Markdown Script\n\nUse one of the two methods described before to include any R script from a previous R code session in your R Markdown document.\nOutput the content of any variable of your R script and include it as inline code in some text (Cheat Sheet).\n\n\n```{r}\ndata = tibble(rt = rnorm(n=100, mean=.5, sd=.2))\n```\nWe observed an average reaction time of `r data %&gt;% pull(rt) %&gt;% mean() %&gt;% signif(digits=3)` seconds.\nWe observed an average reaction time of 0.484 seconds.\n\n\n```{r}\ndata = tibble(a = rnorm(n=100, mean=.5, sd=.2), b = rnorm(n=100, mean=.4, sd=.2))\nmytest = with(data, t.test(a, b, paired=T))\n#mytest %&gt;% apa::t_apa()\n```\nWe performed a paired *t*-test and found a significant difference between both conditions \n(`r mytest %&gt;% apa::t_apa(print=F, format=\"rmarkdown\")`). In condition A, reaction times were higher \n(*M* = `r data %&gt;% pull(a) %&gt;% mean() %&gt;% signif(3)` s, *SD* = `r data %&gt;% pull(a) %&gt;% sd() %&gt;% signif(3)` s)\ncompared to condition B  (*M* = `r data %&gt;% pull(b) %&gt;% mean() %&gt;% signif(3)` s, *SD* = `r data %&gt;% pull(b) %&gt;% sd() %&gt;% signif(3)` s).\nWe performed a paired t-test and found a significant difference between both conditions (t(99) = 2.58, p = .011, d = 0.26). In condition A, reaction times were higher (M = 0.478 s, SD = 0.197 s) compared to condition B (M = 0.41 s, SD = 0.188 s).\n\n\n\n3. Knit the document and open the output with a double click.",
+    "crumbs": [
+      "13 R Markdown"
+    ]
   }
 ]
