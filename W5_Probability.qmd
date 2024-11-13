@@ -55,9 +55,9 @@ Probability = backbone of statistics, that's why we cover it here as well!
 
 Definitions:
 
--   **Experiment**: Activity that produces outcome (e.g. roll a die)
+-   **Experiment**: Activity that produces outcome
 
--   **Sample space**: Set of possible outcomes for an experiment (six-sided die: {1,2,3,4,5,6})
+-   **Sample space**: Set of possible outcomes for an experiment
 
 -   **Event**: Subset of the sample space, an outcome
 
@@ -221,7 +221,7 @@ $$ P(A) = \frac{5}{10} = 50\%; P(B) = \frac{8}{10} = 80\% $$
 
 . . .
 
-2.  Out of the 10 parties, to how many have both Anna and Barbara been under the *assumption* that they went to parties *independently*?
+2.  Out of the 10 parties, to how many have both Anna and Barbara been under the *assumption* that they went to parties *independently*? (Or how likely is it that both Anna and Barbara will go to the next party?)
 
 . . .
 

@@ -198,10 +198,6 @@ The Central Limit Theorem (CLT) is a fundamental (and often misunderstood) conce
 
 CLT: With larger sample sizes, the **sampling distribution of sample means** (i.e., the blue distribution from before) will become more and more **normally distributed**\*, even if the *population distribution* is not (i.e., the grey distribution from before)!
 
-::: aside
-\*There are several probability distributions that will be covered in the next R session. The normal (or Gaussian) distribution is the typical bell-shaped curve and is highly prevalent in nature! It is described by the mean and the standard deviation.
-:::
-
 ![Normal Distribution of Height](images/norm_dist_height.PNG){fig-align="left" width="399"}
 
 . . .
