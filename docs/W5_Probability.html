@@ -451,8 +451,8 @@ div.cell-output-stdout {
 <h2>Probability Theory</h2>
 <p>Definitions:</p>
 <ul>
-<li><p><strong>Experiment</strong>: Activity that produces outcome (e.g.&nbsp;roll a die)</p></li>
-<li><p><strong>Sample space</strong>: Set of possible outcomes for an experiment (six-sided die: {1,2,3,4,5,6})</p></li>
+<li><p><strong>Experiment</strong>: Activity that produces outcome</p></li>
+<li><p><strong>Sample space</strong>: Set of possible outcomes for an experiment</p></li>
 <li><p><strong>Event</strong>: Subset of the sample space, an outcome</p></li>
 </ul>
 <div class="fragment">
@@ -772,33 +772,6 @@ P(B|A) = \frac{P(A|B)}{P(A)} * P(B)
       }</style></aside>
 </div>
 </section>
-<section id="probability-distributions" class="slide level2">
-<h2>Probability Distributions</h2>
-<p><strong>Probability distribution</strong> = probability of all possible outcomes in an experiment.</p>
-<div class="fragment">
-<p>Helps us answer questions like: How likely is it that event X occurs/we find specific value of X? (<span class="math inline">\(P(X = x_i)\)</span>)</p>
-</div>
-<div class="fragment">
-<p><strong>Cumulative Probability Distribution</strong></p>
-<p>–&gt; how likely is it to find a value that is as extreme or larger (or as small or smaller!)? (<span class="math inline">\(P(X \geq x_i)\)</span>)</p>
-<aside class="notes">
-<p>examples:<br>
-- die: uniform<br>
-- height: normal dist</p>
-<p>draw dists, cutoff, all the area under curve before, CPD</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</div>
-</section>
 <section id="sum-up" class="slide level2">
 <h2>Sum Up</h2>
 <p>Models and probability are central to statistics, as we will see.</p>
@@ -821,10 +794,20 @@ Frequentists interpret probability as the long-run frequencies (e.g.&nbsp;how ma
       }</style></aside>
 </section></section>
 <section>
-<section id="probability-1" class="title-slide slide level1 center">
-<h1>Probability</h1>
+<section id="probability-distributions" class="title-slide slide level1 center">
+<h1>Probability Distributions</h1>
 <p>We already covered classic probability theory, including conditional probability.</p>
 <p>Today, we will go more into depth about different <strong>probability distributions</strong>.</p>
+<div class="fragment">
+<p><strong>Probability distribution</strong> = probability of all possible outcomes in an experiment.</p>
+</div>
+<div class="fragment">
+<p>Helps us answer questions like: How likely is it that event X occurs/we find specific value of X? (<span class="math inline">\(P(X = x_i)\)</span>)</p>
+</div>
+<div class="fragment">
+<p><strong>Cumulative Probability Distribution</strong></p>
+<p>–&gt; how likely is it to find a value that is as extreme or larger (or as small or smaller!)? (<span class="math inline">\(P(X \geq x_i)\)</span>)</p>
+</div>
 <div class="fragment">
 <p>A probability distribution is similar to a frequency distribution: The difference is that the <strong>probability distribution</strong> reflects the <em>theory</em> and the <strong>frequency distribution</strong> the <em>observed data</em> (i.e., frequencies are used to <em>approximate</em> probabilities)</p>
 </div>
@@ -962,17 +945,17 @@ div.cell-output-stdout {
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a><span class="co">#1</span></span>
 <span id="cb1-2"><a></a><span class="fu">runif</span>(<span class="at">n=</span><span class="dv">1</span>) <span class="co">#default parameters are already set to min=0 and max=1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1866345</code></pre>
+<pre><code>[1] 0.5325043</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a></a><span class="co">#2</span></span>
 <span id="cb3-2"><a></a><span class="fu">runif</span>(<span class="at">n=</span><span class="dv">100</span>, <span class="at">max=</span><span class="dv">10</span>) <span class="sc">%&gt;%</span> <span class="fu">mean</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 5.00822</code></pre>
+<pre><code>[1] 5.37693</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a></a><span class="co">#3</span></span>
 <span id="cb5-2"><a></a><span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">size=</span><span class="dv">50</span>, <span class="at">replace=</span>T) <span class="sc">%&gt;%</span> <span class="fu">mean</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 5.58</code></pre>
+<pre><code>[1] 5.82</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a></a><span class="co">#4</span></span>
 <span id="cb7-2"><a></a><span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"Anna"</span>, <span class="st">"Barbara"</span>, <span class="st">"Christina"</span>, <span class="st">"Dana"</span>), <span class="at">size=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -982,7 +965,7 @@ div.cell-output-stdout {
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a></a><span class="co">#5</span></span>
 <span id="cb9-2"><a></a><span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"Anna"</span>, <span class="st">"Barbara"</span>, <span class="st">"Christina"</span>, <span class="st">"Dana"</span>)) <span class="co">#by default, sample draws all elements in random order</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "Dana"      "Anna"      "Christina" "Barbara"  </code></pre>
+<pre><code>[1] "Barbara"   "Christina" "Anna"      "Dana"     </code></pre>
 </div>
 </div>
 </div>
@@ -1327,9 +1310,6 @@ you want to find out whether the coin is fair and ask yourself: <strong>What is 
 <h1>Thanks!</h1>
 <p><strong>Learning objectives</strong>:</p>
 <ul>
-<li><p>Describe the basic equation for statistical models (<span class="math inline">\(data = model + error\)</span>)</p></li>
-<li><p>Describe different measures of central tendency and dispersion, how they are computed, and which are appropriate under what circumstances.</p></li>
-<li><p>Compute a Z-score and describe why they are useful.</p></li>
 <li><p>Understand different concepts of probability:</p>
 <ul>
 <li><p>joint and conditional probability</p></li>
@@ -1337,13 +1317,11 @@ you want to find out whether the coin is fair and ask yourself: <strong>What is 
 <li><p>Bayes’ Theorem</p></li>
 <li><p>probability distributions</p></li>
 </ul></li>
-<li><p>Understand why and how we sample from a population</p></li>
-<li><p>Understand resampling: Monte-Carlo Simulations and Bootstrapping</p></li>
+<li><p>Understand and use different probability distributions in R</p></li>
 </ul>
 <p><strong>Next</strong>:</p>
 <ul>
-<li><p>R: Probability distributions and resampling/simulations</p></li>
-<li><p>Theory: Statistical Analysis / Hypothesis Testing</p></li>
+<li>Sampling and resampling/simulations</li>
 </ul>
 
 <div class="quarto-auto-generated-content">
