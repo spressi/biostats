@@ -10,8 +10,8 @@
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.4.555">
 
-  <meta name="author" content="Dr.&nbsp;Lea Hildebrandt">
-  <title>Biostatistics - 02 Models</title>
+  <meta name="author" content="Dr.&nbsp;Mario Reutter (slides adapted from Dr.&nbsp;Lea Hildebrandt)">
+  <title>Biostatistics - 01a Introduction to Biostatistics</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -29,6 +29,71 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto.css">
   <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -329,7 +394,7 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">02 Models</h1>
+  <h1 class="title">01a Introduction to Biostatistics</h1>
   <p class="subtitle"></p><div class="line-block">Julius-Maximilians-University Würzburg<br>
 Course: “Biostatistics”<br>
 Translational Neuroscience</div><p></p>
@@ -337,17 +402,15 @@ Translational Neuroscience</div><p></p>
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Dr.&nbsp;Lea Hildebrandt 
+Dr.&nbsp;Mario Reutter (slides adapted from Dr.&nbsp;Lea Hildebrandt) 
 </div>
 </div>
 </div>
 
 </section>
 <section>
-<section id="fitting-models-to-data" class="title-slide slide level1 center">
-<h1>Fitting Models to Data</h1>
-<div class="fragment">
-<p>Form groups of 3-4 and collect the height of each member!</p>
+<section id="welcome" class="title-slide slide level1 center">
+<h1>Welcome!</h1>
 <div class="cell">
 <style type="text/css">
 code.sourceCode {
@@ -359,262 +422,88 @@ div.cell-output-stdout {
 }
 </style>
 </div>
-<aside class="notes">
-<p>“Fitting” “Models” to “Data”, let’s start with collecting data!<br>
-Form teams of 4 and collect the height of each of the team members.</p>
-<p>Tricky content, some formulas, feel free to ask questions anytime! It’s important that you understand the concepts!</p>
-<p>(We might not manage to go through all the slides, but still ask questions - slides/video online)</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</div>
 </section>
-<section id="why-do-we-need-models" class="slide level2">
-<h2>Why do we need Models?</h2>
-<p>What can we do with data only? Where can a model be helpful?</p>
-<aside class="notes">
-<p>summarize/simplify, generalize, explain</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="what-is-a-model" class="slide level2">
-<h2>What is a Model?</h2>
-<blockquote>
-<p>“models” are generally simplifications of things in the real world that nonetheless convey the essence of the thing being modeled</p>
-<p>All models are wrong but some are useful (George Box)</p>
-</blockquote>
-<p>(ST21, Ch 5)</p>
-<p><strong>Aim</strong>: Find the model that efficiently and accurately summarizes the data.</p>
-</section>
-<section id="a-simple-model" class="slide level2">
-<h2>A Simple Model</h2>
-<p>Let’s say we want to have a model of height of students in this Biostatistics class (or height of children based on the NHANES dataset, as used in ST21, see below).</p>
-<p>What do you think would be a good model for the height of a student/child?<br>
-(Or: Which value should we guess for a particular or new student/child?)</p>
+<section id="hello" class="slide level2">
+<h2>Hello!</h2>
+<p>Who am I?</p>
 <div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="W2_Models_files/figure-revealjs/unnamed-chunk-3-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-<aside class="notes">
-<p>Have them guess the height of an anonymous new student, discuss what could be relevant information. Gender = not known (prior knowledge!).</p>
-<p>Mean = model?</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</div>
-</section>
-<section id="basic-structure-of-statistical-models" class="slide level2">
-<h2>Basic structure of statistical models</h2>
-<p><span class="math display">\[
-data=model+error
-\]</span></p>
-<aside class="notes">
-<p>a statistical model is generally much simpler than the data being described; it is meant to capture the structure of the data as simply as possible.</p>
-<p>Two parts:</p>
+<p>Who are you?</p>
 <ul>
-<li><p>one portion that is described by a statistical model, which expresses the values that we expect the data to take given our knowledge,</p></li>
-<li><p><em>error</em> that reflects the difference between the model’s predictions and the observed data.</p></li>
+<li><p>What is your background?</p></li>
+<li><p>Do you have experience with data analysis?</p></li>
+<li><p>What’s your attitude towards statistics?</p></li>
 </ul>
-<p>Example? (Average) age in classroom? All prior knowledge goes into model</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-<div class="fragment">
-<p>In general, we want to predict single observations (denoted by i) from the model. The fact that we are looking at predictions and not at actual values of the data/observations is denoted by the “hat”:</p>
-<p><span class="math display">\[ \widehat{data_i} = model_i \]</span> The error is then simply the deviation of the actual data from the predicted values:</p>
-<p><span class="math display">\[  error_i = data_i - \widehat{data_i} \]</span></p>
-<p>This means that the predicted value of the data for observation i is equal to the value of the model for that observation.</p>
-</div>
-</section>
-<section id="a-simple-model-2" class="slide level2">
-<h2>A Simple Model 2</h2>
-<p>The simplest model would be to predict the <em>mean</em> of the height values for <em>every</em> student/child! This would imply that individual deviations of the mean would be interpreted to be (prediction) errors in such a model.</p>
-<p>We can write such a simple model as a formula:</p>
-<p><span class="math display">\[
-y_i = \beta + \epsilon
-\]</span></p>
-<p><span class="math inline">\(y_i\)</span> denotes the individual observations (hence the <span class="math inline">\(i\)</span>) of heights, <span class="math inline">\(\beta\)</span> is a so-called <em>parameter</em>, and <span class="math inline">\(\epsilon\)</span> is the error term. In this example, the parameter <span class="math inline">\(\beta\)</span> would be the same value (= the mean height) for everyone (hence it doesn’t need an <span class="math inline">\(i\)</span> subscript). <em>Parameters</em> are values that we optimize to find the best model.</p>
-<aside class="notes">
-<p>What would be Yi, beta and error for the height example?</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="a-simple-model-3" class="slide level2">
-<h2>A Simple Model 3</h2>
-<p>How do we find parameters that belong to the best fitting model?</p>
-<p>How did you come up with model for heights, e.g.&nbsp;the mean?</p>
-<div class="fragment">
-<p>We try to minimize the error!</p>
-<p>Remember, the error is the difference between the actual and predicted values of <span class="math inline">\(y\)</span> (height):</p>
-<p><span class="math display">\[
-error_i = y_i - \hat{y_i}
-\]</span></p>
-<p>If we select a predicted value (or mean) of 400cm, all individuals’ errors would hugely deviate (because no one is 4m tall). If we average these errors, it would still be a big value.</p>
-<p>A better candidate for such a simple model is thus the arithmetic mean or average:</p>
-<p><span class="math display">\[
-\bar{X} = \frac{\sum_{i=1}^{n}x_i}{n}
-\]</span></p>
-<p>Summing up all individual’s heights and dividing that number by the number of individuals gives us the mean. By definition, the average (directed) error is now 0 (see book for proof, the individual errors cancel out)! This means that the average has no <em>bias</em> to over- or underestimate observations (while 4m would have been a clear overestimation).</p>
-</div>
-</section>
-<section id="a-note-on-errors" class="slide level2">
-<h2>A Note on Errors</h2>
-<p>We usually don’t simply average across the individual (signed) errors, but across the <em>squared</em> errors.</p>
-<p>The reason is that we do not want positive and negative errors to cancel each other out.</p>
-<p>The <em>mean squared error</em> would be in a different unit than the data (e.g., cm<sup>2</sup>), which is why we usually take the square root of that value to bring it back to the original unit: This leaves us with the <em>root mean squared error (RMSE)</em>!</p>
-<p>Note: We <em>could</em> also use the absolute values of errors, sum those up, and avoid any of these problems. For historical reasons, we do not.</p>
-</section>
-<section id="a-slightly-more-complex-model" class="slide level2">
-<h2>A Slightly More Complex Model</h2>
-<p>Obviously, the model for predicting height from the average is not very good (RMSE = 27 cm). How can we improve this model?</p>
-<div class="fragment">
-<p>We can account for other information that we might have!<br>
-For example, to account for age might be a good idea: Older children are likely taller than younger ones. We plot height against age to visually inspect the relationship:</p>
-</div>
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="W2_Models_files/figure-revealjs/unnamed-chunk-4-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-<aside class="notes">
-<p>RMSE: On average, 27 cm “wrong” per individual!</p>
-<p>A: raw data, visible strong relationship<br>
-B: only age (linear relationship)<br>
-C: intercept/constant<br>
-D: also account for gender</p>
-<p>–&gt; line fits data increasingly better!</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</div>
-</section>
-<section id="a-slightly-more-complex-model-2" class="slide level2">
-<h2>A Slightly More Complex Model 2</h2>
-<p>As we can see, the line (~ model) fits the data points increasingly well, e.g.&nbsp;if we include a constant (also called “intercept”) and age. We would write this as this formula:</p>
-<p><span class="math display">\[
-\hat{y_i} = \hat{\beta_0} + \hat{\beta_1} * age_i
-\]</span></p>
-<p>Remember from linear algebra that this defines a line:</p>
-<p><span class="math display">\[
-y = intercept + slope * x
-\]</span></p>
-<p>Thus <span class="math inline">\(\beta_0\)</span> is the parameter for the intercept and <span class="math inline">\(\beta_1\)</span> for the slope of age!</p>
-<p>The model fit is now much better: RMSE = 8.36 cm.</p>
-<div class="fragment">
-<p>Adding gender? Does not improve model too much! (compared to age)</p>
-<aside class="notes">
-<p>w/o intercept: A, no <span class="math inline">\(\beta_0\)</span></p>
-<p>Stats Software will estimate best values for <span class="math inline">\(\beta\)</span>’s</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</div>
-</section>
-<section id="what-is-a-good-model" class="slide level2 scrollable">
-<h2>What is a “Good” Model?</h2>
-<p>Two aims:</p>
-<ol type="1">
-<li><p>Describe data well (= low error/RMSE)</p></li>
-<li><p>Generalize to new data (low error when applied to new data)</p></li>
-</ol>
-<p>Can be conflicting!</p>
-<div class="fragment">
-<p>Where does error come from?</p>
-<p>Any ideas? Where could the error come from in your height model?</p>
-</div>
-<div class="fragment">
-<div>
-<ul>
-<li class="fragment"><p>measurement error (noise): random variation in data</p>
-<ul>
-<li class="fragment"><p>dependent variable is hard to measure precisely (difficult/noisy conditions)</p></li>
-<li class="fragment"><p>cheap/inadequate equipment for measuring</p></li>
-</ul></li>
-<li class="fragment"><p>wrong model specification</p>
-<ul>
-<li class="fragment"><p>important variable is missing from model (age!)</p></li>
-<li class="fragment"><p>e.g., height has a quadratic relationship with age (old people shrink again)</p></li>
-</ul></li>
-</ul>
-</div>
-</div>
-</section>
-<section id="examples-measurement-error" class="slide level2">
-<h2>Examples Measurement Error</h2>
+<!-- . . .
 
-<img data-src="W2_Models_files/figure-revealjs/BACrt-1.png" width="960" class="r-stretch quarto-figure-center"><p class="caption">Simulated relationship between blood alcohol content and reaction time on a driving test, with best-fitting linear model represented by the line. A: linear relationship with low measurement error. B: linear relationship with higher measurement error. C: Nonlinear relationship with low measurement error and (incorrect) linear model</p><aside class="notes">
-<p>A: very little error, all points close to fitted line<br>
-B: same relationship much more variability across individuals<br>
-C. wrongly specified model (caffeine!), not a linear relationship. Error high (deviations points - line)</p>
+Today, I'm feeling...
+
+![](images/moodmeter_en.jpg){fig-alt="Moodmeter"} -->
+</div>
+</section>
+<section id="using-the-slides" class="slide level2">
+<h2>Using the Slides</h2>
+<ul>
+<li>These slides are created directly in R with the quarto extension.</li>
+<li>You can jump to a slide by clicking the three dashes in the bottom left.</li>
+<li>You can conveniently copy R code from the slides with one click and paste it into your RStudio.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a><span class="fu">print</span>(<span class="st">"Hello World"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Hello World"</code></pre>
+</div>
+</div>
+</section>
+<section id="organizational-issues" class="slide level2">
+<h2>Organizational Issues</h2>
+<div class="fragment">
+<!-- -   *Warning*: The course only lasts until mid-December - but we have to squeeze the content of the full semester in these 8 weeks!
+
+    -   This means, we'll have two sessions per week, Statistics (Input) on Tuesdays and R Programming (Hands-on) on Wednesdays -->
+<ul>
+<li><p>Attendance is mandatory! (I don’t make the rules :) )</p>
+<ul>
+<li><p>You may miss one session without giving reasons (recommendation: don’t waste it early!)</p></li>
+<li><p>If you miss additional sessions, please write an email with an explanation (further proof may be required, e.g.&nbsp;doctor’s certificate)</p></li>
+</ul></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><p>The course will take place in person</p>
+<ul>
+<li>Only for students who are not in Würzburg yet, there is an option via Zoom</li>
+</ul></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><p>We will use these textbooks (Open Educational Resources - freely available online, also linked in WueCampus):</p>
+<ul>
+<li><p><a href="https://statsthinking21.github.io/statsthinking21-core-site/index.html">Statistical Thinking for the 21st Century</a></p></li>
+<li><p>For the R part: <a href="https://psyteachr.github.io/quant-fun-v2/">Fundamentals of Quantitative Analysis</a></p></li>
+<li><p>(Additional Resource: <a href="https://r4ds.hadley.nz/">R for Data Science</a>)</p></li>
+</ul></li>
+</ul>
+</div>
+</section>
+<section id="contents" class="slide level2">
+<h2>Contents</h2>
+<div>
+<ul>
+<li class="fragment">From basic probability to (Generalized) Linear Mixed Models
+<ul>
+<li class="fragment">Some things may be repetitive for you but this course aims to provide a common starting position for your next semesters</li>
+</ul></li>
+<li class="fragment">Input (lecture style) with hands-on R sessions <!-- -   Input could be video based that you should watch before the (R) session --></li>
+<li class="fragment">In addition, you should read a few pages in the text books<br>
+(<a href="https://statsthinking21.github.io/statsthinking21-core-site/">Statistical Thinking for the 21st Century</a>, and possibly <a href="https://psyteachr.github.io/quant-fun-v2/">Fundamentals of Quantitative Analysis</a>)</li>
+<li class="fragment">Project: Independently analyze a dataset (exam with pass or fail grading)</li>
+</ul>
+</div>
+<aside class="notes">
+<p>For some, e.g.&nbsp;the psychologists, it will be more of a repetition - but you will also learn R.</p>
+<p>Slides might be text heavy → so that you can go through the slides afterwards again (but textbook might also be helpful)</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -627,158 +516,257 @@ C. wrongly specified model (caffeine!), not a linear relationship. Error high (d
           display:block!important;
       }</style></aside>
 </section>
-<section id="can-a-model-be-too-good" class="slide level2">
-<h2>Can a Model be “too Good”?</h2>
-<p>Yes! This is called <em>overfitting</em>.</p>
+<section id="project" class="slide level2">
+<h2>Project</h2>
 <div class="fragment">
-<p>If we fit a line too closely to the data (e.g., with an 8th degree polynomial), the model might not be able to generalize to other data well.</p>
-<div class="cell">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="W2_Models_files/figure-revealjs/Overfitting-1.png" style="height:50.0%" width="768"></p>
-<figcaption>An example of overfitting. Both datasets were generated using the same model, with different random noise added to generate each set. The left panel shows the data used to fit the model, with a simple linear fit in blue and a complex (8th order polynomial) fit in red. The root mean square error (RMSE) values for each model are shown in the figure; in this case, the complex model has a lower RMSE than the simple model. The right panel shows the second dataset, with the same model overlaid on it and the RMSE values computed using the model obtained from the first dataset. Here we see that the simpler model actually fits the new dataset better than the more complex model, which was overfitted to the first dataset.</figcaption>
-</figure>
-</div>
-</div>
-</div>
+<ul>
+<li><p>Find a dataset that can answer a question you are interested in</p>
+<ul>
+<li><a href="https://ourworldindata.org/" class="uri">https://ourworldindata.org/</a></li>
+<li><a href="https://www.destatis.de/">Statistisches Bundesamt</a></li>
+<li>Your own, e.g., from an internship</li>
+</ul></li>
+</ul>
 </div>
 <div class="fragment">
-<p>How would overfitting look like in your height examples?</p>
-<aside class="notes">
-<p>same formula, different noise (simulation) ~ different individuals</p>
-<p>simpler model fits new data better!</p>
-<p>overfitting in height examples?</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<ul>
+<li><p>preprocess/wrangle it,</p></li>
+<li><p>analyze the data,</p></li>
+<li><p>and write a short (min. 2-page) report!</p>
+<ul>
+<li>short intro incl.&nbsp;research question and hypothesis</li>
+<li>methods (both how the data were acquired and how they are analyzed)</li>
+<li>results (incl.&nbsp;at least one plot)</li>
+<li>and a short discussion.
+<ul>
+<li><em>All</em> these parts should be <em>at least half a page</em> long.</li>
+</ul></li>
+</ul></li>
+</ul>
 </div>
-</section></section>
+</section>
+<section id="schedule" class="slide level2 scrollable smaller">
+<h2>Schedule</h2>
+<p>The up-to-date version can be found at <a href="https://spressi.github.io/biostats/" class="uri">https://spressi.github.io/biostats/</a></p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 25%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 26%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Date</th>
+<th>Topic</th>
+<th>Reading</th>
+<th>Lecturer</th>
+<th>Project Deadlines</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>16.10.</td>
+<td>General &amp; R Intro</td>
+<td>ST21: 1-3, QF: 1-3</td>
+<td>Reutter</td>
+<td>R &amp; RStudio installed</td>
+</tr>
+<tr class="even">
+<td>23.10.</td>
+<td>Probability</td>
+<td>ST21: 4, QF: 4-6</td>
+<td>Hildebrandt</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>30.10.</td>
+<td>Data Wrangling</td>
+<td>ST21: 4, QF: 4-6</td>
+<td>Reutter</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>06.11.</td>
+<td>Data Visualization</td>
+<td>QF: 7</td>
+<td>Reutter</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>13.11.</td>
+<td>Sampling</td>
+<td>ST21: 7-8, QF: 8</td>
+<td>Hildebrandt</td>
+<td>Dataset</td>
+</tr>
+<tr class="even">
+<td>20.11.</td>
+<td><em>Penance Day</em></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>27.11.</td>
+<td>Probability &amp; Sampling in R</td>
+<td>ST21: 7-8, QF: 8</td>
+<td>Hildebrandt</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>04.12.</td>
+<td>Hypothesis Testing</td>
+<td>ST21: 9-10</td>
+<td>Reutter</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>11.12.</td>
+<td>Comparing Means &amp; Categories</td>
+<td>ST21: 12, 15</td>
+<td>Reutter</td>
+<td>Research Question &amp; Hypotheses</td>
+</tr>
+<tr class="even">
+<td>18.12.</td>
+<td>Exercises (t-Tests, Chi²)</td>
+<td>ST21: 12, 15</td>
+<td>Reutter</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>25.12. &amp; 01.01.</td>
+<td><em>Christmas &amp; New Year’s</em></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>08.01.</td>
+<td>(General) Linear Models</td>
+<td>ST21: 12-13</td>
+<td>Hildebrandt</td>
+<td>First Analysis Ideas</td>
+</tr>
+<tr class="odd">
+<td>15.01.</td>
+<td>Exercises (GLM)</td>
+<td>ST21: 12-13</td>
+<td>Hildebrandt</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>22.01.</td>
+<td>Linear Mixed Models</td>
+<td>ST21: 14</td>
+<td>Hildebrandt</td>
+<td>Analysis (with R scripts)</td>
+</tr>
+<tr class="odd">
+<td>29.01.</td>
+<td>R Markdown for Reports</td>
+<td></td>
+<td>Reutter</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>05.02.</td>
+<td>Troubleshooting Your Report</td>
+<td></td>
+<td>both</td>
+<td>Send Questions via Email</td>
+</tr>
+<tr class="odd">
+<td>12.02.</td>
+<td><del>Reproducible Research</del></td>
+<td><del>ST21: 18</del></td>
+<td><del>Hildebrandt</del></td>
+<td>Report (with R Markdown)</td>
+</tr>
+</tbody>
+</table>
+
+<aside><div>
+<p>ST21: Statistical Thinking for the 21st Century<br>
+QF: Fundamentals of Quantitative Analysis (QuantFun)</p>
+</div></aside></section></section>
 <section>
-<section id="summarizing-data" class="title-slide slide level1 center">
-<h1>Summarizing Data</h1>
+<section id="why-statistics" class="title-slide slide level1 center">
+<h1>Why Statistics?</h1>
 
 </section>
-<section id="central-tendency" class="slide level2">
-<h2>Central Tendency</h2>
-<p>Why summarize data?</p>
-<div class="fragment">
-<p>A summary is a model &amp; describes the data! E.g., mean = central tendency of the data</p>
-</div>
-<div class="fragment">
-<p>Mean, Median, Mode?</p>
-</div>
-<div class="fragment">
-<p><strong>Mean</strong> = “Balance point” of data; minimizes sum of squared error, but highly influenced by outliers!<br>
-<strong>Median</strong> = “middle” of ranked data; minimizes sum of absolute error, less influenced by extreme values<br>
-<strong>Mode</strong> = most often occurring value (i.e., absolute peak)</p>
-</div>
-<div class="fragment">
-<p>Example:</p>
-<p>If 4 people earn 50,000 Euros per year and 1 person earns 1,000,000:<br>
-Mean: 240,000 Euros<br>
-Median: (Rank order: 10,000; 10,000; <strong>10,000</strong>; 10,000; 1,000,000) -&gt; middle value = 10,000 Euros<br>
-Mode: 10,000 Euros</p>
-<aside class="notes">
-<p>examples</p>
-<p>mean: income –&gt; if one person earns a million and 3 only 10.000 –&gt; mean = 257.500</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<section id="why-is-it-important-that-you-know-statistics" class="slide level2">
+<h2>Why is it important that YOU know statistics?</h2>
+<div class="smaller">
+<ul>
+<li class="fragment"><p>You’re doing a <em>research</em> master!</p>
+<ul>
+<li class="fragment">Research = Reading &amp; understanding papers (esp.&nbsp;the analyses)</li>
+<li class="fragment">Designing your own experiments, analyze data, interpret results</li>
+</ul></li>
+<li class="fragment"><p>We live in an increasingly data-centric world</p>
+<ul>
+<li class="fragment">Knowing how to wrangle and analyze data is a valuable skill</li>
+</ul></li>
+<li class="fragment"><p>Facts &amp; data literacy matter more than ever!</p>
+<ul>
+<li class="fragment"><p>Fake News, “Lying with stats”, Reproducibility Crisis</p></li>
+<li class="fragment"><p>Being able to call bullshit (<a href="https://www.callingbullshit.org/" class="uri">https://www.callingbullshit.org/</a>)</p></li>
+</ul></li>
+<li class="fragment"><p>“I only believe in statistics that I doctored myself” ― Winston S. Churchill</p>
+<ul>
+<li class="fragment">However: “It is easy to lie with statistics, but easier to lie without them” ― Frederick Mosteller</li>
+</ul></li>
+</ul>
 </div>
 </section>
-<section id="variability" class="slide level2">
-<h2>Variability</h2>
-<p>How widespread are the data?</p>
-<div class="fragment">
-<p><strong>Variance</strong> and <strong>Standard Deviation</strong></p>
-<p><strong>Variance</strong> = Mean Squared Error</p>
-<p><span class="math display">\[
-\sigma^2 = \frac{SSE}{N} = \frac{\sum_{i=1}^n (x_i - \mu)^2}{N}
-\]</span></p>
-<p>(Note: <span class="math inline">\(x_i\)</span> = value of ind. observation, <span class="math inline">\(\mu\)</span> = <em>population</em> mean instead of <span class="math inline">\(\hat{X}\)</span> = <em>sample</em> mean)</p>
-</div>
-<div class="fragment">
-<p><strong>Standard Deviation</strong> ≈ Root Mean Squared Error</p>
-<p><span class="math display">\[
-SD = \sigma = \sqrt{\sigma^2}
-\]</span></p>
-</div>
-<div class="fragment">
-<p>We usually don’t know the population mean <span class="math inline">\(\mu\)</span>, that’s why we estimate the sample variance using the <em>sample</em> mean <span class="math inline">\(\hat{X}\)</span> (both with the “hat”) and the <em>sample</em> size <span class="math inline">\(n\)</span> instead of the <em>population</em> size <span class="math inline">\(N\)</span>:</p>
-<p><span class="math display">\[
-\hat\sigma^2 = \frac{\sum_{i=1}^n (x_i - \hat{X})^2}{n-1}
-\]</span></p>
-<p>Note: <span class="math inline">\(n-1\)</span> is used to make the estimate more robust/less biased (I cannot give you an intuition why this is better… please trust me!).</p>
-<aside class="notes">
-<p>Remember plot above: Points either close to line or wide spread</p>
-<p>Variance = sigma^2, deviations of data points from mean (<span class="math inline">\(\mu\)</span>) squared and summed, divided by number of oberservations</p>
-<p><span class="math inline">\(n-1\)</span> = Degrees of Freedom, one value is fixed if we know the mean.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</div>
-</section>
-<section id="comparing-apples-and-oranges-z-scores" class="slide level2">
-<h2>Comparing apples and oranges: Z-Scores</h2>
-<p><span class="math display">\[
-Z_i(x) = \frac{x_i - \mu}{\sigma}
-\]</span></p>
+<section id="what-is-statistical-thinking" class="slide level2">
+<h2>What is Statistical Thinking?</h2>
 <div>
 <ul>
-<li class="fragment">standardizes the distribution: How far is any data point from the mean in units of SD?</li>
-<li class="fragment">doesn’t change original relationship of data points!
+<li class="fragment"><p>“a systematic way of thinking about how we describe the world and <strong>use data [to] make decisions and predictions</strong>, all in the context of the inherent <strong>uncertainty</strong> that exists in the real world.” (Poldrack, Preface of ST21)</p></li>
+<li class="fragment"><p>“Statistical thinking is a way of <strong>understanding</strong> a complex world by describing it in relatively <strong>simple terms</strong> that nonetheless capture <strong>essential aspects</strong> of its structure or function, and that also provide us some idea of how <strong>uncertain</strong> we are about that knowledge.” (Poldrack, Chapter 1)</p></li>
+</ul>
+</div>
+<aside class="notes">
+<p>break down complexity, include uncertainty</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="why-is-statistical-thinking-important" class="slide level2">
+<h2>Why is Statistical Thinking Important?</h2>
+<div>
 <ul>
-<li class="fragment">shifts distribution to have a mean = 0 and scales it to have SD = 1.</li>
+<li class="fragment">data literacy vs.&nbsp;intuition/heuristics/anecdotal evidence
+<ul>
+<li class="fragment">Public discourse about Covid-19, migration, etc. (e.g., “50% of people in intensive care are vaccinated”)</li>
 </ul></li>
-<li class="fragment">useful if we compare (or use in a model) variables on different scales/units!</li>
 </ul>
 </div>
 <div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="W2_Models_files/figure-revealjs/zDensityCDF-1.png" width="480"></p>
-<figcaption>Density (top) and cumulative distribution (bottom) of a standard normal distribution, with cutoffs at one standard deviation above/below the mean.</figcaption>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><a href="https://thedecisionlab.com/biases/base-rate-fallacy"><img data-src="images/BaseRate.jpg" class="quarto-figure quarto-figure-center" width="600" alt="Base Rate Fallacy"></a></p>
 </figure>
 </div>
-</div>
+<figcaption>Base Rate Fallacy</figcaption>
+</figure>
 </div>
 <aside class="notes">
-<p>Z of x</p>
-<p>x_i is single value/data point<br>
-mu, sigma</p>
-<p>z-scores: Now you can compare apples to oranges! Imagine two siblings from different classes battling it out on test results:<br>
-- I got 70 points, you got only 60!<br>
-- My test only had 70 points in total, yours had 85. I got 86% correct, you only 82%!<br>
-- My test was harder! The average result was 60 with a standard deviation of 10, so I am 1 SD above the class average!<br>
-- On my test, an average of 52 was achieved with an SD of 8, so I am also 1 SD above the class average. But people in your class are really stupid so that’s a very low standard to compare yourself.<br>
-Narrator: And this was the end of comparability between apples and oranges :)</p>
+<p>example availability heuristic from book (or any other example where intuition is wrong, i.e.&nbsp;vaccinations/covid…)</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -791,17 +779,292 @@ Narrator: And this was the end of comparability between apples and oranges :)</p
           display:block!important;
       }</style></aside>
 </div>
-</section></section>
-<section id="thanks" class="title-slide slide level1 center">
-<h1>Thanks</h1>
-<p>Learning objectives:</p>
+</section>
+<section id="what-can-statistics-do-for-us" class="slide level2">
+<h2>What can Statistics Do For Us?</h2>
 <ul>
-<li><p>Describe the basic equation for statistical models (data=model + error)</p></li>
-<li><p>Describe different measures of central tendency and dispersion, how they are computed, and which are appropriate under what circumstances.</p></li>
-<li><p>Compute a Z-score and describe why they are useful.</p></li>
+<li><p><strong>Describe</strong> patterns by summarizing/breaking down data (“descriptive statistics”)</p></li>
+<li><p><strong>Decide</strong> whether one thing is better than another, given the uncertainty (“inferential statistics”)</p></li>
+<li><p><strong>Predict</strong> how other people would “behave” (generalize to new observations)</p></li>
+</ul>
+<aside class="notes">
+<p>describe: not useful to look at every single data point/person, but we need s.th. like tendencies/trends…</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-big-ideas" class="slide level2">
+<h2>The Big Ideas</h2>
+<div>
+<ul>
+<li class="fragment"><p><strong>Learning from data</strong>: Update our beliefs</p></li>
+<li class="fragment"><p><strong>Aggregation</strong>: How to summarize the data to draw meaningful conclusions?</p></li>
+<li class="fragment"><p><strong>Uncertainty</strong>: Probabilistic evidence</p></li>
+<li class="fragment"><p><strong>Sampling from the population</strong>: Which people etc. do we select?</p></li>
+</ul>
+</div>
+<aside class="notes">
+<p>ask for every point what I could mean w/ it?</p>
+<p>Learning from data: gather new knowledge or even just hypotheses</p>
+<p>Aggregation: Can’t look at all ind data points, need to find trends etc. (should not go too far! throwing out data)</p>
+<p>Uncertainty: stats = tools for making decisions under uncertainty, we can never prove anything but provide evidence, there is no 100% certainty for an outcome</p>
+<p>sampling: how do we represent the population? What is the population? how much data do we need? More is better, but payoff decreases…</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="causality" class="slide level2">
+<h2>Causality</h2>
+<p>Correlation does not imply causation… but is a hint!</p>
+<div class="fragment">
+<p>Example: Smoking = less risk for Parkinson’s disease? (<a href="http://dx.doi.org/10.1136/jnnp.45.7.577">Godwin-Austen et al., 1982</a>; <a href="https://doi.org/10.1212/WNL.0b013e3181d55f38">Chen et al., 2010</a>)</p>
+</div>
+<div class="fragment">
+<p>→ confounding factors?</p>
+</div>
+<div class="fragment">
+<p>e.g., individual dopaminergic activity ⇒ addiction &amp; motor function</p>
+</div>
+<div class="fragment">
+<p>Randomized Controlled Trials (RCT) as the solution?</p>
+<aside class="notes">
+<p>RCT: exp control and manipulation, removes confounds if done well<br>
+At least some more causal evidence!</p>
+<p>QUESTIONS so far?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="what-are-data" class="slide level2">
+<h2>What are Data?</h2>
+<ul>
+<li>What do you think are data?</li>
+</ul>
+<div class="smaller">
+<ul>
+<li class="fragment"><p>qualitative vs.&nbsp;quantitative</p>
+<ul>
+<li class="fragment"><p>qualitative?</p>
+<ul>
+<li class="fragment">open questions, descriptions… can potentially be coded into categories</li>
+</ul></li>
+<li class="fragment"><p>quantitative?</p>
+<ul>
+<li class="fragment">numeric, can be averaged etc.</li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
+<aside class="notes">
+<p>Chat → after showing slide! Come up with examples for “Data”</p>
+<p>Collect: Do you have ideas? What are data you encounter in your lives/work etc? What are differences between these data?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="what-are-data-2" class="slide level2">
+<h2>What are Data? (2)</h2>
+<div class="smaller">
+<ul>
+<li class="fragment"><p>Data types</p>
+<ul>
+<li class="fragment"><p>character/string: text (qualitative)</p></li>
+<li class="fragment"><p>factors/categories</p></li>
+<li class="fragment"><p>types of numbers (quantitative)</p>
+<ul>
+<li class="fragment"><p>binary: 0 or 1, TRUE or FALSE (logical)</p></li>
+<li class="fragment"><p>integers: whole numbers</p></li>
+<li class="fragment"><p>real numbers: decimals/fractions</p></li>
+</ul></li>
+</ul></li>
+<li class="fragment"><p>discrete vs.&nbsp;continuous</p>
+<ul>
+<li class="fragment"><p>discrete: finite set of particular values (0 or 1, scale from 1 to 10)</p></li>
+<li class="fragment"><p>continuous: real numbers that fall into particular range (e.g., brain activity, visual analoge scale)</p></li>
+</ul></li>
+<li class="fragment"><p>What data type is <em>eye color</em>?</p></li>
+</ul>
+</div>
+<aside class="notes">
+<p>eye color can be categorical (e.g., “brown”, “blue”, “green”) or numerical (wave length in nm)</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="what-is-a-data-set" class="slide level2">
+<h2>What is a Data Set?</h2>
+<ul>
+<li><p>a collection of data</p></li>
+<li><p>usually organized into rows and columns (like an excel spreadsheet)</p>
+<ul>
+<li><p>rows: participants/animals/cells…</p></li>
+<li><p>columns: <strong>variables</strong>!</p>
+<ul>
+<li>each variable contains one type of measurement</li>
+</ul></li>
+<li><p>table cells = unique observations of variables per participant etc.</p></li>
+</ul></li>
+</ul>
+
+<img data-src="images/Dataset.jpg" class="r-stretch quarto-figure-center"><p class="caption">NHANES dataset</p><aside class="notes">
+<p>possibly go through columns and ask for data types?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="what-makes-a-good-measurement" class="slide level2">
+<h2>What Makes a Good Measurement?</h2>
+<div class="smaller">
+<!-- -   Discuss! -->
+<ul>
+<li class="fragment"><p>What is being measured?</p>
+<ul>
+<li class="fragment"><p>constructs vs.&nbsp;proxies: need to be well-defined! (Difficult)</p></li>
+<li class="fragment"><p>measurement error</p>
+<ul>
+<li class="fragment"><p>random: e.g., variation in reaction times of same participant across trials</p></li>
+<li class="fragment"><p>systematic: e.g., miscalibrated eye-tracking device</p></li>
+</ul></li>
+</ul></li>
+<li class="fragment"><p>Do we have a “gold standard” to compare the measurement to?</p></li>
+</ul>
+</div>
+<aside class="notes">
+<p>Break-Out session: Brainstorm what makes a good vs.&nbsp;bad measurement!</p>
+<p>Group work/brainstorm:</p>
+<ul>
+<li><p>What are problems?</p></li>
+<li><p>Which kind of errors/when is data NOT good</p></li>
+<li><p>how can we minimize error?</p></li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="reliability" class="slide level2">
+<h2>Reliability</h2>
+<p>Correlation of a measurement with “itself”</p>
+<div class="smaller">
+<ul>
+<li class="fragment"><p>Internal reliability (consistency)</p></li>
+<li class="fragment"><p>Test-retest reliability (stability)</p></li>
+<li class="fragment"><p>Inter-rater reliability (agreement)</p></li>
+</ul>
+</div>
+<div class="fragment">
+<p>Correlation with other variables can’t be higher than reliability (cf., <a href="https://doi.org/10.1080/02643294.2012.753433">Wilmer et al., 2012, Table 1</a>)!</p>
+</div>
+</section>
+<section id="validity" class="slide level2">
+<h2>Validity</h2>
+<p>Are we measuring the construct we’re interested in?</p>
+<div>
+<ul>
+<li class="fragment"><p>Face validity: Does it intuitively make sense? First reality check!</p></li>
+<li class="fragment"><p>Construct validity</p>
+<ul>
+<li class="fragment"><p>convergent validity: Related to similar measures that should measure the same construct</p></li>
+<li class="fragment"><p>divergent validity: Is it unrelated to other measures?</p></li>
+</ul></li>
+<li class="fragment"><p>Predictive validity: Is it predictive of other outcomes? (e.g., intelligence &amp; job success)</p></li>
+</ul>
+</div>
+</section>
+<section id="validity-reliability" class="slide level2">
+<h2>Validity &amp; Reliability</h2>
+
+<img data-src="images/ReliabilityValidity-1.png" width="400" class="r-stretch quarto-figure-center"><p class="caption">Reliability &amp; Validity</p></section>
+<section id="summarizing-data" class="slide level2">
+<h2>Summarizing Data</h2>
+<div class="smaller">
+<ul>
+<li class="fragment"><p>Throwing away (some of the) information!</p>
+<ul>
+<li class="fragment"><p>extract the quintessence of the data (important for forming <em>models</em>)</p></li>
+<li class="fragment"><p>make predictions</p></li>
+</ul></li>
+<li class="fragment"><p>Counts, frequencies, percentages, averages</p></li>
+</ul>
+</div>
+</section></section>
+<section id="thanks" class="title-slide slide level1 scrollable center">
+<h1>Thanks!</h1>
+<p>Learning objective today:</p>
+<ul>
+<li><p>Why is statistics important?</p></li>
+<li><p>What are data?</p></li>
+<li><p>What is reliability and validity?</p></li>
 </ul>
 <div class="fragment">
-<p>Next topics: R sessions on Data Wrangling &amp; Plotting.</p>
+<p>Next:</p>
+<ul>
+<li><p>R session: “Intro to R”</p>
+<ul>
+<li>please <a href="https://www.r-project.org/">install R</a> &amp; <a href="https://posit.co/download/rstudio-desktop/">RStudio</a>!
+<ul>
+<li><p>Installation tutorial: <a href="https://learningstatisticswithr-bookdown.netlify.app/intror" class="uri">https://learningstatisticswithr-bookdown.netlify.app/intror</a></p></li>
+<li><p>You can also already install Rtools, which will be needed later: <a href="https://cran.r-project.org/bin/windows/Rtools/" class="uri">https://cran.r-project.org/bin/windows/Rtools/</a></p></li>
+</ul></li>
+</ul></li>
+<li><p>Theory: Models</p></li>
+</ul>
 
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">
