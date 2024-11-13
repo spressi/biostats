@@ -14,8 +14,8 @@ website:
       - W2_Models.qmd
       - W3_DataWranglingR.qmd
       - W4_DataVizR.qmd
-      - W5_Sampling.qmd
-      - W6_ProbabilityR.qmd
+      - W5_Probability.qmd
+      - W6_Sampling.qmd
       - W7_Hypothesis.qmd
       - W8_ModelingRelationships.qmd
       - W9_FirstAnalysisR.qmd
