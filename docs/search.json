@@ -2165,5 +2165,225 @@
     "crumbs": [
       "13 R Markdown"
     ]
+  },
+  {
+    "objectID": "W6_Sampling.html#how-do-we-sample",
+    "href": "W6_Sampling.html#how-do-we-sample",
+    "title": "06 Sampling and Resampling/Simulations",
+    "section": "How Do We Sample?",
+    "text": "How Do We Sample?\nThe sample needs to be representative of the entire population, that’s why it’s critical how we select the individuals.\nThink about examples of non-representative samples!\n\nRepresentative: Every member of the population has an equal chance of being selected.\nIf non-representative: sample statistic is biased, its value is (systematically) different from the true population value (parameter).\n(But talking about bias is mostly a theoretical discussion: Usually we of course don’t know the population parameter and thus cannot compare our estimate with it! Otherwise we wouldn’t need to sample.)\n\nNon-representative: pollster calls people from list of Democratic party, or from rich neighborhood, or only uses psychology students :D\nThink about “your” sample, how could this be non-representative?",
+    "crumbs": [
+      "06 Sampling and Resampling/Simulations"
+    ]
+  },
+  {
+    "objectID": "W6_Sampling.html#different-ways-of-sampling",
+    "href": "W6_Sampling.html#different-ways-of-sampling",
+    "title": "06 Sampling and Resampling/Simulations",
+    "section": "Different Ways of Sampling",
+    "text": "Different Ways of Sampling\n\nwithout replacement: Once a member of the population is sampled, they are not eligible to be sampled again. This is the most common variant of sampling.\nwith replacement: After a member of the population has been sampled, they are put back into the pool and could potentially be sampled again. This usually happens out of accident or by necessity (cf. Bootstrapping)",
+    "crumbs": [
+      "06 Sampling and Resampling/Simulations"
+    ]
+  },
+  {
+    "objectID": "W6_Sampling.html#sampling-error",
+    "href": "W6_Sampling.html#sampling-error",
+    "title": "06 Sampling and Resampling/Simulations",
+    "section": "Sampling Error",
+    "text": "Sampling Error\nIt is likely that our sample statistic differs slightly from the population parameter. This is called the sampling error.\nIf we collect multiple samples, the sample statistic will always differ slightly. If we combine all those sample statistics, we can approximate the sampling distribution.\nOf course, we want to minimize the sampling error and get a good estimate of the population parameter!",
+    "crumbs": [
+      "06 Sampling and Resampling/Simulations"
+    ]
+  },
+  {
+    "objectID": "W6_Sampling.html#example-sampling-distribution",
+    "href": "W6_Sampling.html#example-sampling-distribution",
+    "title": "06 Sampling and Resampling/Simulations",
+    "section": "Example Sampling Distribution",
+    "text": "Example Sampling Distribution\nLet’s use the NHANES dataset again and let’s assume it is the entire population. We can calculate the mean (\\(\\mu = 168.35\\)) and standard deviation (\\(\\sigma = 10.16\\)) as the population parameters. If we repeatedly sample 50 individuals, we get this:\n\n\n\n\n\n\n\nsampleMean\nsampleSD\n\n\n\n\n167.876\n11.845167\n\n\n166.144\n9.310235\n\n\n168.660\n9.934685\n\n\n166.300\n9.269965\n\n\n166.966\n10.035175\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThe sample means and SDs are similar, but not exactly equal to the population parameters.\nIf we sample 5000 times (50 individuals each), we can see that the average of these 5000 sample means (depicted in blue) is similar to the population mean!\nAverage sample mean across 5000 sample: \\(\\hat{X} = 168.3463\\).\n\ngrey = population histogram (raw data) blue = sample means of samples with N=50\nWhat is similar between these distributions? What is different?",
+    "crumbs": [
+      "06 Sampling and Resampling/Simulations"
+    ]
+  },
+  {
+    "objectID": "W6_Sampling.html#standard-error-of-the-mean",
+    "href": "W6_Sampling.html#standard-error-of-the-mean",
+    "title": "06 Sampling and Resampling/Simulations",
+    "section": "Standard Error of the Mean",
+    "text": "Standard Error of the Mean\nIn the example on the last slide, the means were all pretty close to each other, i.e. the blue distribution was very narrow and the variance small (compared to the grey distribution). This is an inherent statistical property of sample means: By averaging several individual values, thus aggregating them into a sample (here with \\(n = 50\\)), we reduce the variability of the sampling distribution.\n\nWe can quantify this variability of the sample mean with the standard error of the mean (SEM).\n\\[SEM = \\frac{\\hat{\\sigma}}{\\sqrt{n}}\\]\nThis formula needs two values: the population variability \\(\\sigma\\) (or sample SD \\(\\hat{\\sigma}\\) as approximation) and the size of our sample \\(n\\).\n\n\nWe can only control our sample size, thus if we want a better estimate, we can increase sample size!\nA sample of \\(n = 50\\) already decreases the population variability by a factor of \\(\\sqrt{50} = 7.1\\) !\n\nSEM ~ SD of sampling distribution of the mean\nTakes the SD of the data and divides it by sample size (so always smaller than SD!)\nWe use the sample SD as an approximation for the population SD\nUse the sigma of the data? same as sd(sample_means)\n“the utility of larger samples diminishes with the square root of the sample size”: Doubling the sample size will not double the quality of the statistic.",
+    "crumbs": [
+      "06 Sampling and Resampling/Simulations"
+    ]
+  },
+  {
+    "objectID": "W6_Sampling.html#the-central-limit-theorem",
+    "href": "W6_Sampling.html#the-central-limit-theorem",
+    "title": "06 Sampling and Resampling/Simulations",
+    "section": "The Central Limit Theorem",
+    "text": "The Central Limit Theorem\nThe Central Limit Theorem (CLT) is a fundamental (and often misunderstood) concept of statistics.\nCLT: With larger sample sizes, the sampling distribution of sample means (i.e., the blue distribution from before) will become more and more normally distributed*, even if the population distribution is not (i.e., the grey distribution from before)!\n\nNormal Distribution of Height\nNote: Means approximate a normal distribution, irrespective of the distribution from which the data stem. This is because the sampling error between the sampling mean \\(\\hat{\\mu}\\) and the population mean \\(\\mu\\) follows a normal distribution.\n\nDescribed by mean and sd: Shape never changes, only location and width!",
+    "crumbs": [
+      "06 Sampling and Resampling/Simulations"
+    ]
+  },
+  {
+    "objectID": "W6_Sampling.html#clt-in-action",
+    "href": "W6_Sampling.html#clt-in-action",
+    "title": "06 Sampling and Resampling/Simulations",
+    "section": "CLT in Action",
+    "text": "CLT in Action\nOn the left you can see a highly skewed distribution of alcohol consumption per year (from the NHANES dataset). If we repeatedly draw samples of size 50 from the datset and take the mean, we get the right distribution of sample means - which looks a lot more “normal” (normal distribution is added in red)!\n\n\nThe CLT is important because it allows us to safely assume that the sampling distribution of the mean will be normal in most cases, which is a necessary prerequisite for many statistical techniques.\n\nRed peak: True population mean Blue values left of peak: Sampling error with underestimation of the true population mean Blue values right of peak: Sampling error with overestimation of the true population mean",
+    "crumbs": [
+      "06 Sampling and Resampling/Simulations"
+    ]
+  },
+  {
+    "objectID": "W6_Sampling.html#monte-carlo-simulation",
+    "href": "W6_Sampling.html#monte-carlo-simulation",
+    "title": "06 Sampling and Resampling/Simulations",
+    "section": "Monte Carlo Simulation",
+    "text": "Monte Carlo Simulation\nWith the increasing use of computers, simulations have become an essential part of modern statistics. Monte Carlo simulations are the most common ones in statistics.\nThere are four steps to performing a Monte Carlo simulation:\n\nDefine a domain of possible values.\nGenerate random numbers within that domain from a probability distribution.\nPerform a computation using the random numbers.\nCombine the results across many repetitions.",
+    "crumbs": [
+      "06 Sampling and Resampling/Simulations"
+    ]
+  },
+  {
+    "objectID": "W6_Sampling.html#randomness-in-statistics",
+    "href": "W6_Sampling.html#randomness-in-statistics",
+    "title": "06 Sampling and Resampling/Simulations",
+    "section": "Randomness in Statistics",
+    "text": "Randomness in Statistics\nRandom = unpredictable.\nFor a Monte Carlo simulation, we need pseudo-random* numbers, which are generated by a computer algorithm.\n\nWe can simply generate (pseudo-)random numbers from different distributions with R, e.g. with rnorm() to draw (pseudo-)random numbers from a normal distribution:\n\n\n# Draw 10000 random numbers of a normal distribution with mean=0, sd=1\nrand_num &lt;- rnorm(n=10000, mean=0, sd=1)\n\n# Plot the random numbers and verify that they make up a normal distribution\ntibble(x = rand_num) %&gt;% \n  ggplot(aes(x)) +\n  geom_histogram(bins = 100) +\n  labs(title = \"Normal\")\n\n\n\n\n\n\n\n\n\n\n\n\nEach time, we generate random numbers, these will differ slightly.\nBut we can also generate the exact same set of random numbers (which will be helpful to reproduce results!) by setting the random seed to a specific value such as 123: set.seed(123).\n\n\nrnorm(): Here, r stands for random normal distribution\nFlip a coin, we don’t know the outcome! (Only if we knew a lot of physics and the conditions…)\nHumans have a bad sense of randomness, we think we see patterns everywhere (gambler’s fallacy: being due for a win).\n\n\n\n* Truly random numbers, that are completely unpredictable, are only possible through physical processes that are difficult to obtain.\nPseudo-random numbers will only seem random (they are difficult to predict) but will repeat at some point.",
+    "crumbs": [
+      "06 Sampling and Resampling/Simulations"
+    ]
+  },
+  {
+    "objectID": "W6_Sampling.html#using-monte-carlo-simulations",
+    "href": "W6_Sampling.html#using-monte-carlo-simulations",
+    "title": "06 Sampling and Resampling/Simulations",
+    "section": "Using Monte Carlo Simulations",
+    "text": "Using Monte Carlo Simulations\nExample: Let’s try to find out how much time we should allow for a short in-class quiz.\nWe pretend to know the distribution of completion times is normal, with mean = 5 min and SD = 1 min.\nHow long does the test period need to be so that we can expect ALL students (n = 150) to finish in 99% of the quizzes?\n\nTo answer this question, we need the distribution of the longest finishing time.\nWhat we will do is to simulate finishing times for a great number of quizzes and take the maximum of each (the longest finishing time). We can then look at the distribution of maximum finishing times and see where the 99% quantile is.\nThis value is the amount of time that we should allow - given our assumptions!!",
+    "crumbs": [
+      "06 Sampling and Resampling/Simulations"
+    ]
+  },
+  {
+    "objectID": "W6_Sampling.html#using-monte-carlo-simulations-2",
+    "href": "W6_Sampling.html#using-monte-carlo-simulations-2",
+    "title": "06 Sampling and Resampling/Simulations",
+    "section": "Using Monte Carlo Simulations 2",
+    "text": "Using Monte Carlo Simulations 2\nLet’s repeat the steps of the simulation by going through the four steps mentioned before:\n\nDefine a domain of possible values.\n\n–&gt; Our assumptions: The values would come from a normal distribution with \\(n = 150\\), \\(mean = 5\\), and \\(SD = 1\\).\n\n\nGenerate random numbers within that domain from a probability distribution.\n\n\nrand_num &lt;- rnorm(n = 150, mean = 5, sd = 1)\n\n\n\n\nPerform a computation using the random numbers.\n\n\nmax_rand_num &lt;- max(rand_num) #time of slowest student",
+    "crumbs": [
+      "06 Sampling and Resampling/Simulations"
+    ]
+  },
+  {
+    "objectID": "W6_Sampling.html#using-monte-carlo-simulations-3",
+    "href": "W6_Sampling.html#using-monte-carlo-simulations-3",
+    "title": "06 Sampling and Resampling/Simulations",
+    "section": "Using Monte Carlo Simulations 3",
+    "text": "Using Monte Carlo Simulations 3\n\nCombine the results across many repetitions.\n\n\nnrep &lt;- 5000 #number of repetitions\n\n# initialize an empty matrix to fill in the max values later\nmax_rand_num &lt;- matrix(data = NA, nrow = nrep, ncol=1)\n\n# use a for-loop to repeat resampling nrep times!\nfor (i in 1:nrep) {\n  rand_num &lt;- rnorm(n = 150, mean = 5, sd = 1)\n  max_rand_num[i, 1] &lt;- max(rand_num)\n}\n\n# get the cutoff (99%) of the distribution of max values\ncutoff &lt;- quantile(max_rand_num, 0.99)\nprint(cutoff)\n\n     99% \n8.900414",
+    "crumbs": [
+      "06 Sampling and Resampling/Simulations"
+    ]
+  },
+  {
+    "objectID": "W6_Sampling.html#using-monte-carlo-simulations-4",
+    "href": "W6_Sampling.html#using-monte-carlo-simulations-4",
+    "title": "06 Sampling and Resampling/Simulations",
+    "section": "Using Monte Carlo Simulations 4",
+    "text": "Using Monte Carlo Simulations 4\n\nThis shows that the 99th percentile of the finishing time distribution falls at 8.7726845 minutes, meaning that if we were to give that much time for the quiz, then we expect that in 99% of quizzes, every student would finish.\n\nAssumptions matter, otherwise results wrong! (We assumed: normal dist w/ particular mean and SD). Here assumptions certainly wrong –&gt; elapsed time not normal",
+    "crumbs": [
+      "06 Sampling and Resampling/Simulations"
+    ]
+  },
+  {
+    "objectID": "W6_Sampling.html#the-bootstrap",
+    "href": "W6_Sampling.html#the-bootstrap",
+    "title": "06 Sampling and Resampling/Simulations",
+    "section": "The Bootstrap",
+    "text": "The Bootstrap\nWe can use simulations to demonstrate statistical principles (like we just did) but also to answer statistical questions.\nThe bootstrap is a simulation technique that allows us to quantify our uncertainty of estimates!\n\n\nWe repeatedly sample with replacement from an actual dataset.\nWe compute a statistic of interest for each sample.\nWe get the distribution of those statistics and use it as our sampling distribution.",
+    "crumbs": [
+      "06 Sampling and Resampling/Simulations"
+    ]
+  },
+  {
+    "objectID": "W6_Sampling.html#bootstrap-example",
+    "href": "W6_Sampling.html#bootstrap-example",
+    "title": "06 Sampling and Resampling/Simulations",
+    "section": "Bootstrap Example",
+    "text": "Bootstrap Example\nLet’s use the bootstrap to estimate the sampling distribution of the mean heights of the NHANES dataset. We can then compare the result to the SEM (=uncertainty of the mean) that we discussed earlier.\n\n\n\n# perform the bootstrap to compute SEM and compare to parametric method\nnRuns &lt;- 2500\nsampleSize &lt;- 32\n\nheightSample &lt;- \n  NHANES_adult %&gt;%\n  sample_n(sampleSize) # draw 32 observations\n\n# function to bootstrap (sample w/ replacement) & get mean\nbootMeanHeight &lt;- function(df) {\n  bootSample &lt;- sample_n(df, dim(df)[1], replace = TRUE)\n  return(mean(bootSample$Height))\n}\n\n# run function 2500x\nbootMeans &lt;- replicate(nRuns, bootMeanHeight(heightSample))\n\n# calculate \"normal\" SEM and bootstrap SEM\nSEM_standard &lt;- sd(heightSample$Height) / sqrt(sampleSize)\nSEM_bootstrap &lt;- sd(bootMeans)\n\nSEM_standard\n\n[1] 1.8587\n\nSEM_bootstrap\n\n[1] 1.840685\n\n\n\n\n\n\n\n\nAn example of bootstrapping to compute the standard error of the mean adult height in the NHANES dataset. The histogram shows the distribution of means across bootstrap samples, while the red line shows the normal distribution based on the sample mean and standard deviation.",
+    "crumbs": [
+      "06 Sampling and Resampling/Simulations"
+    ]
+  },
+  {
+    "objectID": "W6_Sampling.html#evaluation-bootstrapping",
+    "href": "W6_Sampling.html#evaluation-bootstrapping",
+    "title": "06 Sampling and Resampling/Simulations",
+    "section": "Evaluation: Bootstrapping",
+    "text": "Evaluation: Bootstrapping\n\n\nCon\nTakes very long to compute (compared to the SEM)\nPrecision depends on computing time\n\nPro\nNo assumption about sampling distribution necessary\nIs a good solution if you do not want to rely on certain assumptions\n\n\n\nBootstrapping is a so-called model-free procedure: You put in just the data and get a result that does not depend on any further assumptions.\nModel-based procedures (like most statistical tests we will cover in this class) are usually more precise if their assumptions are met. Unfortunately, assumptions are not always straightforward to check.",
+    "crumbs": [
+      "06 Sampling and Resampling/Simulations"
+    ]
+  },
+  {
+    "objectID": "W6_Sampling.html#simulate-different-distributions",
+    "href": "W6_Sampling.html#simulate-different-distributions",
+    "title": "06 Sampling and Resampling/Simulations",
+    "section": "Simulate Different Distributions",
+    "text": "Simulate Different Distributions\nIt is possible to draw data from different distributions:\n\n\nnsamples &lt;- 10000 \nnhistbins &lt;- 100  \n\n# uniform distribution \np1 &lt;- tibble(x = runif(nsamples)) %&gt;%    \n  ggplot((aes(x))) + \n  geom_histogram(bins = nhistbins) +    \n  labs(title = \"Uniform\")  \n\n# binomial distribution \np2 &lt;- tibble(x = rbinom(nsamples, 20, 0.25)) %&gt;%    \n  ggplot(aes(x)) + \n  geom_histogram(bins = nhistbins) +   \n  labs(title = \"Binomial (p=0.25, 20 trials)\")  \n\n# normal distribution \np3 &lt;- tibble(x = rnorm(nsamples)) %&gt;%    \n  ggplot(aes(x)) + \n  geom_histogram(bins = nhistbins) +   \n  labs(title = \"Normal\")  \n\n# Chi-squared distribution \np4 &lt;- tibble(x = rchisq(nsamples, df=1)) %&gt;%    \n  ggplot(aes(x)) + \n  geom_histogram(bins = nhistbins) +   \n  labs(title = \"Chi-squared\")  \n\ncowplot::plot_grid(p1, p2, p3, p4, ncol = 1)",
+    "crumbs": [
+      "06 Sampling and Resampling/Simulations"
+    ]
+  },
+  {
+    "objectID": "W6_Sampling.html#simulate-a-fake-dataset",
+    "href": "W6_Sampling.html#simulate-a-fake-dataset",
+    "title": "06 Sampling and Resampling/Simulations",
+    "section": "Simulate a Fake Dataset",
+    "text": "Simulate a Fake Dataset\nLet’s simulate data of 120 participants of different heights and genders flipping a coin. To do so, we need to know how to simulate a) heights, b) flip a coin, and c) assign genders.\n\nSimulate heights:\n\nheights &lt;- rnorm(120, mean = 170, sd = 10)\n\n\n\nSimulate coin flips:\n(Instead of drawing from a probability distribution function that starts with an r, e.g. rnorm(), we use sample(), which randomly (uniformly) draws from values you determine. We need to set replace=TRUE)\n\ncoin_flips &lt;- sample(c(\"Head\", \"Tail\"), 120, replace=TRUE) \n\n\n\nWe could of course use similar code to simulate gender or the like.\nBut if we want to predetermine which genders we want to collect data from (i.e. same number in each gender group), we can also use the function rep(). This function will simply repeat an observation for a number of rows:\n\ngenders &lt;- rep(x = c(\"man\", \"woman\", \"nonbinary\"), each = 40) #%&gt;% sample() \n#you can run just \"sample\" on a vector to randomize its order \n\n\n\nDetermine participant numbers and combining everything into one dataframe:\n\nsim_data &lt;- tibble(   \n  participant_number = 1:120,   \n  gender = rep(x = c(\"man\", \"woman\", \"nonbinary\"), each = 40),   \n  height = rnorm(120, mean = 170, sd = 10),   \n  coin_flip = sample(c(\"Head\", \"Tail\"), 120, replace=TRUE) )  \n\n# or if you have run all the code before, you could also use the objects you have already in your Environment: \n# sim_data &lt;- tibble(participant_number = 1:120, genders, heights, coin_flips)\n\nIf we wanted to do a Monte Carlo Simulation, we could use the code from the last slide and put the simulation into a for loop. Inside the for loop, we would also calculate some value of interest (one estimate per subsample, such as the mean).",
+    "crumbs": [
+      "06 Sampling and Resampling/Simulations"
+    ]
+  },
+  {
+    "objectID": "W6_Sampling.html#resampling",
+    "href": "W6_Sampling.html#resampling",
+    "title": "06 Sampling and Resampling/Simulations",
+    "section": "Resampling",
+    "text": "Resampling\nLet’s look at the Bootstrap. Remember that we usually use real data for bootstrapping and draw samples with replacement of the same size as the original dataset. We can use this to quantify uncertainty, such as with the Standard Error of the Mean (SEM) or Confidence Intervals.\nLet’s say we have a very small sample of “sweets consumed”. We don’t know the underlying distribution. We make up a dataset, but let’s pretend it is our real data:\n\ndata_10 &lt;- tibble(\n  participant = 1:10,\n  sweets = c(5, 5, 5, 7, 3, 3, 4, 6, 8, 4)\n)\n\n\nWe want to know how sample size influences the SEM, so we also have a sample with twice 10x as many observations:\n\ndata_20 &lt;- tibble(\n  participant = 1:100,\n  sweets = rpois(100,4) #random Poisson distribution\n)",
+    "crumbs": [
+      "06 Sampling and Resampling/Simulations"
+    ]
+  },
+  {
+    "objectID": "W6_Sampling.html#resampling-2",
+    "href": "W6_Sampling.html#resampling-2",
+    "title": "06 Sampling and Resampling/Simulations",
+    "section": "Resampling 2",
+    "text": "Resampling 2\nBut for now, let’s look at the Bootstrap. Remember that we usually use real data for bootstrapping and draw samples with replacement of the same size as the original dataset. We can use this to quantify uncertainty, such as with the Standard Error of the Mean (SEM) or Confidence Intervals.\nLet’s say we have a very small sample of “sweets consumed”. We don’t know the underlying distribution. We make up a dataset, but let’s pretend it is our real data:\n\ndata_10 &lt;- tibble(\n  participant = 1:10,\n  sweets = c(5, 5, 5, 7, 3, 3, 4, 6, 8, 4)\n)\n\n\nWe want to know how sample size influences the SEM, so we also have a sample with twice 10x as many observations:\n\ndata_20 &lt;- tibble(\n  participant = 1:100,\n  sweets = rpois(100,4) #random Poisson distribution\n)",
+    "crumbs": [
+      "06 Sampling and Resampling/Simulations"
+    ]
+  },
+  {
+    "objectID": "W6_Sampling.html#resampling-3",
+    "href": "W6_Sampling.html#resampling-3",
+    "title": "06 Sampling and Resampling/Simulations",
+    "section": "Resampling 3",
+    "text": "Resampling 3\nLet’s resample 1000 times. To get the sampling distributions of the means, we have to save each mean of each iteration:\n\nset.seed(8465123)\niterations &lt;- 1000 \n\n# initialize empty matrices\nmean_bootstrap_10 &lt;- matrix(NA, nrow = iterations, ncol = 1)\nmean_bootstrap_20 &lt;- matrix(NA, nrow = iterations, ncol = 1)\n\nfor (i in 1:iterations) {\n  # draw exactly the same amount of datapoints as in the original dataset, but with replacement\n  bootstrap_data_10 &lt;- sample_n(data_10, 10, replace=TRUE)\n  bootstrap_data_20 &lt;- sample_n(data_20, 20, replace=TRUE)\n  \n  # calculate the mean for each of the subsamples, put it into matrix in subsequent rows\n  mean_bootstrap_10[i,1] &lt;- mean(bootstrap_data_10$sweets)\n  mean_bootstrap_20[i,1] &lt;- mean(bootstrap_data_20$sweets)\n}\n\n# calculate the SEMs\nsd(mean_bootstrap_10)\n\n[1] 0.4948013\n\nsd(mean_bootstrap_20)\n\n[1] 0.4948174\n\n\nWe can conclude that the SEM is smaller with a larger sample size, which means we can be more certain about our estimate! (We already knew this from the \\(\\sqrt{n}\\) in the denominator of the SE formular but it’s nice to see it confirmed.)",
+    "crumbs": [
+      "06 Sampling and Resampling/Simulations"
+    ]
+  },
+  {
+    "objectID": "W6_Sampling.html#resampling-the-bootstrap",
+    "href": "W6_Sampling.html#resampling-the-bootstrap",
+    "title": "06 Sampling and Resampling/Simulations",
+    "section": "Resampling: The Bootstrap",
+    "text": "Resampling: The Bootstrap\nWe can use simulations to demonstrate statistical principles (like we just did) but also to answer statistical questions.\nThe bootstrap is a simulation technique that allows us to quantify our uncertainty of estimates!\n\n\nWe repeatedly sample with replacement from an actual dataset.\nWe compute a statistic of interest for each sample.\nWe get the distribution of those statistics and use it as our sampling distribution.",
+    "crumbs": [
+      "06 Sampling and Resampling/Simulations"
+    ]
   }
 ]

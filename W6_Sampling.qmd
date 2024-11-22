@@ -45,7 +45,7 @@ Think about examples of *non-representative* samples!
 
 ***Representative***: Every member of the population has an equal chance of being selected.
 
-If non-representative: sample statistic is *biased*, its value is different from the true population value (*parameter*).\
+If non-representative: sample statistic is *biased*, its value is (systematically) different from the true population value (*parameter*).\
 (But talking about bias is mostly a theoretical discussion: Usually we of course don't know the population parameter and thus cannot compare our estimate with it! Otherwise we wouldn't need to sample.)
 
 ::: notes
@@ -257,6 +257,127 @@ Red peak: True population mean Blue values left of peak: Sampling error with und
 
 # Resampling and Simulation
 
+# Simulations
+
+As you saw in last lecture, we can also use similar functions (usually starting with `r`) to simulate data (i.e., to draw samples from probability distributions).
+
+This can be helpful if we don't know the "ground truth" or want to quantify uncertainty. We can also use simulations to calculate the power of a study.
+
+With simulations, we define the expected "ground truth" (distribution of the population) and generate data from it.
+
+. . .
+
+**Example**: We can use `rnorm()` to simulate data from a normal distribution with given parameters. Here, we will use means and SDs from the Scottish Health Survey (2008) to visualize two normal distributions:
+
+```{r}
+#| echo: true 
+#| output-location: column-fragment 
+men <- rnorm(n = 100000, mean = 176.2, sd = 6.748) 
+women <- rnorm(n = 100000, mean = 163.8, sd = 6.931)  
+heights <- tibble(men, women) %>%   
+  pivot_longer(names_to = "sex", values_to = "height", men:women)  
+heights %>% 
+  ggplot(aes(x = height, fill = sex)) +   
+  geom_density(alpha = .6) +   
+  scale_fill_viridis_d(option = "E") +   
+  theme_minimal()
+```
+
+We could use these data to visualize how much overlap there is between the two distributions of men and women, or to test how big the difference in height needs to be to become significant etc.
+
+We use "real data" as input for the simulations! So the simulations are based on empirical values (means, sd), but we actually draw more observations, 100.000!
+
+## Simulate Different Distributions
+
+It is possible to draw data from different distributions:
+
+```{r fig.height=10}
+#| echo: true 
+#| output-location: column 
+nsamples <- 10000 
+nhistbins <- 100  
+
+# uniform distribution 
+p1 <- tibble(x = runif(nsamples)) %>%    
+  ggplot((aes(x))) + 
+  geom_histogram(bins = nhistbins) +    
+  labs(title = "Uniform")  
+
+# binomial distribution 
+p2 <- tibble(x = rbinom(nsamples, 20, 0.25)) %>%    
+  ggplot(aes(x)) + 
+  geom_histogram(bins = nhistbins) +   
+  labs(title = "Binomial (p=0.25, 20 trials)")  
+
+# normal distribution 
+p3 <- tibble(x = rnorm(nsamples)) %>%    
+  ggplot(aes(x)) + 
+  geom_histogram(bins = nhistbins) +   
+  labs(title = "Normal")  
+
+# Chi-squared distribution 
+p4 <- tibble(x = rchisq(nsamples, df=1)) %>%    
+  ggplot(aes(x)) + 
+  geom_histogram(bins = nhistbins) +   
+  labs(title = "Chi-squared")  
+
+cowplot::plot_grid(p1, p2, p3, p4, ncol = 1)
+```
+
+## Simulate a Fake Dataset
+
+Let's simulate data of 120 participants of different heights and genders flipping a coin. To do so, we need to know how to simulate a) heights, b) flip a coin, and c) assign genders.
+
+. . .
+
+Simulate heights:
+
+```{r}
+#| echo: true  
+heights <- rnorm(120, mean = 170, sd = 10)
+```
+
+. . .
+
+Simulate coin flips:
+
+(Instead of drawing from a probability distribution function that starts with an r, e.g. `rnorm()`, we use `sample()`, which randomly (*uniformly*) draws from values you determine. We need to set `replace=TRUE`)
+
+```{r}
+#| echo: true  
+coin_flips <- sample(c("Head", "Tail"), 120, replace=TRUE) 
+```
+
+. . .
+
+We could of course use similar code to simulate gender or the like.
+
+But if we want to predetermine which genders we want to collect data from (i.e. same number in each gender group), we can also use the function `rep()`. This function will simply repeat an observation for a number of rows:
+
+```{r}
+#| echo: true  
+genders <- rep(x = c("man", "woman", "nonbinary"), each = 40) #%>% sample() 
+#you can run just "sample" on a vector to randomize its order 
+```
+
+. . .
+
+Determine participant numbers and combining everything into one dataframe:
+
+```{r}
+#| echo: true  
+sim_data <- tibble(   
+  participant_number = 1:120,   
+  gender = rep(x = c("man", "woman", "nonbinary"), each = 40),   
+  height = rnorm(120, mean = 170, sd = 10),   
+  coin_flip = sample(c("Head", "Tail"), 120, replace=TRUE) )  
+
+# or if you have run all the code before, you could also use the objects you have already in your Environment: 
+# sim_data <- tibble(participant_number = 1:120, genders, heights, coin_flips)
+```
+
+If we wanted to do a **Monte Carlo Simulation,** we could use the code from the last slide and put the simulation into a `for` loop. Inside the `for` loop, we would also calculate some value of interest (one estimate per subsample, such as the mean).
+
 ## Monte Carlo Simulation
 
 With the increasing use of computers, simulations have become an essential part of modern statistics. Monte Carlo simulations are the most common ones in statistics.
@@ -401,7 +522,7 @@ This shows that the 99th percentile of the finishing time distribution falls at 
 Assumptions matter, otherwise results wrong! (We assumed: normal dist w/ particular mean and SD). Here assumptions certainly wrong --\> elapsed time not normal
 :::
 
-## The Bootstrap
+## Resampling: The Bootstrap
 
 We can use simulations to demonstrate statistical principles (like we just did) but also to answer statistical questions.
 
@@ -486,141 +607,9 @@ Is a good solution if you do not want to rely on certain assumptions
 Bootstrapping is a so-called **model-free** procedure: You put in just the data and get a result that does not depend on any further assumptions.\
 Model-based procedures (like most statistical tests we will cover in this class) are usually more precise *if their assumptions are met*. Unfortunately, assumptions are not always straightforward to check.
 
-# Simulations
+## Resampling 
 
-As you saw in last lecture, we can also use similar functions (usually starting with `r`) to simulate data (i.e., to draw samples from probability distributions).
-
-This can be helpful if we don't know the "ground truth" or want to quantify uncertainty. We can also use simulations to calculate the power of a study.
-
-With simulations, we define the expected "ground truth" (distribution of the population) and generate data from it.
-
-. . .
-
-**Example**: We can use `rnorm()` to simulate data from a normal distribution with given parameters. Here, we will use means and SDs from the Scottish Health Survey (2008) to visualize two normal distributions:
-
-```{r}
-#| echo: true
-#| output-location: column-fragment
-men <- rnorm(n = 100000, mean = 176.2, sd = 6.748)
-women <- rnorm(n = 100000, mean = 163.8, sd = 6.931)
-
-heights <- tibble(men, women) %>%
-  pivot_longer(names_to = "sex", values_to = "height", men:women)
-
-heights %>% ggplot(aes(x = height, fill = sex)) +
-  geom_density(alpha = .6) +
-  scale_fill_viridis_d(option = "E") +
-  theme_minimal()
-```
-
-We could use these data to visualize how much overlap there is between the two distributions of men and women, or to test how big the difference in height needs to be to become significant etc.
-
-::: notes
-We use "real data" as input for the simulations! So the simulations are based on empirical values (means, sd), but we actually draw more observations, 100.000!
-:::
-
-## Simulate Different Distributions
-
-It is possible to draw data from different distributions:
-
-```{r fig.height=10}
-#| echo: true
-#| output-location: column
-nsamples <- 10000
-nhistbins <- 100
-
-# uniform distribution
-p1 <- tibble(x = runif(nsamples)) %>% 
-  ggplot((aes(x))) + geom_histogram(bins = nhistbins) + 
-  labs(title = "Uniform")
-
-# binomial distribution
-p2 <- tibble(x = rbinom(nsamples, 20, 0.25)) %>% 
-  ggplot(aes(x)) + geom_histogram(bins = nhistbins) +
-  labs(title = "Binomial (p=0.25, 20 trials)")
-
-# normal distribution
-p3 <- tibble(x = rnorm(nsamples)) %>% 
-  ggplot(aes(x)) + geom_histogram(bins = nhistbins) +
-  labs(title = "Normal")
-
-# Chi-squared distribution
-p4 <- tibble(x = rchisq(nsamples, df=1)) %>% 
-  ggplot(aes(x)) + geom_histogram(bins = nhistbins) +
-  labs(title = "Chi-squared")
-
-cowplot::plot_grid(p1, p2, p3, p4, ncol = 1)
-```
-
-## Simulate a Fake Dataset
-
-Let's simulate data of 120 participants of different heights and genders flipping a coin. To do so, we need to know how to simulate a) heights, b) flip a coin, and c) assign genders.
-
-. . .
-
-Simulate heights:
-
-```{r}
-#| echo: true
-
-heights <- rnorm(120, mean = 170, sd = 10)
-```
-
-. . .
-
-Simulate coin flips:
-
-(Instead of drawing from a probability distribution function that starts with an r, e.g. `rnorm()`, we use `sample()`, which randomly (*uniformly*) draws from values you determine. We need to set `replace=TRUE`)
-
-```{r}
-#| echo: true
-
-coin_flips <- sample(c("Head", "Tail"), 120, replace=TRUE)
-
-```
-
-. . .
-
-We could of course use similar code to simulate gender or the like.
-
-But if we want to predetermine which genders we want to collect data from (i.e. same number in each gender group), we can also use the function `rep()`. This function will simply repeat an observation for a number of rows:
-
-```{r}
-#| echo: true
-
-genders <- rep(x = c("man", "woman", "nonbinary"), each = 40) #%>% sample() #you can run just "sample" on a vector to randomize its order
-
-```
-
-. . .
-
-Determine participant numbers and combining everything into one dataframe:
-
-```{r}
-#| echo: true
-
-sim_data <- tibble(
-  participant_number = 1:120,
-  gender = rep(x = c("man", "woman", "nonbinary"), each = 40),
-  height = rnorm(120, mean = 170, sd = 10),
-  coin_flip = sample(c("Head", "Tail"), 120, replace=TRUE)
-)
-
-# or if you have run all the code before, you could also use the objects you have already in your Environment:
-# sim_data <- tibble(participant_number = 1:120, genders, heights, coin_flips)
-```
-
-::: notes
-Because the values of heights and coin flips are random, the assignment of
-:::
-
-## Resampling
-
-If we wanted to do a **Monte Carlo Simulation,** we could use the code from the last slide and put the simulation into a `for` loop. Inside the `for` loop, we would also calculate some value of interest (one estimate per subsample, such as the mean).
-
-## Resampling 2
-
-But for now, let's look at the **Bootstrap**. Remember that we usually use real data for bootstrapping and draw samples *with replacement* of the same size as the original dataset. We can use this to quantify uncertainty, such as with the Standard Error of the Mean (SEM) or Confidence Intervals.
+Let's look at the **Bootstrap**. Remember that we usually use real data for bootstrapping and draw samples *with replacement* of the same size as the original dataset. We can use this to quantify uncertainty, such as with the Standard Error of the Mean (SEM) or Confidence Intervals.
 
 Let's say we have a very small sample of "sweets consumed". We don't know the underlying distribution. We make up a dataset, but let's pretend it is our real data:
 
@@ -681,11 +670,9 @@ We can conclude that the SEM is smaller with a larger sample size, which means w
 
 **Learning objectives:**
 
--   Understand that there are different types of data that follow different kinds of distributions.
+-   Understand why we are sampling from a population and what the sampling distribution (and the sampling error) is.
 
--   Be able to use these distributions to calculate the probability of particular outcomes.
-
-    -   This will be the foundation of statistical significance testing (testing whether some probability is $\le 5\%$)!
+-   Understand Monte Carlo Simulations and the Bootstrap, and being able to implement those in R.
 
 **Next**:
 
