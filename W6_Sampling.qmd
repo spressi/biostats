@@ -257,7 +257,7 @@ Red peak: True population mean Blue values left of peak: Sampling error with und
 
 # Resampling and Simulation
 
-# Simulations
+## Simulations
 
 As you saw in last lecture, we can also use similar functions (usually starting with `r`) to simulate data (i.e., to draw samples from probability distributions).
 
@@ -607,7 +607,7 @@ Is a good solution if you do not want to rely on certain assumptions
 Bootstrapping is a so-called **model-free** procedure: You put in just the data and get a result that does not depend on any further assumptions.\
 Model-based procedures (like most statistical tests we will cover in this class) are usually more precise *if their assumptions are met*. Unfortunately, assumptions are not always straightforward to check.
 
-## Resampling 
+## Resampling
 
 Let's look at the **Bootstrap**. Remember that we usually use real data for bootstrapping and draw samples *with replacement* of the same size as the original dataset. We can use this to quantify uncertainty, such as with the Standard Error of the Mean (SEM) or Confidence Intervals.
 

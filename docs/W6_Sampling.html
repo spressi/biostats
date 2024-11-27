@@ -488,24 +488,24 @@ Dr.&nbsp;Lea Hildebrandt
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">167.876</td>
-<td style="text-align: right;">11.845167</td>
+<td style="text-align: right;">164.582</td>
+<td style="text-align: right;">8.631756</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">166.144</td>
-<td style="text-align: right;">9.310235</td>
+<td style="text-align: right;">168.102</td>
+<td style="text-align: right;">10.388759</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">168.660</td>
-<td style="text-align: right;">9.934685</td>
+<td style="text-align: right;">167.206</td>
+<td style="text-align: right;">9.812454</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">166.300</td>
-<td style="text-align: right;">9.269965</td>
+<td style="text-align: right;">170.006</td>
+<td style="text-align: right;">11.372477</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">166.966</td>
-<td style="text-align: right;">10.035175</td>
+<td style="text-align: right;">168.512</td>
+<td style="text-align: right;">11.101804</td>
 </tr>
 </tbody>
 </table>
@@ -616,14 +616,13 @@ Average sample mean across 5000 sample: <span class="math inline">\(\hat{X} = 16
       }</style></aside>
 </div>
 </section></section>
+<section>
 <section id="resampling-and-simulation" class="title-slide slide level1 center">
 <h1>Resampling and Simulation</h1>
 
 </section>
-
-<section>
-<section id="simulations" class="title-slide slide level1 center">
-<h1>Simulations</h1>
+<section id="simulations" class="slide level2">
+<h2>Simulations</h2>
 <p>As you saw in last lecture, we can also use similar functions (usually starting with <code>r</code>) to simulate data (i.e., to draw samples from probability distributions).</p>
 <p>This can be helpful if we don’t know the “ground truth” or want to quantify uncertainty. We can also use simulations to calculate the power of a study.</p>
 <p>With simulations, we define the expected “ground truth” (distribution of the population) and generate data from it.</p>
@@ -856,14 +855,14 @@ This value is the amount of time that we should allow - <em>given our assumption
 <span id="cb10-14"><a></a><span class="fu">print</span>(cutoff)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     99% 
-8.900414 </code></pre>
+8.793609 </code></pre>
 </div>
 </div>
 </section>
 <section id="using-monte-carlo-simulations-4" class="slide level2">
 <h2>Using Monte Carlo Simulations 4</h2>
 
-<img data-src="W6_Sampling_files/figure-revealjs/unnamed-chunk-14-1.png" width="960" class="r-stretch"><p>This shows that the 99th percentile of the finishing time distribution falls at 8.7726845 minutes, meaning that if we were to give that much time for the quiz, then we expect that in 99% of quizzes, every student would finish.</p>
+<img data-src="W6_Sampling_files/figure-revealjs/unnamed-chunk-14-1.png" width="960" class="r-stretch"><p>This shows that the 99th percentile of the finishing time distribution falls at 8.8602684 minutes, meaning that if we were to give that much time for the quiz, then we expect that in 99% of quizzes, every student would finish.</p>
 <aside class="notes">
 <p>Assumptions matter, otherwise results wrong! (We assumed: normal dist w/ particular mean and SD). Here assumptions certainly wrong –&gt; elapsed time not normal</p>
 <style type="text/css">
@@ -919,11 +918,11 @@ This value is the amount of time that we should allow - <em>given our assumption
 <span id="cb12-21"><a></a></span>
 <span id="cb12-22"><a></a>SEM_standard</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 1.8587</code></pre>
+<pre><code>[1] 2.081422</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a></a>SEM_bootstrap</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 1.840685</code></pre>
+<pre><code>[1] 2.008614</code></pre>
 </div>
 </div>
 </div><div class="column">
@@ -1006,7 +1005,7 @@ Model-based procedures (like most statistical tests we will cover in this class)
 </div>
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a></a><span class="fu">sd</span>(mean_bootstrap_20)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.4948174</code></pre>
+<pre><code>[1] 0.4638429</code></pre>
 </div>
 </div>
 <p>We can conclude that the SEM is smaller with a larger sample size, which means we can be more certain about our estimate! (We already knew this from the <span class="math inline">\(\sqrt{n}\)</span> in the denominator of the SE formular but it’s nice to see it confirmed.)</p>
