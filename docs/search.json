@@ -1301,320 +1301,224 @@
     "href": "W7_Hypothesis.html#null-hypothesis-significance-testing",
     "title": "07 Hypothesis Testing",
     "section": "Null Hypothesis Significance Testing",
-    "text": "Null Hypothesis Significance Testing\nExample: We have two groups (treatment and control). We also have a hypothesis: The treatment group has lower scores on measure X (e.g., symptoms). We have the data (X for both groups), now what?\n\n\nWe take the hypothesis (treatment = lower X than control) and negate it (Treatment not lower/equal X compared to control). This is our null hypothesis.\nThen we look at the data and determine how likely they would be if the null hypothesis were true.\nI.e., we want to know the conditional probability: \\(P(Data|H_0)\\)\nIf the data are very unlikely we reject the null hypothesis in favor of the alternative hypothesis (our hypothesis).\n(If the data are not very unlikely, we stick with - or fail to reject - the null hypothesis.)\n\n\n\nHow would you compare the two groups? Calculate the likelihood that there is a reduction in X between the groups? No, more complicated! And counterintuitive!",
-    "crumbs": [
-      "07 Hypothesis Testing"
-    ]
+    "text": "Null Hypothesis Significance Testing\nExample: We have two groups (treatment and control). We also have a hypothesis: The treatment group has lower scores on measure X (e.g., symptoms). We have the data (X for both groups), now what?\n\n\nWe take the hypothesis (treatment = lower X than control) and negate it (Treatment not lower/equal X compared to control). This is our null hypothesis.\nThen we look at the data and determine how likely they would be if the null hypothesis were true.\nI.e., we want to know the conditional probability: \\(P(Data|H_0)\\)\nIf the data are very unlikely we reject the null hypothesis in favor of the alternative hypothesis (our hypothesis).\n(If the data are not very unlikely, we stick with - or fail to reject - the null hypothesis.)\n\n\n\nHow would you compare the two groups? Calculate the likelihood that there is a reduction in X between the groups? No, more complicated! And counterintuitive!"
   },
   {
     "objectID": "W7_Hypothesis.html#the-process-of-nhst",
     "href": "W7_Hypothesis.html#the-process-of-nhst",
     "title": "07 Hypothesis Testing",
     "section": "The Process of NHST",
-    "text": "The Process of NHST\nTo be more precise, we can break down the process of null hypothesis testing in six steps:\n\n\nFormulate a hypothesis that embodies our prediction (before seeing the data)\nSpecify null and alternative hypotheses that reflect the hypothesis formulated in step 1\nCollect some data relevant to the hypothesis\nFit a model to the data that represents the alternative hypothesis and compute a test statistic\nCompute the probability of the observed value of that statistic assuming that the null hypothesis is true\nAssess the “statistical significance” of the result\n\n\n\nLet’s go through these steps, using the NHANES dataset and the research question: Is physical activity related to body mass index (BMI)?",
-    "crumbs": [
-      "07 Hypothesis Testing"
-    ]
+    "text": "The Process of NHST\nTo be more precise, we can break down the process of null hypothesis testing in six steps:\n\n\nFormulate a hypothesis that embodies our prediction (before seeing the data)\nSpecify null and alternative hypotheses that reflect the hypothesis formulated in step 1\nCollect some data relevant to the hypothesis\nFit a model to the data that represents the alternative hypothesis and compute a test statistic\nCompute the probability of the observed value of that statistic assuming that the null hypothesis is true\nAssess the “statistical significance” of the result\n\n\n\nLet’s go through these steps, using the NHANES dataset and the research question: Is physical activity related to body mass index (BMI)?"
   },
   {
     "objectID": "W7_Hypothesis.html#step-1-formulate-a-hypothesis-of-interest",
     "href": "W7_Hypothesis.html#step-1-formulate-a-hypothesis-of-interest",
     "title": "07 Hypothesis Testing",
     "section": "Step 1: Formulate a Hypothesis of Interest",
-    "text": "Step 1: Formulate a Hypothesis of Interest\nHypothesis:\n\n“BMI is greater for people who do not engage in physical activity than for those who do.”\n\nask for hypothesis?",
-    "crumbs": [
-      "07 Hypothesis Testing"
-    ]
+    "text": "Step 1: Formulate a Hypothesis of Interest\nHypothesis:\n\n“BMI is greater for people who do not engage in physical activity than for those who do.”\n\nask for hypothesis?"
   },
   {
     "objectID": "W7_Hypothesis.html#step-2-specify-the-null-and-alternative-hypotheses",
     "href": "W7_Hypothesis.html#step-2-specify-the-null-and-alternative-hypotheses",
     "title": "07 Hypothesis Testing",
     "section": "Step 2: Specify the Null and Alternative Hypotheses",
-    "text": "Step 2: Specify the Null and Alternative Hypotheses\nThe null hypothesis (\\(H_0\\)) is the baseline against which we test our hypothesis of interest.\nThe alternative hypothesis (\\(H_A\\)) describes what we expect if there is an effect.\nNHST works under the assumption that the \\(H_0\\) is true (unless the evidence shows otherwise).\n\nWe also have to decide whether we want to test a non-directional (\\(A \\neq B\\)) or directional (\\(A&gt;B\\) or \\(A&lt;B\\)) hypothesis.\nWhat do we specify if we hypothesize that “BMI is greater…”?\n\n\n\\(H_0 = BMI_{active} \\ge BMI_{inactive}\\)\n\\(H_A = BMI_{active} &lt; BMI_{inactive}\\)\n\nTest against \\(H_0\\): What would we expect the data to look like if there was no effect?\nNon-directional: no direction! :D Directional: prior knowledge",
-    "crumbs": [
-      "07 Hypothesis Testing"
-    ]
+    "text": "Step 2: Specify the Null and Alternative Hypotheses\nThe null hypothesis (\\(H_0\\)) is the baseline against which we test our hypothesis of interest.\nThe alternative hypothesis (\\(H_A\\)) describes what we expect if there is an effect.\nNHST works under the assumption that the \\(H_0\\) is true (unless the evidence shows otherwise).\n\nWe also have to decide whether we want to test a non-directional (\\(A \\neq B\\)) or directional (\\(A&gt;B\\) or \\(A&lt;B\\)) hypothesis.\nWhat do we specify if we hypothesize that “BMI is greater…”?\n\n\n\\(H_0 = BMI_{active} \\ge BMI_{inactive}\\)\n\\(H_A = BMI_{active} &lt; BMI_{inactive}\\)\n\nTest against \\(H_0\\): What would we expect the data to look like if there was no effect?\nNon-directional: no direction! :D Directional: prior knowledge"
   },
   {
     "objectID": "W7_Hypothesis.html#step-3-collect-data",
     "href": "W7_Hypothesis.html#step-3-collect-data",
     "title": "07 Hypothesis Testing",
     "section": "Step 3: Collect Data",
-    "text": "Step 3: Collect Data\nFor this example, we sample 250 individuals from the NHANES dataset.\n\n\n\nSummary of BMI data for active versus inactive individuals\n\n\nPhysActive\nN\nmean\nsd\n\n\n\n\nNo\n131\n30.1942\n8.9851\n\n\nYes\n119\n26.6386\n5.2499",
-    "crumbs": [
-      "07 Hypothesis Testing"
-    ]
+    "text": "Step 3: Collect Data\nFor this example, we sample 250 individuals from the NHANES dataset.\n\n\n\nSummary of BMI data for active versus inactive individuals\n\n\nPhysActive\nN\nmean\nsd\n\n\n\n\nNo\n131\n30.1942\n8.9851\n\n\nYes\n119\n26.6386\n5.2499"
   },
   {
     "objectID": "W7_Hypothesis.html#step-4-fit-a-model",
     "href": "W7_Hypothesis.html#step-4-fit-a-model",
     "title": "07 Hypothesis Testing",
     "section": "Step 4: Fit a Model",
-    "text": "Step 4: Fit a Model\nWe want to compute a test statistic that helps us decide whether to reject \\(H_0\\) or not.\n\nThe model we fit needs to quantify (= provide the test statistic) the amount of evidence in favor of \\(H_A\\) relative to the variability of the data.\nThe test statistic will have a probability distribution, allowing us to determine how likely our observed value of the statistic is under \\(H_0\\).\n\n\nIn general, we want to relate an effect (e.g., a mean or a difference of means) to the amount of uncertainty in the data (e.g., the SEM).\n\n\nIn the example, we need a test statistic that tests the difference between two means (we have one BMI mean for each group): The t statistic.\n\\[t = \\frac{\\bar{X_1} - \\bar{X_2}}{\\sqrt{\\frac{S_1^2}{n_1} + \\frac{S_2^2}{n_2}}}\\]\n\\(\\bar{X_1}\\) and \\(\\bar{X_2}\\) are the means of the two group, \\(S_1^2\\) and \\(S_2^2\\) are the estimated variances of the groups, \\(n_1\\) and \\(n_2\\) are the sizes of the two groups.\n\n\n\\(\\sqrt{\\frac{S_1^2}{n_1} + \\frac{S_2^2}{n_2}}\\) is something like the pooled (“averaged”) SEM of both groups.\n\nThe t statistic is appropriate for comparing the means of two groups when the sample sizes are relatively small and the population standard deviation is unknown.\n\\(\\sqrt{\\frac{S_1^2}{n_1}}\\) alone would be the SEM of subsample 1. But we have to add first before we take the square root.\nReason for adding: The variance of a difference between (or sum of) two independent variables is the sum of the variances of each individual variable (\\(Var(A−B)=Var(A)+Var(B)\\))\none can view the the t statistic as a way of quantifying how large the difference between groups is in relation to the sampling variability of the difference between means",
-    "crumbs": [
-      "07 Hypothesis Testing"
-    ]
+    "text": "Step 4: Fit a Model\nWe want to compute a test statistic that helps us decide whether to reject \\(H_0\\) or not.\n\nThe model we fit needs to quantify (= provide the test statistic) the amount of evidence in favor of \\(H_A\\) relative to the variability of the data.\nThe test statistic will have a probability distribution, allowing us to determine how likely our observed value of the statistic is under \\(H_0\\).\n\n\nIn general, we want to relate an effect (e.g., a mean or a difference of means) to the amount of uncertainty in the data (e.g., the SEM)."
   },
   {
     "objectID": "W7_Hypothesis.html#the-t-distribution",
     "href": "W7_Hypothesis.html#the-t-distribution",
     "title": "07 Hypothesis Testing",
     "section": "The t Distribution",
-    "text": "The t Distribution\nThe t statistic is distributed according to the t distribution, which looks similar to a normal distribution (the more degrees of freedom, the more “normal”).\nDegrees of freedom for the t test: \\(observations - 2\\) = \\(n_1 + n_2 - 2\\) (when the groups are the same size).\nDegrees of freedom: values that can freely vary when estimating parameters. Usually sample size minus values that you already calculated (e.g. means for the test statistic).\n\n\n\n\n\n\n\n\n\n\nIf the group sizes are unequal: \\(\\mathrm{d.f.} = \\frac{\\left(\\frac{S_1^2}{n_1} + \\frac{S_2^2}{n_2}\\right)^2}{\\frac{\\left(S_1^2/n_1\\right)^2}{n_1-1} + \\frac{\\left(S_2^2/n_2\\right)^2}{n_2-1}}\\)\nFortunately, R does all these calculations for us :)\n\nDF: we have calculated two means and have thus given up two DFs (these are fixed already)\nWill be smaller if sample sizes unequal (here 241.12 vs 248 for equal)\nDegrees of freedom are the number of independent values that a statistical analysis can estimate. You can also think of it as the number of values that are free to vary as you estimate parameters",
-    "crumbs": [
-      "07 Hypothesis Testing"
-    ]
+    "text": "The t Distribution\nThe t statistic is distributed according to the t distribution, which looks similar to a normal distribution (the more degrees of freedom, the more “normal”).\nDegrees of freedom for the independent samples t test: \\(observations - 2\\) = \\(n_1 + n_2 - 2\\) (when the groups are the same size).\nDegrees of freedom: values that can freely vary when estimating parameters. Usually sample size minus values that you already calculated (e.g. means for the test statistic).\n\nIf the group sizes are unequal: \\(\\mathrm{d.f.} = \\frac{\\left(\\frac{S_1^2}{n_1} + \\frac{S_2^2}{n_2}\\right)^2}{\\frac{\\left(S_1^2/n_1\\right)^2}{n_1-1} + \\frac{\\left(S_2^2/n_2\\right)^2}{n_2-1}}\\)\nFortunately, R does all these calculations for us :)\n\nDF: we have calculated two means and have thus given up two DFs (these are fixed already)\nWill be smaller if sample sizes unequal (here 241.12 vs 248 for equal)\nDegrees of freedom are the number of independent values that a statistical analysis can estimate. You can also think of it as the number of values that are free to vary as you estimate parameters"
   },
   {
     "objectID": "W7_Hypothesis.html#step-5-determine-the-probability-of-the-observed-result-under-the-null-hypothesis",
     "href": "W7_Hypothesis.html#step-5-determine-the-probability-of-the-observed-result-under-the-null-hypothesis",
     "title": "07 Hypothesis Testing",
     "section": "Step 5: Determine the Probability of the Observed Result under the Null Hypothesis",
-    "text": "Step 5: Determine the Probability of the Observed Result under the Null Hypothesis\nWe do not check likelihood of the alternative distribution or likelihood that the null hypothesis is true, but rather:\nHow likely is it, given that we assume \\(H_0\\) is true, to observe a statistic at least as extreme as the one we observed.\n--&gt; We need to know the distribution of the expected statistic, assuming \\(H_0\\) is true. Then we can calculate how (un-)likely it is to find the statistic (or a more extreme value) we found in our data.\n\n\n\n\n\n\n\n\n\n\n\ncounter-intuitive: We check the nulldistribution not the one of \\(H_A\\)! But we also don’t check how likely it is that \\(H_0\\) is true, but rather the likelihood under the null hypothesis of observing a statistic at least as extreme as the one we observed.\nat least as extreme: Prob of each particular value = 0\ntry to find out how weird statistic found is (or weirder) –&gt; count all weird(er) possibilities",
-    "crumbs": [
-      "07 Hypothesis Testing"
-    ]
+    "text": "Step 5: Determine the Probability of the Observed Result under the Null Hypothesis\nWe do not check likelihood of the alternative distribution or likelihood that the null hypothesis is true, but rather:\nHow likely is it, given that we assume \\(H_0\\) is true, to observe a statistic at least as extreme as the one we observed.\n⇒ We need to know the distribution of the expected statistic, assuming \\(H_0\\) is true. Then we can calculate how (un-)likely it is to find the statistic (or a more extreme value) we found in our data."
   },
   {
     "objectID": "W7_Hypothesis.html#a-simple-example",
     "href": "W7_Hypothesis.html#a-simple-example",
     "title": "07 Hypothesis Testing",
     "section": "A Simple Example",
-    "text": "A Simple Example\nIs a coin biased if we flip a coin 100x and we get 70 heads?\n\\(H_0: P(heads) \\le 0.5\\) and \\(H_A: P(heads) &gt; 0.5\\)\nTest statistic = number of heads counted.\nHow likely is it that we would observe 70 or more heads if the coin is unbiased (chance of 50% for heads)?\n\nIf we flip a (fair) coin 100 times, we would get the following distribution (100000 replications):\n\n\n\n\n\n\n\n\n\nIt is very unlikely to get 70 heads if the coin is fair!\n\nfair coin: null distribution",
-    "crumbs": [
-      "07 Hypothesis Testing"
-    ]
+    "text": "A Simple Example\nIs a coin biased if we flip a coin 100x and we get 70 heads?\n\\(H_0: P(heads) \\le 0.5\\) and \\(H_A: P(heads) &gt; 0.5\\)\nTest statistic = number of heads counted.\nHow likely is it that we would observe 70 or more heads if the coin is unbiased (chance of 50% for heads)?"
   },
   {
     "objectID": "W7_Hypothesis.html#p-value",
     "href": "W7_Hypothesis.html#p-value",
     "title": "07 Hypothesis Testing",
     "section": "P-Value",
-    "text": "P-Value\nLet’s go back to out BMI example.\nWe first need to calculate the t statistic:\n\n\n\nSummary of BMI data for active versus inactive individuals\n\n\nPhysActive\nN\nmean\nsd\n\n\n\n\nNo\n131\n30.1942\n8.9851\n\n\nYes\n119\n26.6386\n5.2499\n\n\n\n\n\n\\[t = \\frac{\\bar{X_1} - \\bar{X_2}}{\\sqrt{\\frac{S_1^2}{n_1} + \\frac{S_2^2}{n_2}}}\\]\n\\[t = \\frac{30 - 27}{\\sqrt{\\frac{9^2}{131} + \\frac{5.2^2}{119}}}\\]\n\\[t = 3.86\\]\n\nThe question is: What is the likelihood that we would find a t statistic of this size or more extreme given the number of degrees of freedom and if the true difference between the groups is zero.\n\n\n\n\\(t\\) statistics if we use the unrounded values!",
-    "crumbs": [
-      "07 Hypothesis Testing"
-    ]
+    "text": "P-Value\nLet’s go back to our BMI example.\nWe first need to calculate the t statistic:\n\n\n\nSummary of BMI data for active versus inactive individuals\n\n\nPhysActive\nN\nmean\nsd\n\n\n\n\nNo\n131\n30.2\n9.0\n\n\nYes\n119\n26.6\n5.2\n\n\n\n\n\n\\[t = \\frac{\\bar{X_1} - \\bar{X_2}}{\\sqrt{\\frac{S_1^2}{n_1} + \\frac{S_2^2}{n_2}}}\\]\n\\[t = \\frac{30.2 - 26.6}{\\sqrt{\\frac{9.0^2}{131} + \\frac{5.2^2}{119}}} = 3.86\\]"
   },
   {
     "objectID": "W7_Hypothesis.html#p-value-2",
     "href": "W7_Hypothesis.html#p-value-2",
     "title": "07 Hypothesis Testing",
     "section": "P-Value 2",
-    "text": "P-Value 2\nWe can use the t distribution to calculate this probability. We just need the degrees of freedom, which are \\(DF = 241.12\\), and we can then use all these values (e.g. in a function in R):\n\n\n[1] 7.282672e-05\n\n\nThis small probability tells us that our observed t value is relatively unlikely if \\(H_0\\) is really true.\n\nThis is the p-Value for a directional hypothesis. In this case, we only looked at the upper tail probability. With a non-directional hypothesis, we would want to account for both tail probabilities, i.e. how likely it is that a \\(t &gt; 3.86\\) OR \\(t &lt; -3.86\\) is found. In this case, we can simply multiply the p-Value found above by 2 (since it is a symmetric distribution):\n\\(p = 0.000145\\)",
-    "crumbs": [
-      "07 Hypothesis Testing"
-    ]
+    "text": "P-Value 2\nWe can use the t distribution to calculate this probability. We just need the degrees of freedom, which are \\(DF = 241.12\\), and we can then use all these values (e.g. in a function in R):\n\n\n[1] 7.282672e-05\n\n\nThis small probability tells us that our observed t value is relatively unlikely if \\(H_0\\) is really true.\n\nThis is the p-Value for a directional hypothesis. In this case, we only looked at the upper tail probability. With a non-directional hypothesis, we would want to account for both tail probabilities, i.e. how likely it is that a \\(t &gt; 3.86\\) OR \\(t &lt; -3.86\\) is found. In this case, we can simply multiply the p-Value found above by 2 (since it is a symmetric distribution):\n\\(p = 0.000145\\)"
   },
   {
     "objectID": "W7_Hypothesis.html#p-value-using-randomization",
     "href": "W7_Hypothesis.html#p-value-using-randomization",
     "title": "07 Hypothesis Testing",
     "section": "P-Value using Randomization",
-    "text": "P-Value using Randomization\nWe can also use our simulation skills to determine the null distribution!\n\nWe can randomly rearrange (or permute) data so that no relationship is present, e.g. assigning group membership to the participants randomly. In this case, \\(H_0\\) should thus be true.\nWe would do this a large amount of times (e.g. 10000), calculate the t statistics for each iteration, and draw a histogram to show the distribution.",
-    "crumbs": [
-      "07 Hypothesis Testing"
-    ]
+    "text": "P-Value using Randomization\nWe can also use our simulation skills to determine the null distribution!\n\nWe can randomly rearrange (or permute) data so that no relationship is present, e.g. assigning group membership to the participants randomly. In this case, \\(H_0\\) should thus be true.\nWe would do this a large amount of times (e.g. 10.000), calculate the t statistics for each iteration, and draw a histogram to show the distribution."
   },
   {
     "objectID": "W7_Hypothesis.html#p-values-using-randomization-2",
     "href": "W7_Hypothesis.html#p-values-using-randomization-2",
     "title": "07 Hypothesis Testing",
     "section": "P-Values using Randomization 2",
-    "text": "P-Values using Randomization 2\n\n# create function to shuffle BMI data\nshuffleBMIstat &lt;- function() {\n  bmiDataShuffled &lt;- \n    NHANES_sample %&gt;%\n    select(BMI, PhysActive) %&gt;%\n    mutate(\n      BMI = sample(BMI) #randomly shuffle BMI values\n    )\n  # compute the difference\n  simResult &lt;- t.test( #t.test function is more convenient than pt function!\n    BMI ~ PhysActive,\n    data = bmiDataShuffled,\n  )\n  return(simResult$statistic)\n}\n# run function 5000 times and save output\nnRuns &lt;- 5000\nmeanDiffSimDf &lt;- tibble(meanDiffSim = replicate(nRuns, shuffleBMIstat()))\n#run t test of actual data\nbmtTTest &lt;- \n  t.test(\n  BMI ~ PhysActive,\n  data = NHANES_sample,\n  alternative = \"greater\"\n)\n#compare actual data with simulation\nbmiPvalRand &lt;- \n  mean(meanDiffSimDf$meanDiffSim &gt;= bmtTTest$statistic)\n\n#plot everything\nplot = meanDiffSimDf %&gt;% \n  ggplot(aes(meanDiffSim)) +\n  geom_histogram(bins = 200) +\n  geom_vline(xintercept = bmtTTest$statistic, color = \"blue\") +\n  xlab(\"T stat: BMI difference between groups\") +\n  geom_histogram(\n    data = meanDiffSimDf %&gt;% \n      filter(meanDiffSim &gt;= bmtTTest$statistic), \n    aes(meanDiffSim), \n    bins = 200, \n    fill = \"gray\"\n  )\nprint(plot)",
-    "crumbs": [
-      "07 Hypothesis Testing"
-    ]
+    "text": "P-Values using Randomization 2\n\n# create function to shuffle BMI data\nshuffleBMIstat &lt;- function() {\n  bmiDataShuffled &lt;- \n    NHANES_sample %&gt;%\n    select(BMI, PhysActive) %&gt;%\n    mutate(\n      BMI = sample(BMI) #randomly shuffle BMI values\n    )\n  # compute the difference\n  simResult &lt;- t.test( #t.test function is more convenient than pt function!\n    BMI ~ PhysActive,\n    data = bmiDataShuffled,\n  )\n  return(simResult$statistic)\n}\n# run function 5000 times and save output\nnRuns &lt;- 5000\nmeanDiffSimDf &lt;- tibble(meanDiffSim = replicate(nRuns, shuffleBMIstat()))\n#run t test of actual data\nbmtTTest &lt;- \n  t.test(\n  BMI ~ PhysActive,\n  data = NHANES_sample,\n  alternative = \"greater\"\n)\n#compare actual data with simulation\nbmiPvalRand &lt;- \n  mean(meanDiffSimDf$meanDiffSim &gt;= bmtTTest$statistic)\n\n#plot everything\nplot = meanDiffSimDf %&gt;% \n  ggplot(aes(meanDiffSim)) +\n  geom_histogram(bins = 200) +\n  geom_vline(xintercept = bmtTTest$statistic, color = \"blue\") +\n  xlab(\"T stat: BMI difference between groups\") +\n  geom_histogram(\n    data = meanDiffSimDf %&gt;% \n      filter(meanDiffSim &gt;= bmtTTest$statistic), \n    aes(meanDiffSim), \n    bins = 200, \n    fill = \"gray\"\n  )\nprint(plot)"
   },
   {
     "objectID": "W7_Hypothesis.html#p-values-using-randomization-3",
     "href": "W7_Hypothesis.html#p-values-using-randomization-3",
     "title": "07 Hypothesis Testing",
     "section": "P-Values using Randomization 3",
-    "text": "P-Values using Randomization 3\n\nThe blue line is the observed t statistic. We can calculate a p-Value by counting how many of the simulated t-values are at least as extreme as our observed one and dividing it by the number of simulations. The p-value obtained from randomization (0.000000) is kind of similar to the one obtained using the t distribution (0.000075).\n\nUsing simulations to get the null distribution can be helpful if the assumptions (normal distribution in each group) are violated or if we don’t know the theoretical distribution of the test statistic!\n\nexchangeability: We can use permutations if all observsations are distributed in the same way, such that we can shuffle them without changing the overall distribution.\nNot the case if we have dependent observations, e.g. siblings…",
-    "crumbs": [
-      "07 Hypothesis Testing"
-    ]
+    "text": "P-Values using Randomization 3\n\nThe blue line is the observed t statistic. We can calculate a p-Value by counting how many of the simulated t-values are at least as extreme as our observed one and dividing it by the number of simulations. The p-value obtained from randomization (0.000000) is kind of similar to the one obtained using the t distribution (0.000075).\n\nUsing simulations to get the null distribution can be helpful if the assumptions (normal distribution in each group) are violated or if we don’t know the theoretical distribution of the test statistic!\n\nexchangeability: We can use permutations if all observsations are distributed in the same way, such that we can shuffle them without changing the overall distribution.\nNot the case if we have dependent observations, e.g. siblings…"
   },
   {
     "objectID": "W7_Hypothesis.html#step-6-assess-the-statistical-significance-of-the-result",
     "href": "W7_Hypothesis.html#step-6-assess-the-statistical-significance-of-the-result",
     "title": "07 Hypothesis Testing",
     "section": "Step 6: Assess the “Statistical Significance” of the Result",
-    "text": "Step 6: Assess the “Statistical Significance” of the Result\nIs the p-value determined small enough to reject the null hypothesis (and thus conclude that the alternative hypothesis is true)?\n\nTraditionally, we reject \\(H_0\\) if the p-value is less than 0.05. (Fisher’s approach)\n\n\n(Either there is an effect/\\(H_A\\) is true or there is a small chance (5%) that there is actually no effect but we coincidentally found such a large value –&gt; false positive)\n\n\nNeyman-Pearson approach: In the long run, we will know how often we are wrong:\n\n\\(\\alpha = .05\\) (false positives or Type I error: We reject \\(H_0\\) although it is correct),\n\\(\\beta = .2\\) (false negatives or Type II error: We accept \\(H_0\\) although it is wrong),\nWe will be correct if we reject \\(H_0\\) when it is wrong (there is actually a difference/an effect) or if we do not reject \\(H_0\\) when it is correct (and there is no difference between groups).\n\nIn both cases, a significance level of \\(\\alpha = .05\\) is usually used.\n\nHow much evidence do we require?\n0.05 Fisher never intended it to be fixed\nBefore computers, tables were used, and all tables had .05 in it!\nFisher: Evidence for hypothesis, NP: long-run error rate",
-    "crumbs": [
-      "07 Hypothesis Testing"
-    ]
+    "text": "Step 6: Assess the “Statistical Significance” of the Result\nIs the p-value determined small enough to reject the null hypothesis (and thus conclude that the alternative hypothesis is true)?\n\nTraditionally, we reject \\(H_0\\) if the p-value is less than 0.05. (Fisher’s approach)\n\n\n(Either there is an effect/\\(H_A\\) is true or there is a small chance (5%) that there is actually no effect but we coincidentally found such a large value → false positive)\n\n\nNeyman-Pearson approach: In the long run, we will know how often we are wrong:\n\n\\(\\alpha = .05\\) (false positives or Type I error: We reject \\(H_0\\) although it is correct),\n\\(\\beta = .2\\) (false negatives or Type II error: We accept \\(H_0\\) although it is wrong),\nWe will be correct if we reject \\(H_0\\) when it is wrong (there is actually a difference/an effect) or if we do not reject \\(H_0\\) when it is correct (and there is no difference between groups).\n\nIn both cases, a significance level of \\(\\alpha = .05\\) is usually used.\n\nHow much evidence do we require?\n0.05 Fisher never intended it to be fixed\nBefore computers, tables were used, and all tables had .05 in it!\nFisher: Evidence for hypothesis, NP: long-run error rate"
   },
   {
     "objectID": "W7_Hypothesis.html#what-does-a-significant-result-mean",
     "href": "W7_Hypothesis.html#what-does-a-significant-result-mean",
     "title": "07 Hypothesis Testing",
     "section": "What does a significant result mean?",
-    "text": "What does a significant result mean?\nThere is a lot of discussion about the usefulness of using \\(\\alpha = .05\\) as well as about the interpretation of a significant result/certain p-value!\n\n\nA p-value of .01 does….\n\nNOT mean that the probability that \\(H_0\\) is true is 1%!\n\nWe tested \\(P(data|H_0)\\) not \\(P(H_0|data)\\)!\n\nNOT mean that the probability that you’re making a wrong decision is 1%!\n\nThis would also be \\(P(H_0|data)\\)! p-values are probabilities of data (under \\(H_0\\)), not probabilities of hypotheses! And we cannot easily use Bayes to turn the condition because we would need additional information like the prior probability of an alternative hypothesis being true.\n\nNOT mean that you would get the same significance 99% of the time if you repeated the study.\n\nThe p-value is a statement about the likelihood of one particular dataset under the null.\n\nNOT mean that you found a practically important effect.\n\nDifference between statistical significance and practical significance! Effect sizes more important. (Statistical significance depends on sample size!)",
-    "crumbs": [
-      "07 Hypothesis Testing"
-    ]
+    "text": "What does a significant result mean?\nThere is a lot of discussion about the usefulness of using \\(\\alpha = .05\\) as well as about the interpretation of a significant result/certain p-value!\n\n\nA p-value of .01 does….\n\nNOT mean that the probability that \\(H_0\\) is true is 1%!\n\nWe tested \\(P(data|H_0)\\) not \\(P(H_0|data)\\)!\n\nNOT mean that the probability that you’re making a wrong decision is 1%!\n\nThis would also be \\(P(H_0|data)\\)! p-values are probabilities of data (under \\(H_0\\)), not probabilities of hypotheses! And we cannot easily use Bayes to turn the condition because we would need additional information like the prior probability of an alternative hypothesis being true.\n\nNOT mean that you would get the same significance 99% of the time if you repeated the study.\n\nThe p-value is a statement about the likelihood of one particular dataset under the null.\n\nNOT mean that you found a practically important effect.\n\nDifference between statistical significance and practical significance! Effect sizes more important. (Statistical significance depends on sample size!)"
   },
   {
     "objectID": "W7_Hypothesis.html#multiple-testing",
     "href": "W7_Hypothesis.html#multiple-testing",
     "title": "07 Hypothesis Testing",
     "section": "Multiple Testing",
-    "text": "Multiple Testing\nNowadays, we often have huge datasets in neuroscience, e.g. collecting brain imaging data of thousands of voxels or quantifying the entire genome.\n\nLet’s look at genome-wide associations studies (GWAS). We have more than a million places in where the genome could differ. If we want to know whether schizophrenia was associated with any of these differences, we would do ~1.000.000 tests! If we simply used \\(\\alpha \\le .05\\) as a threshold, we would get a lot of (\\(1000000 * .05 = 500\\)!) false positives, even if no true effect is present at all.\n\n\nIn this case, we have a lot of dependent tests, which form a family of tests. In such a case, we need to control the family-wise error rate, e.g. by fixing it to a total of \\(\\alpha \\le .05\\) (i.e. the probability of making any Type I error in our study is controlled at .05).\n\n\nOne option is to use the Bonferroni correction, in which we divide .05 by the number of tests (e.g. 1.000.000) and use the new value (\\(\\alpha \\le .000005\\)) as threshold for each individual test.\n\n\nThis is extremely conservative and often results in false negative test results.\n\n\nFor an interesting example what can happen when not correcting for multiple comparisons, see this dead fish showing significant brain activity (Link).",
-    "crumbs": [
-      "07 Hypothesis Testing"
-    ]
+    "text": "Multiple Testing\nNowadays, we often have huge datasets in neuroscience, e.g. collecting brain imaging data of thousands of voxels or quantifying the entire genome.\n\nLet’s look at genome-wide associations studies (GWAS). We have more than a million places in where the genome could differ. If we want to know whether schizophrenia was associated with any of these differences, we would do ~1.000.000 tests! If we simply used \\(\\alpha \\le .05\\) as a threshold, we would get a lot of (\\(1000000 * .05 = 500\\) 😱) false positives, even if no true effect is present at all.\n\n\nIn this case, we have a lot of dependent tests, which form a family of tests. In such a case, we need to control the family-wise error rate, e.g. by fixing it to a total of \\(\\alpha \\le .05\\) (i.e. the probability of making any Type I error in our study is controlled at .05).\n\n\nOne option is to use the Bonferroni correction, in which we divide .05 by the number of tests (e.g. 1.000.000) and use the new value (\\(\\alpha \\le .000005\\)) as threshold for each individual test.\n\n\nThis is extremely conservative and often results in false negative test results.\n\n\nFor an interesting example what can happen when not correcting for multiple comparisons, see this dead fish showing significant brain activity (Link)."
   },
   {
     "objectID": "W7_Hypothesis.html#confidence-intervals",
     "href": "W7_Hypothesis.html#confidence-intervals",
     "title": "07 Hypothesis Testing",
     "section": "Confidence Intervals",
-    "text": "Confidence Intervals\nSingle value statistic (e.g. t-value, mean…) = point estimate\n\nWe know from the sampling error discussion that each point estimate comes with some uncertainty, described by the standard error.\nRemember, the SEM (standard error of the mean) was calculated with the sample standard deviation \\(\\hat{\\sigma}\\) and the square root of the sample size \\(n\\):\n\\[SEM = \\frac{\\hat{\\sigma}}{\\sqrt{n}}\\]\n\\(n\\) is generally under our control (\\(\\hat{\\sigma}\\) is unknown but fixed*), and we can thus decrease our uncertainty by increasing the sample size.\n\n\n\nWe can more directly describe our uncertainty with confidence intervals (CI), which provides a range of values for our parameter estimate that are consistent with our data! The wider the CI, the more uncertain we are about our estimate.\n\n\n* In practice, we can acquire homogeneous samples (like students) or heterogeneous samples (like extreme groups). This will, however, influence our generalizability.",
-    "crumbs": [
-      "07 Hypothesis Testing"
-    ]
+    "text": "Confidence Intervals\nSingle value statistic (e.g. t-value, mean…) = point estimate\n\nWe know from the sampling error discussion that each point estimate comes with some uncertainty, described by the standard error.\nRemember, the SEM (standard error of the mean) was calculated with the sample standard deviation \\(\\hat{\\sigma}\\) and the square root of the sample size \\(n\\):\n\\[SEM = \\frac{\\hat{\\sigma}}{\\sqrt{n}}\\]\n\\(n\\) is generally under our control (\\(\\hat{\\sigma}\\) is unknown but fixed*), and we can thus decrease our uncertainty by increasing the sample size.\n\n\n\nWe can more directly describe our uncertainty with confidence intervals (CI), which provides a range of values for our parameter estimate that are consistent with our data! The wider the CI, the more uncertain we are about our estimate.\n\n\n* In practice, we can acquire homogeneous samples (like students) or heterogeneous samples (like extreme groups). This will, however, influence our generalizability."
   },
   {
     "objectID": "W7_Hypothesis.html#confidence-intervals-2",
     "href": "W7_Hypothesis.html#confidence-intervals-2",
     "title": "07 Hypothesis Testing",
     "section": "Confidence Intervals 2",
-    "text": "Confidence Intervals 2\nBecause the CI depends on the SEM, which decreases with sample size, the CI also gets narrower with increasing sample size:\n\n\nif we sample the whole population, we know the population parameter and there is no uncertainty at all!\nRange of possible values (estimate) in concordance with the data",
-    "crumbs": [
-      "07 Hypothesis Testing"
-    ]
+    "text": "Confidence Intervals 2\nBecause the CI depends on the SEM, which decreases with sample size, the CI also gets narrower with increasing sample size:\n\n\nif we sample the whole population, we know the population parameter and there is no uncertainty at all!\nRange of possible values (estimate) in concordance with the data"
   },
   {
     "objectID": "W7_Hypothesis.html#confidence-intervals-3",
     "href": "W7_Hypothesis.html#confidence-intervals-3",
     "title": "07 Hypothesis Testing",
     "section": "Confidence Intervals 3",
-    "text": "Confidence Intervals 3\nJust like p-values, confidence intervals can be confusing because they are counter-intuitive: A 95% CI for a statistic does NOT mean that we can have 95% confidence that the true parameter falls within this interval!\nIt is, again, the long-run probability: It will contain the true population parameter 95% of the time in the long-run.\nLet’s sample 100 times with \\(n = 250\\) from the NHANES data and calculate CIs. We use the NHANES mean as true score (dashed line) and check how often the CI misses to include it: 5% of the time.\n\n\nbut: new experiment = new estimate (under exact same conditions would work)!",
-    "crumbs": [
-      "07 Hypothesis Testing"
-    ]
+    "text": "Confidence Intervals 3\nJust like p-values, confidence intervals can be confusing because they are counter-intuitive: A 95% CI for a statistic does NOT mean that we can have 95% confidence that the true parameter falls within this interval!\nIt is, again, the long-run probability: It will contain the true population parameter 95% of the time in the long-run.\nLet’s sample 100 times with \\(n = 250\\) from the NHANES data and calculate CIs. We use the NHANES mean as true score (dashed line) and check how often the CI misses to include it: 5% of the time.\n\n\nbut: new experiment = new estimate (under exact same conditions would work)!"
   },
   {
     "objectID": "W7_Hypothesis.html#calculating-the-ci",
     "href": "W7_Hypothesis.html#calculating-the-ci",
     "title": "07 Hypothesis Testing",
     "section": "Calculating the CI",
-    "text": "Calculating the CI\nWe calculate the CI as follows:\n\\(CI = \\text{point estimate} \\pm \\text{critical value} * \\text{standard error}\\)\nThe “critical value” depends on the sampling distribution. Most of the time, we will use the normal distribution.\n\nCI depends on the confidence level (95%, critical value), the sample size and the variability in the data (both SE)",
-    "crumbs": [
-      "07 Hypothesis Testing"
-    ]
+    "text": "Calculating the CI\nWe calculate the CI as follows:\n\\(CI = \\text{point estimate} \\pm \\text{critical value} * \\text{standard error}\\)\nThe “critical value” depends on the sampling distribution. Most of the time, we will use the normal distribution.\n\nCI depends on the confidence level (95%, critical value), the sample size and the variability in the data (both SE)"
   },
   {
     "objectID": "W7_Hypothesis.html#ci-using-the-normal-distribution",
     "href": "W7_Hypothesis.html#ci-using-the-normal-distribution",
     "title": "07 Hypothesis Testing",
     "section": "CI using the Normal Distribution",
-    "text": "CI using the Normal Distribution\nThe critical value are the values of the standard normal distribution that capture 95% (in case of a 95% CI) of the distribution, i.e. the 2.5th and 97.5th percentile.\n\nqnorm(p=c(.025,.975))\n\n[1] -1.959964  1.959964\n\n\nThe CI of the mean would thus be:\n\\(CI = \\bar{X} \\pm 1.96*SE\\)\nOur mean weight in the NHANES sample was 79.92 kg and the SE was \\(\\frac{SD_{weight}}{\\sqrt{n}} = 1.35\\) (for a random \\(n=250\\) subsample)*.\n\nThe lower boundary of the CI of the mean would then be \\(CI = 79.92 - 1.96 * 1.35 = 77.28\\) and the upper \\(CI = 79.92 + 1.96 * 1.35 = 82.56\\). We would write this as [77.28, 82.56].\n\n* In practice, both the mean and standard deviation will be subject to sampling error, i.e., CIs will differ both in location and size despite having the same sample size (cf. plot 2 slides ago)",
-    "crumbs": [
-      "07 Hypothesis Testing"
-    ]
+    "text": "CI using the Normal Distribution\nThe critical value are the values of the standard normal distribution that capture 95% (in case of a 95% CI) of the distribution, i.e. the 2.5th and 97.5th percentile.\n\nqnorm(p=c(.025,.975))\n\n[1] -1.959964  1.959964\n\n\nThe CI of the mean would thus be:\n\\(CI = \\bar{X} \\pm 1.96*SE\\)\nOur mean weight in the NHANES sample was 79.92 kg and the SE was \\(\\frac{SD_{weight}}{\\sqrt{n}} = 1.35\\) (for a random \\(n=250\\) subsample)*.\n\nThe lower boundary of the CI of the mean would then be \\(CI = 79.92 - 1.96 * 1.35 = 77.28\\) and the upper \\(CI = 79.92 + 1.96 * 1.35 = 82.56\\). We would write this as [77.28, 82.56].\n\n* In practice, both the mean and standard deviation will be subject to sampling error, i.e., CIs will differ both in location and size despite having the same sample size (cf. plot 2 slides ago)"
   },
   {
     "objectID": "W7_Hypothesis.html#ci-using-the-t-distribution",
     "href": "W7_Hypothesis.html#ci-using-the-t-distribution",
     "title": "07 Hypothesis Testing",
     "section": "CI using the t Distribution",
-    "text": "CI using the t Distribution\nIf we don’t know the population standard deviation, which is usually the case, it is more appropriate to use the t distribution.\nIn this case, we use the critical value of the t distribution:\n\nqt(p = c(.025, .975), 250) #t distribution depends on sample size! =&gt; n = 250\n\n[1] -1.969498  1.969498\n\n\nFor the NHANES weight example, the CI would be: \\(79.92 \\pm 1.97 * 1.35 = [77.15, 82.58]\\).\nThe CI for a t distribution is always larger than for a normal distribution. In practice, this difference is negligible at \\(n \\ge 30\\) (1.984 vs. 1.960).\n\nThe t distribution is wider than the normal distribution (especially for smaller samples), which means that the CI will be slightly wider -&gt; extra uncertainty smaller samples.\npopulation parameter hast a fixed value, so it either falls into CI or not. (Doesn’t make sense to talk about probability of it)",
-    "crumbs": [
-      "07 Hypothesis Testing"
-    ]
+    "text": "CI using the t Distribution\nIf we don’t know the population standard deviation, which is usually the case, it is more appropriate to use the t distribution.\nIn this case, we use the critical value of the t distribution:\n\nqt(p = c(.025, .975), 250) #t distribution depends on sample size! =&gt; n = 250\n\n[1] -1.969498  1.969498\n\n\nFor the NHANES weight example, the CI would be: \\(79.92 \\pm 1.97 * 1.35 = [77.15, 82.58]\\).\nThe CI for a t distribution is always larger than for a normal distribution. In practice, this difference is negligible at \\(n \\ge 30\\) (1.984 vs. 1.960).\n\nThe t distribution is wider than the normal distribution (especially for smaller samples), which means that the CI will be slightly wider -&gt; extra uncertainty smaller samples.\npopulation parameter hast a fixed value, so it either falls into CI or not. (Doesn’t make sense to talk about probability of it)"
   },
   {
     "objectID": "W7_Hypothesis.html#ci-using-the-bootstrap",
     "href": "W7_Hypothesis.html#ci-using-the-bootstrap",
     "title": "07 Hypothesis Testing",
     "section": "CI using the Bootstrap",
-    "text": "CI using the Bootstrap\nIf we can’t assume normality or don’t know the sampling distribution, we can also use the bootstrap to compute the CI.\n\nReminder: bootstrap = resampling with replacement, using this distribution as the sampling distribution!\n\n\nIf we use an R function for bootstrapping (boot()), we get CI estimates that are fairly close to the ones calculated:\n\n\nBOOTSTRAP CONFIDENCE INTERVAL CALCULATIONS\nBased on 1000 bootstrap replicates\n\nCALL : \nboot.ci(boot.out = bs, type = \"perc\")\n\nIntervals : \nLevel     Percentile     \n95%   (78.41, 83.81 )  \nCalculations and Intervals on Original Scale\n\n\n\n\n\n\n\n\n\nMethod\nCI\n\n\n\n\nnormal distribution\n[77.28, 82.56]\n\n\nt distribution\n[77.15, 82.58]\n\n\nbootstrap\n[78.41, 83.81]\n\n\n\n\n\nNote: CIs from the normal and t distribution are always symmetrical around the mean (here: 79.92), bootstrapped intervals need not be.",
-    "crumbs": [
-      "07 Hypothesis Testing"
-    ]
+    "text": "CI using the Bootstrap\nIf we can’t assume normality or don’t know the sampling distribution, we can also use the bootstrap to compute the CI.\n\nReminder: bootstrap = resampling with replacement, using the data itself as the sampling distribution!\n\n\nIf we use an R function for bootstrapping (boot()), we get CI estimates that are fairly close to the ones calculated:\n\nmeanWeight &lt;- function(df, foo) {\n  return(mean(df[foo, ]$Weight))\n}\nbs &lt;- boot(NHANES_sample, meanWeight, 1000)\n# use the percentile bootstrap\nbootci &lt;- boot.ci(bs, type = \"perc\")\nprint(bootci)\n\nBOOTSTRAP CONFIDENCE INTERVAL CALCULATIONS\nBased on 1000 bootstrap replicates\n\nCALL : \nboot.ci(boot.out = bs, type = \"perc\")\n\nIntervals : \nLevel     Percentile     \n95%   (78.41, 83.81 )  \nCalculations and Intervals on Original Scale"
   },
   {
     "objectID": "W7_Hypothesis.html#relationship-of-cis-to-hypothesis-tests",
     "href": "W7_Hypothesis.html#relationship-of-cis-to-hypothesis-tests",
     "title": "07 Hypothesis Testing",
     "section": "Relationship of CIs to Hypothesis Tests",
-    "text": "Relationship of CIs to Hypothesis Tests\nIf the CI does not include the value of the null hypothesis (usually 0), then the associated two-sided one sample test would be significant.\n\nIf we want to compare two conditions, it gets trickier.\n\nIf each mean is contained within the CI of the other mean, then there’s definitely no significant difference.\nIf there is no overlap between CIs, then there is certainly a significant difference (two-sidedly).\nIf the CIs overlap (but don’t contain the other mean), it depends on the relative variability of the two variables\n\nIn general, avoid this “eyeball test” and look at the p value!\nNote: Slightly overlapping CIs can still be significant (e.g., one sided hypothesis)",
-    "crumbs": [
-      "07 Hypothesis Testing"
-    ]
+    "text": "Relationship of CIs to Hypothesis Tests\nIf the CI does not include the value of the null hypothesis (usually 0), then the associated two-sided one sample test would be significant.\n\nIf we want to compare two conditions, it gets trickier.\n\nIf each mean is contained within the CI of the other mean, then there’s definitely no significant difference.\nIf there is no overlap between CIs, then there is certainly a significant difference (two-sidedly).\nIf the CIs overlap (but don’t contain the other mean), it depends on the relative variability of the two variables\n\nIn general, avoid this “eyeball test” and look at the p value!\nNote: Slightly overlapping CIs can still be significant (e.g., one sided hypothesis)\nNote 2: It is possible (but not common) to report one-sided CIs."
   },
   {
     "objectID": "W7_Hypothesis.html#effect-sizes",
     "href": "W7_Hypothesis.html#effect-sizes",
     "title": "07 Hypothesis Testing",
     "section": "Effect Sizes",
-    "text": "Effect Sizes\nPractical significance!\nWe need a standard way to describe the size of an effect.\nAn effect size is a standardized measurement that compares the size of an effect to e.g. the variability of the statistic. This is also referred to as signal-to-noise ratio.\nThere are many different variants of effect sizes!",
-    "crumbs": [
-      "07 Hypothesis Testing"
-    ]
+    "text": "Effect Sizes\nPractical significance!\nWe need a standard way to describe the size of an effect.\nAn effect size is a standardized measurement that compares the size of an effect to e.g. the variability of the statistic. This is also referred to as signal-to-noise ratio.\nThere are many different variants of effect sizes!"
   },
   {
     "objectID": "W7_Hypothesis.html#cohens-d",
     "href": "W7_Hypothesis.html#cohens-d",
     "title": "07 Hypothesis Testing",
     "section": "Cohen’s d",
-    "text": "Cohen’s d\nCohen’s d is used to quantify the difference between two means, in terms of their SD:\n\\[d = \\frac{\\bar{X_1} - \\bar{X}_2}{s}\\]\nwhere \\(\\hat{X_1}\\) and \\(\\hat{X_2}\\) are the means of the two groups and \\(s\\) is the pooled SD:\n\\[s = \\sqrt{\\frac{(n_1 - 1)s^2_1 + (n_2 - 1)s^2_2 }{n_1 +n_2 -2}}\\]\nwhich is a combination of both groups’ SDs (\\(s_1\\) and \\(s_2\\)) weighted by their sample size (\\(n_1\\) and \\(n_2\\)).\n\nNote that this is very similar to the t statistic, only the denominator differs:\nt = SEM, d = SD of the data\n–&gt; d will not grow with sample size but remain stable!",
-    "crumbs": [
-      "07 Hypothesis Testing"
-    ]
+    "text": "Cohen’s d\nCohen’s d is used to quantify the difference between two means, in terms of their SD:\n\\[d = \\frac{\\bar{X_1} - \\bar{X}_2}{s}\\]\nwhere \\(\\hat{X_1}\\) and \\(\\hat{X_2}\\) are the means of the two groups and \\(s\\) is the pooled SD:\n\\[s = \\sqrt{\\frac{(n_1 - 1)s^2_1 + (n_2 - 1)s^2_2 }{n_1 +n_2 -2}}\\]\nwhich is a combination of both groups’ SDs (\\(s_1\\) and \\(s_2\\)) weighted by their sample size (\\(n_1\\) and \\(n_2\\)).\n\nNote that this is very similar to the t statistic, only the denominator differs:\nt = SEM, d = SD of the data\n–&gt; d will not grow with sample size but remain stable!"
   },
   {
     "objectID": "W7_Hypothesis.html#cohens-d-2",
     "href": "W7_Hypothesis.html#cohens-d-2",
     "title": "07 Hypothesis Testing",
-    "section": "Cohen’s d 2",
-    "text": "Cohen’s d 2\nThere is a commonly used interpretation of Cohen’s d (although it is criticized to use these cutoffs!):\n\n\n\nInterpetation of Cohen’s d\n\n\nd\nInterpretation\n\n\n\n\n0.0 - 0.2\nnegligible\n\n\n0.2 - 0.5\nsmall\n\n\n0.5 - 0.8\nmedium\n\n\n&gt; 0.8\nlarge\n\n\n\n\n\n\nEven with a large effect of \\(d = 1.78\\) (as in the NHANES data set), the distributions still overlap greatly!\n\n\n\n\n\n\n\n\n\n\nSmall effect but huge total impact: Psychosocial stress due to Covid-19 (deployed to a whole population)",
-    "crumbs": [
-      "07 Hypothesis Testing"
-    ]
+    "section": "Cohen’s d",
+    "text": "Cohen’s d\n\nEven with a large effect of \\(d = 1.78\\) (as in the NHANES data set), the distributions still overlap greatly!\n\n\n\n\n\n\nSmall effect but huge total impact: Psychosocial stress due to Covid-19 (deployed to a whole population)"
   },
   {
     "objectID": "W7_Hypothesis.html#pearsons-r",
     "href": "W7_Hypothesis.html#pearsons-r",
     "title": "07 Hypothesis Testing",
     "section": "Pearson’s r",
-    "text": "Pearson’s r\nPearson’s r is a correlation coefficient, and thus a measure of the strength of a linear relationship between two continuous variables.\nr can vary from -1 to 1: -1 is a perfect negative relationship, 0 no (linear) relationship, and 1 a perfect positive relationship. Try your skills eye-balling the size of a correlation: https://www.guessthecorrelation.com/\n\n\nmore on correlations later in the semester!",
-    "crumbs": [
-      "07 Hypothesis Testing"
-    ]
+    "text": "Pearson’s r\nPearson’s r is a correlation coefficient, and thus a measure of the strength of a linear relationship between two continuous variables.\nr can vary from -1 to 1: -1 is a perfect negative relationship, 0 no (linear) relationship, and 1 a perfect positive relationship. Try your skills eye-balling the size of a correlation: https://www.guessthecorrelation.com/\n\n\nmore on correlations later in the semester!"
   },
   {
     "objectID": "W7_Hypothesis.html#odds-ratio",
     "href": "W7_Hypothesis.html#odds-ratio",
     "title": "07 Hypothesis Testing",
     "section": "Odds Ratio",
-    "text": "Odds Ratio\nFor binary variables, the odds ratio is a useful effect size.\nOdds describes the relative likelihood of some event happening versus not happening:\n\\[\n\\text{odds of A} = \\frac{P(A)}{P(\\neg{A})}\n\\]\nOdds ratio is simply the ratio of two odds, i.e. \\(\\frac{\\text{odds of A}}{\\text{odds of B}}\\).\n\nExample:\n\n\n\nLung cancer occurrence separately for current smokers and those who have never smoked\n\n\nStatus\nNeverSmoked\nCurrentSmoker\n\n\n\n\nNo Cancer\n2883\n3829\n\n\nCancer\n220\n6784\n\n\n\n\n\n\\[OR = \\frac{\\frac{220}{220+2883}}{\\frac{6784}{6784+3829}} = 23.22 \\]\nThe odds ratio of 23.22 tells us that the odds of lung cancer in smokers are roughly 23x higher than that of non-smokers!",
-    "crumbs": [
-      "07 Hypothesis Testing"
-    ]
+    "text": "Odds Ratio\nFor binary variables, the odds ratio is a useful effect size.\nOdds describes the relative likelihood of some event happening versus not happening:\n\\[\n\\text{odds of A} = \\frac{P(A)}{P(\\neg{A})}\n\\]\nOdds ratio is simply the ratio of two odds, i.e. \\(\\frac{\\text{odds of A}}{\\text{odds of B}}\\)."
   },
   {
     "objectID": "W7_Hypothesis.html#statistical-power",
     "href": "W7_Hypothesis.html#statistical-power",
     "title": "07 Hypothesis Testing",
     "section": "Statistical Power",
-    "text": "Statistical Power\nRemember: Type I and Type II error!\nTolerance for Type I errors set to \\(\\alpha = 0.05\\), which is very low –&gt; we want to avoid this error!\nWhat about Type II errors?\n\nType II = failing to reject \\(H_0\\) although an effect exists (often set at \\(\\beta = 0.20\\), i.e., a statistical power of \\(80\\%\\)).\nBut \\(\\beta\\) also depends on the effect size: The likelihood of finding a large effect is higher than finding a small effect (at constant \\(n\\))!\n\n\nStatistical power is the complement of the Type II error:\nThe likelihood of finding a positive result given that it exits!\n\\[power = 1 - \\beta\\]\n\n\nStatistical power is affected by three factors:\n\nsample size (larger n = more power)\neffect size (larger effect = more power)\nType I error rate (smaller Type I error = less power)\n\n\nType I: false positives\nType II: false negatives",
-    "crumbs": [
-      "07 Hypothesis Testing"
-    ]
+    "text": "Statistical Power\nRemember: Type I and Type II error!\nTolerance for Type I errors set to \\(\\alpha = 0.05\\), which is very low → we want to avoid this error!\nWhat about Type II errors?\n\nType II = failing to reject \\(H_0\\) although an effect exists (often set at \\(\\beta = 0.20\\), i.e., a statistical power of \\(80\\%\\)).\nBut \\(\\beta\\) also depends on the effect size: The likelihood of finding a large effect is higher than finding a small effect (at constant \\(n\\))!\n\n\nStatistical power is the complement of the Type II error:\nThe likelihood of finding a positive result given that it exits!\n\\[power = 1 - \\beta\\]\n\nType I: false positives\nType II: false negatives"
   },
   {
     "objectID": "W7_Hypothesis.html#statistical-power-2",
     "href": "W7_Hypothesis.html#statistical-power-2",
     "title": "07 Hypothesis Testing",
-    "section": "Statistical Power 2",
-    "text": "Statistical Power 2\nHere, we can see how these three factors influence the power (i.e. the proportion of significant results found):\n\nThe black dotted line denotes the standard 80% power that is often aimed at.\n\nEven with \\(n = 96\\), we have only little power to detect a small effect (\\(d = 0.2\\)): Only ~25% of studies would find the true effect. This means doing this study would be futile, we would likely fail to find the true effect.\n\n\nTherefore, we would do a power analysis before we even run the study - to determine the necessary sample size for a well-powered study that would be able to find an effect if the effect is true.\nFurthermore, positive findings from an underpowered study are more likely to be false positive!\n\nMore on that in Chapter 18 of ST21!",
-    "crumbs": [
-      "07 Hypothesis Testing"
-    ]
+    "section": "Statistical Power",
+    "text": "Statistical Power\n\nThe black dotted line denotes the standard 80% power that is often aimed at.\n\nEven with \\(n = 96\\), we have only little power to detect a small effect (\\(d = 0.2\\)): Only ~25% of studies would find the true effect. This means doing such a study would be futile."
   },
   {
     "objectID": "W8_ModelingRelationships.html#chi²-test-general",
@@ -2395,5 +2299,103 @@
     "crumbs": [
       "06 Sampling and Resampling/Simulations"
     ]
+  },
+  {
+    "objectID": "W7_Hypothesis.html#the-t-distribution-1",
+    "href": "W7_Hypothesis.html#the-t-distribution-1",
+    "title": "07 Hypothesis Testing",
+    "section": "The t Distribution",
+    "text": "The t Distribution"
+  },
+  {
+    "objectID": "W7_Hypothesis.html#step-5-determine-the-probability-of-the-observed-result-under-the-null-hypothesis-1",
+    "href": "W7_Hypothesis.html#step-5-determine-the-probability-of-the-observed-result-under-the-null-hypothesis-1",
+    "title": "07 Hypothesis Testing",
+    "section": "Step 5: Determine the Probability of the Observed Result under the Null Hypothesis",
+    "text": "Step 5: Determine the Probability of the Observed Result under the Null Hypothesis\n\n\ncounter-intuitive: We check the nulldistribution not the one of \\(H_A\\)! But we also don’t check how likely it is that \\(H_0\\) is true, but rather the likelihood under the null hypothesis of observing a statistic at least as extreme as the one we observed.\nat least as extreme: Prob of each particular value = 0\ntry to find out how weird statistic found is (or weirder) –&gt; count all weird(er) possibilities"
+  },
+  {
+    "objectID": "W7_Hypothesis.html#a-simple-example-1",
+    "href": "W7_Hypothesis.html#a-simple-example-1",
+    "title": "07 Hypothesis Testing",
+    "section": "A Simple Example",
+    "text": "A Simple Example\nIf we flip a (fair) coin 100 times, we would get the following distribution (100.000 replications):\n\nIt is very unlikely to get 70 heads if the coin is fair!\n\nfair coin: null distribution"
+  },
+  {
+    "objectID": "W7_Hypothesis.html#p-value-1",
+    "href": "W7_Hypothesis.html#p-value-1",
+    "title": "07 Hypothesis Testing",
+    "section": "P-Value",
+    "text": "P-Value\n\\[t = 3.86\\]\nThe question is: What is the likelihood that we would find a t statistic of this size or more extreme given the number of degrees of freedom and if the true difference between the groups is zero.\nWe can use the t distribution to calculate this probability. We just need the degrees of freedom, which are \\(DF = 241.12\\), and we can then use all these values (e.g. in a function in R):\n\npt(3.86, df=241.12, lower.tail = F)\n\n[1] 7.282672e-05\n\n\nThis small probability tells us that our observed t value is relatively unlikely if \\(H_0\\) is really true."
+  },
+  {
+    "objectID": "W7_Hypothesis.html#p-value-one--vs.-two-sided",
+    "href": "W7_Hypothesis.html#p-value-one--vs.-two-sided",
+    "title": "07 Hypothesis Testing",
+    "section": "P-Value: One- vs. Two-Sided",
+    "text": "P-Value: One- vs. Two-Sided\nPreviously, we calculated the p-Value for a directional hypothesis. In this case, we only looked at the upper tail probability. With a non-directional hypothesis, we would want to account for both tail probabilities, i.e. how likely it is that a \\(t &gt; 3.86\\) OR \\(t &lt; -3.86\\) is found. In this case, we can simply multiply the previous p-Value by 2 (since it is a symmetric distribution):\n\npt(3.86, df=241.12, lower.tail = F) * 2\n\n[1] 0.0001456534"
+  },
+  {
+    "objectID": "W7_Hypothesis.html#p-values-using-randomization",
+    "href": "W7_Hypothesis.html#p-values-using-randomization",
+    "title": "07 Hypothesis Testing",
+    "section": "P-Values using Randomization",
+    "text": "P-Values using Randomization\n\n# create function to shuffle BMI data\nshuffleBMIstat &lt;- function() {\n  bmiDataShuffled &lt;- \n    NHANES_sample %&gt;%\n    select(BMI, PhysActive) %&gt;%\n    mutate(\n      BMI = sample(BMI) #randomly shuffle BMI values\n    )\n  # compute the difference\n  simResult &lt;- t.test( #t.test function is more convenient than pt function!\n    BMI ~ PhysActive,\n    data = bmiDataShuffled,\n  )\n  return(simResult$statistic)\n}\n# run function 5000 times and save output\nnRuns &lt;- 5000\nmeanDiffSimDf &lt;- tibble(meanDiffSim = replicate(nRuns, shuffleBMIstat()))\n#run t test of actual data\nbmtTTest &lt;- \n  t.test(\n  BMI ~ PhysActive,\n  data = NHANES_sample,\n  alternative = \"greater\"\n)\n#compare actual data with simulation\nbmiPvalRand &lt;- \n  mean(meanDiffSimDf$meanDiffSim &gt;= bmtTTest$statistic)\n\n#plot everything\nplot = meanDiffSimDf %&gt;% \n  ggplot(aes(meanDiffSim)) +\n  geom_histogram(bins = 200) +\n  geom_vline(xintercept = bmtTTest$statistic, color = \"blue\") +\n  xlab(\"T stat: BMI difference between groups\") +\n  geom_histogram(\n    data = meanDiffSimDf %&gt;% \n      filter(meanDiffSim &gt;= bmtTTest$statistic), \n    aes(meanDiffSim), \n    bins = 200, \n    fill = \"gray\"\n  )\nprint(plot)"
+  },
+  {
+    "objectID": "W7_Hypothesis.html#p-values-using-randomization-1",
+    "href": "W7_Hypothesis.html#p-values-using-randomization-1",
+    "title": "07 Hypothesis Testing",
+    "section": "P-Values using Randomization",
+    "text": "P-Values using Randomization\n\nThe blue line is the observed t statistic. We can calculate a p-Value by counting how many of the simulated t-values are at least as extreme as our observed one and dividing it by the number of simulations. The p-value obtained from randomization (0.000000) is kind of similar to the one obtained using the t distribution (0.000075).\n\nUsing simulations to get the null distribution can be helpful if the assumptions (normal distribution in each group) are violated or if we don’t know the theoretical distribution of the test statistic!\n\nexchangeability: We can use permutations if all observsations are distributed in the same way, such that we can shuffle them without changing the overall distribution.\nNot the case if we have dependent observations, e.g. siblings…"
+  },
+  {
+    "objectID": "W7_Hypothesis.html#what-does-a-significant-result-not-mean",
+    "href": "W7_Hypothesis.html#what-does-a-significant-result-not-mean",
+    "title": "07 Hypothesis Testing",
+    "section": "What does a significant result (not) mean?",
+    "text": "What does a significant result (not) mean?\nThere is a lot of discussion about the usefulness of using \\(\\alpha = .05\\) as well as about the interpretation of a significant result/certain p-value!\n\n\nA p-value of .01 does….\n\nNOT mean that the probability that \\(H_0\\) is true is 1%!\n\nWe tested \\(P(data|H_0)\\) not \\(P(H_0|data)\\)!\n\nNOT mean that the probability that you’re making a wrong decision is 1%!\n\nThis would also be \\(P(H_0|data)\\)! p-values are probabilities of data (under \\(H_0\\)), not probabilities of hypotheses! And we cannot easily use Bayes to turn the condition because we would need additional information like the prior probability of an alternative hypothesis being true.\n\nNOT mean that you would get the same significance 99% of the time if you repeated the study.\n\nThe p-value is a statement about the likelihood of one particular dataset under the null.\n\nNOT mean that you found a practically important effect.\n\nDifference between statistical significance and practical significance! Effect sizes are important here. (Statistical significance depends on sample size!)"
+  },
+  {
+    "objectID": "W7_Hypothesis.html#ci-comparison",
+    "href": "W7_Hypothesis.html#ci-comparison",
+    "title": "07 Hypothesis Testing",
+    "section": "CI comparison",
+    "text": "CI comparison\n\n\n\nMethod\nCI\n\n\n\n\nnormal distribution\n[77.28, 82.56]\n\n\nt distribution\n[77.15, 82.58]\n\n\nbootstrap\n[78.41, 83.81]\n\n\n\n\nNote: CIs from the normal and t distribution are always symmetrical around the mean (here: 79.92), bootstrapped intervals need not be."
+  },
+  {
+    "objectID": "W7_Hypothesis.html#cohens-d-1",
+    "href": "W7_Hypothesis.html#cohens-d-1",
+    "title": "07 Hypothesis Testing",
+    "section": "Cohen’s d",
+    "text": "Cohen’s d\nThere is a commonly used interpretation of Cohen’s d (although it is criticized to use these cutoffs!):\n\n\n\nInterpetation of Cohen’s d\n\n\nd\nInterpretation\n\n\n\n\n0.0 - 0.2\nnegligible\n\n\n0.2 - 0.5\nsmall\n\n\n0.5 - 0.8\nmedium\n\n\n&gt; 0.8\nlarge"
+  },
+  {
+    "objectID": "W7_Hypothesis.html#odds-ratio-example",
+    "href": "W7_Hypothesis.html#odds-ratio-example",
+    "title": "07 Hypothesis Testing",
+    "section": "Odds Ratio Example",
+    "text": "Odds Ratio Example\n\n\n\nLung cancer occurrence separately for current smokers and those who have never smoked\n\n\nStatus\nNeverSmoked\nCurrentSmoker\n\n\n\n\nNo Cancer\n2883\n3829\n\n\nCancer\n220\n6784\n\n\n\n\n\n\\[OR = \\frac{\\frac{220}{220+2883}}{\\frac{6784}{6784+3829}} = 23.22 \\]\nThe odds ratio of 23.22 tells us that the odds of developing lung cancer in smokers are roughly 23x higher than that of non-smokers!"
+  },
+  {
+    "objectID": "W7_Hypothesis.html#statistical-power-1",
+    "href": "W7_Hypothesis.html#statistical-power-1",
+    "title": "07 Hypothesis Testing",
+    "section": "Statistical Power",
+    "text": "Statistical Power\nStatistical power is affected by three factors:\n\nsample size (larger n = more power)\neffect size (larger effect = more power)\nType I error rate (smaller Type I error = less power)"
+  },
+  {
+    "objectID": "W7_Hypothesis.html#step-4-fit-a-model-1",
+    "href": "W7_Hypothesis.html#step-4-fit-a-model-1",
+    "title": "07 Hypothesis Testing",
+    "section": "Step 4: Fit a Model",
+    "text": "Step 4: Fit a Model\nIn this example, we need a test statistic that tests the difference between two (independent) means (we have one BMI mean for each group): The t statistic.\n\\[t = \\frac{\\bar{X_1} - \\bar{X_2}}{\\sqrt{\\frac{S_1^2}{n_1} + \\frac{S_2^2}{n_2}}}\\]\n\\(\\bar{X_1}\\) and \\(\\bar{X_2}\\) are the means of the two group, \\(S_1^2\\) and \\(S_2^2\\) are the estimated variances of the groups, \\(n_1\\) and \\(n_2\\) are the sizes of the two groups.\n\n\\(\\sqrt{\\frac{S_1^2}{n_1} + \\frac{S_2^2}{n_2}}\\) is something like the pooled (“averaged”) SEM of both groups.\n\nThe t statistic is appropriate for comparing the means of two groups when the sample sizes are relatively small and the population standard deviation is unknown.\n\\(\\sqrt{\\frac{S_1^2}{n_1}}\\) alone would be the SEM of subsample 1. But we have to add first before we take the square root.\nReason for adding: The variance of a difference between (or sum of) two independent variables is the sum of the variances of each individual variable (\\(Var(A−B)=Var(A)+Var(B)\\))\none can view the the t statistic as a way of quantifying how large the difference between groups is in relation to the sampling variability of the difference between means"
+  },
+  {
+    "objectID": "W7_Hypothesis.html#statistical-power-3",
+    "href": "W7_Hypothesis.html#statistical-power-3",
+    "title": "07 Hypothesis Testing",
+    "section": "Statistical Power",
+    "text": "Statistical Power\nTo avoid conducting underpowered studies, we would do a power analysis before we even run the study - to determine the necessary sample size for a well-powered study that would be able to find an effect if the effect is true.\nFurthermore, positive findings from an underpowered study are more likely to be false positive!\n\nMore on that in Chapter 18 of ST21!"
   }
 ]

@@ -224,9 +224,9 @@ The test statistic will have a probability distribution, allowing us to determin
 
 **In general, we want to relate an effect (e.g., a mean or a difference of means) to the amount of uncertainty in the data (e.g., the SEM).**
 
-. . .
+## Step 4: Fit a Model
 
-In the example, we need a test statistic that tests the difference between two means (we have one BMI mean for each group): The *t* statistic.
+In this example, we need a test statistic that tests the difference between two (independent) means (we have one BMI mean for each group): The *t* statistic.
 
 $$t = \frac{\bar{X_1} - \bar{X_2}}{\sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}}}$$
 
@@ -250,25 +250,15 @@ one can view the the *t* statistic as a way of quantifying how large the differe
 
 The *t* statistic is distributed according to the *t* distribution, which looks similar to a normal distribution (the more degrees of freedom, the more "normal").
 
-**Degrees of freedom** for the *t* test: $observations - 2$ = $n_1 + n_2 - 2$ (when the groups are the same size).
+**Degrees of freedom** for the independent samples *t* test: $observations - 2$ = $n_1 + n_2 - 2$ (when the groups are the same size).
 
 Degrees of freedom: values that can freely vary when estimating parameters. Usually sample size minus values that you already calculated (e.g. means for the test statistic).
 
 . . .
 
-```{r}
-tibble(z = seq(-4, 4, .1), 
-       t1 = dt(z, 1),
-       t10 = dt(z, 10),
-       t100 = dt(z, 100),
-       normal = dnorm(z)) %>% 
-  pivot_longer(-z, names_to = "distribution", values_to = "density") %>% 
-  ggplot(aes(x=z, y=density, color=distribution)) + geom_line(size=1) + scale_color_viridis_d()
-```
-
 If the group sizes are unequal: $\mathrm{d.f.} = \frac{\left(\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}\right)^2}{\frac{\left(S_1^2/n_1\right)^2}{n_1-1} + \frac{\left(S_2^2/n_2\right)^2}{n_2-1}}$
 
-Fortunately, R does all these calculations for us :)
+Fortunately, `R` does all these calculations for us :)
 
 ::: notes
 DF: we have calculated two means and have thus given up two DFs (these are fixed already)
@@ -278,15 +268,30 @@ Will be smaller if sample sizes unequal (here 241.12 vs 248 for equal)
 Degrees of freedom are the number of independent values that a statistical analysis can [estimate](https://statisticsbyjim.com/glossary/estimator/). You can also think of it as the number of values that are free to vary as you estimate [parameters](https://statisticsbyjim.com/glossary/parameter/)
 :::
 
+## The *t* Distribution
+
+```{r}
+tibble(z = seq(-4, 4, .1), 
+       t1 = dt(z, 1),
+       t10 = dt(z, 10),
+       t100 = dt(z, 100),
+       normal = dnorm(z)) %>% 
+  pivot_longer(-z, names_to = "distribution", values_to = "density") %>% 
+  ggplot(aes(x=z, y=density, color=distribution, linetype=distribution)) + 
+  geom_line(linewidth=1) +
+  scale_linetype_manual(values = c(rep("solid", 3), "dashed")) +
+  scale_color_viridis_d()
+```
+
 ## Step 5: Determine the Probability of the Observed Result under the Null Hypothesis
 
 We do not check likelihood of the alternative distribution or likelihood that the null hypothesis is true, but rather:
 
 *How likely is it, given that we assume* $H_0$ *is true, to observe a statistic at least as extreme as the one we observed.*
 
-\--\> We need to know the distribution of the expected statistic, assuming $H_0$ is true. Then we can calculate how (un-)likely it is to find the statistic (or a more extreme value) we found in our data.
+&rArr; We need to know the distribution of the expected statistic, assuming $H_0$ is true. Then we can calculate how (un-)likely it is to find the statistic (or a more extreme value) we found in our data.
 
-. . .
+## Step 5: Determine the Probability of the Observed Result under the Null Hypothesis
 
 ```{r}
 #| echo: false
@@ -327,9 +332,9 @@ Test statistic = number of heads counted.
 
 How likely is it that we would observe 70 or more heads if the coin is unbiased (chance of 50% for heads)?
 
-. . .
+## A Simple Example
 
-If we flip a (fair) coin 100 times, we would get the following distribution (100000 replications):
+If we flip a (fair) coin 100 times, we would get the following distribution (100.000 replications):
 
 ```{r}
 #| echo: false
@@ -359,45 +364,43 @@ fair coin: null distribution
 
 ## P-Value
 
-Let's go back to out BMI example.
+Let's go back to our BMI example.
 
 We first need to calculate the *t* statistic:
 
 ```{r}
 #| echo: false
-kable(sampleSummary, digits=4,caption='Summary of BMI data for active versus inactive individuals')
+kable(sampleSummary, digits=1,caption='Summary of BMI data for active versus inactive individuals')
 ```
 
 $$t = \frac{\bar{X_1} - \bar{X_2}}{\sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}}}$$
 
-$$t = \frac{30 - 27}{\sqrt{\frac{9^2}{131} + \frac{5.2^2}{119}}}$$
+$$t = \frac{30.2 - 26.6}{\sqrt{\frac{9.0^2}{131} + \frac{5.2^2}{119}}} = 3.86$$
+
+## P-Value
 
 $$t = 3.86$$
 
-. . .
-
 The question is: What is the likelihood that we would find a *t* statistic of this size or more extreme given the number of degrees of freedom and if the true difference between the groups is zero.
 
-::: aside
-$t$ statistics if we use the unrounded values!
-:::
-
-## P-Value 2
-
-We can use the *t* distribution to calculate this probability. We just need the degrees of freedom, which are $DF = 241.12$, and we can then use all these values (e.g. in a function in R):
+We can use the *t* distribution to calculate this probability. We just need the degrees of freedom, which are $DF = 241.12$, and we can then use all these values (e.g. in a function in `R`):
 
 ```{r}
-#cumulative probability distribution of the student's t distribution
+#| echo: true
 pt(3.86, df=241.12, lower.tail = F)
 ```
 
 This small probability tells us that our observed t value is relatively unlikely if $H_0$ is really true.
 
-. . .
+## P-Value: One- vs. Two-Sided
 
-This is the *p*-Value for a directional hypothesis. In this case, we only looked at the upper tail probability. With a non-directional hypothesis, we would want to account for both tail probabilities, i.e. how likely it is that a $t > 3.86$ OR $t < -3.86$ is found. In this case, we can simply multiply the *p*-Value found above by 2 (since it is a symmetric distribution):
+Previously, we calculated the *p*-Value for a directional hypothesis. In this case, we only looked at the upper tail probability. With a non-directional hypothesis, we would want to account for both tail probabilities, i.e. how likely it is that a $t > 3.86$ OR $t < -3.86$ is found. In this case, we can simply multiply the previous *p*-Value by 2 (since it is a symmetric distribution):
 
-$p = 0.000145$
+```{r}
+#| echo: true
+pt(3.86, df=241.12, lower.tail = F) * 2
+```
+
 
 ## P-Value using Randomization
 
@@ -407,9 +410,9 @@ We can also use our simulation skills to determine the null distribution!
 
 We can randomly rearrange (or **permute**) data so that no relationship is present, e.g. assigning group membership to the participants randomly. In this case, $H_0$ should thus be true.
 
-We would do this a large amount of times (e.g. 10000), calculate the *t* statistics for each iteration, and draw a histogram to show the distribution.
+We would do this a large amount of times (e.g. 10.000), calculate the *t* statistics for each iteration, and draw a histogram to show the distribution.
 
-## P-Values using Randomization 2
+## P-Values using Randomization
 
 ```{r}
 #| echo: true
@@ -461,7 +464,7 @@ print(plot)
 
 ```
 
-## P-Values using Randomization 3
+## P-Values using Randomization
 
 ```{r}
 #| echo: false
@@ -534,7 +537,7 @@ Traditionally, we reject $H_0$ if the *p*-value is less than **0.05**. (Fisher's
 
 . . .
 
-(Either there is an effect/$H_A$ is true or there is a small chance (5%) that there is actually no effect but we coincidentally found such a large value --\> false positive)
+(Either there is an effect/$H_A$ is true or there is a small chance (5%) that there is actually no effect but we coincidentally found such a large value &rarr; false positive)
 
 . . .
 
@@ -558,7 +561,7 @@ Before computers, tables were used, and all tables had .05 in it!
 Fisher: Evidence for hypothesis, NP: long-run error rate
 :::
 
-## What does a significant result mean?
+## What does a significant result (not) mean?
 
 There is a lot of discussion about the usefulness of using $\alpha = .05$ as well as about the interpretation of a significant result/certain *p*-value!
 
@@ -581,7 +584,7 @@ A *p*-value of .01 does....
 
 -   NOT mean that you found a practically important effect.
 
-    -   Difference between *statistical significance* and *practical significance*! Effect sizes more important. (Statistical significance depends on sample size!)
+    -   Difference between *statistical significance* and *practical significance*! Effect sizes are important here. (Statistical significance depends on sample size!)
 :::
 
 ## Multiple Testing
@@ -590,7 +593,7 @@ Nowadays, we often have huge datasets in neuroscience, e.g. collecting brain ima
 
 . . .
 
-Let's look at *genome-wide associations studies* (GWAS). We have more than a million places in where the genome could differ. If we want to know whether *schizophrenia* was associated with *any* of these differences, we would do \~1.000.000 tests! If we simply used $\alpha \le .05$ as a threshold, we would get a lot of ($1000000 * .05 = 500$!) false positives, even if no true effect is present at all.
+Let's look at *genome-wide associations studies* (GWAS). We have more than a million places in where the genome could differ. If we want to know whether *schizophrenia* was associated with *any* of these differences, we would do \~1.000.000 tests! If we simply used $\alpha \le .05$ as a threshold, we would get a lot of ($1000000 * .05 = 500$ &#128561;) false positives, even if no true effect is present at all.
 
 . . .
 
@@ -786,14 +789,14 @@ If we can't assume normality or don't know the sampling distribution, we can als
 
 . . .
 
-Reminder: bootstrap = resampling with replacement, using this distribution as the sampling distribution!
+Reminder: bootstrap = resampling with replacement, using the data itself as the sampling distribution!
 
 . . .
 
 If we use an R function for bootstrapping (`boot()`), we get CI estimates that are fairly close to the ones calculated:
 
 ```{r}
-#| echo: false
+#| echo: true
 meanWeight <- function(df, foo) {
   return(mean(df[foo, ]$Weight))
 }
@@ -803,9 +806,7 @@ bootci <- boot.ci(bs, type = "perc")
 print(bootci)
 ```
 
-. . .
-
-\
+## CI comparison
 
 | Method | CI |
 |--------|----|
@@ -835,6 +836,8 @@ In general, avoid this "eyeball test" and look at the *p* value!
 
 **Note**: Slightly overlapping CIs can still be significant (e.g., one sided hypothesis)
 
+**Note 2**: It is possible (but not common) to report one-sided CIs.
+
 ## Effect Sizes
 
 Practical significance!
@@ -863,7 +866,7 @@ Note that this is very similar to the *t* statistic, only the denominator differ
 --\> d will not grow with sample size but remain stable!
 :::
 
-## Cohen's *d* 2
+## Cohen's *d*
 
 There is a commonly used interpretation of Cohen's d (although it is criticized to use these cutoffs!):
 
@@ -878,7 +881,7 @@ dInterp=tibble("d"=c('0.0 - 0.2',
 kable(dInterp, caption="Interpetation of Cohen's d")
 ```
 
-. . .
+## Cohen's *d*
 
 ```{r}
 effect = NHANES_sample %>% effsize::cohen.d(Height ~ Gender, data=.) %>% {.$estimate} %>% abs() %>% round(2)
@@ -940,9 +943,7 @@ $$
 
 **Odds ratio** is simply the ratio of two odds, i.e. $\frac{\text{odds of A}}{\text{odds of B}}$.
 
-. . .
-
-Example:
+## Odds Ratio Example
 
 ```{r}
 #| echo: false
@@ -971,13 +972,13 @@ oddsRatio <- oddsCancerCurrentSmoker/oddsCancerNeverSmoked
 
 $$OR = \frac{\frac{220}{220+2883}}{\frac{6784}{6784+3829}} = 23.22 $$
 
-The odds ratio of 23.22 tells us that the odds of lung cancer in smokers are roughly 23x higher than that of non-smokers!
+The odds ratio of 23.22 tells us that the odds of developing lung cancer in smokers are roughly 23x higher than that of non-smokers!
 
 ## Statistical Power
 
 Remember: *Type I* and *Type II error*!
 
-Tolerance for Type I errors set to $\alpha = 0.05$, which is very low --\> we want to avoid this error!
+Tolerance for Type I errors set to $\alpha = 0.05$, which is very low &rarr; we want to avoid this error!
 
 What about Type II errors?
 
@@ -993,7 +994,13 @@ But $\beta$ also depends on the effect size: The likelihood of finding a large e
 The likelihood of finding a positive result given that it exits!\
 $$power = 1 - \beta$$
 
-. . .
+::: notes
+Type I: false positives
+
+Type II: false negatives
+:::
+
+## Statistical Power
 
 Statistical power is affected by three factors:
 
@@ -1002,16 +1009,6 @@ Statistical power is affected by three factors:
 -   effect size (larger effect = more power)
 
 -   Type I error rate (smaller Type I error = less power)
-
-::: notes
-Type I: false positives
-
-Type II: false negatives
-:::
-
-## Statistical Power 2
-
-Here, we can see how these three factors influence the power (i.e. the proportion of significant results found):
 
 ```{r}
 #| echo: false
@@ -1042,7 +1039,7 @@ runPowerSim <- function(df, nsims = 1000) {
 powerSimResults <- powerDf %>%
   do(runPowerSim(.))
 
-ggplot(powerSimResults,
+powerPlot = ggplot(powerSimResults,
        aes(sampSizePerGroup,power,color=as.factor(effectSize),linetype=as.factor(alpha))) +
   geom_hline(yintercept = .8,linetype='dotted',size=.5) +
   geom_line(size=1) + scale_linetype_manual(values=c("dashed", "solid")) +
@@ -1055,17 +1052,24 @@ ggplot(powerSimResults,
     linetype = "alpha"
   )
 
+print(powerPlot)
+```
+
+## Statistical Power
+
+```{r}
+powerPlot
 ```
 
 The black dotted line denotes the standard 80% power that is often aimed at.
 
 . . .
 
-Even with $n = 96$, we have only little power to detect a small effect ($d = 0.2$): Only \~25% of studies would find the true effect. This means doing this study would be futile, we would likely fail to find the true effect.
+Even with $n = 96$, we have only little power to detect a small effect ($d = 0.2$): Only \~25% of studies would find the true effect. This means doing such a study would be futile.
 
-. . .
+## Statistical Power
 
-Therefore, we would do a **power analysis** before we even run the study - to determine the necessary sample size for a well-powered study that would be able to find an effect if the effect is true.
+To avoid conducting underpowered studies, we would do a **power analysis** before we even run the study - to determine the necessary sample size for a well-powered study that would be able to find an effect if the effect is true.
 
 Furthermore, positive findings from an underpowered study are more likely to be false positive!
 
