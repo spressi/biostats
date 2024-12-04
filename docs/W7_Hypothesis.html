@@ -488,7 +488,7 @@ I.e., we want to know the conditional probability: <span class="math inline">\(P
 </section>
 <section id="step-1-formulate-a-hypothesis-of-interest" class="slide level2">
 <h2>Step 1: Formulate a Hypothesis of Interest</h2>
-<p>Hypothesis:</p>
+<p>Hypothesis in natural language:</p>
 <div class="fragment">
 <p>“BMI is greater for people who do not engage in physical activity than for those who do.”</p>
 <aside class="notes">
@@ -508,16 +508,19 @@ I.e., we want to know the conditional probability: <span class="math inline">\(P
 </section>
 <section id="step-2-specify-the-null-and-alternative-hypotheses" class="slide level2">
 <h2>Step 2: Specify the Null and Alternative Hypotheses</h2>
-<p>The null hypothesis (<span class="math inline">\(H_0\)</span>) is the baseline against which we test our hypothesis of interest.</p>
-<p>The alternative hypothesis (<span class="math inline">\(H_A\)</span>) describes what we expect if there is an effect.</p>
+<p>Now we engage in a more technical specification.</p>
+<div class="fragment">
+<p>Remember: The null hypothesis (<span class="math inline">\(H_0\)</span>) is the baseline against which we test our hypothesis of interest.<br>
+The alternative hypothesis (<span class="math inline">\(H_A\)</span>) describes what we expect if there is an effect.</p>
 <p>NHST works under the assumption that the <span class="math inline">\(H_0\)</span> is true (unless the evidence shows otherwise).</p>
+</div>
 <div class="fragment">
 <p>We also have to decide whether we want to test a non-directional (<span class="math inline">\(A \neq B\)</span>) or directional (<span class="math inline">\(A&gt;B\)</span> <strong>or</strong> <span class="math inline">\(A&lt;B\)</span>) hypothesis.</p>
 <p>What do we specify if we hypothesize that “BMI is greater…”?</p>
 </div>
 <div class="fragment">
-<p><span class="math inline">\(H_0 = BMI_{active} \ge BMI_{inactive}\)</span></p>
-<p><span class="math inline">\(H_A = BMI_{active} &lt; BMI_{inactive}\)</span></p>
+<p><span class="math inline">\(H_A = BMI_{inactive} &gt; BMI_{active}\)</span></p>
+<p><span class="math inline">\(H_0 = BMI_{inactive} \le BMI_{active}\)</span></p>
 <aside class="notes">
 <p>Test against <span class="math inline">\(H_0\)</span>: What would we expect the data to look like if there was no effect?</p>
 <p>Non-directional: no direction! :D Directional: prior knowledge</p>
@@ -537,7 +540,7 @@ I.e., we want to know the conditional probability: <span class="math inline">\(P
 <section id="step-3-collect-data" class="slide level2">
 <h2>Step 3: Collect Data</h2>
 <p>For this example, we sample 250 individuals from the NHANES dataset.</p>
-<div class="cell">
+<div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <table>
 <caption>Summary of BMI data for active versus inactive individuals</caption>
@@ -565,9 +568,20 @@ I.e., we want to know the conditional probability: <span class="math inline">\(P
 </tbody>
 </table>
 </div>
-
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="W7_Hypothesis_files/figure-revealjs/unnamed-chunk-2-1.png" width="960"></p>
+</figure>
 </div>
-<img data-src="W7_Hypothesis_files/figure-revealjs/unnamed-chunk-2-1.png" width="960" class="r-stretch"></section>
+</div>
+</div>
+
+<aside><div>
+<p><span class="math inline">\(BMI &gt; 75 kg/m^2\)</span>?<br>
+→ over 243 kg</p>
+<p>Very high but possible</p>
+</div></aside></section>
 <section id="step-4-fit-a-model" class="slide level2">
 <h2>Step 4: Fit a Model</h2>
 <p>We want to compute a <strong>test statistic</strong> that helps us decide whether to reject <span class="math inline">\(H_0\)</span> or not.</p>
@@ -583,7 +597,8 @@ I.e., we want to know the conditional probability: <span class="math inline">\(P
 <h2>Step 4: Fit a Model</h2>
 <p>In this example, we need a test statistic that tests the difference between two (independent) means (we have one BMI mean for each group): The <em>t</em> statistic.</p>
 <p><span class="math display">\[t = \frac{\bar{X_1} - \bar{X_2}}{\sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}}}\]</span></p>
-<p><span class="math inline">\(\bar{X_1}\)</span> and <span class="math inline">\(\bar{X_2}\)</span> are the means of the two group, <span class="math inline">\(S_1^2\)</span> and <span class="math inline">\(S_2^2\)</span> are the estimated variances of the groups, <span class="math inline">\(n_1\)</span> and <span class="math inline">\(n_2\)</span> are the sizes of the two groups.</p>
+<p><span class="math inline">\(\bar{X_1}\)</span> and <span class="math inline">\(\bar{X_2}\)</span> are the means of the two group, <span class="math inline">\(S_1^2\)</span> and <span class="math inline">\(S_2^2\)</span> are the estimated variances of the groups,<br>
+<span class="math inline">\(n_1\)</span> and <span class="math inline">\(n_2\)</span> are the sizes of the two groups.</p>
 <div class="fragment">
 <p><span class="math inline">\(\sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}}\)</span> is something like the <em>pooled</em> (“averaged”) SEM of both groups.</p>
 <aside class="notes">
@@ -667,7 +682,7 @@ I.e., we want to know the conditional probability: <span class="math inline">\(P
 </section>
 <section id="a-simple-example-1" class="slide level2">
 <h2>A Simple Example</h2>
-<p>If we flip a (fair) coin 100 times, we would get the following distribution (100.000 replications):</p>
+<p>If we flip a (fair) coin 100 times, we would get the following distribution (100’000 replications):</p>
 
 <img data-src="W7_Hypothesis_files/figure-revealjs/unnamed-chunk-5-1.png" width="960" class="r-stretch"><p>It is very unlikely to get 70 heads if the coin is fair!</p>
 <aside class="notes">
@@ -748,7 +763,7 @@ I.e., we want to know the conditional probability: <span class="math inline">\(P
 <p>We can also use our simulation skills to determine the null distribution!</p>
 <div class="fragment">
 <p>We can randomly rearrange (or <strong>permute</strong>) data so that no relationship is present, e.g.&nbsp;assigning group membership to the participants randomly. In this case, <span class="math inline">\(H_0\)</span> should thus be true.</p>
-<p>We would do this a large amount of times (e.g.&nbsp;10.000), calculate the <em>t</em> statistics for each iteration, and draw a histogram to show the distribution.</p>
+<p>We would do this a large amount of times (e.g.&nbsp;10’000), calculate the <em>t</em> statistics for each iteration, and draw a histogram to show the distribution.</p>
 </div>
 </section>
 <section id="p-values-using-randomization" class="slide level2">
@@ -887,7 +902,7 @@ I.e., we want to know the conditional probability: <span class="math inline">\(P
 <h2>Multiple Testing</h2>
 <p>Nowadays, we often have huge datasets in neuroscience, e.g.&nbsp;collecting brain imaging data of thousands of voxels or quantifying the entire genome.</p>
 <div class="fragment">
-<p>Let’s look at <em>genome-wide associations studies</em> (GWAS). We have more than a million places in where the genome could differ. If we want to know whether <em>schizophrenia</em> was associated with <em>any</em> of these differences, we would do ~1.000.000 tests! If we simply used <span class="math inline">\(\alpha \le .05\)</span> as a threshold, we would get a lot of (<span class="math inline">\(1000000 * .05 = 500\)</span> 😱) false positives, even if no true effect is present at all.</p>
+<p>Let’s look at <em>genome-wide associations studies</em> (GWAS). We have more than a million places in where the genome could differ. If we want to know whether <em>schizophrenia</em> was associated with <em>any</em> of these differences, we would do ~1’000’000 tests! If we simply used <span class="math inline">\(\alpha \le .05\)</span> as a threshold, we would get a lot of (<span class="math inline">\(1'000'000 * .05 = 50'000\)</span> 😱) false positives, even if no true effect is present at all.</p>
 </div>
 <div class="fragment">
 <p>In this case, we have a lot of dependent tests, which form a <em>family of tests</em>. In such a case, we need to control the <em>family-wise error rate</em>, e.g.&nbsp;by fixing it to a total of <span class="math inline">\(\alpha \le .05\)</span> (i.e.&nbsp;the probability of making <em>any</em> Type I error in our study is controlled at .05).</p>
@@ -1097,7 +1112,7 @@ Calculations and Intervals on Original Scale</code></pre>
 <li><p>If there is no overlap between CIs, then there is <em>certainly</em> a significant difference (two-sidedly).</p></li>
 <li><p>If the CIs overlap (but don’t contain the other mean), it depends on the relative variability of the two variables</p></li>
 </ul>
-<p>In general, avoid this “eyeball test” and look at the <em>p</em> value!</p>
+<p>In general, avoid this “eyeball test” and look at the <em>p</em> value! (or <a href="https://spressi.github.io/precision_workshop/2.2_CIs.html">learn to plot CIs for mean differences here</a>)</p>
 <p><strong>Note</strong>: Slightly overlapping CIs can still be significant (e.g., one sided hypothesis)</p>
 <p><strong>Note 2</strong>: It is possible (but not common) to report one-sided CIs.</p>
 </div>
@@ -1115,7 +1130,8 @@ Calculations and Intervals on Original Scale</code></pre>
 <p><span class="math display">\[d = \frac{\bar{X_1} - \bar{X}_2}{s}\]</span></p>
 <p>where <span class="math inline">\(\hat{X_1}\)</span> and <span class="math inline">\(\hat{X_2}\)</span> are the means of the two groups and <span class="math inline">\(s\)</span> is the pooled SD:</p>
 <p><span class="math display">\[s = \sqrt{\frac{(n_1 - 1)s^2_1 + (n_2 - 1)s^2_2 }{n_1 +n_2 -2}}\]</span></p>
-<p>which is a combination of both groups’ SDs (<span class="math inline">\(s_1\)</span> and <span class="math inline">\(s_2\)</span>) weighted by their sample size (<span class="math inline">\(n_1\)</span> and <span class="math inline">\(n_2\)</span>).</p>
+<p>which is a combination of both groups’ variances (<span class="math inline">\(s_1^2\)</span> and <span class="math inline">\(s_2^2\)</span>) weighted by their degrees of freedom<br>
+(<span class="math inline">\(n_1-1\)</span> and <span class="math inline">\(n_2-1\)</span>).</p>
 <aside class="notes">
 <p>Note that this is very similar to the <em>t</em> statistic, only the denominator differs:<br>
 <em>t</em> = SEM, <em>d</em> = SD of the data<br>
@@ -1169,14 +1185,9 @@ Calculations and Intervals on Original Scale</code></pre>
 </section>
 <section id="cohens-d-2" class="slide level2">
 <h2>Cohen’s <em>d</em></h2>
-<div class="fragment">
 <p>Even with a large effect of <span class="math inline">\(d = 1.78\)</span> (as in the NHANES data set), the distributions still overlap greatly!</p>
-<div class="cell">
-<div class="cell-output-display">
-<p><img data-src="W7_Hypothesis_files/figure-revealjs/unnamed-chunk-19-1.png" width="960"></p>
-</div>
-</div>
-<aside class="notes">
+
+<img data-src="W7_Hypothesis_files/figure-revealjs/unnamed-chunk-19-1.png" width="960" class="r-stretch"><aside class="notes">
 <p>Small effect but huge total impact: Psychosocial stress due to Covid-19 (deployed to a whole population)</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1189,7 +1200,6 @@ Calculations and Intervals on Original Scale</code></pre>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-</div>
 </section>
 <section id="pearsons-r" class="slide level2">
 <h2>Pearson’s <em>r</em></h2>
@@ -1294,7 +1304,7 @@ The likelihood of finding a positive result given that it exits!<br>
 
 <img data-src="W7_Hypothesis_files/figure-revealjs/unnamed-chunk-24-1.png" width="960" class="r-stretch"><p>The black dotted line denotes the standard 80% power that is often aimed at.</p>
 <div class="fragment">
-<p>Even with <span class="math inline">\(n = 96\)</span>, we have only little power to detect a small effect (<span class="math inline">\(d = 0.2\)</span>): Only ~25% of studies would find the true effect. This means doing such a study would be futile.</p>
+<p>Even with <span class="math inline">\(n = 96\)</span>, we have only little power to detect a small effect (<span class="math inline">\(d = 0.2\)</span>; solid red line): Only ~25% of studies would find the true effect. This means doing such a study would be futile.</p>
 </div>
 </section>
 <section id="statistical-power-3" class="slide level2">
@@ -1318,7 +1328,7 @@ The likelihood of finding a positive result given that it exits!<br>
 <section id="thanks" class="title-slide slide level1 center">
 <h1>Thanks!</h1>
 <p>That’s it for today!</p>
-<p><strong>Until next week, you should have decided for a data set for your analysis!</strong></p>
+<p><strong>Until next week, you should have decided for your research question and hypotheses!</strong></p>
 <p>Next week, we will start with implementing analyses in R.</p>
 
 <div class="footer footer-default">

@@ -88,7 +88,7 @@ Let's go through these steps, using the NHANES dataset and the research question
 
 ## Step 1: Formulate a Hypothesis of Interest
 
-Hypothesis:
+Hypothesis in natural language:
 
 . . .
 
@@ -100,8 +100,11 @@ ask for hypothesis?
 
 ## Step 2: Specify the Null and Alternative Hypotheses
 
-The null hypothesis ($H_0$) is the baseline against which we test our hypothesis of interest.
+Now we engage in a more technical specification.
 
+. . .
+
+Remember: The null hypothesis ($H_0$) is the baseline against which we test our hypothesis of interest.\
 The alternative hypothesis ($H_A$) describes what we expect if there is an effect.
 
 NHST works under the assumption that the $H_0$ is true (unless the evidence shows otherwise).
@@ -114,9 +117,9 @@ What do we specify if we hypothesize that "BMI is greater..."?
 
 . . .
 
-$H_0 = BMI_{active} \ge BMI_{inactive}$
+$H_A = BMI_{inactive} > BMI_{active}$
 
-$H_A = BMI_{active} < BMI_{inactive}$
+$H_0 = BMI_{inactive} \le BMI_{active}$
 
 ::: notes
 Test against $H_0$: What would we expect the data to look like if there was no effect?
@@ -130,6 +133,7 @@ For this example, we sample 250 individuals from the NHANES dataset.
 
 ```{r}
 #| echo: false
+#| fig-align: center
 
 library(ggplot2)
 library(cowplot)
@@ -210,6 +214,13 @@ ggplot(NHANES_sample,aes(PhysActive,BMI)) +
   ylab('Body Mass Index (BMI)')
 ```
 
+::: aside
+$BMI > 75 kg/m^2$?\
+&rarr; over 243 kg
+
+Very high but possible
+:::
+
 ## Step 4: Fit a Model
 
 We want to compute a **test statistic** that helps us decide whether to reject $H_0$ or not.
@@ -230,7 +241,8 @@ In this example, we need a test statistic that tests the difference between two 
 
 $$t = \frac{\bar{X_1} - \bar{X_2}}{\sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}}}$$
 
-$\bar{X_1}$ and $\bar{X_2}$ are the means of the two group, $S_1^2$ and $S_2^2$ are the estimated variances of the groups, $n_1$ and $n_2$ are the sizes of the two groups.
+$\bar{X_1}$ and $\bar{X_2}$ are the means of the two group, $S_1^2$ and $S_2^2$ are the estimated variances of the groups, \
+$n_1$ and $n_2$ are the sizes of the two groups.
 
 . . .
 
@@ -334,7 +346,7 @@ How likely is it that we would observe 70 or more heads if the coin is unbiased 
 
 ## A Simple Example
 
-If we flip a (fair) coin 100 times, we would get the following distribution (100.000 replications):
+If we flip a (fair) coin 100 times, we would get the following distribution (100'000 replications):
 
 ```{r}
 #| echo: false
@@ -410,7 +422,7 @@ We can also use our simulation skills to determine the null distribution!
 
 We can randomly rearrange (or **permute**) data so that no relationship is present, e.g. assigning group membership to the participants randomly. In this case, $H_0$ should thus be true.
 
-We would do this a large amount of times (e.g. 10.000), calculate the *t* statistics for each iteration, and draw a histogram to show the distribution.
+We would do this a large amount of times (e.g. 10'000), calculate the *t* statistics for each iteration, and draw a histogram to show the distribution.
 
 ## P-Values using Randomization
 
@@ -593,7 +605,7 @@ Nowadays, we often have huge datasets in neuroscience, e.g. collecting brain ima
 
 . . .
 
-Let's look at *genome-wide associations studies* (GWAS). We have more than a million places in where the genome could differ. If we want to know whether *schizophrenia* was associated with *any* of these differences, we would do \~1.000.000 tests! If we simply used $\alpha \le .05$ as a threshold, we would get a lot of ($1000000 * .05 = 500$ &#128561;) false positives, even if no true effect is present at all.
+Let's look at *genome-wide associations studies* (GWAS). We have more than a million places in where the genome could differ. If we want to know whether *schizophrenia* was associated with *any* of these differences, we would do \~1'000'000 tests! If we simply used $\alpha \le .05$ as a threshold, we would get a lot of ($1'000'000 * .05 = 50'000$ &#128561;) false positives, even if no true effect is present at all.
 
 . . .
 
@@ -832,7 +844,7 @@ If we want to compare two conditions, it gets trickier.
 
 -   If the CIs overlap (but don't contain the other mean), it depends on the relative variability of the two variables
 
-In general, avoid this "eyeball test" and look at the *p* value!
+In general, avoid this "eyeball test" and look at the *p* value! (or [learn to plot CIs for mean differences here](https://spressi.github.io/precision_workshop/2.2_CIs.html))
 
 **Note**: Slightly overlapping CIs can still be significant (e.g., one sided hypothesis)
 
@@ -858,7 +870,8 @@ where $\hat{X_1}$ and $\hat{X_2}$ are the means of the two groups and $s$ is the
 
 $$s = \sqrt{\frac{(n_1 - 1)s^2_1 + (n_2 - 1)s^2_2 }{n_1 +n_2 -2}}$$
 
-which is a combination of both groups' SDs ($s_1$ and $s_2$) weighted by their sample size ($n_1$ and $n_2$).
+which is a combination of both groups' variances ($s_1^2$ and $s_2^2$) weighted by their degrees of freedom \
+($n_1-1$ and $n_2-1$).
 
 ::: notes
 Note that this is very similar to the *t* statistic, only the denominator differs:\
@@ -886,8 +899,6 @@ kable(dInterp, caption="Interpetation of Cohen's d")
 ```{r}
 effect = NHANES_sample %>% effsize::cohen.d(Height ~ Gender, data=.) %>% {.$estimate} %>% abs() %>% round(2)
 ```
-
-. . .
 
 Even with a large effect of $d = `r effect`$ (as in the NHANES data set), the distributions still overlap greatly!
 
@@ -1065,7 +1076,7 @@ The black dotted line denotes the standard 80% power that is often aimed at.
 
 . . .
 
-Even with $n = 96$, we have only little power to detect a small effect ($d = 0.2$): Only \~25% of studies would find the true effect. This means doing such a study would be futile.
+Even with $n = 96$, we have only little power to detect a small effect ($d = 0.2$; solid red line): Only \~25% of studies would find the true effect. This means doing such a study would be futile.
 
 ## Statistical Power
 
@@ -1081,6 +1092,6 @@ More on that in Chapter 18 of ST21!
 
 That's it for today!
 
-**Until next week, you should have decided for a data set for your analysis!**
+**Until next week, you should have decided for your research question and hypotheses!**
 
 Next week, we will start with implementing analyses in R.

@@ -1315,21 +1315,21 @@
     "href": "W7_Hypothesis.html#step-1-formulate-a-hypothesis-of-interest",
     "title": "07 Hypothesis Testing",
     "section": "Step 1: Formulate a Hypothesis of Interest",
-    "text": "Step 1: Formulate a Hypothesis of Interest\nHypothesis:\n\n“BMI is greater for people who do not engage in physical activity than for those who do.”\n\nask for hypothesis?"
+    "text": "Step 1: Formulate a Hypothesis of Interest\nHypothesis in natural language:\n\n“BMI is greater for people who do not engage in physical activity than for those who do.”\n\nask for hypothesis?"
   },
   {
     "objectID": "W7_Hypothesis.html#step-2-specify-the-null-and-alternative-hypotheses",
     "href": "W7_Hypothesis.html#step-2-specify-the-null-and-alternative-hypotheses",
     "title": "07 Hypothesis Testing",
     "section": "Step 2: Specify the Null and Alternative Hypotheses",
-    "text": "Step 2: Specify the Null and Alternative Hypotheses\nThe null hypothesis (\\(H_0\\)) is the baseline against which we test our hypothesis of interest.\nThe alternative hypothesis (\\(H_A\\)) describes what we expect if there is an effect.\nNHST works under the assumption that the \\(H_0\\) is true (unless the evidence shows otherwise).\n\nWe also have to decide whether we want to test a non-directional (\\(A \\neq B\\)) or directional (\\(A&gt;B\\) or \\(A&lt;B\\)) hypothesis.\nWhat do we specify if we hypothesize that “BMI is greater…”?\n\n\n\\(H_0 = BMI_{active} \\ge BMI_{inactive}\\)\n\\(H_A = BMI_{active} &lt; BMI_{inactive}\\)\n\nTest against \\(H_0\\): What would we expect the data to look like if there was no effect?\nNon-directional: no direction! :D Directional: prior knowledge"
+    "text": "Step 2: Specify the Null and Alternative Hypotheses\nNow we engage in a more technical specification.\n\nRemember: The null hypothesis (\\(H_0\\)) is the baseline against which we test our hypothesis of interest.\nThe alternative hypothesis (\\(H_A\\)) describes what we expect if there is an effect.\nNHST works under the assumption that the \\(H_0\\) is true (unless the evidence shows otherwise).\n\n\nWe also have to decide whether we want to test a non-directional (\\(A \\neq B\\)) or directional (\\(A&gt;B\\) or \\(A&lt;B\\)) hypothesis.\nWhat do we specify if we hypothesize that “BMI is greater…”?\n\n\n\\(H_A = BMI_{inactive} &gt; BMI_{active}\\)\n\\(H_0 = BMI_{inactive} \\le BMI_{active}\\)\n\nTest against \\(H_0\\): What would we expect the data to look like if there was no effect?\nNon-directional: no direction! :D Directional: prior knowledge"
   },
   {
     "objectID": "W7_Hypothesis.html#step-3-collect-data",
     "href": "W7_Hypothesis.html#step-3-collect-data",
     "title": "07 Hypothesis Testing",
     "section": "Step 3: Collect Data",
-    "text": "Step 3: Collect Data\nFor this example, we sample 250 individuals from the NHANES dataset.\n\n\n\nSummary of BMI data for active versus inactive individuals\n\n\nPhysActive\nN\nmean\nsd\n\n\n\n\nNo\n131\n30.1942\n8.9851\n\n\nYes\n119\n26.6386\n5.2499"
+    "text": "Step 3: Collect Data\nFor this example, we sample 250 individuals from the NHANES dataset.\n\n\n\nSummary of BMI data for active versus inactive individuals\n\n\nPhysActive\nN\nmean\nsd\n\n\n\n\nNo\n131\n30.1942\n8.9851\n\n\nYes\n119\n26.6386\n5.2499\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\\(BMI &gt; 75 kg/m^2\\)?\n→ over 243 kg\nVery high but possible"
   },
   {
     "objectID": "W7_Hypothesis.html#step-4-fit-a-model",
@@ -1378,7 +1378,7 @@
     "href": "W7_Hypothesis.html#p-value-using-randomization",
     "title": "07 Hypothesis Testing",
     "section": "P-Value using Randomization",
-    "text": "P-Value using Randomization\nWe can also use our simulation skills to determine the null distribution!\n\nWe can randomly rearrange (or permute) data so that no relationship is present, e.g. assigning group membership to the participants randomly. In this case, \\(H_0\\) should thus be true.\nWe would do this a large amount of times (e.g. 10.000), calculate the t statistics for each iteration, and draw a histogram to show the distribution."
+    "text": "P-Value using Randomization\nWe can also use our simulation skills to determine the null distribution!\n\nWe can randomly rearrange (or permute) data so that no relationship is present, e.g. assigning group membership to the participants randomly. In this case, \\(H_0\\) should thus be true.\nWe would do this a large amount of times (e.g. 10’000), calculate the t statistics for each iteration, and draw a histogram to show the distribution."
   },
   {
     "objectID": "W7_Hypothesis.html#p-values-using-randomization-2",
@@ -1413,7 +1413,7 @@
     "href": "W7_Hypothesis.html#multiple-testing",
     "title": "07 Hypothesis Testing",
     "section": "Multiple Testing",
-    "text": "Multiple Testing\nNowadays, we often have huge datasets in neuroscience, e.g. collecting brain imaging data of thousands of voxels or quantifying the entire genome.\n\nLet’s look at genome-wide associations studies (GWAS). We have more than a million places in where the genome could differ. If we want to know whether schizophrenia was associated with any of these differences, we would do ~1.000.000 tests! If we simply used \\(\\alpha \\le .05\\) as a threshold, we would get a lot of (\\(1000000 * .05 = 500\\) 😱) false positives, even if no true effect is present at all.\n\n\nIn this case, we have a lot of dependent tests, which form a family of tests. In such a case, we need to control the family-wise error rate, e.g. by fixing it to a total of \\(\\alpha \\le .05\\) (i.e. the probability of making any Type I error in our study is controlled at .05).\n\n\nOne option is to use the Bonferroni correction, in which we divide .05 by the number of tests (e.g. 1.000.000) and use the new value (\\(\\alpha \\le .000005\\)) as threshold for each individual test.\n\n\nThis is extremely conservative and often results in false negative test results.\n\n\nFor an interesting example what can happen when not correcting for multiple comparisons, see this dead fish showing significant brain activity (Link)."
+    "text": "Multiple Testing\nNowadays, we often have huge datasets in neuroscience, e.g. collecting brain imaging data of thousands of voxels or quantifying the entire genome.\n\nLet’s look at genome-wide associations studies (GWAS). We have more than a million places in where the genome could differ. If we want to know whether schizophrenia was associated with any of these differences, we would do ~1’000’000 tests! If we simply used \\(\\alpha \\le .05\\) as a threshold, we would get a lot of (\\(1'000'000 * .05 = 50'000\\) 😱) false positives, even if no true effect is present at all.\n\n\nIn this case, we have a lot of dependent tests, which form a family of tests. In such a case, we need to control the family-wise error rate, e.g. by fixing it to a total of \\(\\alpha \\le .05\\) (i.e. the probability of making any Type I error in our study is controlled at .05).\n\n\nOne option is to use the Bonferroni correction, in which we divide .05 by the number of tests (e.g. 1.000.000) and use the new value (\\(\\alpha \\le .000005\\)) as threshold for each individual test.\n\n\nThis is extremely conservative and often results in false negative test results.\n\n\nFor an interesting example what can happen when not correcting for multiple comparisons, see this dead fish showing significant brain activity (Link)."
   },
   {
     "objectID": "W7_Hypothesis.html#confidence-intervals",
@@ -1469,7 +1469,7 @@
     "href": "W7_Hypothesis.html#relationship-of-cis-to-hypothesis-tests",
     "title": "07 Hypothesis Testing",
     "section": "Relationship of CIs to Hypothesis Tests",
-    "text": "Relationship of CIs to Hypothesis Tests\nIf the CI does not include the value of the null hypothesis (usually 0), then the associated two-sided one sample test would be significant.\n\nIf we want to compare two conditions, it gets trickier.\n\nIf each mean is contained within the CI of the other mean, then there’s definitely no significant difference.\nIf there is no overlap between CIs, then there is certainly a significant difference (two-sidedly).\nIf the CIs overlap (but don’t contain the other mean), it depends on the relative variability of the two variables\n\nIn general, avoid this “eyeball test” and look at the p value!\nNote: Slightly overlapping CIs can still be significant (e.g., one sided hypothesis)\nNote 2: It is possible (but not common) to report one-sided CIs."
+    "text": "Relationship of CIs to Hypothesis Tests\nIf the CI does not include the value of the null hypothesis (usually 0), then the associated two-sided one sample test would be significant.\n\nIf we want to compare two conditions, it gets trickier.\n\nIf each mean is contained within the CI of the other mean, then there’s definitely no significant difference.\nIf there is no overlap between CIs, then there is certainly a significant difference (two-sidedly).\nIf the CIs overlap (but don’t contain the other mean), it depends on the relative variability of the two variables\n\nIn general, avoid this “eyeball test” and look at the p value! (or learn to plot CIs for mean differences here)\nNote: Slightly overlapping CIs can still be significant (e.g., one sided hypothesis)\nNote 2: It is possible (but not common) to report one-sided CIs."
   },
   {
     "objectID": "W7_Hypothesis.html#effect-sizes",
@@ -1483,14 +1483,14 @@
     "href": "W7_Hypothesis.html#cohens-d",
     "title": "07 Hypothesis Testing",
     "section": "Cohen’s d",
-    "text": "Cohen’s d\nCohen’s d is used to quantify the difference between two means, in terms of their SD:\n\\[d = \\frac{\\bar{X_1} - \\bar{X}_2}{s}\\]\nwhere \\(\\hat{X_1}\\) and \\(\\hat{X_2}\\) are the means of the two groups and \\(s\\) is the pooled SD:\n\\[s = \\sqrt{\\frac{(n_1 - 1)s^2_1 + (n_2 - 1)s^2_2 }{n_1 +n_2 -2}}\\]\nwhich is a combination of both groups’ SDs (\\(s_1\\) and \\(s_2\\)) weighted by their sample size (\\(n_1\\) and \\(n_2\\)).\n\nNote that this is very similar to the t statistic, only the denominator differs:\nt = SEM, d = SD of the data\n–&gt; d will not grow with sample size but remain stable!"
+    "text": "Cohen’s d\nCohen’s d is used to quantify the difference between two means, in terms of their SD:\n\\[d = \\frac{\\bar{X_1} - \\bar{X}_2}{s}\\]\nwhere \\(\\hat{X_1}\\) and \\(\\hat{X_2}\\) are the means of the two groups and \\(s\\) is the pooled SD:\n\\[s = \\sqrt{\\frac{(n_1 - 1)s^2_1 + (n_2 - 1)s^2_2 }{n_1 +n_2 -2}}\\]\nwhich is a combination of both groups’ variances (\\(s_1^2\\) and \\(s_2^2\\)) weighted by their degrees of freedom\n(\\(n_1-1\\) and \\(n_2-1\\)).\n\nNote that this is very similar to the t statistic, only the denominator differs:\nt = SEM, d = SD of the data\n–&gt; d will not grow with sample size but remain stable!"
   },
   {
     "objectID": "W7_Hypothesis.html#cohens-d-2",
     "href": "W7_Hypothesis.html#cohens-d-2",
     "title": "07 Hypothesis Testing",
     "section": "Cohen’s d",
-    "text": "Cohen’s d\n\nEven with a large effect of \\(d = 1.78\\) (as in the NHANES data set), the distributions still overlap greatly!\n\n\n\n\n\n\nSmall effect but huge total impact: Psychosocial stress due to Covid-19 (deployed to a whole population)"
+    "text": "Cohen’s d\nEven with a large effect of \\(d = 1.78\\) (as in the NHANES data set), the distributions still overlap greatly!\n\n\nSmall effect but huge total impact: Psychosocial stress due to Covid-19 (deployed to a whole population)"
   },
   {
     "objectID": "W7_Hypothesis.html#pearsons-r",
@@ -1518,7 +1518,7 @@
     "href": "W7_Hypothesis.html#statistical-power-2",
     "title": "07 Hypothesis Testing",
     "section": "Statistical Power",
-    "text": "Statistical Power\n\nThe black dotted line denotes the standard 80% power that is often aimed at.\n\nEven with \\(n = 96\\), we have only little power to detect a small effect (\\(d = 0.2\\)): Only ~25% of studies would find the true effect. This means doing such a study would be futile."
+    "text": "Statistical Power\n\nThe black dotted line denotes the standard 80% power that is often aimed at.\n\nEven with \\(n = 96\\), we have only little power to detect a small effect (\\(d = 0.2\\); solid red line): Only ~25% of studies would find the true effect. This means doing such a study would be futile."
   },
   {
     "objectID": "W8_ModelingRelationships.html#chi²-test-general",
@@ -2319,7 +2319,7 @@
     "href": "W7_Hypothesis.html#a-simple-example-1",
     "title": "07 Hypothesis Testing",
     "section": "A Simple Example",
-    "text": "A Simple Example\nIf we flip a (fair) coin 100 times, we would get the following distribution (100.000 replications):\n\nIt is very unlikely to get 70 heads if the coin is fair!\n\nfair coin: null distribution"
+    "text": "A Simple Example\nIf we flip a (fair) coin 100 times, we would get the following distribution (100’000 replications):\n\nIt is very unlikely to get 70 heads if the coin is fair!\n\nfair coin: null distribution"
   },
   {
     "objectID": "W7_Hypothesis.html#p-value-1",
@@ -2389,7 +2389,7 @@
     "href": "W7_Hypothesis.html#step-4-fit-a-model-1",
     "title": "07 Hypothesis Testing",
     "section": "Step 4: Fit a Model",
-    "text": "Step 4: Fit a Model\nIn this example, we need a test statistic that tests the difference between two (independent) means (we have one BMI mean for each group): The t statistic.\n\\[t = \\frac{\\bar{X_1} - \\bar{X_2}}{\\sqrt{\\frac{S_1^2}{n_1} + \\frac{S_2^2}{n_2}}}\\]\n\\(\\bar{X_1}\\) and \\(\\bar{X_2}\\) are the means of the two group, \\(S_1^2\\) and \\(S_2^2\\) are the estimated variances of the groups, \\(n_1\\) and \\(n_2\\) are the sizes of the two groups.\n\n\\(\\sqrt{\\frac{S_1^2}{n_1} + \\frac{S_2^2}{n_2}}\\) is something like the pooled (“averaged”) SEM of both groups.\n\nThe t statistic is appropriate for comparing the means of two groups when the sample sizes are relatively small and the population standard deviation is unknown.\n\\(\\sqrt{\\frac{S_1^2}{n_1}}\\) alone would be the SEM of subsample 1. But we have to add first before we take the square root.\nReason for adding: The variance of a difference between (or sum of) two independent variables is the sum of the variances of each individual variable (\\(Var(A−B)=Var(A)+Var(B)\\))\none can view the the t statistic as a way of quantifying how large the difference between groups is in relation to the sampling variability of the difference between means"
+    "text": "Step 4: Fit a Model\nIn this example, we need a test statistic that tests the difference between two (independent) means (we have one BMI mean for each group): The t statistic.\n\\[t = \\frac{\\bar{X_1} - \\bar{X_2}}{\\sqrt{\\frac{S_1^2}{n_1} + \\frac{S_2^2}{n_2}}}\\]\n\\(\\bar{X_1}\\) and \\(\\bar{X_2}\\) are the means of the two group, \\(S_1^2\\) and \\(S_2^2\\) are the estimated variances of the groups,\n\\(n_1\\) and \\(n_2\\) are the sizes of the two groups.\n\n\\(\\sqrt{\\frac{S_1^2}{n_1} + \\frac{S_2^2}{n_2}}\\) is something like the pooled (“averaged”) SEM of both groups.\n\nThe t statistic is appropriate for comparing the means of two groups when the sample sizes are relatively small and the population standard deviation is unknown.\n\\(\\sqrt{\\frac{S_1^2}{n_1}}\\) alone would be the SEM of subsample 1. But we have to add first before we take the square root.\nReason for adding: The variance of a difference between (or sum of) two independent variables is the sum of the variances of each individual variable (\\(Var(A−B)=Var(A)+Var(B)\\))\none can view the the t statistic as a way of quantifying how large the difference between groups is in relation to the sampling variability of the difference between means"
   },
   {
     "objectID": "W7_Hypothesis.html#statistical-power-3",
