@@ -214,9 +214,9 @@ ggplot(NHANES_sample,aes(PhysActive,BMI)) +
   ylab('Body Mass Index (BMI)')
 ```
 
-::: aside
+::: notes
 $BMI > 75 kg/m^2$?\
-&rarr; over 243 kg
+&rarr; over 243 kg @ 1.8 m height
 
 Very high but possible
 :::
@@ -428,8 +428,8 @@ We would do this a large amount of times (e.g. 10'000), calculate the *t* statis
 
 ```{r}
 #| echo: true
-#| eval: false
-#| code-line-numbers: "7|10-13|18"
+#| eval: true
+#| code-line-numbers: "7|10-13|18|27-28"
 # create function to shuffle BMI data
 shuffleBMIstat <- function() {
   bmiDataShuffled <- 
@@ -445,8 +445,8 @@ shuffleBMIstat <- function() {
   )
   return(simResult$statistic)
 }
-# run function 5000 times and save output
-nRuns <- 5000
+# run function 10'000 times and save output
+nRuns <- 10000
 meanDiffSimDf <- tibble(meanDiffSim = replicate(nRuns, shuffleBMIstat()))
 #run t test of actual data
 bmtTTest <- 
@@ -458,21 +458,6 @@ bmtTTest <-
 #compare actual data with simulation
 bmiPvalRand <- 
   mean(meanDiffSimDf$meanDiffSim >= bmtTTest$statistic)
-
-#plot everything
-plot = meanDiffSimDf %>% 
-  ggplot(aes(meanDiffSim)) +
-  geom_histogram(bins = 200) +
-  geom_vline(xintercept = bmtTTest$statistic, color = "blue") +
-  xlab("T stat: BMI difference between groups") +
-  geom_histogram(
-    data = meanDiffSimDf %>% 
-      filter(meanDiffSim >= bmtTTest$statistic), 
-    aes(meanDiffSim), 
-    bins = 200, 
-    fill = "gray"
-  )
-print(plot)
 
 ```
 
@@ -480,38 +465,7 @@ print(plot)
 
 ```{r}
 #| echo: false
-#| code-line-numbers: "7|10-13|18"
-# create function to shuffle BMI data
-shuffleBMIstat <- function() {
-  bmiDataShuffled <- 
-    NHANES_sample %>%
-    dplyr::select(BMI, PhysActive) %>%
-    mutate(
-      BMI = sample(BMI) #randomly shuffle BMI values
-    )
-  # compute the difference
-  simResult <- t.test( #t.test function is more convenient than pt function!
-    BMI ~ PhysActive,
-    data = bmiDataShuffled,
-  )
-  return(simResult$statistic)
-}
-# run function 5000 times and save output
-nRuns <- 5000
-meanDiffSimDf <- tibble(meanDiffSim = replicate(nRuns, shuffleBMIstat()))
-#run t test of actual data
-bmtTTest <- 
-  t.test(
-  BMI ~ PhysActive,
-  data = NHANES_sample,
-  alternative = "greater"
-)
-#compare actual data with simulation
-bmiPvalRand <- 
-  mean(meanDiffSimDf$meanDiffSim >= bmtTTest$statistic)
-
-#plot everything
-plot = meanDiffSimDf %>% 
+meanDiffSimDf %>% 
   ggplot(aes(meanDiffSim)) +
   geom_histogram(bins = 200) +
   geom_vline(xintercept = bmtTTest$statistic, color = "blue") +
@@ -523,8 +477,6 @@ plot = meanDiffSimDf %>%
     bins = 200, 
     fill = "gray"
   )
-print(plot)
-
 ```
 
 The blue line is the observed *t* statistic. We can calculate a *p*-Value by counting how many of the simulated *t*-values are at least as extreme as our observed one and dividing it by the number of simulations. The p-value obtained from randomization (0.000000) is kind of similar to the one obtained using the t distribution (0.000075).

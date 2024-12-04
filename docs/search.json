@@ -1329,7 +1329,7 @@
     "href": "W7_Hypothesis.html#step-3-collect-data",
     "title": "07 Hypothesis Testing",
     "section": "Step 3: Collect Data",
-    "text": "Step 3: Collect Data\nFor this example, we sample 250 individuals from the NHANES dataset.\n\n\n\nSummary of BMI data for active versus inactive individuals\n\n\nPhysActive\nN\nmean\nsd\n\n\n\n\nNo\n131\n30.1942\n8.9851\n\n\nYes\n119\n26.6386\n5.2499\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\\(BMI &gt; 75 kg/m^2\\)?\n→ over 243 kg\nVery high but possible"
+    "text": "Step 3: Collect Data\nFor this example, we sample 250 individuals from the NHANES dataset.\n\n\n\nSummary of BMI data for active versus inactive individuals\n\n\nPhysActive\nN\nmean\nsd\n\n\n\n\nNo\n131\n30.1942\n8.9851\n\n\nYes\n119\n26.6386\n5.2499\n\n\n\n\n\n\n\n\\(BMI &gt; 75 kg/m^2\\)?\n→ over 243 kg @ 1.8 m height\nVery high but possible"
   },
   {
     "objectID": "W7_Hypothesis.html#step-4-fit-a-model",
@@ -2340,7 +2340,7 @@
     "href": "W7_Hypothesis.html#p-values-using-randomization",
     "title": "07 Hypothesis Testing",
     "section": "P-Values using Randomization",
-    "text": "P-Values using Randomization\n\n# create function to shuffle BMI data\nshuffleBMIstat &lt;- function() {\n  bmiDataShuffled &lt;- \n    NHANES_sample %&gt;%\n    select(BMI, PhysActive) %&gt;%\n    mutate(\n      BMI = sample(BMI) #randomly shuffle BMI values\n    )\n  # compute the difference\n  simResult &lt;- t.test( #t.test function is more convenient than pt function!\n    BMI ~ PhysActive,\n    data = bmiDataShuffled,\n  )\n  return(simResult$statistic)\n}\n# run function 5000 times and save output\nnRuns &lt;- 5000\nmeanDiffSimDf &lt;- tibble(meanDiffSim = replicate(nRuns, shuffleBMIstat()))\n#run t test of actual data\nbmtTTest &lt;- \n  t.test(\n  BMI ~ PhysActive,\n  data = NHANES_sample,\n  alternative = \"greater\"\n)\n#compare actual data with simulation\nbmiPvalRand &lt;- \n  mean(meanDiffSimDf$meanDiffSim &gt;= bmtTTest$statistic)\n\n#plot everything\nplot = meanDiffSimDf %&gt;% \n  ggplot(aes(meanDiffSim)) +\n  geom_histogram(bins = 200) +\n  geom_vline(xintercept = bmtTTest$statistic, color = \"blue\") +\n  xlab(\"T stat: BMI difference between groups\") +\n  geom_histogram(\n    data = meanDiffSimDf %&gt;% \n      filter(meanDiffSim &gt;= bmtTTest$statistic), \n    aes(meanDiffSim), \n    bins = 200, \n    fill = \"gray\"\n  )\nprint(plot)"
+    "text": "P-Values using Randomization\n\n# create function to shuffle BMI data\nshuffleBMIstat &lt;- function() {\n  bmiDataShuffled &lt;- \n    NHANES_sample %&gt;%\n    select(BMI, PhysActive) %&gt;%\n    mutate(\n      BMI = sample(BMI) #randomly shuffle BMI values\n    )\n  # compute the difference\n  simResult &lt;- t.test( #t.test function is more convenient than pt function!\n    BMI ~ PhysActive,\n    data = bmiDataShuffled,\n  )\n  return(simResult$statistic)\n}\n# run function 10'000 times and save output\nnRuns &lt;- 10000\nmeanDiffSimDf &lt;- tibble(meanDiffSim = replicate(nRuns, shuffleBMIstat()))\n#run t test of actual data\nbmtTTest &lt;- \n  t.test(\n  BMI ~ PhysActive,\n  data = NHANES_sample,\n  alternative = \"greater\"\n)\n#compare actual data with simulation\nbmiPvalRand &lt;- \n  mean(meanDiffSimDf$meanDiffSim &gt;= bmtTTest$statistic)"
   },
   {
     "objectID": "W7_Hypothesis.html#p-values-using-randomization-1",
