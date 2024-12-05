@@ -408,6 +408,15 @@ Dr.&nbsp;Mario Reutter (slides adapted from Dr.&nbsp;Lea Hildebrandt)
 </div>
 
 </section>
+<section id="agenda" class="title-slide slide level1 center">
+<h1>Agenda</h1>
+<ul>
+<li>Categorical Relationships (Chi² tests)</li>
+<li>Continuous Relationships (Correlations)</li>
+<li>Group Comparisons (t-tests &amp; ANOVA)</li>
+</ul>
+</section>
+
 <section>
 <section id="modeling-categorical-relationships" class="title-slide slide level1 center">
 <h1>Modeling <em>Categorical</em> Relationships</h1>
@@ -438,7 +447,7 @@ div.cell-output-stdout {
 </section>
 <section id="chi²-test-general" class="slide level2">
 <h2>Chi² Test: General</h2>
-<p>We will first focus on modeling <em>categorical</em> relationships (of variables that are qualitative!).</p>
+<p>We will first focus on modeling <em>categorical</em> relationships (i.e., of variables that are qualitative!).</p>
 <div class="fragment">
 <p>These data are usually expressed in terms of <strong>counts</strong>.</p>
 </div>
@@ -447,7 +456,7 @@ div.cell-output-stdout {
 <p>Bag of candy: 30 chocolates, 33 licorices, and 37 gumballs.</p>
 </div>
 <div class="fragment">
-<p>Is the distribution fair (i.e., 1/3rd of the bag = each candy) and the fact that there are only 30 chocolates a random accident?</p>
+<p>Is the distribution fair (i.e., 1/3rd of the bag for each candy) and the fact that there are only 30 chocolates within expectations?</p>
 </div>
 <div class="fragment">
 <p><strong>What is the likelihood that the count would come out this way (or even more extreme) if the true probability of each candy type is the same?</strong></p>
@@ -492,13 +501,17 @@ div.cell-output-stdout {
       }</style></aside>
 </div>
 </section>
-<section id="chi²-test-general-2" class="slide level2">
-<h2>Chi² Test: General 2</h2>
+<section id="chi²-test-general-1" class="slide level2">
+<h2>Chi² Test: General</h2>
 <p>On its own, the <span class="math inline">\(\chi^2\)</span> statistic is not interpretable - it depends on its distribution.</p>
-<p>The shape of the chi-squared distribution depends on the <em>degrees of freedom</em> (much like the <em>t</em> distribution), which is the number of category levels <span class="math inline">\(k-1\)</span>.</p>
+<p>The shape of the <span class="math inline">\(\chi^2\)</span> distribution depends on the <em>degrees of freedom</em> (much like the <em>t</em> distribution), which is the number of category levels <span class="math inline">\(k-1\)</span>.</p>
 
-<img data-src="W8_ModelingRelationships_files/figure-revealjs/unnamed-chunk-3-1.png" width="960" class="r-stretch"><p>For the candy example, we use a chi-squared distribution with DFs = 2 (3 candy categories minus one). If we’d look at the distribution and found <span class="math inline">\(\chi^2 = .74\)</span> on the x-axis, we would see that it does not fall far into the tail of the distribution but is rather in the middle. If we calculate the <em>p</em>-value, we’d get <span class="math inline">\(P(\chi^2 &gt; .74) = 0.691\)</span>.</p>
-<p>It is thus not particularly surprising to find this distribution of candies and we would not reject <span class="math inline">\(H_0\)</span> (equal proportions).</p>
+<img data-src="W8_ModelingRelationships_files/figure-revealjs/unnamed-chunk-3-1.png" width="960" class="r-stretch"></section>
+<section id="chi2-test-candies" class="slide level2">
+<h2>Chi2 Test: Candies</h2>
+<p>For the candy example, we use a chi-squared distribution with <span class="math inline">\(DFs = 2\)</span> (3 candy categories minus one → green line). If we’d look at the distribution and found <span class="math inline">\(\chi^2 = .74\)</span> on the x-axis (dashed red line), we would see that it does not fall far into the tail of the distribution but is rather in the middle. If we calculate the <em>p</em>-value, we’d get <span class="math inline">\(P(\chi^2 &gt; .74) = 0.691\)</span>.</p>
+
+<img data-src="W8_ModelingRelationships_files/figure-revealjs/unnamed-chunk-4-1.png" width="960" class="r-stretch"><p>It is thus not particularly surprising to find this distribution of candies and we would not reject <span class="math inline">\(H_0\)</span> (equal proportions).</p>
 </section>
 <section id="contingency-tables-and-the-two-way-test" class="slide level2">
 <h2>Contingency Tables and the Two-Way Test</h2>
@@ -539,7 +552,9 @@ div.cell-output-stdout {
 </div>
 </div>
 </div>
-<div class="fragment">
+</section>
+<section id="contingency-tables-and-the-two-way-test-1" class="slide level2">
+<h2>Contingency Tables and the Two-Way Test</h2>
 <p>If there is no relationship between skin color and being searched, the frequencies of searches would be proportional to the frequencies of skin color. This would be our expected values. We can determine them using probabilities:</p>
 <table class="caption-top">
 <thead>
@@ -571,7 +586,7 @@ div.cell-output-stdout {
 </tr>
 </tbody>
 </table>
-<p><strong>Remember</strong>: You can only multiply two probabilities to get their conjoint probability if they are independent. Here, we <em>assume</em> independence to calculate expected values and then check how much our observed values <em>deviate</em> from independence.</p>
+<p><strong>Remember</strong>: You can only multiply two probabilities to get their conjoint probability if they are independent. Here, we <em>assume independence to calculate expected values</em> and then check how much our observed values <em>deviate from independence</em>.</p>
 <aside class="notes">
 <p>Probabilities: Because we expect the variables to be <em>unrelated</em>, we can calculate the <strong>joint probability</strong> as the product of the <strong>marginal probabilities</strong>:<br>
 <span class="math inline">\(P(X \cap Y) = P(X) * P(Y)\)</span></p>
@@ -587,10 +602,9 @@ div.cell-output-stdout {
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-</div>
 </section>
-<section id="chi²-test-two-variables" class="slide level2">
-<h2>Chi² Test: Two Variables</h2>
+<section id="chi²-test-with-two-variables" class="slide level2">
+<h2>Chi² Test with Two Variables</h2>
 <p>If we compute the standardized squared difference between observed and expected values, we can sum them up to get <span class="math inline">\(\chi^2 = 828.3\)</span></p>
 <div class="cell">
 <div class="cell-output-display">
@@ -639,7 +653,10 @@ div.cell-output-stdout {
 </div>
 </div>
 <p>We can then compute the <em>p</em>-value using a chi-squared distribution with <span class="math inline">\(DF = (levels_{var1} - 1) * (levels_{var2} - 1) = (2-1) * (2-1) = 1\)</span></p>
-<p>We can also calculate a <span class="math inline">\(\chi^2\)</span> test easily in R:</p>
+</section>
+<section id="chi²-test-with-two-variables-in-r" class="slide level2">
+<h2>Chi² Test with Two Variables in <code>R</code></h2>
+<p>We can calculate a <span class="math inline">\(\chi^2\)</span> test easily in R:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a><span class="fu">chisq.test</span>(summaryDf2wayTable, <span class="at">correct =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -651,7 +668,6 @@ X-squared = 828.3, df = 1, p-value &lt; 2.2e-16</code></pre>
 </div>
 </div>
 <p>The results indicate that the data are highly unlikely if there was no true relationship between skin color and police searches! We would thus reject <span class="math inline">\(H_0\)</span>.</p>
-<p>Question: What is the direction of the observed relationship?</p>
 <aside class="notes">
 <p>DF: computing the expected frequencies requires three values: total number of observations and marg probs each variable. thus only one of the four values can vary freely.</p>
 <style type="text/css">
@@ -666,6 +682,56 @@ X-squared = 828.3, df = 1, p-value &lt; 2.2e-16</code></pre>
           display:block!important;
       }</style></aside>
 </section>
+<section id="chi2-test-with-two-variables-interpretation" class="slide level2">
+<h2>Chi2 Test with Two Variables: Interpretation</h2>
+<p>Question: What is the direction of the observed relationship?</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top">
+<caption>Contingency table for police search data</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">searched</th>
+<th style="text-align: left;">driver_race</th>
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">expected</th>
+<th style="text-align: right;">stdSqDiff</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: left;">Black</td>
+<td style="text-align: right;">36244</td>
+<td style="text-align: right;">36883.67</td>
+<td style="text-align: right;">11.09</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: left;">Black</td>
+<td style="text-align: right;">1219</td>
+<td style="text-align: right;">579.33</td>
+<td style="text-align: right;">706.31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: left;">White</td>
+<td style="text-align: right;">239241</td>
+<td style="text-align: right;">238601.33</td>
+<td style="text-align: right;">1.71</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: left;">White</td>
+<td style="text-align: right;">3108</td>
+<td style="text-align: right;">3747.67</td>
+<td style="text-align: right;">109.18</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
 <section id="standardized-residuals" class="slide level2">
 <h2>Standardized Residuals</h2>
 <p>If we want to know not only whether but also <em>how</em> the data differ from what we would expect under <span class="math inline">\(H_0\)</span>, we can examine the <strong>residuals</strong> of the model.</p>
@@ -675,7 +741,9 @@ X-squared = 828.3, df = 1, p-value &lt; 2.2e-16</code></pre>
 \text{standardized residual}_{ij} = \frac{observed_{ij} - expected_{ij}}{\sqrt{expected_{ij}}}
 \]</span></p>
 <p>where <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> are the rows and columns respectively.</p>
-<div class="fragment">
+</section>
+<section id="standardized-residuals-1" class="slide level2">
+<h2>Standardized Residuals</h2>
 <p><strong>Negative residuals</strong> indicate an observed value <strong>smaller</strong> than expected.</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -727,7 +795,6 @@ X-squared = 828.3, df = 1, p-value &lt; 2.2e-16</code></pre>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-</div>
 </section>
 <section id="odds-ratios" class="slide level2">
 <h2>Odds Ratios</h2>
@@ -746,6 +813,7 @@ odds\ ratio = \frac{odds(searched|black)}{odds(searched|white)} = 2.59
 <section id="simpsons-paradox" class="slide level2">
 <h2>Simpson’s Paradox</h2>
 <p>The Simpson’s Paradox is a great example of misleading summaries.</p>
+<div class="fragment">
 <p>If we look at the baseball data below, we see that David Justice has a better batting average in every single year, but Derek Jeter has a better overall batting average:</p>
 <table class="caption-top" style="width:100%;">
 <colgroup>
@@ -774,7 +842,7 @@ odds\ ratio = \frac{odds(searched|black)}{odds(searched|white)} = 2.59
 </thead>
 <tbody>
 <tr class="odd">
-<td>D. Jeter</td>
+<td>Jeter</td>
 <td>12/48</td>
 <td>.250</td>
 <td>183/582</td>
@@ -785,7 +853,7 @@ odds\ ratio = \frac{odds(searched|black)}{odds(searched|white)} = 2.59
 <td><strong>.300</strong></td>
 </tr>
 <tr class="even">
-<td>D. Justice</td>
+<td>Justice</td>
 <td>104/411</td>
 <td><strong>.253</strong></td>
 <td>45/140</td>
@@ -798,6 +866,7 @@ odds\ ratio = \frac{odds(searched|black)}{odds(searched|white)} = 2.59
 </tbody>
 </table>
 <p>How can this be?</p>
+</div>
 <div class="fragment">
 <p><strong>Simpson’s Paradox</strong>: A pattern is present in the combined dataset but may be different in subsets of the data.</p>
 </div>
@@ -805,7 +874,8 @@ odds\ ratio = \frac{odds(searched|black)}{odds(searched|white)} = 2.59
 <p>Happens if another (lurking) variable changes across subsets (e.g., the number of at-bats, i.e., the denominator).</p>
 <aside class="notes">
 <p>batting average: hits/at bats</p>
-<p>1995: in general low batting averages, Justice a lot of at-bats =&gt; diminishes total combined value more strongly than for Jeter.</p>
+<p>1995: in general low batting averages, Justice had a lot of at-bats =&gt; diminishes total combined value more strongly than for Jeter.</p>
+<p>1996: both players were above their average but Jeter had way more at-bats =&gt; more important for the overall average.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -821,12 +891,11 @@ odds\ ratio = \frac{odds(searched|black)}{odds(searched|white)} = 2.59
 </section>
 <section id="simpsons-paradox-more-intuitive" class="slide level2">
 <h2>Simpson’s Paradox: More intuitive</h2>
-<p>While typing on a keyboard, what is the relationship between speed and accuracy (or typing errors)?<br>
-(positive, negative, or none)</p>
+<p>While typing on a keyboard, what is the relationship between speed (words per minute) and accuracy (% correct words)? (positive, negative, or none)</p>
 <div class="fragment">
 <p><br>
 </p>
-<p>If I try to type faster, I will make more errors =&gt; speed-accuracy trade-off (negative association)</p>
+<p>If I try to type faster, I will make more errors ⇒ speed-accuracy trade-off (negative association)</p>
 <p>People who are better at typing usually are both faster and make fewer mistakes (positive association)</p>
 </div>
 <div class="fragment">
@@ -861,34 +930,32 @@ odds\ ratio = \frac{odds(searched|black)}{odds(searched|white)} = 2.59
 <h2>Example: Income Inequality and Hate Crimes</h2>
 <p>We want to look at a dataset that was used for an analysis of the relationship between income inequality (<em>Gini index</em>) and the prevalence of hate crimes in the USA.</p>
 
-<img data-src="W8_ModelingRelationships_files/figure-revealjs/unnamed-chunk-10-1.png" width="960" class="r-stretch"><p>It looks like there is a positive relationship between the variables. How can we quantify this relationship?</p>
+<img data-src="W8_ModelingRelationships_files/figure-revealjs/unnamed-chunk-12-1.png" width="960" class="r-stretch"><p>It looks like there is a positive relationship between the variables. How can we quantify this relationship?</p>
 </section>
 <section id="covariance-and-correlation" class="slide level2">
 <h2>Covariance and Correlation</h2>
-<p><strong>Covariance</strong>: How much do two variables <em>co-vary</em> with each other?</p>
 <p>Variance (single variable): <span class="math inline">\(s^2 = \frac{\sum_{i=1}^n (x_i - \bar{x})^2}{N - 1}\)</span></p>
-<p>Covariance (two variables): <span class="math inline">\(covariance = \frac{\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})}{N - 1}\)</span></p>
-<p>(Side note: Variance is the covariance of a variable with itself.)</p>
+<p><strong>Covariance</strong> (two variables): <span class="math inline">\(covariance = \frac{\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})}{N - 1}\)</span></p>
 <div class="fragment">
-<p><br>
-</p>
 <p>“Is there a relation between the deviations of two different variables (from their means) across observations?”</p>
 </div>
 <div class="fragment">
-<p>Will be far from 0 if data points share a relationship. Positive values for same direction, negative values for opposite directions.</p>
+<p>Covariance will be far from 0 if data points share a relationship. Positive values for same direction, negative values for opposite directions.</p>
 </div>
 <div class="fragment">
-<p>Covariance varies with overall level of variance in the data, so not that useful to describe relationships in general.</p>
+<p>Covariance varies with overall level of variance in the data ⇒ hard to compare different relationships</p>
 </div>
 <div class="fragment">
 <p><br>
 </p>
-<p><strong>Correlation coefficient</strong> (Pearson correlation): Scales the covariance by the standard deviations of the two variables and thus standardizes it (=&gt; <span class="math inline">\(r\)</span> varies between <span class="math inline">\(-1\)</span> and <span class="math inline">\(1\)</span> =&gt; comparability!)</p>
+<p><strong>Correlation coefficient</strong> (Pearson correlation): Scales the covariance by the standard deviations of the two variables and thus standardizes it (→ <span class="math inline">\(r\)</span> varies between <span class="math inline">\(-1\)</span> and <span class="math inline">\(1\)</span> ⇒ comparability!)</p>
 <p><span class="math display">\[
 r = \frac{covariance}{s_xs_y} = \frac{\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})}{(N - 1)s_x s_y}
 \]</span></p>
 <aside class="notes">
-<p>Covariance depends on dataset!</p>
+<p>Insight: Variance is the covariance of a variable with itself.</p>
+<p>Covariance depends on dataset and even on scaling of variables!<br>
+e.g.&nbsp;relationship between body height and weight ⇒ Using m vs.&nbsp;cm for height will change variance and thus covariance even though the relationship should be identical (same data)</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -913,7 +980,10 @@ r = \frac{covariance}{s_xs_y} = \frac{\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y}
 <p><span class="math display">\[
 t_r = \frac{r\sqrt{N-2}}{\sqrt{1-r^2}}
 \]</span></p>
-<p>We can compute this easily in R:</p>
+</div>
+</section>
+<section id="correlation-in-r" class="slide level2">
+<h2>Correlation in R</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a></a><span class="co"># perform correlation test on hate crime data</span></span>
 <span id="cb3-2"><a></a><span class="fu">cor.test</span>(</span>
@@ -934,8 +1004,8 @@ sample estimates:
 0.4212719 </code></pre>
 </div>
 </div>
-<p>The <em>p</em>-value is quite small, which indicates that it is quite unlikely to find an <span class="math inline">\(r\)</span> value this high or more extreme. We would thus reject <span class="math inline">\(H_0: r = 0\)</span>.</p>
-<p>Side note: There are more beautiful / convenient ways to do this in R. We will cover this in the next session.</p>
+<p>The <em>p</em>-value is quite small, which indicates that it is quite unlikely to find an <span class="math inline">\(r\)</span> value this high or more extreme with 48 degress of freedom. We would thus reject <span class="math inline">\(H_0: r = 0\)</span>.</p>
+
 <aside class="notes">
 <p>subsetting with $!</p>
 <style type="text/css">
@@ -949,8 +1019,9 @@ sample estimates:
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-</div>
-</section>
+<aside><div>
+<p>Side note: There are more beautiful &amp; convenient ways to do this in R. We will cover this in the next session.</p>
+</div></aside></section>
 <section id="robust-correlations" class="slide level2">
 <h2>Robust Correlations</h2>
 <p>In the plot, we have seen an <strong>outlier</strong>: The District of Columbia was quite different from the other data points.</p>
@@ -960,7 +1031,7 @@ sample estimates:
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="W8_ModelingRelationships_files/figure-revealjs/unnamed-chunk-12-1.png" width="480"></p>
+<p><img data-src="W8_ModelingRelationships_files/figure-revealjs/unnamed-chunk-14-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -969,7 +1040,7 @@ sample estimates:
 </section>
 <section id="robust-correlation-2" class="slide level2">
 <h2>Robust Correlation 2</h2>
-<p>We can use a different correlation coefficient, though, which is less sensitive to outliers: <strong>Spearman correlation</strong>.</p>
+<p>We can use a different correlation coefficient, which is less sensitive to outliers: <strong>Spearman correlation</strong>.</p>
 <p>It is based on ranking (i.e., ordering) the data and using the ranks (instead of the original data) for the correlation.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a></a><span class="fu">cor.test</span>(hateCrimes<span class="sc">$</span>avg_hatecrimes_per_100k_fbi,</span>
@@ -987,7 +1058,7 @@ sample estimates:
 0.03261836 </code></pre>
 </div>
 </div>
-<p>The correlation has now dropped from <span class="math inline">\(.42\)</span> to <span class="math inline">\(.03\)</span> and is no longer significant. The influence of the one outlier has been greatly diminished.</p>
+<p>The correlation has now dropped from <span class="math inline">\(.42\)</span> to <span class="math inline">\(.03\)</span> and is no longer significant.</p>
 <p>Of course, a ranked correlation can also obscure true effects that critically depend on the scale of the data. When in doubt, try both and discuss reasons for differences.</p>
 <aside class="notes">
 <p>Without outlier: perfectly <em>negative</em> correlation, with outlier: highly positive!</p>
@@ -1005,23 +1076,24 @@ sample estimates:
 </section>
 <section id="correlation-and-causation" class="slide level2">
 <h2>Correlation and Causation</h2>
-<p>Doing a well controlled, randomized experiment (RCT) is extremely helpful to gather causal evidence.</p>
-<p>However, it is not always possible or ethical to do an experiment!</p>
-<p>We can still collect (observational) data. However, if we correlate two variables, we <em>can’t</em> conclude that one causes the other: They <em>might</em> be related but there could also be a third variable that causes both (or even more complex causal structures).</p>
-<div class="fragment">
+<p>Doing a well controlled, randomized experiment (RCT) is extremely helpful to gather causal evidence. However, it is not always possible or ethical to do an experiment!</p>
+<p>Without an experiment, we can still collect <em>observational</em> data. However, if we correlate two observed variables, we <em>can’t</em> conclude that one causes the other: They (likely) share a relationship but there could also be a third variable that causes both (or even more complex causal structures).</p>
+</section>
+<section id="causal-graphs" class="slide level2">
+<h2>Causal Graphs</h2>
 <p>If we have observational data, <strong>causal graphs</strong> can be helpful for interpreting causality:</p>
 <div class="columns">
-<div class="column">
+<div class="column" style="width:40%;">
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="images/dag_latent_example.png" width="250"></p>
+<p><img data-src="images/dag_latent_example.png" width="350"></p>
 </figure>
 </div>
 </div>
 </div>
-</div><div class="column">
+</div><div class="column" style="width:60%;">
 <p><em>Circle</em>: observed variables<br>
 <em>rectangle</em>: latent (unobservable) variable<br>
 </p>
@@ -1057,7 +1129,6 @@ StudyTime = proxy for knowledge, if we “control” it/hold it constant/only us
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-</div>
 </section></section>
 <section>
 <section id="comparing-means-group-differences" class="title-slide slide level1 center">
@@ -1076,7 +1147,10 @@ t = \frac{\hat{X} - \mu}{SEM}
 SEM = \frac{\hat{\sigma}}{\sqrt{n}}
 \]</span></p>
 <p><span class="math inline">\(\hat{X}\)</span> is the mean of our sample, <span class="math inline">\(\mu\)</span> the hypothesized population mean (e.g.&nbsp;the value we want to test against, such as 80 for the blood pressure example).</p>
-<p>We can easily calculate the <span class="math inline">\(t\)</span>-test in R:</p>
+</div>
+</section>
+<section id="one-sample-t-test-in-r" class="slide level2">
+<h2>One sample <em>t</em>-Test in <code>R</code></h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a></a><span class="fu">t.test</span>(<span class="at">x=</span>NHANES_adult<span class="sc">$</span>BPDiaAve, <span class="at">mu=</span><span class="dv">80</span>, <span class="at">alternative=</span><span class="st">'greater'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1093,6 +1167,11 @@ mean of x
  69.47239 </code></pre>
 </div>
 </div>
+<div class="fragment">
+<p>The observed mean is actually much below 80, providing no evidence for our <em>directional</em> alternative hypothesis that it would be greater than 80 ⇒ the <em>p</em> values is (rounded to) 1.</p>
+</div>
+<div class="fragment">
+<p>If we had tested two-sidedly, we would have found a significant result. It may seem tempting now to create a story around an altered, non-directional alternative hypothesis, which is why it is important to preregister your hypotheses and analyses.</p>
 <aside class="notes">
 <p>(The <span class="math inline">\(t\)</span> statistic thus asks how large the deviation of sample mean from the expected value with respect to the sampling variability of the mean!)</p>
 <p>We tested the one-sided alternative (&gt;) and the blood pressure in the sample is much lower than 80, so it is far from significance</p>
@@ -1110,20 +1189,21 @@ mean of x
       }</style></aside>
 </div>
 </section>
-<section id="comparing-two-means-two-sample-t-test" class="slide level2">
-<h2>Comparing Two Means (Two sample <em>t</em>-Test)</h2>
+<section id="comparing-two-means-independent-samples-t-test" class="slide level2">
+<h2>Comparing Two Means (Independent samples <em>t</em>-Test)</h2>
 <p>More often, we want to know whether there is a difference between the means of <em>two groups</em>.</p>
-<p>Example: Do regular marijuana smokers watch more television?<br>
-In this example, we expect that they watch <em>more</em> TV, which leads us to the following directional hypotheses:</p>
+<p>Example: Do regular marijuana smokers watch <em>more</em> television?<br>
+</p>
 <p><span class="math inline">\(H_0\)</span> = marijuana smokers watch less or equally often TV,<br>
 <span class="math inline">\(H_A\)</span> = marijuana smokers watch more TV.</p>
-
-<img data-src="W8_ModelingRelationships_files/figure-revealjs/unnamed-chunk-17-1.png" width="960" class="r-stretch"><p>If the observations are independent (i.e.&nbsp;you really have two unrelated groups), you can use a very similar formula to calculate the <span class="math inline">\(t\)</span> statistic:</p>
+<p>If the observations are independent (i.e.&nbsp;you really have two unrelated groups), you can use a very similar formula to calculate the <span class="math inline">\(t\)</span> statistic:</p>
 <p><span class="math display">\[
 t = \frac{\bar{X_1} - \bar{X_2}}{\sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}}}
 \]</span></p>
 <p>whereby <span class="math inline">\(\hat{X_1}\)</span> and <span class="math inline">\(\hat{X_2}\)</span> are the group means, <span class="math inline">\(S_1^2\)</span> and <span class="math inline">\(S_2^2\)</span> the group variances, and <span class="math inline">\(n_1\)</span> and <span class="math inline">\(n_2\)</span> the group sizes.</p>
-<p>Here are the results from a one-tailed <span class="math inline">\(t\)</span>-test in R:</p>
+</section>
+<section id="independent-samples-t-test-in-r" class="slide level2">
+<h2>Independent samples <em>t</em>-Test in <code>R</code></h2>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -1137,6 +1217,16 @@ alternative hypothesis: true difference in means between group No and group Yes 
 sample estimates:
  mean in group No mean in group Yes 
           2.02963           2.30000 </code></pre>
+</div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="W8_ModelingRelationships_files/figure-revealjs/unnamed-chunk-20-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 <aside class="notes">
@@ -1153,30 +1243,14 @@ sample estimates:
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
+</div>
 </section>
-<section id="comparing-dependent-observations-paired-t-test" class="slide level2">
-<h2>Comparing Dependent Observations (Paired <em>t</em>-test)</h2>
+<section id="comparing-dependent-observations-paired-samples-t-test" class="slide level2">
+<h2>Comparing Dependent Observations (Paired samples <em>t</em>-test)</h2>
 <p>If we have repeated observations of the same subject (i.e., a within-subject design), we might want to compare the same subject thus on multiple, <em>repeated measurements</em>.</p>
 <div class="fragment">
 <p>If we want to test whether blood pressure differs between the first and second measurement session across individuals, we can use a <strong>paired</strong> <span class="math inline">\(t\)</span><strong>-test</strong>.</p>
-<p>In R, we would run a paired-samples <span class="math inline">\(t\)</span>-test like this:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a></a><span class="fu">with</span>(NHANES_sample, <span class="fu">t.test</span>(BPSys1, BPSys2, <span class="at">paired =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-    Paired t-test
-
-data:  BPSys1 and BPSys2
-t = 2.7369, df = 199, p-value = 0.006763
-alternative hypothesis: true mean difference is not equal to 0
-95 percent confidence interval:
- 0.2850857 1.7549143
-sample estimates:
-mean difference 
-           1.02 </code></pre>
-</div>
-</div>
-<p>Side note: A paired <span class="math inline">\(t\)</span>-test is equivalent to a one-sample <span class="math inline">\(t\)</span>-test, when using the paired differences as <span class="math inline">\(\hat{X}\)</span> and testing them against a value of 0 (if we expect no difference for <span class="math inline">\(H_0\)</span>) for <span class="math inline">\(\mu\)</span>.</p>
+<p>Side note: A paired <span class="math inline">\(t\)</span>-test is equivalent to a one-sample <span class="math inline">\(t\)</span>-test, when using the paired differences (<span class="math inline">\(X_2 - X_1\)</span>) as <span class="math inline">\(\hat{X}\)</span> and testing them against a value of 0 (if we expect no difference for <span class="math inline">\(H_0\)</span>) for <span class="math inline">\(\mu\)</span>.</p>
 <aside class="notes">
 <p>important: If we run an independent sample t-test, it would probably be n.s.! (check out book)</p>
 <style type="text/css">
@@ -1192,29 +1266,45 @@ mean difference
       }</style></aside>
 </div>
 </section>
+<section id="paired-samples-t-test-in-r" class="slide level2">
+<h2>Paired samples <em>t</em>-test in <code>R</code></h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a></a><span class="fu">t.test</span>(NHANES_sample<span class="sc">$</span>BPSys1, NHANES_sample<span class="sc">$</span>BPSys2, <span class="at">paired =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Paired t-test
+
+data:  NHANES_sample$BPSys1 and NHANES_sample$BPSys2
+t = 2.7369, df = 199, p-value = 0.006763
+alternative hypothesis: true mean difference is not equal to 0
+95 percent confidence interval:
+ 0.2850857 1.7549143
+sample estimates:
+mean difference 
+           1.02 </code></pre>
+</div>
+</div>
+</section>
 <section id="comparing-more-than-two-means" class="slide level2">
 <h2>Comparing More Than Two Means</h2>
-<p>Often, we want to compare more than two means, e.g.&nbsp;different treatment groups or timepoints.</p>
+<p>Often, we want to compare more than two means, e.g.&nbsp;different treatment groups or time points.</p>
 <p>Example: Different treatments for blood pressure</p>
 
-<img data-src="W8_ModelingRelationships_files/figure-revealjs/unnamed-chunk-21-1.png" width="480" class="r-stretch"></section>
+<img data-src="W8_ModelingRelationships_files/figure-revealjs/unnamed-chunk-23-1.png" width="480" class="r-stretch"></section>
 <section id="analysis-of-variance-anova" class="slide level2">
 <h2>Analysis of Variance (ANOVA)</h2>
 <p><span class="math inline">\(H_0\)</span>: all means are equal<br>
 <span class="math inline">\(H_A\)</span>: not all means are equal (e.g.&nbsp;at least one differs)</p>
 <div class="fragment">
-<p>We can <em>partition</em> the variance in the data into different parts:</p>
+<p>We can <em>partition</em> the variance of the data into different parts:</p>
 <p><span class="math inline">\(SS_{total}\)</span> = total variance in the data<br>
-<span class="math inline">\(SS_{model}\)</span> = Variance explained by the model*<br>
+<span class="math inline">\(SS_{model}\)</span> = Variance explained by the model<br>
 <span class="math inline">\(SS_{error}\)</span> = Variance <em>not</em> explained by the model</p>
 </div>
 <div class="fragment">
 <p>We can use those to calculate the <em>mean squares</em> for the model and the error:</p>
-<p><span class="math inline">\(MS_{model} =\frac{SS_{model}}{df_{model}}= \frac{SS_{model}}{p-1}\)</span> (<span class="math inline">\(p\)</span> is the number of factor levels)</p>
-<p><span class="math inline">\(MS_{error} = \frac{SS_{error}}{df_{error}} = \frac{SS_{error}}{N - p}\)</span></p>
-</div>
-<div class="fragment">
-<p>We want to test whether the variance accounted for by the model is greater than expected by chance (<span class="math inline">\(H_0\)</span>: no difference).</p>
+<p><span class="math inline">\(MS_{model} =\frac{SS_{model}}{df_{model}}= \frac{SS_{model}}{p-1}\)</span> (<span class="math inline">\(p\)</span> is the number of factor levels or groups)</p>
+<p><span class="math inline">\(MS_{error} = \frac{SS_{error}}{df_{error}} = \frac{SS_{error}}{N - p}\)</span> (<span class="math inline">\(N\)</span> is the total sample size across groups)</p>
 
 <aside class="notes">
 <p>quite common analysis! We will just scratch the surface</p>
@@ -1233,10 +1323,9 @@ mean difference
 <aside><div>
 <p><span class="math inline">\(SS\)</span> = Sum of Squares, remember that the variance is the sum of the squared deviation of an observation to the mean</p>
 <p><span class="math inline">\(MS\)</span> = Mean (Sum of) Squares: How much variance per degree of freedom?</p>
-<p>*more on that in the next session!</p>
 </div></aside></section>
-<section id="anova-2" class="slide level2">
-<h2>ANOVA 2</h2>
+<section id="anova-in-r" class="slide level2">
+<h2>ANOVA in <code>R</code></h2>
 <p>In R, we would run an ANOVA like this:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a></a>df <span class="ot">&lt;-</span></span>
@@ -1247,69 +1336,72 @@ mean difference
 <span id="cb12-6"><a></a> </span>
 <span id="cb12-7"><a></a><span class="co"># test model without separate duymmies</span></span>
 <span id="cb12-8"><a></a>lmResultAnovaBasic <span class="ot">&lt;-</span> <span class="fu">lm</span>(sysBP <span class="sc">~</span> group2, <span class="at">data=</span>df)</span>
-<span id="cb12-9"><a></a><span class="fu">summary</span>(lmResultAnovaBasic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-9"><a></a><span class="fu">anova</span>(lmResultAnovaBasic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = sysBP ~ group2, data = df)
+<pre><code>Analysis of Variance Table
 
-Residuals:
-     Min       1Q   Median       3Q      Max 
--29.0838  -7.7452  -0.0978   7.6872  23.4313 
-
-Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)  141.595      1.656  85.502  &lt; 2e-16 ***
-group2drug1  -10.237      2.342  -4.371 2.92e-05 ***
-group2drug2   -2.027      2.342  -0.865    0.389    
+Response: sysBP
+           Df  Sum Sq Mean Sq F value   Pr(&gt;F)    
+group2      2  2115.6 1057.81  10.714 5.83e-05 ***
+Residuals 105 10366.7   98.73                     
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 9.936 on 105 degrees of freedom
-Multiple R-squared:  0.1695,    Adjusted R-squared:  0.1537 
-F-statistic: 10.71 on 2 and 105 DF,  p-value: 5.83e-05</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a></a><span class="co"># emm.result &lt;- emmeans(lmResultAnovaBasic, "group" )</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="anova-3" class="slide level2">
-<h2>ANOVA 3</h2>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = sysBP ~ group2, data = df)
-
-Residuals:
-     Min       1Q   Median       3Q      Max 
--29.0838  -7.7452  -0.0978   7.6872  23.4313 
-
-Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)  141.595      1.656  85.502  &lt; 2e-16 ***
-group2drug1  -10.237      2.342  -4.371 2.92e-05 ***
-group2drug2   -2.027      2.342  -0.865    0.389    
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 9.936 on 105 degrees of freedom
-Multiple R-squared:  0.1695,    Adjusted R-squared:  0.1537 
-F-statistic: 10.71 on 2 and 105 DF,  p-value: 5.83e-05</code></pre>
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
-<p>We can see a <span class="math inline">\(t\)</span>-test for every drug. This is because the <em>factor</em> <code>group2</code> is automatically <strong>dummy coded</strong> by R: We always compare one drug against the intercept, which is the mean of the placebo group!</p>
-<p>The <span class="math inline">\(t\)</span>-test shows us that drug1 differs significantly from placebo but not drug2.</p>
 <p>The <span class="math inline">\(F\)</span>-statistic (also called <em>omnibus test</em>) actually tests our overall hypothesis of no difference between conditions.</p>
 </section>
-<section id="anova-side-notes" class="slide level2">
-<h2>ANOVA side notes</h2>
-<p>In R, there are different functions that you can use to run an ANOVA besides <code>lm()</code>, which have different advantages and disadvantages (functions like <code>ezANOVA()</code> from the <code>ez</code> packages or functions from the <code>afex</code> package might be helpful).</p>
-<p>Just like with the <span class="math inline">\(t\)</span>-test, there’s also a distinction between <em>between-subjects</em> and <em>within-subjects</em> (i.e., <em>repeated measures ANOVA</em>). The previous example contained just <em>between-subjects</em> measures, i.e.&nbsp;different groups without repeated measures. We will talk about other options later, but see the packages mentioned above as well for functional parameters called, e.g., <code>within</code>.</p>
-<aside class="notes">
-<p>Dummy coded (explicitly):</p>
+<section id="anova-in-r-1" class="slide level2">
+<h2>ANOVA in <code>R</code></h2>
+<p>We now know that not all groups should be considered equal. But where is the difference?</p>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a></a><span class="fu">summary</span>(lmResultAnovaBasic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
+Call:
+lm(formula = sysBP ~ group2, data = df)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-29.0838  -7.7452  -0.0978   7.6872  23.4313 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  141.595      1.656  85.502  &lt; 2e-16 ***
+group2drug1  -10.237      2.342  -4.371 2.92e-05 ***
+group2drug2   -2.027      2.342  -0.865    0.389    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 9.936 on 105 degrees of freedom
+Multiple R-squared:  0.1695,    Adjusted R-squared:  0.1537 
+F-statistic: 10.71 on 2 and 105 DF,  p-value: 5.83e-05</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a></a><span class="co"># emmeans(lmResultAnovaBasic, "group2" ) #run this to get means and CIs for each group</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can see a <span class="math inline">\(t\)</span>-test for every drug against the placebo (remember we used <code>fct_relevel</code> for this). The <span class="math inline">\(t\)</span>-tests show that drug1 (but not drug2) differs significantly from placebo.</p>
+</section>
+<section id="anova-in-r-comments" class="slide level2">
+<h2>ANOVA in <code>R</code>: Comments</h2>
+<p>In this simple example, we could have skipped the omnibus test (<code>anova()</code>) and just looked at the <code>summary()</code>.</p>
+<p>In practise, you will often run ANOVAs with several factors (grouping variables) that all have a multitude of factor levels (subgroups).<br>
+Think: Two groups of drugs and one placebo across four time points (before, during, after, &amp; follow-up). This quickly creates too many possible comparisons to keep track of.</p>
+<p>This complicates things furhter because then you can also have <em>interactions</em> between variables (e.g., drug1 does not work better but faster than drug2).</p>
+<p>For these examples, it is helpful to first get an overall statement if a factor (or an interaction of factors) has an influence on the results. If this is the case, you can run the individual t-tests for this factor to get a more detailed look.</p>
+<!--
+## ANOVA side notes
+In `R`, there are different functions that you can use to run an ANOVA besides `lm()`, which have different advantages and disadvantages (functions like `ezANOVA()` from the `ez` packages or functions from the `afex` package might be helpful).
+
+Just like with the $t$-test, there's also a distinction between *between-subjects* and *within-subjects* (i.e., *repeated measures ANOVA*). The previous example contained just *between-subjects* measures, i.e. different groups without repeated measures. We will talk about other options later, but see the packages mentioned above as well for functional parameters called, e.g., `within`.
+
+::: notes
+Dummy coded (explicitly):
+
+
+::: {.cell}
+::: {.cell-output .cell-output-stdout}
+
+```
+
 Call:
 lm(formula = sysBP ~ d1 + d2, data = df)
 
@@ -1318,8 +1410,8 @@ Residuals:
 -29.0838  -7.7452  -0.0978   7.6872  23.4313 
 
 Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)  141.595      1.656  85.502  &lt; 2e-16 ***
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  141.595      1.656  85.502  < 2e-16 ***
 d1           -10.237      2.342  -4.371 2.92e-05 ***
 d2            -2.027      2.342  -0.865    0.389    
 ---
@@ -1327,32 +1419,29 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Residual standard error: 9.936 on 105 degrees of freedom
 Multiple R-squared:  0.1695,    Adjusted R-squared:  0.1537 
-F-statistic: 10.71 on 2 and 105 DF,  p-value: 5.83e-05</code></pre>
-</div>
-</div>
-<p><span class="math inline">\(t\)</span>-tests: dummy coded = 0 vs.&nbsp;1<br>
-- control for multiple comparisons! (later)<br>
-- if we wanted to compare the two drugs, we’d have to dummy code/relevel differently or use follow-up comparisons like with emmeans()</p>
-<p><span class="math inline">\(F\)</span>: Is our model better than a simple model that just includes the intercept? In this case placebo…</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+F-statistic: 10.71 on 2 and 105 DF,  p-value: 5.83e-05
+```
+
+
+:::
+:::
+
+
+$t$-tests: dummy coded = 0 vs. 1\
+- control for multiple comparisons! (later)\
+- if we wanted to compare the two drugs, we'd have to dummy code/relevel differently or use follow-up comparisons like with emmeans()
+
+$F$: Is our model better than a simple model that just includes the intercept? In this case placebo...
+:::
+-->
 </section></section>
 <section id="thanks" class="title-slide slide level1 center">
 <h1>Thanks!</h1>
 <p>Learning objectives:</p>
 <ul>
 <li><p>What are <em>contingency tables</em> and how do we use <span class="math inline">\(\chi^2\)</span>-tests to assess a significant relationship between <em>categorical</em> variables?</p></li>
-<li><p>Be able to describe what a <em>correlation coefficient</em> is and compute &amp; interpret it.</p></li>
-<li><p>Know what a <span class="math inline">\(t\)</span>-test &amp; ANOVA is and how to compute and interpret it.</p></li>
+<li><p>Be able to describe what a <em>correlation coefficient</em> is as well as compute and interpret it.</p></li>
+<li><p>Know what a <span class="math inline">\(t\)</span>-test &amp; ANOVA is and how to compute and interpret them.</p></li>
 </ul>
 <p>Next:</p>
 <p>Practical exercises in R!</p>

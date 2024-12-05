@@ -17,6 +17,12 @@ format:
 from: markdown+emoji
 ---
 
+# Agenda
+
+- Categorical Relationships (Chi² tests)
+- Continuous Relationships (Correlations)
+- Group Comparisons (t-tests & ANOVA)
+
 # Modeling *Categorical* Relationships
 
 ```{css}
@@ -52,7 +58,7 @@ Now that we have covered the basics, we will apply them and turn to the question
 
 ## Chi² Test: General
 
-We will first focus on modeling *categorical* relationships (of variables that are qualitative!).
+We will first focus on modeling *categorical* relationships (i.e., of variables that are qualitative!).
 
 . . .
 
@@ -66,7 +72,7 @@ Bag of candy: 30 chocolates, 33 licorices, and 37 gumballs.
 
 . . .
 
-Is the distribution fair (i.e., 1/3rd of the bag = each candy) and the fact that there are only 30 chocolates a random accident?
+Is the distribution fair (i.e., 1/3rd of the bag for each candy) and the fact that there are only 30 chocolates within expectations?
 
 . . .
 
@@ -98,11 +104,11 @@ $$ \chi^2 = \frac{(30 - 33.33)^2}{33.33} + \frac{(33 - 33.33)^2}{33.33} + \frac{
 take the difference between observed and expected (33.33), square it, divide it by expected 33.33 and add everything up
 :::
 
-## Chi² Test: General 2
+## Chi² Test: General
 
 On its own, the $\chi^2$ statistic is not interpretable - it depends on its distribution.
 
-The shape of the chi-squared distribution depends on the *degrees of freedom* (much like the *t* distribution), which is the number of category levels $k-1$.
+The shape of the $\chi^2$ distribution depends on the *degrees of freedom* (much like the *t* distribution), which is the number of category levels $k-1$.
 
 ```{r}
 #| echo: false
@@ -132,7 +138,14 @@ p1 <- ggplot(chisqDf, aes(xvals, chisqNorm, group = Df, color = Df)) +
 p1
 ```
 
-For the candy example, we use a chi-squared distribution with DFs = 2 (3 candy categories minus one). If we'd look at the distribution and found $\chi^2 = .74$ on the x-axis, we would see that it does not fall far into the tail of the distribution but is rather in the middle. If we calculate the *p*-value, we'd get $P(\chi^2 > .74) = 0.691$.
+## Chi2 Test: Candies
+
+For the candy example, we use a chi-squared distribution with $DFs = 2$ (3 candy categories minus one &rarr; green line). If we'd look at the distribution and found $\chi^2 = .74$ on the x-axis (dashed red line), we would see that it does not fall far into the tail of the distribution but is rather in the middle. If we calculate the *p*-value, we'd get $P(\chi^2 > .74) = 0.691$.
+
+```{r}
+#| echo: false
+p1 + geom_vline(xintercept = .74, color = "red", linetype = "dashed", linewidth = 2)
+```
 
 It is thus not particularly surprising to find this distribution of candies and we would not reject $H_0$ (equal proportions).
 
@@ -175,7 +188,7 @@ summaryContingencyTable <-
 kable(summaryContingencyTable, caption='Contingency table for police search data')
 ```
 
-. . .
+## Contingency Tables and the Two-Way Test
 
 If there is no relationship between skin color and being searched, the frequencies of searches would be proportional to the frequencies of skin color. This would be our expected values. We can determine them using probabilities:
 
@@ -185,7 +198,7 @@ If there is no relationship between skin color and being searched, the frequenci
 | **Searched**     | $P(S)*P(B)$  | $P(S)*P(W)$  | $P(S)$  |
 |                  | $P(B)$       | $P(W)$      |  $100\%$ |
 
-**Remember**: You can only multiply two probabilities to get their conjoint probability if they are independent. Here, we *assume* independence to calculate expected values and then check how much our observed values *deviate* from independence.
+**Remember**: You can only multiply two probabilities to get their conjoint probability if they are independent. Here, we *assume independence to calculate expected values* and then check how much our observed values *deviate from independence*.
 
 ::: notes
 Probabilities: Because we expect the variables to be *unrelated*, we can calculate the **joint probability** as the product of the **marginal probabilities**:\
@@ -194,7 +207,7 @@ $P(X \cap Y) = P(X) * P(Y)$
 Marginal probabilities are the prob of each event occuring regardless of other events (in the margins of the table!)
 :::
 
-## Chi² Test: Two Variables
+## Chi² Test with Two Variables
 
 If we compute the standardized squared difference between observed and expected values, we can sum them up to get $\chi^2 = 828.3$
 
@@ -253,7 +266,9 @@ kable(summaryDf2way, digits=2,caption='Contingency table for police search data'
 
 We can then compute the *p*-value using a chi-squared distribution with $DF = (levels_{var1} - 1) * (levels_{var2} - 1) = (2-1) * (2-1) = 1$
 
-We can also calculate a $\chi^2$ test easily in R:
+## Chi² Test with Two Variables in `R`
+
+We can calculate a $\chi^2$ test easily in R:
 
 ```{r}
 #| echo: false
@@ -272,11 +287,18 @@ chisq.test(summaryDf2wayTable, correct = FALSE)
 
 The results indicate that the data are highly unlikely if there was no true relationship between skin color and police searches! We would thus reject $H_0$.
 
-Question: What is the direction of the observed relationship?
-
 ::: notes
 DF: computing the expected frequencies requires three values: total number of observations and marg probs each variable. thus only one of the four values can vary freely.
 :::
+
+## Chi2 Test with Two Variables: Interpretation
+
+Question: What is the direction of the observed relationship?
+
+```{r}
+#| echo: false
+kable(summaryDf2way, digits=2,caption='Contingency table for police search data')
+```
 
 ## Standardized Residuals
 
@@ -292,7 +314,7 @@ $$
 
 where $i$ and $j$ are the rows and columns respectively.
 
-. . .
+## Standardized Residuals
 
 **Negative residuals** indicate an observed value **smaller** than expected.
 
@@ -335,12 +357,14 @@ The odds of being searched are 2.59x higher for Black vs. white drivers!
 
 The Simpson's Paradox is a great example of misleading summaries.
 
+. . .
+
 If we look at the baseball data below, we see that David Justice has a better batting average in every single year, but Derek Jeter has a better overall batting average:
 
 | Player        | 1995    |          | 1996    |          | 1997    |          | Combined |          |
 |--------|--------|--------|--------|--------|--------|--------|--------|--------|
-| D. Jeter   | 12/48   | .250     | 183/582 | .314     | 190/654 | .291     | 385/1284 | **.300** |
-| D. Justice | 104/411 | **.253** | 45/140  | **.321** | 163/495 | **.329** | 312/1046 | .298     |
+| Jeter   | 12/48   | .250     | 183/582 | .314     | 190/654 | .291     | 385/1284 | **.300** |
+| Justice | 104/411 | **.253** | 45/140  | **.321** | 163/495 | **.329** | 312/1046 | .298     |
 
 How can this be?
 
@@ -355,19 +379,20 @@ Happens if another (lurking) variable changes across subsets (e.g., the number o
 ::: notes
 batting average: hits/at bats
 
-1995: in general low batting averages, Justice a lot of at-bats => diminishes total combined value more strongly than for Jeter.
+1995: in general low batting averages, Justice had a lot of at-bats => diminishes total combined value more strongly than for Jeter.
+
+1996: both players were above their average but Jeter had way more at-bats => more important for the overall average.
 :::
 
 ## Simpson's Paradox: More intuitive
 
-While typing on a keyboard, what is the relationship between speed and accuracy (or typing errors)? \
-(positive, negative, or none)
+While typing on a keyboard, what is the relationship between speed (words per minute) and accuracy (% correct words)? (positive, negative, or none)
 
 . . .
 
 \
 
-If I try to type faster, I will make more errors => speed-accuracy trade-off (negative association)
+If I try to type faster, I will make more errors &rArr; speed-accuracy trade-off (negative association)
 
 People who are better at typing usually are both faster and make fewer mistakes (positive association)
 
@@ -431,7 +456,7 @@ hateCrimes$state_abb[hateCrimes$state=="District of Columbia"]='DC'
 
 ggplot(hateCrimes,aes(gini_index,avg_hatecrimes_per_100k_fbi,label=state_abb)) +
   geom_point() + 
-  geom_text(aes(label=state_abb),hjust=0, vjust=0) +
+  geom_text(aes(label=state_abb),hjust=0, vjust=0, nudge_x = .001) +
   theme(plot.title = element_text(size = 20, face = "bold")) +
   xlab('Gini index') + 
   ylab('Avg hate crimes per 100K population (FBI)') +
@@ -444,40 +469,37 @@ It looks like there is a positive relationship between the variables. How can we
 
 ## Covariance and Correlation
 
-**Covariance**: How much do two variables *co-vary* with each other?
-
 Variance (single variable): $s^2 = \frac{\sum_{i=1}^n (x_i - \bar{x})^2}{N - 1}$
 
-Covariance (two variables): $covariance = \frac{\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})}{N - 1}$
-
-(Side note: Variance is the covariance of a variable with itself.)
+**Covariance** (two variables): $covariance = \frac{\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})}{N - 1}$
 
 . . .
-
-\
 
 "Is there a relation between the deviations of two different variables (from their means) across observations?"
 
 . . .
 
-Will be far from 0 if data points share a relationship. Positive values for same direction, negative values for opposite directions.
+Covariance will be far from 0 if data points share a relationship. Positive values for same direction, negative values for opposite directions.
 
 . . .
 
-Covariance varies with overall level of variance in the data, so not that useful to describe relationships in general.
+Covariance varies with overall level of variance in the data &rArr; hard to compare different relationships
 
 . . .
 
 \
 
-**Correlation coefficient** (Pearson correlation): Scales the covariance by the standard deviations of the two variables and thus standardizes it (=> $r$ varies between $-1$ and $1$ => comparability!)
+**Correlation coefficient** (Pearson correlation): Scales the covariance by the standard deviations of the two variables and thus standardizes it (&rarr; $r$ varies between $-1$ and $1$ &rArr; comparability!)
 
 $$
 r = \frac{covariance}{s_xs_y} = \frac{\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})}{(N - 1)s_x s_y}
 $$
 
 ::: notes
-Covariance depends on dataset!
+Insight: Variance is the covariance of a variable with itself.
+
+Covariance depends on dataset and even on scaling of variables! \
+e.g. relationship between body height and weight &rArr; Using m vs. cm for height will change variance and thus covariance even though the relationship should be identical (same data)
 :::
 
 ## Hypothesis Testing for Correlations
@@ -496,7 +518,7 @@ $$
 t_r = \frac{r\sqrt{N-2}}{\sqrt{1-r^2}}
 $$
 
-We can compute this easily in R:
+## Correlation in R
 
 ```{r}
 #| echo: true
@@ -509,9 +531,11 @@ cor.test(
 
 ```
 
-The *p*-value is quite small, which indicates that it is quite unlikely to find an $r$ value this high or more extreme. We would thus reject $H_0: r = 0$.
+The *p*-value is quite small, which indicates that it is quite unlikely to find an $r$ value this high or more extreme with 48 degress of freedom. We would thus reject $H_0: r = 0$.
 
-Side note: There are more beautiful / convenient ways to do this in R. We will cover this in the next session.
+::: aside
+Side note: There are more beautiful & convenient ways to do this in R. We will cover this in the next session.
+:::
 
 ::: notes
 subsetting with \$!
@@ -527,8 +551,6 @@ The Pearson's correlation coefficient $r$ is highly sensitive to outliers, see t
 
 ```{r}
 #| echo: false
-#| fig-height: 3
-#| fig-width: 5
 
 n <- 10
 set.seed(1234)
@@ -554,7 +576,7 @@ print(p)
 
 ## Robust Correlation 2
 
-We can use a different correlation coefficient, though, which is less sensitive to outliers: **Spearman correlation**.
+We can use a different correlation coefficient, which is less sensitive to outliers: **Spearman correlation**.
 
 It is based on ranking (i.e., ordering) the data and using the ranks (instead of the original data) for the correlation.
 
@@ -566,7 +588,7 @@ cor.test(hateCrimes$avg_hatecrimes_per_100k_fbi,
   method = "spearman")
 ```
 
-The correlation has now dropped from $.42$ to $.03$ and is no longer significant. The influence of the one outlier has been greatly diminished.
+The correlation has now dropped from $.42$ to $.03$ and is no longer significant.
 
 Of course, a ranked correlation can also obscure true effects that critically depend on the scale of the data. When in doubt, try both and discuss reasons for differences.
 
@@ -576,18 +598,16 @@ Without outlier: perfectly *negative* correlation, with outlier: highly positive
 
 ## Correlation and Causation
 
-Doing a well controlled, randomized experiment (RCT) is extremely helpful to gather causal evidence.
+Doing a well controlled, randomized experiment (RCT) is extremely helpful to gather causal evidence. However, it is not always possible or ethical to do an experiment!
 
-However, it is not always possible or ethical to do an experiment!
+Without an experiment, we can still collect *observational* data. However, if we correlate two observed variables, we *can't* conclude that one causes the other: They (likely) share a relationship but there could also be a third variable that causes both (or even more complex causal structures).
 
-We can still collect (observational) data. However, if we correlate two variables, we *can't* conclude that one causes the other: They *might* be related but there could also be a third variable that causes both (or even more complex causal structures).
-
-. . .
+## Causal Graphs
 
 If we have observational data, **causal graphs** can be helpful for interpreting causality:
 
 ::: columns
-::: column
+::: {.column width="40%"}
 ```{r}
 #| echo: false
 
@@ -617,13 +637,13 @@ digraph boxes_and_circles {
 grViz(latent_graph) %>% 
    export_svg %>% 
    charToRaw %>% 
-   rsvg_png("images/dag_latent_example.png", width = 500)
+   rsvg_png("images/dag_latent_example.png", width = 700)
 
 knitr::include_graphics("images/dag_latent_example.png")
 ```
 :::
 
-::: column
+::: {.column width="60%"}
 *Circle*: observed variables\
 *rectangle*: latent (unobservable) variable\
 
@@ -685,12 +705,20 @@ $$
 
 $\hat{X}$ is the mean of our sample, $\mu$ the hypothesized population mean (e.g. the value we want to test against, such as 80 for the blood pressure example).
 
-We can easily calculate the $t$-test in R:
+## One sample *t*-Test in `R`
 
 ```{r}
 #| echo: true
 t.test(x=NHANES_adult$BPDiaAve, mu=80, alternative='greater')
 ```
+
+. . .
+
+The observed mean is actually much below 80, providing no evidence for our *directional* alternative hypothesis that it would be greater than 80 &rArr; the *p* values is (rounded to) 1.
+
+. . .
+
+If we had tested two-sidedly, we would have found a significant result. It may seem tempting now to create a story around an altered, non-directional alternative hypothesis, which is why it is important to preregister your hypotheses and analyses.
 
 ::: notes
 (The $t$ statistic thus asks how large the deviation of sample mean from the expected value with respect to the sampling variability of the mean!)
@@ -700,15 +728,24 @@ We tested the one-sided alternative (\>) and the blood pressure in the sample is
 We can't interpret the $p$-value as evidence in favor of $H_0$ (i.e. larger $p$-value! vs non.sign) --\> Bayes!
 :::
 
-## Comparing Two Means (Two sample *t*-Test)
+## Comparing Two Means (Independent samples *t*-Test)
 
 More often, we want to know whether there is a difference between the means of *two groups*.
 
-Example: Do regular marijuana smokers watch more television?\
-In this example, we expect that they watch *more* TV, which leads us to the following directional hypotheses:
+Example: Do regular marijuana smokers watch *more* television?\
 
 $H_0$ = marijuana smokers watch less or equally often TV,\
 $H_A$ = marijuana smokers watch more TV.
+
+If the observations are independent (i.e. you really have two unrelated groups), you can use a very similar formula to calculate the $t$ statistic:
+
+$$
+t = \frac{\bar{X_1} - \bar{X_2}}{\sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}}}
+$$
+
+whereby $\hat{X_1}$ and $\hat{X_2}$ are the group means, $S_1^2$ and $S_2^2$ the group variances, and $n_1$ and $n_2$ the group sizes.
+
+## Independent samples *t*-Test in `R`
 
 ```{r}
 set.seed(123456) 
@@ -738,31 +775,27 @@ NHANES_sample <-
     )
   ) %>%
   sample_n(200)
-p1 <- ggplot(NHANES_sample,aes(RegularMarij,TVHrsNum)) +
-  geom_violin(draw_quantiles=.50) +
-  labs(
-    x = "Regular marijuana user",
-    y = "TV hours per day"
-  )
-p1
-```
 
-If the observations are independent (i.e. you really have two unrelated groups), you can use a very similar formula to calculate the $t$ statistic:
-
-$$
-t = \frac{\bar{X_1} - \bar{X_2}}{\sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}}}
-$$
-
-whereby $\hat{X_1}$ and $\hat{X_2}$ are the group means, $S_1^2$ and $S_2^2$ the group variances, and $n_1$ and $n_2$ the group sizes.
-
-Here are the results from a one-tailed $t$-test in R:
-
-```{r}
- t.test(
+t.test(
   TVHrsNum ~ RegularMarij,
   data = NHANES_sample,
   alternative = 'less' # because of coding of the groups!
 )
+```
+
+. . .
+
+```{r}
+p1 <- ggplot(NHANES_sample,aes(RegularMarij,TVHrsNum)) +
+  geom_violin(draw_quantiles=.50) +
+  geom_point(aes(x = RegularMarij, y = mean(TVHrsNum))) +
+  geom_errorbar(aes(ymin = mean(TVHrsNum) - confintr::se_mean(TVHrsNum), ymax = mean(TVHrsNum) + confintr::se_mean(TVHrsNum)), width = .25) +
+  labs(
+    x = "Regular marijuana user",
+    y = "TV hours per day"
+  )
+
+print(p1)
 ```
 
 ::: notes
@@ -771,7 +804,7 @@ DV: continuous, IV: categories
 n.s. (differs from book), although mean is higher in Yes, not significantly different!
 :::
 
-## Comparing Dependent Observations (Paired *t*-test)
+## Comparing Dependent Observations (Paired samples *t*-test)
 
 If we have repeated observations of the same subject (i.e., a within-subject design), we might want to compare the same subject thus on multiple, *repeated measurements*.
 
@@ -779,7 +812,13 @@ If we have repeated observations of the same subject (i.e., a within-subject des
 
 If we want to test whether blood pressure differs between the first and second measurement session across individuals, we can use a **paired** $t$**-test**.
 
-In R, we would run a paired-samples $t$-test like this:
+Side note: A paired $t$-test is equivalent to a one-sample $t$-test, when using the paired differences ($X_2 - X_1$) as $\hat{X}$ and testing them against a value of 0 (if we expect no difference for $H_0$) for $\mu$.
+
+::: notes
+important: If we run an independent sample t-test, it would probably be n.s.! (check out book)
+:::
+
+## Paired samples *t*-test in `R`
 
 ```{r}
 set.seed(12345678)
@@ -796,18 +835,12 @@ NHANES_sample_tidy <-
 ```{r}
 #| echo: true
 
-with(NHANES_sample, t.test(BPSys1, BPSys2, paired = TRUE))
+t.test(NHANES_sample$BPSys1, NHANES_sample$BPSys2, paired = TRUE)
 ```
-
-Side note: A paired $t$-test is equivalent to a one-sample $t$-test, when using the paired differences as $\hat{X}$ and testing them against a value of 0 (if we expect no difference for $H_0$) for $\mu$.
-
-::: notes
-important: If we run an independent sample t-test, it would probably be n.s.! (check out book)
-:::
 
 ## Comparing More Than Two Means
 
-Often, we want to compare more than two means, e.g. different treatment groups or timepoints.
+Often, we want to compare more than two means, e.g. different treatment groups or time points.
 
 Example: Different treatments for blood pressure
 
@@ -835,37 +868,31 @@ $H_A$: not all means are equal (e.g. at least one differs)
 
 . . .
 
-We can *partition* the variance in the data into different parts:
+We can *partition* the variance of the data into different parts:
 
 $SS_{total}$ = total variance in the data\
-$SS_{model}$ = Variance explained by the model\*\
+$SS_{model}$ = Variance explained by the model\
 $SS_{error}$ = Variance *not* explained by the model
 
 . . .
 
 We can use those to calculate the *mean squares* for the model and the error:
 
-$MS_{model} =\frac{SS_{model}}{df_{model}}= \frac{SS_{model}}{p-1}$ ($p$ is the number of factor levels)
+$MS_{model} =\frac{SS_{model}}{df_{model}}= \frac{SS_{model}}{p-1}$ ($p$ is the number of factor levels or groups)
 
-$MS_{error} = \frac{SS_{error}}{df_{error}} = \frac{SS_{error}}{N - p}$
-
-. . .
-
-We want to test whether the variance accounted for by the model is greater than expected by chance ($H_0$: no difference).
+$MS_{error} = \frac{SS_{error}}{df_{error}} = \frac{SS_{error}}{N - p}$ ($N$ is the total sample size across groups)
 
 ::: aside
 $SS$ = Sum of Squares, remember that the variance is the sum of the squared deviation of an observation to the mean
 
 $MS$ = Mean (Sum of) Squares: How much variance per degree of freedom?
-
-\*more on that in the next session!
 :::
 
 ::: notes
 quite common analysis! We will just scratch the surface
 :::
 
-## ANOVA 2
+## ANOVA in `R`
 
 In R, we would run an ANOVA like this:
 
@@ -880,26 +907,37 @@ df <-
  
 # test model without separate duymmies
 lmResultAnovaBasic <- lm(sysBP ~ group2, data=df)
-summary(lmResultAnovaBasic)
-
-# emm.result <- emmeans(lmResultAnovaBasic, "group" )
-
+anova(lmResultAnovaBasic)
 ```
-
-## ANOVA 3
-
-```{r}
-summary(lmResultAnovaBasic)
-```
-
-We can see a $t$-test for every drug. This is because the *factor* `group2` is automatically **dummy coded** by R: We always compare one drug against the intercept, which is the mean of the placebo group!
-
-The $t$-test shows us that drug1 differs significantly from placebo but not drug2.
-
 The $F$-statistic (also called *omnibus test*) actually tests our overall hypothesis of no difference between conditions.
 
+## ANOVA in `R`
+
+We now know that not all groups should be considered equal. But where is the difference?
+
+```{r}
+#| echo: true
+summary(lmResultAnovaBasic)
+# emmeans(lmResultAnovaBasic, "group2" ) #run this to get means and CIs for each group
+```
+
+We can see a $t$-test for every drug against the placebo (remember we used `fct_relevel` for this). 
+The $t$-tests show that drug1 (but not drug2) differs significantly from placebo.
+
+## ANOVA in `R`: Comments
+
+In this simple example, we could have skipped the omnibus test (`anova()`) and just looked at the `summary()`.
+
+In practise, you will often run ANOVAs with several factors (grouping variables) that all have a multitude of factor levels (subgroups).\
+Think: Two groups of drugs and one placebo across four time points (before, during, after, & follow-up). This quickly creates too many possible comparisons to keep track of.
+
+This complicates things furhter because then you can also have *interactions* between variables (e.g., drug1 does not work better but faster than drug2).
+
+For these examples, it is helpful to first get an overall statement if a factor (or an interaction of factors) has an influence on the results. If this is the case, you can run the individual t-tests for this factor to get a more detailed look.
+
+<!--
 ## ANOVA side notes
-In R, there are different functions that you can use to run an ANOVA besides `lm()`, which have different advantages and disadvantages (functions like `ezANOVA()` from the `ez` packages or functions from the `afex` package might be helpful).
+In `R`, there are different functions that you can use to run an ANOVA besides `lm()`, which have different advantages and disadvantages (functions like `ezANOVA()` from the `ez` packages or functions from the `afex` package might be helpful).
 
 Just like with the $t$-test, there's also a distinction between *between-subjects* and *within-subjects* (i.e., *repeated measures ANOVA*). The previous example contained just *between-subjects* measures, i.e. different groups without repeated measures. We will talk about other options later, but see the packages mentioned above as well for functional parameters called, e.g., `within`.
 
@@ -925,6 +963,7 @@ $t$-tests: dummy coded = 0 vs. 1\
 
 $F$: Is our model better than a simple model that just includes the intercept? In this case placebo...
 :::
+-->
 
 # Thanks!
 
@@ -932,9 +971,9 @@ Learning objectives:
 
 -   What are *contingency tables* and how do we use $\chi^2$-tests to assess a significant relationship between *categorical* variables?
 
--   Be able to describe what a *correlation coefficient* is and compute & interpret it.
+-   Be able to describe what a *correlation coefficient* is as well as compute and interpret it.
 
--   Know what a $t$-test & ANOVA is and how to compute and interpret it.
+-   Know what a $t$-test & ANOVA is and how to compute and interpret them.
 
 Next:
 
