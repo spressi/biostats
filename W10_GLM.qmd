@@ -62,7 +62,7 @@ $$
 
 Our general goal is to find the model with the *best fit*, i.e., that minimizes the error.
 
-. . .
+## GLM
 
 One approach is the GLM. You might be surprised that a lot of the common models can be viewed as linear models:
 
@@ -175,7 +175,7 @@ $\beta_0$ = *intercept*: the overall offset of the line when $x=0$ (this cannot 
 $\beta_x$ = *slope*: how much do we expect $y$ to change with each change in $x$?\
 $y$ = *DV*\
 $x$ = *IV* or *predictor\
-*$\epsilon$ = error term\* or *resudials*: whatever variance is left once the model is fit (Think of the model as the blue line and the residuals are the vertical deviations of the data points from the line)
+*$\epsilon$ = error term\* or *residuals*: whatever variance is left once the model is fit (Think of the model as the blue line and the residuals are the vertical deviations of the data points from the line)
 
 (If we refer to *predicted* $y$-values, after we have estimated the model, we can drop the error term: $\hat{y} = \hat{\beta_0} + x * \hat{\beta_x}$.)
 :::
@@ -412,6 +412,8 @@ How can we tell from the plot that both IVs might have an effect?
 
 We previously assumed that the effect of `studyTime` on `grade` was the same for both groups - but sometimes we expect that this regression slope differs per group!
 
+. . .
+
 E.g., due to prior knowledge from another class, it may be *easier* to profit from studying the new materials (i.e., steeper slope). Or it may be *harder* due to diminishing marginal returns (i.e., flatter slope).
 
 . . .
@@ -419,7 +421,7 @@ E.g., due to prior knowledge from another class, it may be *easier* to profit fr
 \
 This is what we call an **interaction**: The effect of one variable depends on the value of another variable.
 
-Thus, `priorClass` can have a **main effect** on `grade` (i.e., independent of `studyTime`): "I already know more, so I don't need to study".\
+Thus, `priorClass` can have a **main effect** on `grade` (i.e., independent of `studyTime`): "I already know more, regardless wether I study".\
 But it can also **interact** with `studyTime`: "Due to my prior knowledge, I can study more efficiently."
 
 ## Interaction Example
