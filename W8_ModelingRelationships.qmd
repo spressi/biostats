@@ -291,7 +291,7 @@ The results indicate that the data are highly unlikely if there was no true rela
 DF: computing the expected frequencies requires three values: total number of observations and marg probs each variable. thus only one of the four values can vary freely.
 :::
 
-## Chi2 Test with Two Variables: Interpretation
+## Chi² Test with Two Variables: Interpretation
 
 Question: What is the direction of the observed relationship?
 
@@ -776,14 +776,28 @@ NHANES_sample <-
   ) %>%
   sample_n(200)
 
-t.test(
-  TVHrsNum ~ RegularMarij,
-  data = NHANES_sample,
-  alternative = 'less' # because of coding of the groups!
-)
+# t.test(
+#   TVHrsNum ~ RegularMarij,
+#   data = NHANES_sample,
+#   alternative = 'less' # because of coding of the groups!
+# )
 ```
 
-. . .
+```{r}
+#| echo: true
+# t.test(NHANES_sample$TVHrsNum[NHANES_sample$RegularMarij=="Yes"],
+#        NHANES_sample$TVHrsNum[NHANES_sample$RegularMarij=="No"],
+#        alternative = "greater")
+
+with(NHANES_sample, #only refer to data once using "with" function
+     t.test(TVHrsNum[RegularMarij=="Yes"],
+            TVHrsNum[RegularMarij=="No"],
+            alternative = "greater"))
+```
+
+
+<!-- 
+. . . 
 
 ```{r}
 p1 <- ggplot(NHANES_sample,aes(RegularMarij,TVHrsNum)) +
@@ -797,6 +811,7 @@ p1 <- ggplot(NHANES_sample,aes(RegularMarij,TVHrsNum)) +
 
 print(p1)
 ```
+-->
 
 ::: notes
 DV: continuous, IV: categories
