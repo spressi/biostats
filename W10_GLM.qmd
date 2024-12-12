@@ -156,6 +156,8 @@ Use the GLM to...
 ::: incremental
 -   describe the relation between two variables (similar to correlation)
 
+-   decide whether an IV is a significant predictor of the DV
+
 -   predict DV for new values of IV (new observations)
 
 -   add multiple IVs!
@@ -692,7 +694,7 @@ Usually, the distinction between dependent and independent variables is not very
     =\> From many dimensions to fewer dimensions
 :::
 
-. . .
+## Multivariate Statistics 2
 
 These two methods belong to the class of *unsupervised learning*. Before, we have only dealt with *supervised learning* (e.g., regression, ANOVA). There are also methods for multivariate, supervised learning (e.g., MANOVA).
 

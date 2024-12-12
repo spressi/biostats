@@ -1,306 +1,417 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
-<meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.555">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
-<meta name="author" content="Dr.&nbsp;Lea Hildebrandt">
-
-<title>Biostatistics - 10 The General Linear Model &amp; Multivariate Statistics</title>
-<style>
-code{white-space: pre-wrap;}
-span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
-div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-ul.task-list{list-style: none;}
-ul.task-list li input[type="checkbox"] {
-  width: 0.8em;
-  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
-  vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-</style>
-
-
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<html lang="en"><head>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/tabby.min.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
-<script id="quarto-search-options" type="application/json">{
-  "location": "sidebar",
-  "copy-button": false,
-  "collapse-after": 3,
-  "panel-placement": "start",
-  "type": "textbox",
-  "limit": 50,
-  "keyboard-shortcut": [
-    "f",
-    "/",
-    "s"
-  ],
-  "show-item-context": false,
-  "language": {
-    "search-no-results-text": "No results",
-    "search-matching-documents-text": "matching documents",
-    "search-copy-link-title": "Copy link to search",
-    "search-hide-matches-text": "Hide additional matches",
-    "search-more-match-text": "more match in this document",
-    "search-more-matches-text": "more matches in this document",
-    "search-clear-button-title": "Clear",
-    "search-text-placeholder": "",
-    "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit",
-    "search-label": "Search"
-  }
-}</script>
+<link href="site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.4.553">
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
+  <meta name="author" content="Dr.&nbsp;Lea Hildebrandt">
+  <title>Biostatistics - 10 The General Linear Model &amp; Multivariate Statistics</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto.css">
+  <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+
+  .callout {
+    margin-top: 1em;
+    margin-bottom: 1em;  
+    border-radius: .25rem;
   }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
+  .callout.callout-style-simple { 
+    padding: 0em 0.5em;
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+    display: flex;
+  }
+
+  .callout.callout-style-default {
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+  }
+
+  .callout .callout-body-container {
+    flex-grow: 1;
+  }
+
+  .callout.callout-style-simple .callout-body {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-style-default .callout-body {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-titled.callout-style-simple .callout-body {
+    margin-top: 0.2em;
+  }
+
+  .callout:not(.callout-titled) .callout-body {
+      display: flex;
+  }
+
+  .callout:not(.no-icon).callout-titled.callout-style-simple .callout-content {
+    padding-left: 1.6em;
+  }
+
+  .callout.callout-titled .callout-header {
+    padding-top: 0.2em;
+    margin-bottom: -0.2em;
+  }
+
+  .callout.callout-titled .callout-title  p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+    
+  .callout.callout-titled.callout-style-simple .callout-content  p {
+    margin-top: 0;
+  }
+
+  .callout.callout-titled.callout-style-default .callout-content  p {
+    margin-top: 0.7em;
+  }
+
+  .callout.callout-style-simple div.callout-title {
+    border-bottom: none;
+    font-size: .9rem;
+    font-weight: 600;
+    opacity: 75%;
+  }
+
+  .callout.callout-style-default  div.callout-title {
+    border-bottom: none;
+    font-weight: 600;
+    opacity: 85%;
+    font-size: 0.9rem;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-default div.callout-content {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-simple .callout-icon::before {
+    height: 1rem;
+    width: 1rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 1rem 1rem;
+  }
+
+  .callout.callout-style-default .callout-icon::before {
+    height: 0.9rem;
+    width: 0.9rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 0.9rem 0.9rem;
+  }
+
+  .callout-title {
+    display: flex
+  }
+    
+  .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  .callout.no-icon::before {
+    display: none !important;
+  }
+
+  .callout.callout-titled .callout-body > .callout-content > :last-child {
+    padding-bottom: 0.5rem;
+    margin-bottom: 0;
+  }
+
+  .callout.callout-titled .callout-icon::before {
+    margin-top: .5rem;
+    padding-right: .5rem;
+  }
+
+  .callout:not(.callout-titled) .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  /* Callout Types */
+
+  div.callout-note {
+    border-left-color: #4582ec !important;
+  }
+
+  div.callout-note .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
+  }
+
+  div.callout-note.callout-style-default .callout-title {
+    background-color: #dae6fb
+  }
+
+  div.callout-important {
+    border-left-color: #d9534f !important;
+  }
+
+  div.callout-important .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-important.callout-style-default .callout-title {
+    background-color: #f7dddc
+  }
+
+  div.callout-warning {
+    border-left-color: #f0ad4e !important;
+  }
+
+  div.callout-warning .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-warning.callout-style-default .callout-title {
+    background-color: #fcefdc
+  }
+
+  div.callout-tip {
+    border-left-color: #02b875 !important;
+  }
+
+  div.callout-tip .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-tip.callout-style-default .callout-title {
+    background-color: #ccf1e3
+  }
+
+  div.callout-caution {
+    border-left-color: #fd7e14 !important;
+  }
+
+  div.callout-caution .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
+  }
+
+  div.callout-caution.callout-style-default .callout-title {
+    background-color: #ffe5d0
+  }
+
+  </style>
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
 </head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
 
-<body class="nav-sidebar floating slimcontent">
-
-<div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-        <i class="bi bi-layout-text-sidebar-reverse"></i>
-      </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./W10_GLM.html">10 The General Linear Model &amp; Multivariate Statistics</a></li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-        </a>
-      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
-        <i class="bi bi-search"></i>
-      </button>
-    </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
-<!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
-    <div class="sidebar-title mb-0 py-0">
-      <a href="./">Biostatistics</a> 
-    </div>
-      </div>
-        <div class="mt-2 flex-shrink-0 align-items-center">
-        <div class="sidebar-search">
-        <div id="quarto-search" class="" title="Search"></div>
-        </div>
-        </div>
-    <div class="sidebar-menu-container"> 
-    <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./W1_Intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">01a Introduction to Biostatistics</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./W1b_IntroR.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">01b Intro to R</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./W2_Models.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">02 Models</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./W3_DataWranglingR.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">03 Data Wrangling</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./W4_DataVizR.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">04 Data Visualization</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
- <span class="menu-text">W5_Sampling.qmd</span>
-  </li>
-        <li class="sidebar-item">
- <span class="menu-text">W6_ProbabilityR.qmd</span>
-  </li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./W7_Hypothesis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">07 Hypothesis Testing</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./W8_ModelingRelationships.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">08 Modeling Relationships</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./W9_FirstAnalysisR.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">09 Statistical Analyses in R</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./W10_GLM.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">10 The General Linear Model &amp; Multivariate Statistics</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./W11_GLMinR.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">11 ANOVA &amp; the General Linear Model in R</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./W12_LMM.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">12 Linear Mixed Models</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./W13_RMarkdown.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">13 R Markdown</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./W15_RepResearchR.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">15 Reproducible Research</span></a>
-  </div>
-</li>
-    </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
-<!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="W10_GLM.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></div>
-<!-- main -->
-<main class="content page-columns page-full" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">10 The General Linear Model &amp; Multivariate Statistics</h1>
-<p class="subtitle lead"></p><div class="line-block">Julius-Maximilians-University Würzburg<br>
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">10 The General Linear Model &amp; Multivariate Statistics</h1>
+  <p class="subtitle"></p><div class="line-block">Julius-Maximilians-University Würzburg<br>
 Course: “Biostatistics”<br>
 Translational Neuroscience</div><p></p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Dr.&nbsp;Lea Hildebrandt 
+</div>
+</div>
 </div>
 
-
-
-<div class="quarto-title-meta">
-
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Dr.&nbsp;Lea Hildebrandt </p>
-          </div>
-  </div>
-    
-  
-    
-  </div>
-  
-
-
-</header>
-
-
-<section id="general-linear-model-glm" class="level1 page-columns page-full">
+</section>
+<section>
+<section id="general-linear-model-glm" class="title-slide slide level1 center">
 <h1>General Linear Model (GLM)</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode css code-with-copy"><code class="sourceCode css"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>code<span class="fu">.sourceCode</span> {</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">font-size</span><span class="ch">:</span> <span class="dv">1.4</span><span class="dt">em</span><span class="op">;</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>div<span class="fu">.cell-output-stdout</span> {</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">font-size</span><span class="ch">:</span> <span class="dv">1.4</span><span class="dt">em</span><span class="op">;</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <style type="text/css">
 code.sourceCode {
   font-size: 1.4em;
@@ -311,60 +422,37 @@ div.cell-output-stdout {
 }
 </style>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fivethirtyeight)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#library(caret)</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cowplot)</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123456</span>) <span class="co"># set random seed to exactly replicate results</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">tidy.opts=</span><span class="fu">list</span>(<span class="at">width.cutoff=</span><span class="dv">80</span>))</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">tibble.width =</span> <span class="dv">60</span>)</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># load the NHANES data library</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(NHANES)</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"># drop duplicated IDs within the NHANES dataset</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>NHANES <span class="ot">&lt;-</span> </span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  NHANES <span class="sc">%&gt;%</span> </span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">distinct</span>(ID,<span class="at">.keep_all=</span><span class="cn">TRUE</span>)</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>NHANES_adult <span class="ot">&lt;-</span> </span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  NHANES <span class="sc">%&gt;%</span></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(Weight) <span class="sc">%&gt;%</span></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">subset</span>(Age<span class="sc">&gt;=</span><span class="dv">18</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 <p>Remember the basic model of statistics:</p>
 <p><span class="math display">\[
 data = model + error
 \]</span></p>
 <p>Our general goal is to find the model with the <em>best fit</em>, i.e., that minimizes the error.</p>
-<p>. . .</p>
+</section>
+<section id="glm" class="slide level2">
+<h2>GLM</h2>
 <p>One approach is the GLM. You might be surprised that a lot of the common models can be viewed as linear models:</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="images/linear_tests_cheat_sheet.png" class="img-fluid figure-img"></p>
-<figcaption>All models can be thought of as linear models</figcaption>
-</figure>
-</div>
-<section id="definitions" class="level2">
-<h2 class="anchored" data-anchor-id="definitions">Definitions</h2>
+
+<img data-src="images/linear_tests_cheat_sheet.png" class="r-stretch quarto-figure-center"><p class="caption">All models can be thought of as linear models</p></section>
+<section id="definitions" class="slide level2">
+<h2>Definitions</h2>
 <p><strong>Dependent variable (DV)</strong>: The outcome variable that the model aims to explain (<span class="math inline">\(Y\)</span>).</p>
 <p><strong>Independent variable (IV)</strong>: The variable(s) that we use to explain the DV (<span class="math inline">\(X\)</span>).</p>
 <p><strong>Linear model</strong>: The model for the DV is composed of a <em>linear combination</em> of IVs (that are multiplied by different <u>weights</u>!)</p>
-<p>. . .</p>
+<div class="fragment">
 <p>The weights are the <em>parameters</em> <span class="math inline">\(\beta\)</span> and determine the relative contribution of each IV. (This is what the model estimates! The weights thus give us the important information we’re usually interested in: How strong are IV and DV related.)</p>
 <p>There may also be several DVs (“<em>multivariate statistics</em>”), but usually that’s not the case except for specific biopsychological methods (e.g., fMRI). Thus, we will focus on those cases with one DV!</p>
+</div>
 </section>
-<section id="example" class="level2">
-<h2 class="anchored" data-anchor-id="example">Example</h2>
+<section id="example" class="slide level2">
+<h2>Example</h2>
 <div class="columns">
 <div class="column">
 <p>Let’s use some simulated data:</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
-<figure class="figure">
-<p><img src="W10_GLM_files/figure-html/unnamed-chunk-3-1.png" style="height:50.0%" width="288" class="figure-img"></p>
+<figure>
+<p><img data-src="W10_GLM_files/figure-revealjs/unnamed-chunk-3-1.png" style="height:50.0%" width="288"></p>
 </figure>
 </div>
 </div>
@@ -392,28 +480,39 @@ sample estimates:
 <p>The correlation is quite high (.63), but the CI is also pretty wide.</p>
 </div>
 </div>
-<p>. . .</p>
+<div class="fragment">
 <p>Fundamental activities of statistics:</p>
 <ul>
 <li><p><em>Describe</em>: How strong is the relationship between grade and study time?</p></li>
 <li><p><em>Decide</em>: Is there a statistically significant relationship between grade and study time?</p></li>
 <li><p><em>Predict</em>: Given a particular amount of study time, what grade do we expect?</p></li>
 </ul>
-<div class="notes">
+<aside class="notes">
 <p>relationship study time and grade</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </div>
 </section>
-<section id="linear-regression" class="level2">
-<h2 class="anchored" data-anchor-id="linear-regression">Linear Regression</h2>
+<section id="linear-regression" class="slide level2">
+<h2>Linear Regression</h2>
 <p>Use the GLM to…</p>
-<div class="incremental">
-<ul class="incremental">
-<li><p>describe the relation between two variables (similar to correlation)</p></li>
-<li><p>predict DV for new values of IV (new observations)</p></li>
-<li><p>add multiple IVs!</p></li>
+<div>
+<ul>
+<li class="fragment"><p>describe the relation between two variables (similar to correlation)</p></li>
+<li class="fragment"><p>predict DV for new values of IV (new observations)</p></li>
+<li class="fragment"><p>add multiple IVs!</p></li>
 </ul>
 </div>
-<p>. . .</p>
+<div class="fragment">
 <div class="columns">
 <div class="column">
 <p>Simple GLM (here: equivalent to linear regression):</p>
@@ -424,40 +523,47 @@ y = \beta_0+ x * \beta_x + \epsilon
 <span class="math inline">\(\beta_x\)</span> = <em>slope</em>: how much do we expect <span class="math inline">\(y\)</span> to change with each change in <span class="math inline">\(x\)</span>?<br>
 <span class="math inline">\(y\)</span> = <em>DV</em><br>
 <span class="math inline">\(x\)</span> = <em>IV</em> or <em>predictor<br>
-</em><span class="math inline">\(\epsilon\)</span> = error term* or <em>resudials</em>: whatever variance is left once the model is fit (Think of the model as the blue line and the residuals are the vertical deviations of the data points from the line)</p>
+</em><span class="math inline">\(\epsilon\)</span> = error term* or <em>residuals</em>: whatever variance is left once the model is fit (Think of the model as the blue line and the residuals are the vertical deviations of the data points from the line)</p>
 <p>(If we refer to <em>predicted</em> <span class="math inline">\(y\)</span>-values, after we have estimated the model, we can drop the error term: <span class="math inline">\(\hat{y} = \hat{\beta_0} + x * \hat{\beta_x}\)</span>.)</p>
 </div><div class="column">
 <div class="cell">
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
-ℹ Please use `linewidth` instead.</code></pre>
-</div>
 <div class="cell-output-display">
 <div>
-<figure class="figure">
-<p><img src="W10_GLM_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+<figure>
+<p><img data-src="W10_GLM_files/figure-revealjs/unnamed-chunk-5-1.png" width="960"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
 </div>
+</div>
 </section>
-<section id="the-relation-between-correlation-and-regression" class="level2">
-<h2 class="anchored" data-anchor-id="the-relation-between-correlation-and-regression">The Relation Between Correlation and Regression</h2>
+<section id="the-relation-between-correlation-and-regression" class="slide level2">
+<h2>The Relation Between Correlation and Regression</h2>
 <p>There is a close relation and we can convert <span class="math inline">\(r\)</span> to <span class="math inline">\(\hat{\beta_x}\)</span>.</p>
 <p><span class="math inline">\(\hat{r} = \frac{covariance_{xy}}{s_x * s_y}\)</span></p>
 <p><span class="math inline">\(\hat{\beta_x} = \frac{covariance_{xy}}{s_x*s_x}\)</span></p>
 <p><span class="math inline">\(covariance_{xy} = \hat{r} * s_x * s_y\)</span></p>
 <p><span class="math inline">\(\hat{\beta_x} = \frac{\hat{r} * s_x * s_y}{s_x * s_x} = r * \frac{s_y}{s_x}\)</span></p>
 <p>–&gt; Regression slope = correlation multiplied by ratio of SDs (if SDs are equal, <span class="math inline">\(r\)</span> = <span class="math inline">\(\hat{\beta}\)</span> )</p>
-<div class="notes">
+<aside class="notes">
 <p>Estimation of GLM:</p>
 <p>linear algebra (R will do that for us!) –&gt; Appendix book</p>
-</div>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="standard-errors-for-regression-models" class="level2">
-<h2 class="anchored" data-anchor-id="standard-errors-for-regression-models">Standard Errors for Regression Models</h2>
+<section id="standard-errors-for-regression-models" class="slide level2">
+<h2>Standard Errors for Regression Models</h2>
 <p>We usually want to make inferences about the regression parameter estimates. For this we need an estimate of their variability.</p>
 <p>We first need an estimate of how much variability is <em>not</em> explained by the model: the <strong>residual variance</strong> (or <strong>error variance</strong>):</p>
 <p>Compute <em>residuals</em>:</p>
@@ -481,12 +587,22 @@ SE_{model} = \sqrt{MS_{error}}
 <p><span class="math display">\[
 SE_{\hat{\beta_x}} = \frac{SE_{model}}{\sqrt{\sum{(x_i - \bar{x})^2}}}
 \]</span></p>
-<div class="notes">
+<aside class="notes">
 <p>rescaling SE: by square root of the SS of the X variable</p>
-</div>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="statistical-tests-for-regression-parameters" class="level2">
-<h2 class="anchored" data-anchor-id="statistical-tests-for-regression-parameters">Statistical Tests for Regression Parameters</h2>
+<section id="statistical-tests-for-regression-parameters" class="slide level2">
+<h2>Statistical Tests for Regression Parameters</h2>
 <p>With the parameter estimates and their standard errors, we can compute <span class="math inline">\(t\)</span>-statistics, which represent the likelihood of the observed estimate vs.&nbsp;the expected value under <span class="math inline">\(H_0\)</span> (usually 0, no effect).</p>
 <p><span class="math display">\[
 \begin{array}{c}
@@ -496,11 +612,11 @@ t_{N - p} = \frac{\hat{\beta} }{SE_{\hat{\beta}}}
 \end{array}
 \]</span></p>
 </section>
-<section id="glm-results" class="level2">
-<h2 class="anchored" data-anchor-id="glm-results">GLM results</h2>
+<section id="glm-results" class="slide level2">
+<h2>GLM results</h2>
 <p>Usually, we would just let R do the calculations:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lmResult)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a></a><span class="fu">summary</span>(lmResult)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -523,153 +639,128 @@ F-statistic: 4.054 on 1 and 6 DF,  p-value: 0.09073</code></pre>
 </div>
 </div>
 <p>The intercept is significantly different from zero (which is usually not very relevant: with 0 study time, you don’t get 0%) and the effect of <code>studyTime</code> is not (or only “marginally”) significant. So for every hour that we study more, the effect on the grade is <em>descriptively</em> rather small (~4%) but possibly not present at all (because it is not <em>statistically</em> significant).</p>
-<div class="notes">
+<aside class="notes">
 <p><span class="math inline">\(t\)</span> ratio of <span class="math inline">\(\beta\)</span> to its <span class="math inline">\(SE\)</span>!</p>
 <p>intercept: expected grade without studying at all</p>
-</div>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="quantifying-goodness-of-fit-of-the-model" class="level2">
-<h2 class="anchored" data-anchor-id="quantifying-goodness-of-fit-of-the-model">Quantifying Goodness of Fit of the Model</h2>
+<section id="quantifying-goodness-of-fit-of-the-model" class="slide level2">
+<h2>Quantifying Goodness of Fit of the Model</h2>
 <p>Often, it is useful to check how good the (total) model we estimated fits the data.</p>
-<p>. . .</p>
+<div class="fragment">
 <p>We can do that easily by asking <em>how much of the variability in the data is accounted for by the model?</em></p>
-<p>. . .</p>
+</div>
+<div class="fragment">
 <p>If we only have one IV (<span class="math inline">\(x\)</span>), then we can simply square the correlation coefficient:</p>
 <p><span class="math display">\[
 R^2 = r^2
 \]</span></p>
 <p>In study time example, <span class="math inline">\(R^2\)</span> = 0.63² = 0.4 –&gt; we accounted for 40% of the overall variance in grades!</p>
-<p>. . .</p>
+</div>
+<div class="fragment">
 <p>More generally, we can calculate <span class="math inline">\(R^2\)</span> with the Sum of Squared Variances:</p>
 <p><span class="math display">\[
 R^2 = \frac{SS_{model}}{SS_{total}} = 1-\frac{SS_{error}}{SS_{total}}
 \]</span></p>
-<p>. . .</p>
+</div>
+<div class="fragment">
 <p>With a sample of sufficient size, it is possible to get highly significant values that still explain very little of the total variance (i.e., little <em>practical</em> significance despite <em>statistical</em> significance)</p>
-<div class="notes">
+<aside class="notes">
 <p><span class="math inline">\(R^2\)</span> is the name of the Goodness of Fit stat!</p>
 <p>A small R² tells us that even though a model might be significant, it may only explain a small amount of information in the DV</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </div>
 </section>
-<section id="fitting-more-complex-models" class="level2">
-<h2 class="anchored" data-anchor-id="fitting-more-complex-models">Fitting More Complex Models</h2>
+<section id="fitting-more-complex-models" class="slide level2">
+<h2>Fitting More Complex Models</h2>
 <p>Often we want to know the effects of <em>multiple variables</em> (IVs) on some outcome.</p>
 <p>Example:<br>
 Some students have taken a very similar class before, so there might not only be the effect of <code>studyTime</code> on <code>grades</code>, but also of having taken a <code>priorClass</code>.</p>
-<p>. . .</p>
+<div class="fragment">
 <div class="columns">
 <div class="column">
 <p>We can built a model that takes both into account by simply adding the “weight” and the IV (<code>priorClass</code>) to the model:</p>
 <p><span class="math inline">\(\hat{y} = \hat{\beta_1}*studyTime + \hat{\beta_2}*priorClass + \hat{\beta_0}\)</span></p>
-<div class="incremental">
-<ul class="incremental">
-<li>To model <code>priorClass</code>, i.e.&nbsp;whether each individual has taken a previous class or not, we use <strong>dummy coding</strong> (0=no, 1=yes).</li>
-<li>This means, for those who have <em>not</em> taken a class, the whole part of the equation (<span class="math inline">\(\hat{\beta_2} * priorClass\)</span>) will be zero - we will add it for the others.</li>
-<li><span class="math inline">\(\hat{\beta_2}\)</span> is thus the difference in means between the two groups!</li>
-<li><span class="math inline">\(\hat{\beta_1}\)</span> is the regression slope of <code>studyTime</code> across data points/regardless of whether someone has taken a class before.</li>
+<div>
+<ul>
+<li class="fragment">To model <code>priorClass</code>, i.e.&nbsp;whether each individual has taken a previous class or not, we use <strong>dummy coding</strong> (0=no, 1=yes).</li>
+<li class="fragment">This means, for those who have <em>not</em> taken a class, the whole part of the equation (<span class="math inline">\(\hat{\beta_2} * priorClass\)</span>) will be zero - we will add it for the others.</li>
+<li class="fragment"><span class="math inline">\(\hat{\beta_2}\)</span> is thus the difference in means between the two groups!</li>
+<li class="fragment"><span class="math inline">\(\hat{\beta_1}\)</span> is the regression slope of <code>studyTime</code> across data points/regardless of whether someone has taken a class before.</li>
 </ul>
 </div>
 </div><div class="column">
 <p>If we plot the data, we can see that both IVs seem to have an effect on grades:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>priorClass <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(df<span class="sc">$</span>priorClass)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>lmResultTwoVars <span class="ot">&lt;-</span> <span class="fu">lm</span>(grade <span class="sc">~</span> studyTime <span class="sc">+</span> priorClass, <span class="at">data =</span> df)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># summary(lmResultTwoVars)</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df,<span class="fu">aes</span>(studyTime,grade,<span class="at">shape=</span>priorClass)) <span class="sc">+</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">3</span>) <span class="sc">+</span> <span class="fu">xlim</span>(<span class="dv">0</span>,<span class="dv">5</span>) <span class="sc">+</span> <span class="fu">ylim</span>(<span class="dv">70</span>,<span class="dv">100</span>)</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> p<span class="sc">+</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">slope=</span>lmResultTwoVars<span class="sc">$</span>coefficients[<span class="dv">2</span>],</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>              <span class="at">intercept=</span>lmResultTwoVars<span class="sc">$</span>coefficients[<span class="dv">1</span>],<span class="at">lineype=</span><span class="st">'dotted'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in geom_abline(slope = lmResultTwoVars$coefficients[2], intercept =
-lmResultTwoVars$coefficients[1], : Ignoring unknown parameters: `lineype`</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># p &lt;- p+</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   annotate('segment',x=2,xend=3,</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#            y=lmResultTwoVars$coefficients[1]+</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#              2*lmResultTwoVars$coefficients[2],</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">#            yend=lmResultTwoVars$coefficients[1]+</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">#              2*lmResultTwoVars$coefficients[2],</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">#            color='blue') +</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   annotate('segment',x=3,xend=3,</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co">#            y=lmResultTwoVars$coefficients[1]+</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co">#              2*lmResultTwoVars$coefficients[2],</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co">#            yend=lmResultTwoVars$coefficients[1]+</span></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co">#              3*lmResultTwoVars$coefficients[2],</span></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="co">#            color='blue')</span></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> p<span class="sc">+</span></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">slope=</span>lmResultTwoVars<span class="sc">$</span>coefficients[<span class="dv">2</span>],</span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>              <span class="at">intercept=</span>lmResultTwoVars<span class="sc">$</span>coefficients[<span class="dv">1</span>]<span class="sc">+</span></span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>                lmResultTwoVars<span class="sc">$</span>coefficients[<span class="dv">3</span>],</span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>              <span class="at">linetype=</span><span class="st">'dashed'</span>) </span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> p<span class="sc">+</span></span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">'segment'</span>,<span class="at">x=</span><span class="dv">2</span>,<span class="at">xend=</span><span class="dv">2</span>,</span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>           <span class="at">y=</span>lmResultTwoVars<span class="sc">$</span>coefficients[<span class="dv">1</span>]<span class="sc">+</span></span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>             <span class="dv">2</span><span class="sc">*</span>lmResultTwoVars<span class="sc">$</span>coefficients[<span class="dv">2</span>],</span>
-<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>           <span class="at">yend=</span>lmResultTwoVars<span class="sc">$</span>coefficients[<span class="dv">1</span>]<span class="sc">+</span></span>
-<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>             lmResultTwoVars<span class="sc">$</span>coefficients[<span class="dv">3</span>] <span class="sc">+</span></span>
-<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>             <span class="dv">2</span><span class="sc">*</span>lmResultTwoVars<span class="sc">$</span>coefficients[<span class="dv">2</span>],</span>
-<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>           <span class="at">linetype=</span><span class="st">'dotted'</span>,<span class="at">size=</span><span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_discrete</span>(</span>
-<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
-<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"No"</span>, <span class="st">"Yes"</span>)</span>
-<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"Previous course"</span></span>
-<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in scale_color_discrete(limits = c(0, 1), labels = c("No", "Yes")): Continuous limits supplied to discrete scale.
-ℹ Did you mean `limits = factor(...)` or `scale_*_continuous()`?</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure">
-<p><img src="W10_GLM_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="480"></p>
+<figure>
+<p><img data-src="W10_GLM_files/figure-revealjs/unnamed-chunk-7-1.png" width="480"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="notes">
+<aside class="notes">
 <p>How can we tell from the plot that both IVs might have an effect?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </div>
 </section>
-<section id="interactions-between-variables" class="level2">
-<h2 class="anchored" data-anchor-id="interactions-between-variables">Interactions Between Variables</h2>
+<section id="interactions-between-variables" class="slide level2">
+<h2>Interactions Between Variables</h2>
 <p>We previously assumed that the effect of <code>studyTime</code> on <code>grade</code> was the same for both groups - but sometimes we expect that this regression slope differs per group!</p>
+<div class="fragment">
 <p>E.g., due to prior knowledge from another class, it may be <em>easier</em> to profit from studying the new materials (i.e., steeper slope). Or it may be <em>harder</em> due to diminishing marginal returns (i.e., flatter slope).</p>
-<p>. . .</p>
+</div>
+<div class="fragment">
 <p><br>
 This is what we call an <strong>interaction</strong>: The effect of one variable depends on the value of another variable.</p>
-<p>Thus, <code>priorClass</code> can have a <strong>main effect</strong> on <code>grade</code> (i.e., independent of <code>studyTime</code>): “I already know more, so I don’t need to study”.<br>
+<p>Thus, <code>priorClass</code> can have a <strong>main effect</strong> on <code>grade</code> (i.e., independent of <code>studyTime</code>): “I already know more, regardless wether I study”.<br>
 But it can also <strong>interact</strong> with <code>studyTime</code>: “Due to my prior knowledge, I can study more efficiently.”</p>
+</div>
 </section>
-<section id="interaction-example" class="level2">
-<h2 class="anchored" data-anchor-id="interaction-example">Interaction Example</h2>
+<section id="interaction-example" class="slide level2">
+<h2>Interaction Example</h2>
 <p>Example: What is the effect of caffeine on public speaking?</p>
 <p><br>
 </p>
 <div class="columns">
 <div class="column" style="width:60%;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234567</span>)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> </span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">group=</span><span class="fu">c</span>(<span class="fu">rep</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">10</span>),</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>            <span class="fu">rep</span>(<span class="dv">1</span>,<span class="dv">10</span>)</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>          )</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">caffeine=</span><span class="fu">runif</span>(<span class="fu">n</span>())<span class="sc">*</span><span class="dv">100</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">speaking=</span><span class="fl">0.5</span><span class="sc">*</span>caffeine<span class="sc">*-</span>group <span class="sc">+</span> group<span class="sc">*</span><span class="dv">20</span> <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">20</span>)<span class="sc">*</span><span class="dv">10</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">anxiety=</span><span class="fu">ifelse</span>(group<span class="sc">==</span><span class="dv">1</span>,<span class="st">'anxious'</span>,<span class="st">'notAnxious'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># perform linear regression with caffeine as independent variable</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>lmResultCaffeine <span class="ot">&lt;-</span> <span class="fu">lm</span>(speaking <span class="sc">~</span> caffeine, <span class="at">data =</span> df)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lmResultCaffeine)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a></a><span class="co"># perform linear regression with caffeine as independent variable</span></span>
+<span id="cb5-2"><a></a>lmResultCaffeine <span class="ot">&lt;-</span> <span class="fu">lm</span>(speaking <span class="sc">~</span> caffeine, <span class="at">data =</span> df)</span>
+<span id="cb5-3"><a></a><span class="fu">summary</span>(lmResultCaffeine)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -691,36 +782,28 @@ F-statistic: 1.235 on 1 and 18 DF,  p-value: 0.2811</code></pre>
 </div>
 </div><div class="column" style="width:40%;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df,<span class="fu">aes</span>(caffeine,speaking)) <span class="sc">+</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>) <span class="sc">+</span> <span class="fu">geom_point</span>()</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>p1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
-</div>
 <div class="cell-output-display">
 <div>
-<figure class="figure">
-<p><img src="W10_GLM_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="384"></p>
+<figure>
+<p><img data-src="W10_GLM_files/figure-revealjs/unnamed-chunk-10-1.png" width="384"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
 </div>
-<p>. . .</p>
+<div class="fragment">
 <p>There doesn’t seem to be a “direct” (bivariate) effect:</p>
+</div>
 </section>
-<section id="interaction-example-two-main-effects" class="level2">
-<h2 class="anchored" data-anchor-id="interaction-example-two-main-effects">Interaction Example: Two main effects</h2>
+<section id="interaction-example-two-main-effects" class="slide level2">
+<h2>Interaction Example: Two main effects</h2>
 <p>What if we have the hypothesis that <code>anxiety</code> also affects public speaking?</p>
 <p><br>
 </p>
 <div class="columns">
 <div class="column" style="width:60%;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compute linear regression adding anxiety to model</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>lmResultCafAnx <span class="ot">&lt;-</span> <span class="fu">lm</span>(speaking <span class="sc">~</span> caffeine <span class="sc">+</span> anxiety, <span class="at">data =</span> df)</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lmResultCafAnx)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -743,47 +826,40 @@ F-statistic:  2.18 on 2 and 17 DF,  p-value: 0.1436</code></pre>
 </div>
 </div><div class="column" style="width:40%;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co">#TODO add individual regression lines per group but with identical slope?</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df,<span class="fu">aes</span>(caffeine,speaking,<span class="at">color=</span>anxiety,<span class="at">group=</span><span class="cn">NA</span>)) <span class="sc">+</span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">data=</span>df <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">speaking.m=</span><span class="fu">mean</span>(speaking), <span class="at">.by=</span>anxiety),</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">yintercept=</span>speaking.m, <span class="at">color=</span>anxiety),</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">linetype=</span><span class="st">"dashed"</span>, <span class="at">size=</span><span class="fl">1.2</span>) <span class="sc">+</span></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>p2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: The following aesthetics were dropped during statistical transformation:
-colour.
-ℹ This can happen when ggplot fails to infer the correct grouping structure in
-  the data.
-ℹ Did you forget to specify a `group` aesthetic or to convert a numerical
-  variable into a factor?</code></pre>
-</div>
 <div class="cell-output-display">
 <div>
-<figure class="figure">
-<p><img src="W10_GLM_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="384"></p>
+<figure>
+<p><img data-src="W10_GLM_files/figure-revealjs/unnamed-chunk-12-1.png" width="384"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
 </div>
-<p>. . .</p>
+<div class="fragment">
 <p>The new model is still not significant. This is due to the fact that we only look at <strong>additive effects</strong> (main effects). But neither caffeine nor anxiety alone/independently predict public speaking performance.</p>
-<p>. . .</p>
+</div>
+<div class="fragment">
 <p>From the plot, however, it looks like the effect of caffeine is indeed different for the two anxiety groups: Increasing for non-anxious people and decreasing for anxious ones.</p>
 <p>In other words: We need to have a model that allows to fit different regression <em>slopes</em> to both groups.</p>
-<div class="notes">
+<aside class="notes">
 <p>explain additive effects: look at average caffeine effect, then add mean for anxiety groups (but: both not significant here!)</p>
 <p>problem of independent main effects: also if you bring together two findings from two different papers =&gt; no information about interaction of predictors</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </div>
 </section>
-<section id="interaction-example-full-model" class="level2">
-<h2 class="anchored" data-anchor-id="interaction-example-full-model">Interaction Example: Full model</h2>
+<section id="interaction-example-full-model" class="slide level2">
+<h2>Interaction Example: Full model</h2>
 <p>To allow for different slopes for each group (i.e.&nbsp;for the effect of caffeine to vary between the anxiety groups), we have to model the <em>interaction</em> as well.</p>
 <div class="columns">
 <div class="column" style="width:60%;">
@@ -814,50 +890,28 @@ F-statistic:  30.8 on 3 and 16 DF,  p-value: 7.014e-07</code></pre>
 </div>
 </div><div class="column" style="width:40%;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>df_anx <span class="ot">&lt;-</span> </span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  df <span class="sc">%&gt;%</span></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">subset</span>(anxiety<span class="sc">==</span><span class="st">'anxious'</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">y=</span>lmResultInteraction<span class="sc">$</span>fitted.values[df<span class="sc">$</span>anxiety<span class="sc">==</span><span class="st">'anxious'</span>])</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>df_notanx <span class="ot">&lt;-</span> </span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  df <span class="sc">%&gt;%</span></span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">subset</span>(anxiety<span class="sc">==</span><span class="st">'notAnxious'</span>)<span class="sc">%&gt;%</span></span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">y=</span>lmResultInteraction<span class="sc">$</span>fitted.values[df<span class="sc">$</span>anxiety<span class="sc">==</span><span class="st">'notAnxious'</span>])</span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df,<span class="fu">aes</span>(caffeine,speaking,<span class="at">color=</span>anxiety,<span class="at">group=</span>anxiety)) <span class="sc">+</span></span>
-<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>) <span class="sc">+</span></span>
-<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span>
-<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># geom_line(data=df_anx,</span></span>
-<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>  <span class="co">#            aes(caffeine,y),linetype='dashed') +</span></span>
-<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># geom_line(data=df_notanx,</span></span>
-<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>  <span class="co">#            aes(caffeine,y),linetype='dotted')</span></span>
-<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>p3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
-</div>
 <div class="cell-output-display">
 <div>
-<figure class="figure">
-<p><img src="W10_GLM_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="384"></p>
+<figure>
+<p><img data-src="W10_GLM_files/figure-revealjs/unnamed-chunk-14-1.png" width="384"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
 </div>
-<p>. . .</p>
+<div class="fragment">
 <p>The model is now significant! There is an <em>interaction</em> between <code>caffeine</code> and <code>anxiety</code>. Interestingly, the <em>main effects</em> are also significant now even though they were not in the previous models (because the residual variance has been reduced drastically from 18 to 8 by the highly significant interaction).</p>
 <p>Note: <code>speaking ~ caffeine * anxiety</code> is shorthand for <code>speaking ~ caffeine + anxiety + caffeine:anxiety</code></p>
+</div>
 </section>
-<section id="convert-glm-to-anova" class="level2">
-<h2 class="anchored" data-anchor-id="convert-glm-to-anova">Convert GLM to ANOVA</h2>
+<section id="convert-glm-to-anova" class="slide level2">
+<h2>Convert GLM to ANOVA</h2>
 <p>The interpretation of the coefficients of a GLM when interactions are included is not as straight forward compared to an ANOVA!</p>
-<p>. . .</p>
+<div class="fragment">
 <p>If you want to report the “typical” ANOVA table with main effects and the general interaction:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(lmResultInteraction)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a></a><span class="fu">anova</span>(lmResultInteraction)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Variance Table
 
@@ -871,26 +925,38 @@ Residuals        16 1045.9    65.4
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
-<p>. . .</p>
+</div>
+<div class="fragment">
 <p>Note: The <em>p</em>-values are different between the GLM and the ANOVA outputs because effects including factors are coded slightly differently (dummy vs.&nbsp;effect coding):</p>
 <p>Dummy coding uses the first level as a default and compares the remaining levels to it (<span class="math inline">\(0\)</span> vs.&nbsp;<span class="math inline">\(1\)</span>).<br>
 Effect coding takes the overall mean as an abstract comparison (<span class="math inline">\(-.5\)</span> vs.&nbsp;<span class="math inline">\(+.5\)</span>).<br>
 This difference is resembled in the output tables as <code>anxietynotAnxious</code> (GLM) vs.&nbsp;<code>anxiety</code> (ANOVA).</p>
-<div class="notes">
+<aside class="notes">
 <p>interpretation coefficients:</p>
 <p>intercept: intercept of anxious group!</p>
 <p>intercept not anxious: difference intercept anxious vs.&nbsp;notanxious</p>
 <p>slope anxious: only for the anxious group!</p>
 <p>slope not anxious: diff in slopes</p>
 <p>no main effects!!!</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </div>
 </section>
-<section id="model-comparison" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="model-comparison">Model Comparison</h2>
+<section id="model-comparison" class="slide level2">
+<h2>Model Comparison</h2>
 <p>Sometimes, we want to compare two (<em>nested</em>!) models to see which one fits the data better.</p>
 <p>We can do so by using the <code>anova()</code>* function in R:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(lmResultCafAnx, lmResultInteraction)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a></a><span class="fu">anova</span>(lmResultCafAnx, lmResultInteraction)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Variance Table
 
@@ -904,206 +970,121 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
 <p>This shows that Model 2, incl.&nbsp;the interaction, is to be preferred.</p>
-<p>. . .</p>
+<div class="fragment">
 <p><em>Note</em>: We can only meaningfully use this method with so-called nested models, which means that the simpler (<em>reduced</em>) model only contains variables also included in the more complex (<em>full</em>) model.</p>
 
-<div class="no-row-height column-margin column-container"><div class="margin-aside">
-<p>*Yes, it is <em>kind of</em> an ANOVA as well, in that (a ratio of) squared errors is compared to an <span class="math inline">\(F\)</span>-distribution…</p>
-</div></div><div class="notes">
+<aside class="notes">
 <p>Wald compares the ratio of squared errors to an F-distribution (sound familiar from ANOVA?), while likelihood ratio compares the ratio of likelihoods to a χ2 distribution</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </div>
-</section>
-<section id="criticizing-our-model-and-checking-assumptions" class="level2">
-<h2 class="anchored" data-anchor-id="criticizing-our-model-and-checking-assumptions">Criticizing Our Model and Checking Assumptions</h2>
+<aside><div>
+<p>*Yes, it is <em>kind of</em> an ANOVA as well, in that (a ratio of) squared errors is compared to an <span class="math inline">\(F\)</span>-distribution…</p>
+</div></aside></section>
+<section id="criticizing-our-model-and-checking-assumptions" class="slide level2">
+<h2>Criticizing Our Model and Checking Assumptions</h2>
 <p>“Garbage in, garbage out” - we have to make sure our model is properly specified!</p>
-<p>. . .</p>
+<div class="fragment">
 <p><em>Properly specified</em> = having included the appropriate IVs.</p>
-<p>. . .</p>
+</div>
+<div class="fragment">
 <p>The model also needs to satisfy the <strong>assumptions</strong> of the statistical method (= GLM).</p>
 <p>One important assumption of the GLM is that <em>the residuals are normally distributed</em>.</p>
 <p>This assumption can be violated by a not properly specified model or because the data are inappropriate for the statistical model.</p>
-<p>. . .</p>
+</div>
+<div class="fragment">
 <p>We can use a <strong>Q-Q plot</strong>, which represents the quantiles of two distributions/variables (e.g., the data and a normal distribution of the same data) against each other.</p>
 <p>If the data points diverge substantially from the line (especially in the extremes), we can conclude that the residuals are not normally distributed.</p>
+</div>
 </section>
-<section id="model-diagnostics" class="level2">
-<h2 class="anchored" data-anchor-id="model-diagnostics">Model Diagnostics</h2>
+<section id="model-diagnostics" class="slide level2">
+<h2>Model Diagnostics</h2>
 <p>To check the assumptions, we can easily run a function for model diagnostics (incl.&nbsp;Q-Q plots) in R. The function, <code>check_model()</code>, is included in the <code>performance</code> package by the <a href="https://easystats.github.io/easystats/index.html"><em>easystats</em></a> team (who make great packages for everything related to statistical modeling!)</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("easystats")</span></span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(performance)</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(lmResultInteraction)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="W10_GLM_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a></a><span class="co"># install.packages("easystats")</span></span>
+<span id="cb13-2"><a></a><span class="fu">library</span>(performance)</span>
+<span id="cb13-3"><a></a></span>
+<span id="cb13-4"><a></a><span class="fu">check_model</span>(lmResultInteraction)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
 </div>
-</div>
-</div>
-<div class="notes">
+<img data-src="W10_GLM_files/figure-revealjs/unnamed-chunk-17-1.png" width="960" class="r-stretch"><aside class="notes">
 <p>We’re not going into detail about all these diagnostics (and hard to see!), but it is always a good idea to run diagnostics/check assumptions for your models!</p>
-</div>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="remark-predicting-in-a-statistical-context" class="level2">
-<h2 class="anchored" data-anchor-id="remark-predicting-in-a-statistical-context">Remark: “Predicting” in a Statistical Context</h2>
+<section id="remark-predicting-in-a-statistical-context" class="slide level2">
+<h2>Remark: “Predicting” in a Statistical Context</h2>
 <p>We neither mean “predicting before seeing the data/in the future” nor mean to imply <em>causality</em>!</p>
-<p>. . .</p>
+<div class="fragment">
 <p>It simply refers to fitting a model to the data: We estimate (or predict) values for the DV (<span class="math inline">\(\hat{y}\)</span>) and the IVs are often referred to as <em>predictors</em>.</p>
-<div class="notes">
+<aside class="notes">
 <p>Related to: predicting future values</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </div>
-</section>
-</section>
-<section id="multivariate-statistics" class="level1">
+</section></section>
+<section>
+<section id="multivariate-statistics" class="title-slide slide level1 center scrollable">
 <h1>Multivariate Statistics</h1>
 <p><em>Multivariate</em> = involving more than one (dependent) variable.</p>
 <p>Usually, the distinction between dependent and independent variables is not very strict (rather depends on the model than on the data itself). In the following section, we are interested in how a number of variables relate to one another (no clear predictor vs.&nbsp;criterion).</p>
-<div class="incremental">
-<ol class="incremental" type="1">
-<li><p><strong>Clustering</strong>: Understand the structure that exists in the data, find clusters of observations or variables that are similar.<br>
+<div>
+<ol type="1">
+<li class="fragment"><p><strong>Clustering</strong>: Understand the structure that exists in the data, find clusters of observations or variables that are similar.<br>
 =&gt; From dimensions to categories</p></li>
-<li><p><strong>Dimensionality reduction</strong>: Reduce a large set of variables to fewer, retaining as much information as possible.<br>
+<li class="fragment"><p><strong>Dimensionality reduction</strong>: Reduce a large set of variables to fewer, retaining as much information as possible.<br>
 =&gt; From many dimensions to fewer dimensions</p></li>
 </ol>
 </div>
-<p>. . .</p>
+<div class="fragment">
 <p>These two methods belong to the class of <em>unsupervised learning</em>. Before, we have only dealt with <em>supervised learning</em> (e.g., regression, ANOVA). There are also methods for multivariate, supervised learning (e.g., MANOVA).</p>
 <p>Note: Unsupervised learning techniques are very <em>explorative</em> in nature. It is a different approach to learning from data compared to hypothesis testing. Explorative methods are usually used in science to create a first insight into new phenomena that can develop into hypotheses further down the line.</p>
-<div class="notes">
+<aside class="notes">
 <p>Supervised: we know the value of the DV that we’re trying to predict (try to find best model predictions).</p>
 <p>Unsupervised: we don’t have specific value to predict, we try to discover (patterns that help understand). Requires some assumptions about pattern.</p>
 <p>–&gt; does not necessarily have a “right” answer!</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </div>
-<section id="multivariate-data-an-example" class="level2">
-<h2 class="anchored" data-anchor-id="multivariate-data-an-example">Multivariate Data: An Example</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># import MASS first because it otherwise will mask dplyr::select</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggdendro)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Paket 'ggdendro' wurde unter R Version 4.4.2 erstellt</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(psych)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attache Paket: 'psych'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Die folgenden Objekte sind maskiert von 'package:ggplot2':
-
-    %+%, alpha</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gplots)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Paket 'gplots' wurde unter R Version 4.4.2 erstellt</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attache Paket: 'gplots'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Das folgende Objekt ist maskiert 'package:stats':
-
-    lowess</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pdist)</span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(factoextra)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Paket 'factoextra' wurde unter R Version 4.4.2 erstellt</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Welcome! Want to learn more? See two factoextra-related books at https://goo.gl/ve3WBa</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(viridis)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Paket 'viridis' wurde unter R Version 4.4.2 erstellt</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Lade nötiges Paket: viridisLite</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mclust)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Paket 'mclust' wurde unter R Version 4.4.2 erstellt</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Package 'mclust' version 6.1.1
-Type 'citation("mclust")' for citing this R package in publications.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attache Paket: 'mclust'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Das folgende Objekt ist maskiert 'package:psych':
-
-    sim</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Das folgende Objekt ist maskiert 'package:purrr':
-
-    map</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_minimal</span>())</span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>behavdata <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">'Data/meaningful_variables.csv'</span>,</span>
-<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>                      <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)  </span>
-<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>demoghealthdata <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">'Data/demographic_health.csv'</span>,</span>
-<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>                            <span class="at">show_col_types =</span> <span class="cn">FALSE</span>) </span>
-<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a><span class="co"># recode Sex variable from 0/1 to Male/Female</span></span>
-<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a>demoghealthdata <span class="ot">&lt;-</span> demoghealthdata <span class="sc">%&gt;%</span></span>
-<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Sex =</span> <span class="fu">recode_factor</span>(Sex, <span class="st">`</span><span class="at">0</span><span class="st">`</span><span class="ot">=</span><span class="st">"Male"</span>, <span class="st">`</span><span class="at">1</span><span class="st">`</span><span class="ot">=</span><span class="st">"Female"</span>))</span>
-<span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a><span class="co"># combine the data into a single data frame by subcode</span></span>
-<span id="cb52-12"><a href="#cb52-12" aria-hidden="true" tabindex="-1"></a>alldata <span class="ot">&lt;-</span> <span class="fu">merge</span>(behavdata, demoghealthdata, <span class="at">by=</span><span class="st">'subcode'</span>)</span>
-<span id="cb52-13"><a href="#cb52-13" aria-hidden="true" tabindex="-1"></a>rename_list <span class="ot">=</span> <span class="fu">list</span>(<span class="st">'upps_impulsivity_survey'</span> <span class="ot">=</span> <span class="st">'UPPS'</span>, <span class="st">'sensation_seeking_survey'</span> <span class="ot">=</span> <span class="st">'SSS'</span>,</span>
-<span id="cb52-14"><a href="#cb52-14" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'dickman_survey'</span> <span class="ot">=</span> <span class="st">'Dickman'</span>,  <span class="st">'bis11_survey'</span> <span class="ot">=</span> <span class="st">'BIS11'</span>, </span>
-<span id="cb52-15"><a href="#cb52-15" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'spatial_span'</span> <span class="ot">=</span> <span class="st">'spatial'</span>, <span class="st">'digit_span'</span> <span class="ot">=</span> <span class="st">'digit'</span>,</span>
-<span id="cb52-16"><a href="#cb52-16" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'adaptive_n_back'</span> <span class="ot">=</span> <span class="st">'nback'</span>, <span class="st">'dospert_rt_survey'</span> <span class="ot">=</span> <span class="st">'dospert'</span>,</span>
-<span id="cb52-17"><a href="#cb52-17" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'motor_selective_stop_signal.SSRT'</span> <span class="ot">=</span> <span class="st">'SSRT_motorsel'</span>,</span>
-<span id="cb52-18"><a href="#cb52-18" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'stim_selective_stop_signal.SSRT'</span> <span class="ot">=</span> <span class="st">'SSRT_stimsel'</span>,</span>
-<span id="cb52-19"><a href="#cb52-19" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'stop_signal.SSRT_low'</span> <span class="ot">=</span> <span class="st">'SSRT_low'</span>,</span>
-<span id="cb52-20"><a href="#cb52-20" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'stop_signal.SSRT_high'</span> <span class="ot">=</span> <span class="st">'SSRT_high'</span>)</span>
-<span id="cb52-21"><a href="#cb52-21" aria-hidden="true" tabindex="-1"></a>                   </span>
-<span id="cb52-22"><a href="#cb52-22" aria-hidden="true" tabindex="-1"></a>impulsivity_variables <span class="ot">=</span> <span class="fu">c</span>(<span class="st">'Sex'</span>)</span>
-<span id="cb52-23"><a href="#cb52-23" aria-hidden="true" tabindex="-1"></a>keep_variables <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"spatial.forward_span"</span>, <span class="st">"spatial.reverse_span"</span>, <span class="st">"digit.forward_span"</span>,<span class="st">"digit.reverse_span"</span>, <span class="st">"nback.mean_load"</span>)</span>
-<span id="cb52-24"><a href="#cb52-24" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (potential_match <span class="cf">in</span> <span class="fu">names</span>(alldata)){</span>
-<span id="cb52-25"><a href="#cb52-25" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (n <span class="cf">in</span> <span class="fu">names</span>(rename_list)){</span>
-<span id="cb52-26"><a href="#cb52-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">str_detect</span>(potential_match, n)){</span>
-<span id="cb52-27"><a href="#cb52-27" aria-hidden="true" tabindex="-1"></a>      <span class="co"># print(sprintf('found match: %s %s', n, potential_match))</span></span>
-<span id="cb52-28"><a href="#cb52-28" aria-hidden="true" tabindex="-1"></a>      replacement_name <span class="ot">&lt;-</span> <span class="fu">str_replace</span>(potential_match, n, <span class="fu">toString</span>(rename_list[n]))</span>
-<span id="cb52-29"><a href="#cb52-29" aria-hidden="true" tabindex="-1"></a>      <span class="fu">names</span>(alldata)[<span class="fu">names</span>(alldata) <span class="sc">==</span> potential_match] <span class="ot">&lt;-</span> replacement_name</span>
-<span id="cb52-30"><a href="#cb52-30" aria-hidden="true" tabindex="-1"></a>      impulsivity_variables <span class="ot">&lt;-</span> <span class="fu">c</span>(impulsivity_variables, replacement_name)</span>
-<span id="cb52-31"><a href="#cb52-31" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb52-32"><a href="#cb52-32" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb52-33"><a href="#cb52-33" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb52-34"><a href="#cb52-34" aria-hidden="true" tabindex="-1"></a>impulsivity_data <span class="ot">&lt;-</span> alldata[,impulsivity_variables] <span class="sc">%&gt;%</span></span>
-<span id="cb52-35"><a href="#cb52-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>()</span>
-<span id="cb52-36"><a href="#cb52-36" aria-hidden="true" tabindex="-1"></a>ssrtdata <span class="ot">=</span> alldata[,<span class="fu">c</span>(<span class="st">'subcode'</span>, <span class="fu">names</span>(alldata)[<span class="fu">grep</span>(<span class="st">'SSRT_'</span>, <span class="fu">names</span>(alldata))])] <span class="sc">%&gt;%</span> </span>
-<span id="cb52-37"><a href="#cb52-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb52-38"><a href="#cb52-38" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>stop_signal.proactive_SSRT_speeding)</span>
-<span id="cb52-39"><a href="#cb52-39" aria-hidden="true" tabindex="-1"></a>upps_data <span class="ot">&lt;-</span> alldata <span class="sc">%&gt;%</span></span>
-<span id="cb52-40"><a href="#cb52-40" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="fu">starts_with</span>(<span class="st">'UPPS'</span>), <span class="st">'subcode'</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb52-41"><a href="#cb52-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">setNames</span>(<span class="fu">gsub</span>(<span class="st">"UPPS."</span>, <span class="st">""</span>, <span class="fu">names</span>(.)))</span>
-<span id="cb52-42"><a href="#cb52-42" aria-hidden="true" tabindex="-1"></a>impdata <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(ssrtdata, upps_data) <span class="sc">%&gt;%</span> </span>
-<span id="cb52-43"><a href="#cb52-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb52-44"><a href="#cb52-44" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>subcode) <span class="sc">%&gt;%</span> </span>
-<span id="cb52-45"><a href="#cb52-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb52-46"><a href="#cb52-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb52-47"><a href="#cb52-47" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">rename</span>(<span class="at">SSRT_motor =</span> SSRT_motorsel,</span>
-<span id="cb52-48"><a href="#cb52-48" aria-hidden="true" tabindex="-1"></a>                <span class="at">SSRT_stim =</span> SSRT_stimsel,</span>
-<span id="cb52-49"><a href="#cb52-49" aria-hidden="true" tabindex="-1"></a>                <span class="at">UPPS_pers =</span> lack_of_perseverance,</span>
-<span id="cb52-50"><a href="#cb52-50" aria-hidden="true" tabindex="-1"></a>                <span class="at">UPPS_premed =</span> lack_of_premeditation,</span>
-<span id="cb52-51"><a href="#cb52-51" aria-hidden="true" tabindex="-1"></a>                <span class="at">UPPS_negurg =</span> negative_urgency,</span>
-<span id="cb52-52"><a href="#cb52-52" aria-hidden="true" tabindex="-1"></a>                <span class="at">UPPS_posurg =</span> positive_urgency,</span>
-<span id="cb52-53"><a href="#cb52-53" aria-hidden="true" tabindex="-1"></a>                <span class="at">UPPS_senseek =</span> sensation_seeking</span>
-<span id="cb52-54"><a href="#cb52-54" aria-hidden="true" tabindex="-1"></a>                )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Joining with `by = join_by(subcode)`</code></pre>
-</div>
-</div>
+</section>
+<section id="multivariate-data-an-example" class="slide level2">
+<h2>Multivariate Data: An Example</h2>
 <p>How do different aspects of psychological function (self-control etc.) relate to one another?</p>
 <p>10h battery of cognitive tests and surveys, N = 522, 9 measures of interest!</p>
 <p>Measures:</p>
@@ -1112,70 +1093,63 @@ Attache Paket: 'mclust'</code></pre>
 <li><p><em>Impulsivity</em>: tendency to make decisions on impulse, without regard of potential consequences (<em>UPPS-P</em> survey, assesses 5 facets of impulsivity).</p></li>
 </ul>
 </section>
-<section id="visualizing-multivariate-data" class="level2">
-<h2 class="anchored" data-anchor-id="visualizing-multivariate-data">Visualizing Multivariate Data</h2>
+<section id="visualizing-multivariate-data" class="slide level2">
+<h2>Visualizing Multivariate Data</h2>
 <p>Hard (impossible?) for us to visualize more than three dimensions/variables.</p>
-<div class="cell">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="W10_GLM_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="768"></p>
-<figcaption>Scatterplot of matrices for the nine variables in the self-control dataset. The diagonal elements in the matrix show the histogram for each of the individual variables. The lower left panels show scatterplots of the relationship between each pair of variables, and the upper right panel shows the correlation coefficient for each pair of variables.</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<div class="notes">
+
+<img data-src="W10_GLM_files/figure-revealjs/unnamed-chunk-19-1.png" width="768" class="r-stretch quarto-figure-center"><p class="caption">Scatterplot of matrices for the nine variables in the self-control dataset. The diagonal elements in the matrix show the histogram for each of the individual variables. The lower left panels show scatterplots of the relationship between each pair of variables, and the upper right panel shows the correlation coefficient for each pair of variables.</p><aside class="notes">
 <p>What do you see?</p>
 <p>each row/col –&gt; single variable<br>
 diagonal: dist each var<br>
 lower triangle: scatterplot each pair, regression line –&gt; relationship<br>
 upper: correlation coefficient</p>
-</div>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="heatmap" class="level2">
-<h2 class="anchored" data-anchor-id="heatmap">Heatmap</h2>
+<section id="heatmap" class="slide level2">
+<h2>Heatmap</h2>
 <p>Visualize correlations:</p>
-<div class="cell">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="W10_GLM_files/figure-html/hmap-1.png" class="img-fluid figure-img" width="768"></p>
-<figcaption>Heatmap of the correlation matrix for the nine self-control variables. The brighter yellow areas in the top left and bottom right highlight the higher correlations within the two subsets of variables.</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<p>We can see clear clusters: SSRT and UPPS have greater intercorrelations than correlations with the other measure.</p>
+
+<img data-src="W10_GLM_files/figure-revealjs/hmap-1.png" width="768" class="r-stretch quarto-figure-center"><p class="caption">Heatmap of the correlation matrix for the nine self-control variables. The brighter yellow areas in the top left and bottom right highlight the higher correlations within the two subsets of variables.</p><p>We can see clear clusters: SSRT and UPPS have greater intercorrelations than correlations with the other measure.</p>
 </section>
-<section id="heatmap-2" class="level2">
-<h2 class="anchored" data-anchor-id="heatmap-2">Heatmap 2</h2>
+<section id="heatmap-2" class="slide level2">
+<h2>Heatmap 2</h2>
 <p>Heatmaps are especially helpful if we have a large number of variables, such as in neuroimaging! Below you can see the <em>functional connectivity</em> of &gt;300 brain regions:</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="images/Heatmap2.png" class="img-fluid figure-img" width="445"></p>
-<figcaption>Heatmap of correlation coefficients of brain activity between 316 regions of the left hemisphere of a single individual. Yellow: strong positive correlations, blue: strong negative correlations</figcaption>
-</figure>
-</div>
-<div class="notes">
+
+<img data-src="images/Heatmap2.png" width="445" class="r-stretch quarto-figure-center"><p class="caption">Heatmap of correlation coefficients of brain activity between 316 regions of the left hemisphere of a single individual. Yellow: strong positive correlations, blue: strong negative correlations</p><aside class="notes">
 <p>large blocks of pos corr: major connected networks in the brain</p>
-</div>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="clustering" class="level2">
-<h2 class="anchored" data-anchor-id="clustering">Clustering</h2>
+<section id="clustering" class="slide level2">
+<h2>Clustering</h2>
 <p><strong>Clustering</strong>: Identifying groups of related observations or variables within a dataset, based on the similarity of the values of the observations.</p>
-<p>. . .</p>
+<div class="fragment">
 <p><strong>Similarity</strong>: Distance between values.</p>
 <p><strong>Euclidean Distance</strong>: Length of the line that connects two data points:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>euc_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">4</span>), <span class="at">y=</span><span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>))</span>
-<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(euc_df, <span class="fu">aes</span>(x,y)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="dv">0</span>, <span class="dv">5</span>) <span class="sc">+</span> <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="dv">4</span>) <span class="sc">+</span> </span>
-<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">'segment'</span>, <span class="at">x=</span><span class="dv">1</span>, <span class="at">y=</span><span class="dv">2</span>, <span class="at">xend=</span><span class="dv">4</span>, <span class="at">yend=</span><span class="dv">3</span>, <span class="at">linetype=</span><span class="st">'dotted'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure">
-<p><img src="W10_GLM_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="288"></p>
+<figure>
+<p><img data-src="W10_GLM_files/figure-revealjs/unnamed-chunk-20-1.png" width="288"></p>
 </figure>
 </div>
 </div>
@@ -1183,127 +1157,52 @@ upper: correlation coefficient</p>
 <p><span class="math display">\[
 d(x,y) = \sqrt{(x_1 - x_2)^2 + (y_1 - y_2)^2}
 \]</span></p>
-<p>. . .</p>
+</div>
+<div class="fragment">
 <p>Euclidean Distance is sensitive to variability in both variables –&gt; <em>scale</em> data before! (e.g., z-transformation using R’s <code>scale</code> function)</p>
-<div class="notes">
+<aside class="notes">
 <p>Clustering: finding set of groups that have the lowest distance between their members.</p>
 <p>Euclidean Dist: Pythagorean theorem<br>
 –&gt; can be extended to more than two dimensions!</p>
 <p>Scale: calculate z-score, standardizing</p>
 <p>Example: Relation between height and weight =&gt; it shouldn’t make a difference if we rescale the data from m to cm or from kg to pounds.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </div>
 </section>
-<section id="k-means-clustering" class="level2">
-<h2 class="anchored" data-anchor-id="k-means-clustering">K-Means Clustering</h2>
+<section id="k-means-clustering" class="slide level2 scrollable">
+<h2>K-Means Clustering</h2>
 <p><strong>K-means clustering</strong>: Identifies a set of cluster centers &amp; then assigns each data point to the cluster whose center is the closest (Euclidean Distance!).</p>
-<div class="incremental">
-<ol class="incremental" type="1">
-<li>Decide on value for <em>K</em>, the number of clusters to be found (e.g.&nbsp;based on previous knowledge/expectations).</li>
-<li>Come up with <em>k</em> locations for the centers - or <em>centroids</em> - of the clusters (e.g.&nbsp;choose data points at random to start with).</li>
-<li>Compute Euclidean distance of each data point to each centroid.</li>
-<li>Assign each point to a cluster, based on closest distance to centroid.</li>
-<li>Recompute centroid by averaging the location of all points assigned to that cluster.</li>
-<li>Repeat steps 1-5 until a stable solution is found (<em>iterative</em> process).</li>
+<div>
+<ol type="1">
+<li class="fragment">Decide on value for <em>K</em>, the number of clusters to be found (e.g.&nbsp;based on previous knowledge/expectations).</li>
+<li class="fragment">Come up with <em>k</em> locations for the centers - or <em>centroids</em> - of the clusters (e.g.&nbsp;choose data points at random to start with).</li>
+<li class="fragment">Compute Euclidean distance of each data point to each centroid.</li>
+<li class="fragment">Assign each point to a cluster, based on closest distance to centroid.</li>
+<li class="fragment">Recompute centroid by averaging the location of all points assigned to that cluster.</li>
+<li class="fragment">Repeat steps 1-5 until a stable solution is found (<em>iterative</em> process).</li>
 </ol>
 </div>
 </section>
-<section id="example-latitudelongitude-data" class="level2">
-<h2 class="anchored" data-anchor-id="example-latitudelongitude-data">Example: Latitude/Longitude Data</h2>
+<section id="example-latitudelongitude-data" class="slide level2">
+<h2>Example: Latitude/Longitude Data</h2>
 <div class="columns">
 <div class="column">
 <p>Here we can see the starting points (black squares) and end points (big colored dots) for each cluster, as well as the final cluster assignment of each data point (color):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>countries <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">'Data/country_data.csv'</span>, <span class="at">na=</span><span class="fu">c</span>(<span class="st">''</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># filter out countries with less than 1M population</span></span>
-<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Population2020 <span class="sc">&gt;</span> <span class="dv">500000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 166 Columns: 10
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr (6): CountryCode, CountryName, Region, IncomeGroup, Continent, country
-dbl (4): Population2020, latitude, longitude, GDP2020
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>latlong <span class="ot">&lt;-</span> countries <span class="sc">%&gt;%</span> </span>
-<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(latitude, longitude) </span>
-<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>k <span class="ot">=</span> <span class="dv">6</span></span>
-<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123456</span>)</span>
-<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a><span class="co"># select random starting points as the means - i.e. Forgy method</span></span>
-<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>centroids <span class="ot">=</span> latlong[<span class="fu">sample.int</span>(<span class="fu">nrow</span>(latlong), k),]</span>
-<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>iterations <span class="ot">=</span> <span class="dv">0</span></span>
-<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a>oldCentroids <span class="ot">=</span> <span class="fu">data.frame</span>()</span>
-<span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a>MAX_ITERATIONS <span class="ot">&lt;-</span> <span class="dv">100</span></span>
-<span id="cb57-11"><a href="#cb57-11" aria-hidden="true" tabindex="-1"></a>shouldStop <span class="ot">&lt;-</span> <span class="cf">function</span>(oldCentroids, centroids, iterations){</span>
-<span id="cb57-12"><a href="#cb57-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (iterations <span class="sc">&gt;</span> MAX_ITERATIONS){</span>
-<span id="cb57-13"><a href="#cb57-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">return</span>(<span class="cn">TRUE</span>)</span>
-<span id="cb57-14"><a href="#cb57-14" aria-hidden="true" tabindex="-1"></a>    } </span>
-<span id="cb57-15"><a href="#cb57-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">dim</span>(oldCentroids)[<span class="dv">1</span>] <span class="sc">==</span> <span class="dv">0</span>){</span>
-<span id="cb57-16"><a href="#cb57-16" aria-hidden="true" tabindex="-1"></a>      <span class="fu">return</span>(<span class="cn">FALSE</span>)</span>
-<span id="cb57-17"><a href="#cb57-17" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb57-18"><a href="#cb57-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">all.equal</span>(<span class="fu">as.matrix</span>(centroids), <span class="fu">as.matrix</span>(oldCentroids)) <span class="sc">==</span> <span class="cn">TRUE</span>)</span>
-<span id="cb57-19"><a href="#cb57-19" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb57-20"><a href="#cb57-20" aria-hidden="true" tabindex="-1"></a>getLabels <span class="ot">&lt;-</span> <span class="cf">function</span>(dataSet, centroids){</span>
-<span id="cb57-21"><a href="#cb57-21" aria-hidden="true" tabindex="-1"></a>    d <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(pdist<span class="sc">::</span><span class="fu">pdist</span>(dataSet, centroids))</span>
-<span id="cb57-22"><a href="#cb57-22" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb57-23"><a href="#cb57-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># For each element in the dataset, chose the closest centroid. </span></span>
-<span id="cb57-24"><a href="#cb57-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Make that centroid the element's label.</span></span>
-<span id="cb57-25"><a href="#cb57-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">apply</span>(d, <span class="dv">1</span>, which.min))</span>
-<span id="cb57-26"><a href="#cb57-26" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb57-27"><a href="#cb57-27" aria-hidden="true" tabindex="-1"></a>getCentroids <span class="ot">&lt;-</span> <span class="cf">function</span>(dataSet, labels, k){</span>
-<span id="cb57-28"><a href="#cb57-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Each centroid is the geometric mean of the points that</span></span>
-<span id="cb57-29"><a href="#cb57-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># have that centroid's label. Important: If a centroid is empty (no points have</span></span>
-<span id="cb57-30"><a href="#cb57-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># that centroid's label) you should randomly re-initialize it.</span></span>
-<span id="cb57-31"><a href="#cb57-31" aria-hidden="true" tabindex="-1"></a>    newCentroids <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb57-32"><a href="#cb57-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>k){</span>
-<span id="cb57-33"><a href="#cb57-33" aria-hidden="true" tabindex="-1"></a>      labeldata <span class="ot">&lt;-</span> dataSet[labels<span class="sc">==</span>i,]</span>
-<span id="cb57-34"><a href="#cb57-34" aria-hidden="true" tabindex="-1"></a>      newCentroids <span class="ot">&lt;-</span> <span class="fu">rbind</span>(newCentroids, <span class="fu">apply</span>(labeldata, <span class="dv">2</span>, mean))</span>
-<span id="cb57-35"><a href="#cb57-35" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb57-36"><a href="#cb57-36" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(newCentroids)</span>
-<span id="cb57-37"><a href="#cb57-37" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb57-38"><a href="#cb57-38" aria-hidden="true" tabindex="-1"></a>all_centroids_df <span class="ot">=</span> <span class="fu">data.frame</span>(centroids) <span class="sc">%&gt;%</span></span>
-<span id="cb57-39"><a href="#cb57-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">label_kmeans=</span><span class="fu">as.factor</span>(<span class="fu">seq</span>(<span class="dv">1</span>,<span class="fu">nrow</span>(.))),</span>
-<span id="cb57-40"><a href="#cb57-40" aria-hidden="true" tabindex="-1"></a>         <span class="at">iter=</span><span class="dv">0</span>)</span>
-<span id="cb57-41"><a href="#cb57-41" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> (<span class="sc">!</span><span class="fu">shouldStop</span>(oldCentroids, centroids, iterations)) {</span>
-<span id="cb57-42"><a href="#cb57-42" aria-hidden="true" tabindex="-1"></a>          <span class="co"># Save old centroids for convergence test. Book keeping.</span></span>
-<span id="cb57-43"><a href="#cb57-43" aria-hidden="true" tabindex="-1"></a>        oldCentroids <span class="ot">=</span> centroids</span>
-<span id="cb57-44"><a href="#cb57-44" aria-hidden="true" tabindex="-1"></a>        iterations <span class="ot">=</span> iterations <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb57-45"><a href="#cb57-45" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Assign labels to each datapoint based on centroids</span></span>
-<span id="cb57-46"><a href="#cb57-46" aria-hidden="true" tabindex="-1"></a>        labels <span class="ot">=</span> <span class="fu">getLabels</span>(latlong, centroids)</span>
-<span id="cb57-47"><a href="#cb57-47" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb57-48"><a href="#cb57-48" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Assign centroids based on datapoint labels</span></span>
-<span id="cb57-49"><a href="#cb57-49" aria-hidden="true" tabindex="-1"></a>        centroids <span class="ot">=</span> <span class="fu">getCentroids</span>(latlong, labels, k)</span>
-<span id="cb57-50"><a href="#cb57-50" aria-hidden="true" tabindex="-1"></a>        centroids_df <span class="ot">=</span> <span class="fu">data.frame</span>(centroids) <span class="sc">%&gt;%</span></span>
-<span id="cb57-51"><a href="#cb57-51" aria-hidden="true" tabindex="-1"></a>          <span class="fu">mutate</span>(<span class="at">label_kmeans=</span><span class="fu">as.factor</span>(<span class="fu">seq</span>(<span class="dv">1</span>,<span class="fu">nrow</span>(.))),</span>
-<span id="cb57-52"><a href="#cb57-52" aria-hidden="true" tabindex="-1"></a>                 <span class="at">iter=</span>iterations)</span>
-<span id="cb57-53"><a href="#cb57-53" aria-hidden="true" tabindex="-1"></a>        all_centroids_df <span class="ot">=</span> <span class="fu">rbind</span>(all_centroids_df, centroids_df)</span>
-<span id="cb57-54"><a href="#cb57-54" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb57-55"><a href="#cb57-55" aria-hidden="true" tabindex="-1"></a><span class="co">#sprintf('Completed after %d iterations', iterations)</span></span>
-<span id="cb57-56"><a href="#cb57-56" aria-hidden="true" tabindex="-1"></a>countries <span class="ot">&lt;-</span> countries <span class="sc">%&gt;%</span></span>
-<span id="cb57-57"><a href="#cb57-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">label_kmeans =</span> <span class="fu">as.factor</span>(labels))</span>
-<span id="cb57-58"><a href="#cb57-58" aria-hidden="true" tabindex="-1"></a>centroid_df <span class="ot">=</span> all_centroids_df <span class="sc">%&gt;%</span></span>
-<span id="cb57-59"><a href="#cb57-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(iter<span class="sc">==</span>iterations)</span>
-<span id="cb57-60"><a href="#cb57-60" aria-hidden="true" tabindex="-1"></a>p <span class="ot">=</span> <span class="fu">ggplot</span>(countries, <span class="fu">aes</span>(longitude, latitude, <span class="at">color=</span>label_kmeans)) <span class="sc">+</span> </span>
-<span id="cb57-61"><a href="#cb57-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb57-62"><a href="#cb57-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data=</span>centroid_df,<span class="at">alpha=</span><span class="fl">0.5</span>, <span class="at">size=</span><span class="dv">4</span>) </span>
-<span id="cb57-63"><a href="#cb57-63" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>iterations){</span>
-<span id="cb57-64"><a href="#cb57-64" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>k){</span>
-<span id="cb57-65"><a href="#cb57-65" aria-hidden="true" tabindex="-1"></a>    iter_df <span class="ot">=</span> all_centroids_df <span class="sc">%&gt;%</span> <span class="fu">filter</span>(iter<span class="sc">==</span>i, label_kmeans<span class="sc">==</span>j)</span>
-<span id="cb57-66"><a href="#cb57-66" aria-hidden="true" tabindex="-1"></a>    prev_df <span class="ot">=</span> all_centroids_df <span class="sc">%&gt;%</span> <span class="fu">filter</span>(iter<span class="sc">==</span>i<span class="dv">-1</span>, label_kmeans<span class="sc">==</span>j)</span>
-<span id="cb57-67"><a href="#cb57-67" aria-hidden="true" tabindex="-1"></a>    p <span class="ot">=</span> p <span class="sc">+</span>  <span class="fu">annotate</span>(<span class="st">'segment'</span>, <span class="at">x =</span> iter_df<span class="sc">$</span>longitude, </span>
-<span id="cb57-68"><a href="#cb57-68" aria-hidden="true" tabindex="-1"></a>                              <span class="at">y =</span> iter_df<span class="sc">$</span>latitude,</span>
-<span id="cb57-69"><a href="#cb57-69" aria-hidden="true" tabindex="-1"></a>                              <span class="at">xend =</span> prev_df<span class="sc">$</span>longitude,</span>
-<span id="cb57-70"><a href="#cb57-70" aria-hidden="true" tabindex="-1"></a>                              <span class="at">yend =</span> prev_df<span class="sc">$</span>latitude, <span class="at">alpha=</span><span class="fl">0.7</span>)</span>
-<span id="cb57-71"><a href="#cb57-71" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb57-72"><a href="#cb57-72" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb57-73"><a href="#cb57-73" aria-hidden="true" tabindex="-1"></a>p <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">data=</span>all_centroids_df <span class="sc">%&gt;%</span> <span class="fu">filter</span>(iter<span class="sc">==</span><span class="dv">0</span>), </span>
-<span id="cb57-74"><a href="#cb57-74" aria-hidden="true" tabindex="-1"></a>               <span class="at">size=</span><span class="dv">2</span>, <span class="at">shape=</span><span class="dv">15</span>, <span class="at">color=</span><span class="st">'black'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure">
-<p><img src="W10_GLM_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+<figure>
+<p><img data-src="W10_GLM_files/figure-revealjs/unnamed-chunk-21-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1312,7 +1211,6 @@ dbl (4): Population2020, latitude, longitude, GDP2020
 <p>We can see that there is a reasonable overlap between clusters and continents.</p>
 <p>We can further investigate this overlap with the <strong>confusion matrix</strong>, which compares membership of each cluster with the actual continents for each country:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(labels, countries<span class="sc">$</span>Continent)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      
 labels AF AS EU NA OC SA
@@ -1329,7 +1227,7 @@ labels AF AS EU NA OC SA
 <p>Note 2: Every time we run the iterative process, we will get a different result if we use random starting points. Make sure the result is robust, e.g.&nbsp;by running the Clustering algorithm several times.)</p>
 </div>
 </div>
-<div class="notes">
+<aside class="notes">
 <ul>
 <li>Cluster 1 contains all European countries, as well as countries from northern Africa and Asia.</li>
 </ul>
@@ -1341,53 +1239,38 @@ labels AF AS EU NA OC SA
 <li><p>Cluster 5 contains Oceania as well as several Asian countries</p></li>
 <li><p>Cluster 6 contains all of the remaining African countries.</p></li>
 </ul>
-</div>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="hierarchical-clustering" class="level2">
-<h2 class="anchored" data-anchor-id="hierarchical-clustering">Hierarchical Clustering</h2>
+<section id="hierarchical-clustering" class="slide level2 scrollable">
+<h2>Hierarchical Clustering</h2>
 <p><strong>Hierarchical Clustering:</strong> Also uses distances to determine clusters but also visualizes relationships in <em>dendrograms</em>.</p>
 <div class="columns">
 <div class="column">
 <p>The most common procedure is <strong>agglomerative clustering</strong>:</p>
-<div class="incremental">
-<ol class="incremental" type="1">
-<li>Every data point is treated as its own cluster.</li>
-<li>Two clusters with the least distance (e.g.&nbsp;<em>average linkage</em>) between them are combined.</li>
-<li>Repeat 1 &amp; 2 until only one cluster is left.</li>
-<li>Visualize, decide on a cutoff for the amount of reasonable clusters.</li>
+<div>
+<ol type="1">
+<li class="fragment">Every data point is treated as its own cluster.</li>
+<li class="fragment">Two clusters with the least distance (e.g.&nbsp;<em>average linkage</em>) between them are combined.</li>
+<li class="fragment">Repeat 1 &amp; 2 until only one cluster is left.</li>
+<li class="fragment">Visualize, decide on a cutoff for the amount of reasonable clusters.</li>
 </ol>
 </div>
 </div><div class="column">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">dist</span>(<span class="fu">t</span>(impdata))</span>
-<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>hc <span class="ot">&lt;-</span> <span class="fu">hclust</span>(d, <span class="at">method=</span><span class="st">'average'</span>)</span>
-<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a><span class="co">#convert cluster object to use with ggplot</span></span>
-<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>dendr <span class="ot">&lt;-</span> <span class="fu">dendro_data</span>(hc, <span class="at">type=</span><span class="st">"rectangle"</span>) </span>
-<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: https://stackoverflow.com/questions/21474388/colorize-clusters-in-dendogram-with-ggplot2</span></span>
-<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a>cutoffs <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">25</span>, <span class="dv">20</span>, <span class="dv">19</span>)</span>
-<span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a><span class="co">#your own labels (now rownames) are supplied in geom_text() and label=label</span></span>
-<span id="cb60-8"><a href="#cb60-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb60-9"><a href="#cb60-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">data=</span><span class="fu">segment</span>(dendr), <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y, <span class="at">xend=</span>xend, <span class="at">yend=</span>yend)) <span class="sc">+</span> </span>
-<span id="cb60-10"><a href="#cb60-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">data=</span><span class="fu">label</span>(dendr), <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y,<span class="at">label=</span>dendr<span class="sc">$</span>labels<span class="sc">$</span>label, <span class="at">hjust=</span><span class="dv">0</span>), <span class="at">size=</span><span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb60-11"><a href="#cb60-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span> <span class="fu">scale_y_reverse</span>(<span class="at">expand=</span><span class="fu">c</span>(<span class="fl">0.2</span>, <span class="dv">0</span>)) <span class="sc">+</span> </span>
-<span id="cb60-12"><a href="#cb60-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.line.y=</span><span class="fu">element_blank</span>(),</span>
-<span id="cb60-13"><a href="#cb60-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks.y=</span><span class="fu">element_blank</span>(),</span>
-<span id="cb60-14"><a href="#cb60-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y=</span><span class="fu">element_blank</span>(),</span>
-<span id="cb60-15"><a href="#cb60-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y=</span><span class="fu">element_blank</span>(),</span>
-<span id="cb60-16"><a href="#cb60-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.background=</span><span class="fu">element_rect</span>(<span class="at">fill=</span><span class="st">"white"</span>),</span>
-<span id="cb60-17"><a href="#cb60-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid=</span><span class="fu">element_blank</span>()) <span class="sc">+</span> </span>
-<span id="cb60-18"><a href="#cb60-18" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_hline</span>(<span class="at">yintercept=</span>cutoffs[<span class="dv">1</span>], <span class="at">color=</span><span class="st">'blue'</span>) <span class="sc">+</span> </span>
-<span id="cb60-19"><a href="#cb60-19" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_hline</span>(<span class="at">yintercept=</span>cutoffs[<span class="dv">2</span>], <span class="at">color=</span><span class="st">'green'</span>) <span class="sc">+</span> </span>
-<span id="cb60-20"><a href="#cb60-20" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_hline</span>(<span class="at">yintercept=</span>cutoffs[<span class="dv">3</span>], <span class="at">color=</span><span class="st">'red'</span>) <span class="sc">+</span> </span>
-<span id="cb60-21"><a href="#cb60-21" aria-hidden="true" tabindex="-1"></a>   <span class="fu">ylim</span>(<span class="dv">30</span>, <span class="sc">-</span><span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Scale for y is already present.
-Adding another scale for y, which will replace the existing scale.</code></pre>
-</div>
 <div class="cell-output-display">
 <div>
-<figure class="figure">
-<p><img src="W10_GLM_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
+<figure>
+<p><img data-src="W10_GLM_files/figure-revealjs/unnamed-chunk-23-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1395,36 +1278,48 @@ Adding another scale for y, which will replace the existing scale.</code></pre>
 <p>Colored lines: different cutoffs.</p>
 </div>
 </div>
-<p>. . .</p>
+<div class="fragment">
 <p>There seems to be a high degree of similarity within each variable set (SSRT and UPPS) compared to between sets.<br>
 =&gt; The first split separates UPPS vs.&nbsp;SSRT perfectly.</p>
 <p>Within UPPS, sensation seeking stands out as the most different to the rest.</p>
-<div class="notes">
+<aside class="notes">
 <p>average linkage: average of all distances between each data point in each of two clusters.</p>
 <p>Can read diagram from left to right: One supercluster that is split up more and more. Or right to left: Individual points that get joint together into bigger and bigger clusters.</p>
 <p>colored lines: different cutoff values</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </div>
 </section>
-<section id="dimensionality-reduction" class="level2">
-<h2 class="anchored" data-anchor-id="dimensionality-reduction">Dimensionality Reduction</h2>
+<section id="dimensionality-reduction" class="slide level2">
+<h2>Dimensionality Reduction</h2>
 <p>We often measure different variables that are highly similar to each other, e.g.&nbsp;because they are supposed to measure the same <em>construct</em>.</p>
 <p>Although we might measure a particular number of variables (= <em>dimensionality</em> of data set), there may be fewer independent sources of underlying information!</p>
 <p><strong>Dimensionality reduction</strong>: Reduce the number of variables by creating composite variables that reflect the underlying information.</p>
 </section>
-<section id="principal-component-analysis-pca" class="level2">
-<h2 class="anchored" data-anchor-id="principal-component-analysis-pca">Principal Component Analysis (PCA)</h2>
+<section id="principal-component-analysis-pca" class="slide level2">
+<h2>Principal Component Analysis (PCA)</h2>
 <p>Aim: Find a lower-dimensional (linear) description of a set of variables (that still accounts for the maximum possible information/variance in the dataset).</p>
 <p>Variance: Combination of signal + noise –&gt; find strongest common signal between variables!</p>
-<p>. . .</p>
+<div class="fragment">
 <p><strong>1st Component</strong>: explains most variance between variables, 2nd component: maximum of remaining variance - but uncorrelated with 1st…</p>
-<p>. . .</p>
+</div>
+<div class="fragment">
 <div class="columns">
 <div class="column">
 <div class="cell">
 <div class="cell-output-display">
 <div>
-<figure class="figure">
-<p><img src="W10_GLM_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid figure-img" width="384"></p>
+<figure>
+<p><img data-src="W10_GLM_files/figure-revealjs/unnamed-chunk-24-1.png" width="384"></p>
 </figure>
 </div>
 </div>
@@ -1435,113 +1330,93 @@ Adding another scale for y, which will replace the existing scale.</code></pre>
 <p>We can run a PCA on more than two variables!</p>
 </div>
 </div>
-<div class="notes">
+<aside class="notes">
 <p>obtain as many components as there are variables (assuming that there are more observations than there are variables)</p>
 <p>in practice: find a small number of components that can explain a large portion of the variance.</p>
 <p>1st component: similar to regression line, but minimizes perpendicular distance points to line (not vertical!)</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </div>
 </section>
-<section id="pca-2" class="level2">
-<h2 class="anchored" data-anchor-id="pca-2">PCA 2</h2>
+<section id="pca-2" class="slide level2">
+<h2>PCA 2</h2>
 <p>If we calculate a PCA on the impulsivity data, we see that there are two components (in the <em>scree plot</em>) that account for quite some variance.</p>
 <p>We can also look at the variable <em>loadings</em>, which show which variable “goes into” which component to better specify what that component represents. Here we can see that one components represents (=captures variance related to) the SSRT variables, the other the UPPS.</p>
 <div class="columns">
 <div class="column">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>imp_pc <span class="ot">=</span> <span class="fu">prcomp</span>(impdata,  <span class="at">scale. =</span> T)</span>
-<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_screeplot</span>(imp_pc, <span class="at">addlabels =</span> <span class="cn">TRUE</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">50</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure">
-<p><img src="W10_GLM_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
+<figure>
+<p><img data-src="W10_GLM_files/figure-revealjs/unnamed-chunk-25-1.png" width="960"></p>
 </figure>
 </div>
 </div>
 </div>
 </div><div class="column">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>loading_df <span class="ot">=</span> <span class="fu">as.data.frame</span>(imp_pc<span class="sc">$</span>rotation) </span>
-<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>loading_df[<span class="st">'Variable'</span>] <span class="ot">=</span> <span class="fu">rownames</span>(loading_df)</span>
-<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>loading_df <span class="ot">=</span> loading_df <span class="sc">%&gt;%</span> </span>
-<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">!</span>Variable, <span class="at">names_to=</span><span class="st">'PC'</span>, <span class="at">values_to=</span><span class="st">'Loading'</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(PC <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">'PC1'</span>, <span class="st">'PC2'</span>))</span>
-<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(loading_df ,</span>
-<span id="cb63-7"><a href="#cb63-7" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(Variable, Loading)) <span class="sc">+</span> <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">'identity'</span>)  <span class="sc">+</span> </span>
-<span id="cb63-8"><a href="#cb63-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">facet_grid</span>(PC <span class="sc">~</span> .)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure">
-<p><img src="W10_GLM_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid figure-img" width="672"></p>
+<figure>
+<p><img data-src="W10_GLM_files/figure-revealjs/unnamed-chunk-26-1.png" width="960"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="notes">
+<aside class="notes">
 <p>Scree plot: Sometimes used to make decisions on number of components (eigenvalues plotted)</p>
 <p>loadings: sign is arbitrary</p>
-</div>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="factor-analysis-fa" class="level2">
-<h2 class="anchored" data-anchor-id="factor-analysis-fa">Factor Analysis (FA)</h2>
+<section id="factor-analysis-fa" class="slide level2">
+<h2>Factor Analysis (FA)</h2>
 <p>PCA is useful for reducing the dimensionality of a dataset.<br>
 The components are per definition uncorrelated –&gt; sometimes this is a limitation.<br>
 PCA also doesn’t account for measurement error –&gt; possibly difficult to interpret loadings.</p>
-<p>. . .</p>
+<div class="fragment">
 <p><strong>Exploratory Factor Analysis</strong>: can also be used for dimensionality reduction.</p>
 <p>Idea: Each observed variable is created through a combination of contributions from a <em>latent</em> variable + measurement error. (<em>latent</em>: can’t be directly observed!)</p>
-<p>. . .</p>
+</div>
+<div class="fragment">
 <p><em>How do different measures relate to underlying factor (that gives rise to these measures)?</em></p>
+</div>
 </section>
-<section id="fa-2" class="level2">
-<h2 class="anchored" data-anchor-id="fa-2">FA 2</h2>
+<section id="fa-2" class="slide level2">
+<h2>FA 2</h2>
 <div class="columns">
 <div class="column">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">200</span>                           <span class="co">#setting my sample size             </span></span>
-<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">3</span>)                     <span class="co">#setting the means</span></span>
-<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>c1 <span class="ot">&lt;-</span> .<span class="dv">5</span> <span class="co"># correlation b/w WM and FR</span></span>
-<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, c1, <span class="dv">0</span>, c1, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>), <span class="dv">3</span>, <span class="dv">3</span>)  <span class="co">#setting the covariance matrix values. The "2,2" part at the tail end defines the number of rows and columns in the matrix</span></span>
-<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">04182019</span>)  <span class="co">#setting the seed value so I can reproduce this exact sim later if need be</span></span>
-<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a>simdata <span class="ot">&lt;-</span> MASS<span class="sc">::</span><span class="fu">mvrnorm</span>(<span class="at">n=</span>N,<span class="at">mu=</span>mu,<span class="at">Sigma=</span>sigma, <span class="at">empirical=</span><span class="cn">TRUE</span>)  <span class="co">#simulate the data, as specified above</span></span>
-<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a>latent_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(simdata)</span>
-<span id="cb64-8"><a href="#cb64-8" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(latent_df) <span class="ot">=</span> <span class="fu">c</span>(<span class="st">'WM'</span>, <span class="st">'FR'</span>, <span class="st">'IMP'</span>)</span>
-<span id="cb64-9"><a href="#cb64-9" aria-hidden="true" tabindex="-1"></a><span class="co"># create observed variables by matrix-multiplying the latent variables</span></span>
-<span id="cb64-10"><a href="#cb64-10" aria-hidden="true" tabindex="-1"></a><span class="co"># by a weight matrix </span></span>
-<span id="cb64-11"><a href="#cb64-11" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123456</span>)</span>
-<span id="cb64-12"><a href="#cb64-12" aria-hidden="true" tabindex="-1"></a>tasknames <span class="ot">=</span> <span class="fu">c</span>(<span class="st">'nback'</span>, <span class="st">'dspan'</span>, <span class="st">'sspan'</span>, <span class="st">'ravens'</span>, <span class="st">'crt'</span>, <span class="st">'UPPS'</span>, <span class="st">'BIS11'</span>, <span class="st">'dickman'</span>)</span>
-<span id="cb64-13"><a href="#cb64-13" aria-hidden="true" tabindex="-1"></a>ntasks <span class="ot">=</span> <span class="fu">length</span>(tasknames)</span>
-<span id="cb64-14"><a href="#cb64-14" aria-hidden="true" tabindex="-1"></a>weights <span class="ot">=</span> <span class="fu">matrix</span>(<span class="at">data =</span> <span class="dv">0</span>, <span class="dv">3</span>, ntasks)</span>
-<span id="cb64-15"><a href="#cb64-15" aria-hidden="true" tabindex="-1"></a>weights[<span class="dv">1</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>] <span class="ot">=</span> <span class="dv">1</span></span>
-<span id="cb64-16"><a href="#cb64-16" aria-hidden="true" tabindex="-1"></a>weights[<span class="dv">2</span>, <span class="dv">4</span><span class="sc">:</span><span class="dv">5</span>] <span class="ot">=</span> <span class="dv">1</span></span>
-<span id="cb64-17"><a href="#cb64-17" aria-hidden="true" tabindex="-1"></a>weights[<span class="dv">3</span>, <span class="dv">6</span><span class="sc">:</span><span class="dv">8</span>] <span class="ot">=</span> <span class="dv">1</span></span>
-<span id="cb64-18"><a href="#cb64-18" aria-hidden="true" tabindex="-1"></a>noise_sd <span class="ot">=</span> .<span class="dv">6</span></span>
-<span id="cb64-19"><a href="#cb64-19" aria-hidden="true" tabindex="-1"></a>observed_vals <span class="ot">=</span> <span class="fu">as.matrix</span>(latent_df) <span class="sc">%*%</span> weights <span class="sc">+</span> </span>
-<span id="cb64-20"><a href="#cb64-20" aria-hidden="true" tabindex="-1"></a>  MASS<span class="sc">::</span><span class="fu">mvrnorm</span>(<span class="at">n=</span>N, <span class="at">mu=</span><span class="fu">rep</span>(<span class="dv">0</span>, ntasks), <span class="at">Sigma=</span><span class="fu">diag</span>(ntasks) <span class="sc">*</span> noise_sd)</span>
-<span id="cb64-21"><a href="#cb64-21" aria-hidden="true" tabindex="-1"></a>observed_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(observed_vals)</span>
-<span id="cb64-22"><a href="#cb64-22" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(observed_df) <span class="ot">&lt;-</span> tasknames</span>
-<span id="cb64-23"><a href="#cb64-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb64-24"><a href="#cb64-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb64-25"><a href="#cb64-25" aria-hidden="true" tabindex="-1"></a>cormtx <span class="ot">=</span> <span class="fu">t</span>(<span class="fu">cor</span>(observed_df))</span>
-<span id="cb64-26"><a href="#cb64-26" aria-hidden="true" tabindex="-1"></a>gplots<span class="sc">::</span><span class="fu">heatmap.2</span>(cormtx, <span class="at">trace=</span><span class="st">'none'</span>, <span class="at">symm=</span><span class="cn">TRUE</span>, </span>
-<span id="cb64-27"><a href="#cb64-27" aria-hidden="true" tabindex="-1"></a>          <span class="at">revC=</span><span class="cn">TRUE</span>,<span class="at">col=</span>viridis<span class="sc">::</span><span class="fu">viridis</span>(<span class="dv">50</span>),</span>
-<span id="cb64-28"><a href="#cb64-28" aria-hidden="true" tabindex="-1"></a>          <span class="at">cellnote=</span><span class="fu">round</span>(cormtx, <span class="dv">2</span>), <span class="at">notecol=</span><span class="st">'black'</span>, <span class="at">key=</span><span class="cn">FALSE</span>,)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure">
-<p><img src="W10_GLM_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid figure-img" width="384"></p>
+<figure>
+<p><img data-src="W10_GLM_files/figure-revealjs/unnamed-chunk-27-1.png" width="384"></p>
 </figure>
 </div>
 </div>
 </div>
 </div><div class="column">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>fa_result <span class="ot">&lt;-</span> <span class="fu">fa</span>(observed_df, <span class="at">nfactors =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Lade nötigen Namensraum: GPArotation</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fa_result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Factor analysis with Call: fa(r = observed_df, nfactors = 3)
@@ -1555,18 +1430,12 @@ The df corrected root mean square of the residuals is  0.03
 
 Tucker Lewis Index of factoring reliability =  0.993
 RMSEA index =  0.026  and the 10 % confidence intervals are  0 0.094
-BIC =  -29.13
- With factor correlations of 
-     MR1  MR2  MR3
-MR1 1.00 0.03 0.47
-MR2 0.03 1.00 0.03
-MR3 0.47 0.03 1.00</code></pre>
+BIC =  -29.13</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fa.diagram</span>(fa_result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure">
-<p><img src="W10_GLM_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="672"></p>
+<figure>
+<p><img data-src="W10_GLM_files/figure-revealjs/unnamed-chunk-28-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1575,13 +1444,22 @@ MR3 0.47 0.03 1.00</code></pre>
 </div>
 <p><strong>RMSEA</strong> (root mean square error of approximation): Measure of model fit, should be &lt; .08.</p>
 <p>Use (lowest) <strong>SABIC</strong> (sample-size adjusted Bayesian information criterion) to compare models with different number of factors.</p>
-<div class="notes">
+<aside class="notes">
 <p>We can “hand over” <strong>3 factors</strong></p>
 <p><strong>RMSEA</strong> quantifies how far predicted covariances (between data) are from actual covariances</p>
-</div>
-</section>
-</section>
-<section id="thanks" class="level1">
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section id="thanks" class="title-slide slide level1 center">
 <h1>Thanks!</h1>
 <p>Learning objectives:</p>
 <ul>
@@ -1594,422 +1472,476 @@ MR3 0.47 0.03 1.00</code></pre>
 <li>Linear Mixed Models</li>
 </ul>
 
+<div class="quarto-auto-generated-content">
+<div class="footer footer-default">
 
+</div>
+</div>
 </section>
+    </div>
+  </div>
 
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
-window.document.addEventListener("DOMContentLoaded", function (event) {
-  const toggleBodyColorMode = (bsSheetEl) => {
-    const mode = bsSheetEl.getAttribute("data-mode");
-    const bodyEl = window.document.querySelector("body");
-    if (mode === "dark") {
-      bodyEl.classList.add("quarto-dark");
-      bodyEl.classList.remove("quarto-light");
-    } else {
-      bodyEl.classList.add("quarto-light");
-      bodyEl.classList.remove("quarto-dark");
-    }
-  }
-  const toggleBodyColorPrimary = () => {
-    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-    if (bsSheetEl) {
-      toggleBodyColorMode(bsSheetEl);
-    }
-  }
-  toggleBodyColorPrimary();  
-  const icon = "";
-  const anchorJS = new window.AnchorJS();
-  anchorJS.options = {
-    placement: 'right',
-    icon: icon
-  };
-  anchorJS.add('.anchored');
-  const isCodeAnnotation = (el) => {
-    for (const clz of el.classList) {
-      if (clz.startsWith('code-annotation-')) {                     
-        return true;
-      }
-    }
-    return false;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': true,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+
+    <script>
+
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+
+      // slide changes (different for each slide format).
+
+      (function () {
+
+        // dispatch for htmlwidgets
+
+        function fireSlideEnter() {
+
+          const event = window.document.createEvent("Event");
+
+          event.initEvent("slideenter", true, true);
+
+          window.document.dispatchEvent(event);
+
+        }
+
+    
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+
+          fireSlideEnter();
+
+    
+
+          // dispatch for shiny
+
+          if (window.jQuery) {
+
+            if (previousSlide) {
+
+              window.jQuery(previousSlide).trigger("hidden");
+
+            }
+
+            if (currentSlide) {
+
+              window.jQuery(currentSlide).trigger("shown");
+
+            }
+
+          }
+
+        }
+
+    
+
+        // hookup for slidy
+
+        if (window.w3c_slidy) {
+
+          window.w3c_slidy.add_observer(function (slide_num) {
+
+            // slide_num starts at position 1
+
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+
+          });
+
+        }
+
+    
+
+      })();
+
+    </script>
+
+    
+
+    <script id="quarto-html-after-body" type="application/javascript">
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+      const toggleBodyColorMode = (bsSheetEl) => {
+        const mode = bsSheetEl.getAttribute("data-mode");
+        const bodyEl = window.document.querySelector("body");
+        if (mode === "dark") {
+          bodyEl.classList.add("quarto-dark");
+          bodyEl.classList.remove("quarto-light");
+        } else {
+          bodyEl.classList.add("quarto-light");
+          bodyEl.classList.remove("quarto-dark");
         }
       }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
-    // button target
-    const button = e.trigger;
-    // don't keep focus
-    button.blur();
-    // flash "checked"
-    button.classList.add('code-copy-button-checked');
-    var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
-    let tooltip;
-    if (window.bootstrap) {
-      button.setAttribute("data-bs-toggle", "tooltip");
-      button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
-      tooltip = new bootstrap.Tooltip(button, 
-        { trigger: "manual", 
-          customClass: "code-copy-button-tooltip",
-          offset: [0, -8]});
-      tooltip.show();    
-    }
-    setTimeout(function() {
-      if (tooltip) {
-        tooltip.hide();
-        button.removeAttribute("data-bs-title");
-        button.removeAttribute("data-bs-toggle");
-        button.removeAttribute("data-bs-placement");
-      }
-      button.setAttribute("title", currentTitle);
-      button.classList.remove('code-copy-button-checked');
-    }, 1000);
-    // clear code selection
-    e.clearSelection();
-  });
-    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-    var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
-    var isInternal = (href) => {
-        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
-    }
-    // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
-    for (var i=0; i<links.length; i++) {
-      const link = links[i];
-      if (!isInternal(link.href)) {
-        // undo the damage that might have been done by quarto-nav.js in the case of
-        // links that we want to consider external
-        if (link.dataset.originalHref !== undefined) {
-          link.href = link.dataset.originalHref;
+      const toggleBodyColorPrimary = () => {
+        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+        if (bsSheetEl) {
+          toggleBodyColorMode(bsSheetEl);
         }
       }
-    }
-  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
-    const config = {
-      allowHTML: true,
-      maxWidth: 500,
-      delay: 100,
-      arrow: false,
-      appendTo: function(el) {
-          return el.parentElement;
-      },
-      interactive: true,
-      interactiveBorder: 10,
-      theme: 'quarto',
-      placement: 'bottom-start',
-    };
-    if (contentFn) {
-      config.content = contentFn;
-    }
-    if (onTriggerFn) {
-      config.onTrigger = onTriggerFn;
-    }
-    if (onUntriggerFn) {
-      config.onUntrigger = onUntriggerFn;
-    }
-    window.tippy(el, config); 
-  }
-  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-  for (var i=0; i<noterefs.length; i++) {
-    const ref = noterefs[i];
-    tippyHover(ref, function() {
-      // use id or data attribute instead here
-      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-      try { href = new URL(href).hash; } catch {}
-      const id = href.replace(/^#\/?/, "");
-      const note = window.document.getElementById(id);
-      if (note) {
-        return note.innerHTML;
-      } else {
-        return "";
-      }
-    });
-  }
-  const xrefs = window.document.querySelectorAll('a.quarto-xref');
-  const processXRef = (id, note) => {
-    // Strip column container classes
-    const stripColumnClz = (el) => {
-      el.classList.remove("page-full", "page-columns");
-      if (el.children) {
-        for (const child of el.children) {
-          stripColumnClz(child);
-        }
-      }
-    }
-    stripColumnClz(note)
-    if (id === null || id.startsWith('sec-')) {
-      // Special case sections, only their first couple elements
-      const container = document.createElement("div");
-      if (note.children && note.children.length > 2) {
-        container.appendChild(note.children[0].cloneNode(true));
-        for (let i = 1; i < note.children.length; i++) {
-          const child = note.children[i];
-          if (child.tagName === "P" && child.innerText === "") {
-            continue;
-          } else {
-            container.appendChild(child.cloneNode(true));
-            break;
+      toggleBodyColorPrimary();  
+      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+      tabsets.forEach(function(tabset) {
+        const tabby = new Tabby('#' + tabset.id);
+      });
+      const isCodeAnnotation = (el) => {
+        for (const clz of el.classList) {
+          if (clz.startsWith('code-annotation-')) {                     
+            return true;
           }
         }
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(container);
+        return false;
+      }
+      const clipboard = new window.ClipboardJS('.code-copy-button', {
+        text: function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
         }
-        return container.innerHTML
-      } else {
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(note);
+      });
+      clipboard.on('success', function(e) {
+        // button target
+        const button = e.trigger;
+        // don't keep focus
+        button.blur();
+        // flash "checked"
+        button.classList.add('code-copy-button-checked');
+        var currentTitle = button.getAttribute("title");
+        button.setAttribute("title", "Copied!");
+        let tooltip;
+        if (window.bootstrap) {
+          button.setAttribute("data-bs-toggle", "tooltip");
+          button.setAttribute("data-bs-placement", "left");
+          button.setAttribute("data-bs-title", "Copied!");
+          tooltip = new bootstrap.Tooltip(button, 
+            { trigger: "manual", 
+              customClass: "code-copy-button-tooltip",
+              offset: [0, -8]});
+          tooltip.show();    
         }
-        return note.innerHTML;
+        setTimeout(function() {
+          if (tooltip) {
+            tooltip.hide();
+            button.removeAttribute("data-bs-title");
+            button.removeAttribute("data-bs-toggle");
+            button.removeAttribute("data-bs-placement");
+          }
+          button.setAttribute("title", currentTitle);
+          button.classList.remove('code-copy-button-checked');
+        }, 1000);
+        // clear code selection
+        e.clearSelection();
+      });
+        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+        var mailtoRegex = new RegExp(/^mailto:/);
+          var filterRegex = new RegExp('/' + window.location.host + '/');
+        var isInternal = (href) => {
+            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+        }
+        // Inspect non-navigation links and adorn them if external
+     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+        for (var i=0; i<links.length; i++) {
+          const link = links[i];
+          if (!isInternal(link.href)) {
+            // undo the damage that might have been done by quarto-nav.js in the case of
+            // links that we want to consider external
+            if (link.dataset.originalHref !== undefined) {
+              link.href = link.dataset.originalHref;
+            }
+          }
+        }
+      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+        const config = {
+          allowHTML: true,
+          maxWidth: 500,
+          delay: 100,
+          arrow: false,
+          appendTo: function(el) {
+              return el.closest('section.slide') || el.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start',
+        };
+        if (contentFn) {
+          config.content = contentFn;
+        }
+        if (onTriggerFn) {
+          config.onTrigger = onTriggerFn;
+        }
+        if (onUntriggerFn) {
+          config.onUntrigger = onUntriggerFn;
+        }
+          config['offset'] = [0,0];
+          config['maxWidth'] = 700;
+        window.tippy(el, config); 
       }
-    } else {
-      // Remove any anchor links if they are present
-      const anchorLink = note.querySelector('a.anchorjs-link');
-      if (anchorLink) {
-        anchorLink.remove();
+      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+      for (var i=0; i<noterefs.length; i++) {
+        const ref = noterefs[i];
+        tippyHover(ref, function() {
+          // use id or data attribute instead here
+          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          try { href = new URL(href).hash; } catch {}
+          const id = href.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note) {
+            return note.innerHTML;
+          } else {
+            return "";
+          }
+        });
       }
-      if (window.Quarto?.typesetMath) {
-        window.Quarto.typesetMath(note);
-      }
-      // TODO in 1.5, we should make sure this works without a callout special case
-      if (note.classList.contains("callout")) {
-        return note.outerHTML;
-      } else {
-        return note.innerHTML;
-      }
-    }
-  }
-  for (var i=0; i<xrefs.length; i++) {
-    const xref = xrefs[i];
-    tippyHover(xref, undefined, function(instance) {
-      instance.disable();
-      let url = xref.getAttribute('href');
-      let hash = undefined; 
-      if (url.startsWith('#')) {
-        hash = url;
-      } else {
-        try { hash = new URL(url).hash; } catch {}
-      }
-      if (hash) {
-        const id = hash.replace(/^#\/?/, "");
-        const note = window.document.getElementById(id);
-        if (note !== null) {
-          try {
-            const html = processXRef(id, note.cloneNode(true));
-            instance.setContent(html);
-          } finally {
-            instance.enable();
-            instance.show();
+      const findCites = (el) => {
+        const parentEl = el.parentElement;
+        if (parentEl) {
+          const cites = parentEl.dataset.cites;
+          if (cites) {
+            return {
+              el,
+              cites: cites.split(' ')
+            };
+          } else {
+            return findCites(el.parentElement)
           }
         } else {
-          // See if we can fetch this
-          fetch(url.split('#')[0])
-          .then(res => res.text())
-          .then(html => {
-            const parser = new DOMParser();
-            const htmlDoc = parser.parseFromString(html, "text/html");
-            const note = htmlDoc.getElementById(id);
-            if (note !== null) {
-              const html = processXRef(id, note);
-              instance.setContent(html);
-            } 
-          }).finally(() => {
-            instance.enable();
-            instance.show();
+          return undefined;
+        }
+      };
+      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+      for (var i=0; i<bibliorefs.length; i++) {
+        const ref = bibliorefs[i];
+        const citeInfo = findCites(ref);
+        if (citeInfo) {
+          tippyHover(citeInfo.el, function() {
+            var popup = window.document.createElement('div');
+            citeInfo.cites.forEach(function(cite) {
+              var citeDiv = window.document.createElement('div');
+              citeDiv.classList.add('hanging-indent');
+              citeDiv.classList.add('csl-entry');
+              var biblioDiv = window.document.getElementById('ref-' + cite);
+              if (biblioDiv) {
+                citeDiv.innerHTML = biblioDiv.innerHTML;
+              }
+              popup.appendChild(citeDiv);
+            });
+            return popup.innerHTML;
           });
         }
-      } else {
-        // See if we can fetch a full url (with no hash to target)
-        // This is a special case and we should probably do some content thinning / targeting
-        fetch(url)
-        .then(res => res.text())
-        .then(html => {
-          const parser = new DOMParser();
-          const htmlDoc = parser.parseFromString(html, "text/html");
-          const note = htmlDoc.querySelector('main.content');
-          if (note !== null) {
-            // This should only happen for chapter cross references
-            // (since there is no id in the URL)
-            // remove the first header
-            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
-              note.children[0].remove();
-            }
-            const html = processXRef(null, note);
-            instance.setContent(html);
-          } 
-        }).finally(() => {
-          instance.enable();
-          instance.show();
-        });
       }
-    }, function(instance) {
     });
-  }
-      let selectedAnnoteEl;
-      const selectorForAnnotation = ( cell, annotation) => {
-        let cellAttr = 'data-code-cell="' + cell + '"';
-        let lineAttr = 'data-code-annotation="' +  annotation + '"';
-        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
-        return selector;
-      }
-      const selectCodeLines = (annoteEl) => {
-        const doc = window.document;
-        const targetCell = annoteEl.getAttribute("data-target-cell");
-        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
-        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
-        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
-        const lineIds = lines.map((line) => {
-          return targetCell + "-" + line;
-        })
-        let top = null;
-        let height = null;
-        let parent = null;
-        if (lineIds.length > 0) {
-            //compute the position of the single el (top and bottom and make a div)
-            const el = window.document.getElementById(lineIds[0]);
-            top = el.offsetTop;
-            height = el.offsetHeight;
-            parent = el.parentElement.parentElement;
-          if (lineIds.length > 1) {
-            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-            height = bottom - top;
-          }
-          if (top !== null && height !== null && parent !== null) {
-            // cook up a div (if necessary) and position it 
-            let div = window.document.getElementById("code-annotation-line-highlight");
-            if (div === null) {
-              div = window.document.createElement("div");
-              div.setAttribute("id", "code-annotation-line-highlight");
-              div.style.position = 'absolute';
-              parent.appendChild(div);
-            }
-            div.style.top = top - 2 + "px";
-            div.style.height = height + 4 + "px";
-            div.style.left = 0;
-            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-            if (gutterDiv === null) {
-              gutterDiv = window.document.createElement("div");
-              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-              gutterDiv.style.position = 'absolute';
-              const codeCell = window.document.getElementById(targetCell);
-              const gutter = codeCell.querySelector('.code-annotation-gutter');
-              gutter.appendChild(gutterDiv);
-            }
-            gutterDiv.style.top = top - 2 + "px";
-            gutterDiv.style.height = height + 4 + "px";
-          }
-          selectedAnnoteEl = annoteEl;
-        }
-      };
-      const unselectCodeLines = () => {
-        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
-        elementsIds.forEach((elId) => {
-          const div = window.document.getElementById(elId);
-          if (div) {
-            div.remove();
-          }
-        });
-        selectedAnnoteEl = undefined;
-      };
-        // Handle positioning of the toggle
-    window.addEventListener(
-      "resize",
-      throttle(() => {
-        elRect = undefined;
-        if (selectedAnnoteEl) {
-          selectCodeLines(selectedAnnoteEl);
-        }
-      }, 10)
-    );
-    function throttle(fn, ms) {
-    let throttle = false;
-    let timer;
-      return (...args) => {
-        if(!throttle) { // first call gets through
-            fn.apply(this, args);
-            throttle = true;
-        } else { // all the others get throttled
-            if(timer) clearTimeout(timer); // cancel #2
-            timer = setTimeout(() => {
-              fn.apply(this, args);
-              timer = throttle = false;
-            }, ms);
-        }
-      };
-    }
-      // Attach click handler to the DT
-      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
-      for (const annoteDlNode of annoteDls) {
-        annoteDlNode.addEventListener('click', (event) => {
-          const clickedEl = event.target;
-          if (clickedEl !== selectedAnnoteEl) {
-            unselectCodeLines();
-            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
-            if (activeEl) {
-              activeEl.classList.remove('code-annotation-active');
-            }
-            selectCodeLines(clickedEl);
-            clickedEl.classList.add('code-annotation-active');
-          } else {
-            // Unselect the line
-            unselectCodeLines();
-            clickedEl.classList.remove('code-annotation-active');
-          }
-        });
-      }
-  const findCites = (el) => {
-    const parentEl = el.parentElement;
-    if (parentEl) {
-      const cites = parentEl.dataset.cites;
-      if (cites) {
-        return {
-          el,
-          cites: cites.split(' ')
-        };
-      } else {
-        return findCites(el.parentElement)
-      }
-    } else {
-      return undefined;
-    }
-  };
-  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-  for (var i=0; i<bibliorefs.length; i++) {
-    const ref = bibliorefs[i];
-    const citeInfo = findCites(ref);
-    if (citeInfo) {
-      tippyHover(citeInfo.el, function() {
-        var popup = window.document.createElement('div');
-        citeInfo.cites.forEach(function(cite) {
-          var citeDiv = window.document.createElement('div');
-          citeDiv.classList.add('hanging-indent');
-          citeDiv.classList.add('csl-entry');
-          var biblioDiv = window.document.getElementById('ref-' + cite);
-          if (biblioDiv) {
-            citeDiv.innerHTML = biblioDiv.innerHTML;
-          }
-          popup.appendChild(citeDiv);
-        });
-        return popup.innerHTML;
-      });
-    }
-  }
-});
-</script>
-</div> <!-- /content -->
-
-
-
+    </script>
+    
 
 </body></html>
