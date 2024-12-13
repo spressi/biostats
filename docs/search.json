@@ -1707,7 +1707,7 @@
     "href": "W9_FirstAnalysisR.html#set-up",
     "title": "09 Statistical Analyses in R",
     "section": "Set Up",
-    "text": "Set Up\n\nOpen RStudio and load your Biostats R project. Create a new script called DataAnalysis1.R.\nInstall and load new packages you’ll need: car, apa, effectsize, and report."
+    "text": "Set Up\n\nOpen RStudio and load your Biostats R project. Create a new script called DataAnalysis1.R.\nInstall and load new packages you’ll need:\n\n\nlibrary(car)\nlibrary(apa)\nlibrary(effectsize)\nlibrary(confintr)\nlibrary(afex)\nlibrary(performance)\nlibrary(emmeans)\nlibrary(pwr)\nlibrary(lsr)\nlibrary(report)"
   },
   {
     "objectID": "W9_FirstAnalysisR.html#one-sample-chi²-test",

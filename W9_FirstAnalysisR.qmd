@@ -46,7 +46,22 @@ which analysis do you use when you have two categorical etc. variables?
 
 1.  Open RStudio and load your Biostats R project. Create a new script called `DataAnalysis1.R`.
 
-2.  Install and load new packages you'll need: `car`, `apa`, `effectsize`, and `report`.
+2.  Install and load new packages you'll need:
+
+```{r}
+#| echo: true
+#| eval: false
+library(car)
+library(apa)
+library(effectsize)
+library(confintr)
+library(afex)
+library(performance)
+library(emmeans)
+library(pwr)
+library(lsr)
+library(report)
+```
 
 # Activity 1
 
