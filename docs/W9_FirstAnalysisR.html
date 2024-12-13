@@ -495,15 +495,15 @@ div.cell-output-stdout {
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># add expected count and residuals to data</span></span>
 <span id="cb4-2"><a href="#cb4-2"></a>lever_presses <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">expected =</span> chi2_lever<span class="sc">$</span>expected, </span>
-<span id="cb4-3"><a href="#cb4-3"></a>                         <span class="at">residuals =</span> chi2_lever<span class="sc">$</span>residuals,</span>
-<span id="cb4-4"><a href="#cb4-4"></a>                         <span class="at">residuals_standardized =</span> chi2_lever<span class="sc">$</span>stdres)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-3"><a href="#cb4-3"></a>                         <span class="at">diff =</span> n <span class="sc">-</span> expected,</span>
+<span id="cb4-4"><a href="#cb4-4"></a>                         <span class="at">residuals =</span> chi2_lever<span class="sc">$</span>residuals)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 5
-  levers     n expected residuals residuals_standardized
-  &lt;chr&gt;  &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt;                  &lt;dbl&gt;
-1 blue       5     6.67    -0.645                 -0.791
-2 green      4     6.67    -1.03                  -1.26 
-3 red       11     6.67     1.68                   2.06 </code></pre>
+  levers     n expected  diff residuals
+  &lt;chr&gt;  &lt;int&gt;    &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;
+1 blue       5     6.67 -1.67    -0.645
+2 green      4     6.67 -2.67    -1.03 
+3 red       11     6.67  4.33     1.68 </code></pre>
 </div>
 </div>
 <aside class="notes">
@@ -825,7 +825,7 @@ In fact, only its <em>sampling distribution</em> needs to be (blue vs.&nbsp;grey
 </section>
 <section id="assumptions-of-t-tests-normality-2" class="slide level2">
 <h2>Assumptions of <em>t</em>-Tests: Normality</h2>
-<p>Alternatively, we can also run a <strong>Shapiro-Wilk</strong> test to test for <strong>deviations</strong> from normality:</p>
+<p>Alternatively, we can also run a <strong>Shapiro-Wilk</strong> test to check for <strong>deviations</strong> from normality:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="fu">shapiro.test</span>(<span class="at">x =</span> treatment)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -845,6 +845,7 @@ W = 0.96812, p-value = 0.7147</code></pre>
 </div>
 </div>
 <p>If the test is non-significant, then we can conclude that normality of residuals is <strong>not</strong> violated.</p>
+<p>⇒ Shapiro-Wilk tests for <strong>significant deveiations from normality</strong>.</p>
 <aside class="notes">
 <ol type="1">
 <li>Transform your data to try and normalise the distribution. Not usually recommended these days but some still use it.</li>
@@ -1041,11 +1042,30 @@ What do you think you should report in your results section?
 <li class="fragment"><p>Most things are similar between independent and dependent sample <em>t</em>-tests</p></li>
 <li class="fragment"><p>Make sure to include <code>paired = TRUE</code> for repeated measures to get correct results</p></li>
 <li class="fragment"><p>Recommendation: Use <code>apa::t_apa()</code> with <code>es.ci = TRUE</code> to get (most of) the information you need</p></li>
-<li class="fragment"><p>It is often a good idea to also report means and standard deviations per group (<code>summarize</code> with <code>.by</code> argument)</p></li>
-<li class="fragment"><p>Plotting: Unfortunately, (between subjects) confidence intervals are not diagnostic for the significance of dependent samples. Instead, we need the <strong>confidence interval around the paired differences (i.e., the within subject changes)</strong>. Since this is not easy to do and there is little consensus yet, I will just raise awareness here.</p></li>
+<li class="fragment"><p>It is often a good idea to also report means and standard deviations per group<br>
+(<code>summarize</code> with <code>.by</code> argument)</p></li>
+<li class="fragment"><p>Plotting: Unfortunately, (between subjects) confidence intervals are not diagnostic for the significance of dependent samples. Instead, we need the <strong>confidence interval around the paired differences (i.e., the within subject changes)</strong>.</p></li>
 </ul>
 </div>
-</section></section>
+</section>
+<section id="kinds-of-error-variance-in-paired-samples" class="slide level2">
+<h2>Kinds of Error Variance in paired samples</h2>
+<aside class="notes">
+<p>Use <code>Notes Canvas</code> (paint brush icon on bottom left) to draw worst possibility of paired differences in “Raw Data” and resulting increase in within-subjects error variance while between-subjects variance remains fixed.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<!-- DOI not working: https://doi.org/10.2478/v10053-008-0133-x -->
+
+<img data-src="images/PfisterJanczyk2013.png" class="r-stretch quarto-figure-center"><p class="caption"><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3699740/">Pfister &amp; Janczyk (2013)</a>, Fig. 1</p></section></section>
 <section>
 <section id="correlation-preparation" class="title-slide slide level1 center">
 <h1>Correlation: Preparation</h1>
@@ -1065,55 +1085,56 @@ What do you think you should report in your results section?
 </section>
 <section id="correlation-test" class="slide level2">
 <h2>Correlation Test</h2>
-<p>With these data, we might be interested in whether there is a relationship between the two measures of gaze, i.e., whether those children who looked at the stranger more at baseline would also be the ones who looked at the stranger more often at the follow-up test (here: indicating stability of preferences).</p>
+<p>We might be interested in whether there is a relationship between the two measures of gaze, i.e., whether those children who looked at the stranger more at baseline would also look more at the follow-up test (here: indicating stability of preferences).</p>
 <div class="fragment">
 <p>Similar to the paired <em>t</em>-Test, the continuous variables are also “paired” within subjects. Thus, we can use a similar syntax to the previous optional activity of the paired <em>t</em>-test:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1"></a><span class="fu">cor.test</span>(<span class="at">x =</span> gaze <span class="sc">%&gt;%</span> <span class="fu">pull</span>(baseline), </span>
 <span id="cb46-2"><a href="#cb46-2"></a>         <span class="at">y =</span> gaze <span class="sc">%&gt;%</span> <span class="fu">pull</span>(test), </span>
 <span id="cb46-3"><a href="#cb46-3"></a>         <span class="at">method =</span> <span class="st">"pearson"</span>, <span class="co">#default</span></span>
-<span id="cb46-4"><a href="#cb46-4"></a>         <span class="at">alternative =</span> <span class="st">"two.sided"</span>) <span class="co">#default</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-    Pearson's product-moment correlation
-
-data:  gaze %&gt;% pull(baseline) and gaze %&gt;% pull(test)
-t = 3.5686, df = 30, p-value = 0.00123
-alternative hypothesis: true correlation is not equal to 0
-95 percent confidence interval:
- 0.2435655 0.7515352
-sample estimates:
-      cor 
-0.5458966 </code></pre>
-</div>
-</div>
-<p>Note: We don’t have to indicate <code>paired = TRUE</code> because correlations only work for paired values.</p>
-</div>
-</section>
-<section id="correlations-write-up" class="slide level2">
-<h2>Correlations: Write Up</h2>
-<p>Once again, the <code>apa</code> package offers help to summarize the results:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1"></a><span class="fu">cor.test</span>(<span class="at">x =</span> gaze <span class="sc">%&gt;%</span> <span class="fu">pull</span>(baseline), </span>
-<span id="cb48-2"><a href="#cb48-2"></a>         <span class="at">y =</span> gaze <span class="sc">%&gt;%</span> <span class="fu">pull</span>(test), </span>
-<span id="cb48-3"><a href="#cb48-3"></a>         <span class="at">method =</span> <span class="st">"pearson"</span>, </span>
-<span id="cb48-4"><a href="#cb48-4"></a>         <span class="at">alternative =</span> <span class="st">"two.sided"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb48-5"><a href="#cb48-5"></a>  apa<span class="sc">::</span><span class="fu">cor_apa</span>(<span class="at">r_ci=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb46-4"><a href="#cb46-4"></a>         <span class="at">alternative =</span> <span class="st">"two.sided"</span>) <span class="sc">%&gt;%</span> <span class="co">#default</span></span>
+<span id="cb46-5"><a href="#cb46-5"></a>  apa<span class="sc">::</span><span class="fu">cor_apa</span>(<span class="at">r_ci =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>r(30) = .55 [.24; .75], p = .001</code></pre>
 </div>
 </div>
+<p>Note: We don’t have to indicate <code>paired = TRUE</code> because correlations only work for paired values.</p>
+<!-- 
+## Correlations: Write Up
+
+Once again, the `apa` package offers help to summarize the results:
+
+
+::: {.cell}
+
+```{.r .cell-code}
+cor.test(x = gaze %>% pull(baseline), 
+         y = gaze %>% pull(test), 
+         method = "pearson", 
+         alternative = "two.sided") %>% 
+  apa::cor_apa(r_ci=TRUE)
+```
+
+::: {.cell-output .cell-output-stdout}
+```
+r(30) = .55 [.24; .75], p = .001
+```
+:::
+:::
+
+-->
+</div>
 </section>
-<section id="correlations-write-up-1" class="slide level2">
+<section id="correlations-write-up" class="slide level2">
 <h2>Correlations: Write Up</h2>
 <p>You can even use <code>report()</code> to get an automatic suggestion of how to report the results (works with a lot of different models!).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1"></a><span class="fu">library</span>(report)</span>
-<span id="cb50-2"><a href="#cb50-2"></a><span class="fu">with</span>(gaze, <span class="fu">cor.test</span>(<span class="at">x =</span> baseline, </span>
-<span id="cb50-3"><a href="#cb50-3"></a>                    <span class="at">y =</span> test, </span>
-<span id="cb50-4"><a href="#cb50-4"></a>                    <span class="at">method =</span> <span class="st">"pearson"</span>, </span>
-<span id="cb50-5"><a href="#cb50-5"></a>                    <span class="at">alternative =</span> <span class="st">"two.sided"</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb50-6"><a href="#cb50-6"></a>  <span class="fu">report</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1"></a><span class="fu">library</span>(report)</span>
+<span id="cb48-2"><a href="#cb48-2"></a><span class="fu">with</span>(gaze, <span class="fu">cor.test</span>(<span class="at">x =</span> baseline, </span>
+<span id="cb48-3"><a href="#cb48-3"></a>                    <span class="at">y =</span> test, </span>
+<span id="cb48-4"><a href="#cb48-4"></a>                    <span class="at">method =</span> <span class="st">"pearson"</span>, </span>
+<span id="cb48-5"><a href="#cb48-5"></a>                    <span class="at">alternative =</span> <span class="st">"two.sided"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb48-6"><a href="#cb48-6"></a>  <span class="fu">report</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Effect sizes were labelled following Funder's (2019) recommendations.
 
@@ -1205,13 +1226,13 @@ If we have at least one within-subjects factor, we would run a <strong>repeated 
 <li><p>Change the variable <code>Condition</code> from <code>numeric</code> to a <code>factor</code> using <code>as.factor()</code></p></li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb52-2"><a href="#cb52-2"></a></span>
-<span id="cb52-3"><a href="#cb52-3"></a>dat <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"Data/James Holmes_Expt 2_DATA.csv"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb52-4"><a href="#cb52-4"></a>  <span class="fu">rownames_to_column</span>(<span class="st">"subject"</span>) <span class="sc">%&gt;%</span> <span class="co">#mutate(subject = 1:n()) %&gt;% </span></span>
-<span id="cb52-5"><a href="#cb52-5"></a>  <span class="fu">rename</span>(<span class="at">intrusions =</span> Days_One_to_Seven_Image_Based_Intrusions_in_Intrusion_Diary) <span class="sc">%&gt;%</span> </span>
-<span id="cb52-6"><a href="#cb52-6"></a>  <span class="fu">select</span>(subject, Condition, intrusions) <span class="sc">%&gt;%</span> </span>
-<span id="cb52-7"><a href="#cb52-7"></a>  <span class="fu">mutate</span>(<span class="at">Condition =</span> <span class="fu">as.factor</span>(Condition))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb50-2"><a href="#cb50-2"></a></span>
+<span id="cb50-3"><a href="#cb50-3"></a>dat <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"Data/James Holmes_Expt 2_DATA.csv"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb50-4"><a href="#cb50-4"></a>  <span class="fu">rownames_to_column</span>(<span class="st">"subject"</span>) <span class="sc">%&gt;%</span> <span class="co">#mutate(subject = 1:n()) %&gt;% </span></span>
+<span id="cb50-5"><a href="#cb50-5"></a>  <span class="fu">rename</span>(<span class="at">intrusions =</span> Days_One_to_Seven_Image_Based_Intrusions_in_Intrusion_Diary) <span class="sc">%&gt;%</span> </span>
+<span id="cb50-6"><a href="#cb50-6"></a>  <span class="fu">select</span>(subject, Condition, intrusions) <span class="sc">%&gt;%</span> </span>
+<span id="cb50-7"><a href="#cb50-7"></a>  <span class="fu">mutate</span>(<span class="at">Condition =</span> <span class="fu">as.factor</span>(Condition))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <aside class="notes">
 <p>we will today only look at one-way anovas! Next week we will cover the case when we have more than one IV/predictor!</p>
@@ -1232,14 +1253,12 @@ If we have at least one within-subjects factor, we would run a <strong>repeated 
 <p>Create summary/descriptive statistics and visualize the data.</p>
 <p>As summary statistics, we want the mean, SD, and SE.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1"></a>se <span class="ot">=</span> <span class="cf">function</span>(x, <span class="at">na.rm =</span> <span class="cn">FALSE</span>) { <span class="fu">sd</span>(x, na.rm) <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="cf">if</span>(<span class="sc">!</span>na.rm) <span class="fu">length</span>(x) <span class="cf">else</span> <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(x))) }</span>
-<span id="cb53-2"><a href="#cb53-2"></a></span>
-<span id="cb53-3"><a href="#cb53-3"></a>sum_dat <span class="ot">&lt;-</span> dat <span class="sc">%&gt;%</span></span>
-<span id="cb53-4"><a href="#cb53-4"></a>  <span class="fu">summarize</span>(<span class="at">mean =</span> <span class="fu">mean</span>(intrusions),</span>
-<span id="cb53-5"><a href="#cb53-5"></a>            <span class="at">sd =</span> <span class="fu">sd</span>(intrusions),</span>
-<span id="cb53-6"><a href="#cb53-6"></a>            <span class="at">se =</span> <span class="fu">se</span>(intrusions), <span class="co">#se = confintr::se_mean(intrusions),</span></span>
-<span id="cb53-7"><a href="#cb53-7"></a>            <span class="at">.by =</span> Condition)</span>
-<span id="cb53-8"><a href="#cb53-8"></a><span class="fu">print</span>(sum_dat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1"></a>sum_dat <span class="ot">&lt;-</span> dat <span class="sc">%&gt;%</span></span>
+<span id="cb51-2"><a href="#cb51-2"></a>  <span class="fu">summarize</span>(<span class="at">mean =</span> <span class="fu">mean</span>(intrusions),</span>
+<span id="cb51-3"><a href="#cb51-3"></a>            <span class="at">sd =</span> <span class="fu">sd</span>(intrusions),</span>
+<span id="cb51-4"><a href="#cb51-4"></a>            <span class="at">se =</span> confintr<span class="sc">::</span><span class="fu">se_mean</span>(intrusions), <span class="co">#no native R function :(</span></span>
+<span id="cb51-5"><a href="#cb51-5"></a>            <span class="at">.by =</span> Condition)</span>
+<span id="cb51-6"><a href="#cb51-6"></a><span class="fu">print</span>(sum_dat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 4 × 4
   Condition  mean    sd    se
@@ -1280,8 +1299,8 @@ ggplot(sum_dat, aes(x = Condition, y = mean, fill = Condition)) +
 <li>Run the ANOVA using <code>lm()</code> and formula notation.</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1"></a>mod1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(intrusions <span class="sc">~</span> Condition, <span class="at">data =</span> dat)</span>
-<span id="cb55-2"><a href="#cb55-2"></a><span class="fu">anova</span>(mod1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1"></a>mod1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(intrusions <span class="sc">~</span> Condition, <span class="at">data =</span> dat)</span>
+<span id="cb53-2"><a href="#cb53-2"></a><span class="fu">anova</span>(mod1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Variance Table
 
@@ -1297,15 +1316,15 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <li>Using <code>afex::aov_ez</code>:</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1"></a><span class="fu">library</span>(afex)</span>
-<span id="cb57-2"><a href="#cb57-2"></a>mod <span class="ot">&lt;-</span> <span class="fu">aov_ez</span>(<span class="at">id =</span> <span class="st">"subject"</span>, <span class="co"># the column containing the subject IDs</span></span>
-<span id="cb57-3"><a href="#cb57-3"></a>              <span class="at">dv =</span> <span class="st">"intrusions"</span>, <span class="co"># the DV </span></span>
-<span id="cb57-4"><a href="#cb57-4"></a>              <span class="at">between =</span> <span class="st">"Condition"</span>, <span class="co"># the between-subject variable</span></span>
-<span id="cb57-5"><a href="#cb57-5"></a>              <span class="at">es =</span> <span class="st">"pes"</span>, <span class="co"># can output an effect size! we want partial eta-squared</span></span>
-<span id="cb57-6"><a href="#cb57-6"></a>              <span class="at">type =</span> <span class="dv">3</span>, <span class="co"># there are both reasons for 2 and 3 (not covered here)</span></span>
-<span id="cb57-7"><a href="#cb57-7"></a>              <span class="at">include_aov =</span> <span class="cn">TRUE</span>, <span class="co"># needed for some calculations with emmeans but takes longer</span></span>
-<span id="cb57-8"><a href="#cb57-8"></a>              <span class="at">data =</span> dat)</span>
-<span id="cb57-9"><a href="#cb57-9"></a><span class="fu">anova</span>(mod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1"></a><span class="fu">library</span>(afex)</span>
+<span id="cb55-2"><a href="#cb55-2"></a>mod <span class="ot">&lt;-</span> <span class="fu">aov_ez</span>(<span class="at">id =</span> <span class="st">"subject"</span>, <span class="co"># the column containing the subject IDs</span></span>
+<span id="cb55-3"><a href="#cb55-3"></a>              <span class="at">dv =</span> <span class="st">"intrusions"</span>, <span class="co"># the DV </span></span>
+<span id="cb55-4"><a href="#cb55-4"></a>              <span class="at">between =</span> <span class="st">"Condition"</span>, <span class="co"># the between-subject variable</span></span>
+<span id="cb55-5"><a href="#cb55-5"></a>              <span class="at">es =</span> <span class="st">"pes"</span>, <span class="co"># can output an effect size! we want partial eta-squared</span></span>
+<span id="cb55-6"><a href="#cb55-6"></a>              <span class="at">type =</span> <span class="dv">3</span>, <span class="co"># there are both reasons for 2 and 3 (not covered here)</span></span>
+<span id="cb55-7"><a href="#cb55-7"></a>              <span class="at">include_aov =</span> <span class="cn">TRUE</span>, <span class="co"># needed for some calculations with emmeans but takes longer</span></span>
+<span id="cb55-8"><a href="#cb55-8"></a>              <span class="at">data =</span> dat)</span>
+<span id="cb55-9"><a href="#cb55-9"></a><span class="fu">anova</span>(mod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Anova Table (Type 3 tests)
 
@@ -1320,23 +1339,23 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <section id="checking-the-assumptions" class="slide level2">
 <h2>Checking the Assumptions</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1"></a><span class="fu">library</span>(performance)</span>
-<span id="cb59-2"><a href="#cb59-2"></a></span>
-<span id="cb59-3"><a href="#cb59-3"></a><span class="fu">check_model</span>(mod1) <span class="co"># doesn't work for ezANOVA output!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1"></a><span class="fu">library</span>(performance)</span>
+<span id="cb57-2"><a href="#cb57-2"></a></span>
+<span id="cb57-3"><a href="#cb57-3"></a><span class="fu">check_model</span>(mod1) <span class="co"># doesn't work for ezANOVA output!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
 <img data-src="W9_FirstAnalysisR_files/figure-revealjs/unnamed-chunk-39-1.png" width="960" class="r-stretch"></section>
 <section id="checking-the-assumptions-1" class="slide level2">
 <h2>Checking the Assumptions</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1"></a><span class="co"># "manually" check normality of residuals </span></span>
-<span id="cb60-2"><a href="#cb60-2"></a></span>
-<span id="cb60-3"><a href="#cb60-3"></a><span class="fu">qqPlot</span>(mod<span class="sc">$</span>aov<span class="sc">$</span>residuals)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1"></a><span class="co"># "manually" check normality of residuals </span></span>
+<span id="cb58-2"><a href="#cb58-2"></a></span>
+<span id="cb58-3"><a href="#cb58-3"></a><span class="fu">qqPlot</span>(mod<span class="sc">$</span>aov<span class="sc">$</span>residuals)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 <div class="cell-output cell-output-stdout">
 <pre><code>[1]  3 57</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1"></a><span class="fu">shapiro.test</span>(mod<span class="sc">$</span>aov<span class="sc">$</span>residuals)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1"></a><span class="fu">shapiro.test</span>(mod<span class="sc">$</span>aov<span class="sc">$</span>residuals)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Shapiro-Wilk normality test
@@ -1349,8 +1368,8 @@ W = 0.87739, p-value = 4.252e-06</code></pre>
 <section id="checking-the-assumptions-2" class="slide level2">
 <h2>Checking the Assumptions</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1"></a><span class="co"># check homogeneity of variance</span></span>
-<span id="cb64-2"><a href="#cb64-2"></a><span class="fu">test_levene</span>(mod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1"></a><span class="co"># check homogeneity of variance</span></span>
+<span id="cb62-2"><a href="#cb62-2"></a><span class="fu">test_levene</span>(mod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Warning: Variances differ between groups (Levene's Test, p = 0.039).</code></pre>
 </div>
@@ -1371,8 +1390,8 @@ W = 0.87739, p-value = 4.252e-06</code></pre>
 <section id="post-hoc-tests-1" class="slide level2">
 <h2>Post-Hoc Tests</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1"></a><span class="fu">library</span>(emmeans)</span>
-<span id="cb66-2"><a href="#cb66-2"></a>mod <span class="sc">%&gt;%</span> <span class="fu">emmeans</span>(pairwise <span class="sc">~</span> Condition, <span class="at">adjust =</span> <span class="st">"bonferroni"</span>) <span class="co"># also works with mod1!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1"></a><span class="fu">library</span>(emmeans)</span>
+<span id="cb64-2"><a href="#cb64-2"></a>mod <span class="sc">%&gt;%</span> <span class="fu">emmeans</span>(pairwise <span class="sc">~</span> Condition, <span class="at">adjust =</span> <span class="st">"bonferroni"</span>) <span class="co"># also works with mod1!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$emmeans
  Condition emmean    SE df lower.CL upper.CL
@@ -1411,8 +1430,9 @@ P value adjustment: bonferroni method for 6 tests </code></pre>
 </section>
 <section id="anova-effect-sizes" class="slide level2">
 <h2>ANOVA: Effect Sizes</h2>
-<p>The most common effect size estimate for an ANOVA is <em>partial eta squared</em> <span class="math inline">\(\eta_p^2\)</span> (as we calculated with <code>afex::aov_ez</code> before). We get <em>one per factor</em> and it summarizes all pairwise effects within it.<br>
-We could also calculate Cohen’s <em>d</em> for each pairwise comparison within the factor but this is tedious and gets confusing quickly (1 factor with 5 levels = 10 effects; 3 factors with 5 levels each = 30 effects). It’s still sad that <code>emmeans</code> doesn’t output it as one additional column.</p>
+<p>The most common effect size estimate for an ANOVA is <em>partial eta squared</em> <span class="math inline">\(\eta_p^2\)</span> (as we calculated with <code>afex::aov_ez</code> before). We get <em>one per factor</em> and it summarizes all pairwise effects within it.</p>
+<div class="fragment">
+<p>We could also calculate Cohen’s <em>d</em> for each pairwise comparison within the factor but this is tedious and gets confusing quickly (1 factor with 5 levels = 10 effects; 3 factors with 5 levels each = 30 effects). It’s still sad that <code>emmeans</code> doesn’t output it as one additional column.</p>
 <!--
 
 ::: {.cell}
@@ -1451,11 +1471,14 @@ d_1_3
 :::
 
 -->
-<p>##ANOVA: Power</p>
+</div>
+</section>
+<section id="anova-power" class="slide level2">
+<h2>ANOVA: Power</h2>
 <p>Effect sizes are important to calculate the <strong>statistical power</strong> of your study before conducting it. Use an estimated effect size based on prior research:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1"></a><span class="fu">library</span>(pwr)</span>
-<span id="cb68-2"><a href="#cb68-2"></a><span class="fu">pwr.anova.test</span>(<span class="at">k =</span> <span class="dv">4</span>, <span class="at">f =</span> .<span class="dv">4</span>, <span class="at">sig.level =</span> .<span class="dv">05</span>, <span class="at">power =</span> .<span class="dv">8</span>) <span class="co">#we leave out the n parameter to let it be calculated</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1"></a><span class="fu">library</span>(pwr)</span>
+<span id="cb66-2"><a href="#cb66-2"></a><span class="fu">pwr.anova.test</span>(<span class="at">k =</span> <span class="dv">4</span>, <span class="at">f =</span> .<span class="dv">4</span>, <span class="at">sig.level =</span> .<span class="dv">05</span>, <span class="at">power =</span> .<span class="dv">8</span>) <span class="co">#we leave out the n parameter to let it be calculated</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
      Balanced one-way analysis of variance power calculation 
@@ -1467,6 +1490,13 @@ d_1_3
           power = 0.8
 
 NOTE: n is number in each group</code></pre>
+</div>
+</div>
+<p>Note: <code>f</code> is “Cohen’s <em>f</em>”. You can convert your <span class="math inline">\(\eta_p^2\)</span> to (partial) <code>f</code> using <code>effectsize</code> package:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1"></a>effectsize<span class="sc">::</span><span class="fu">eta2_to_f</span>(.<span class="dv">15</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.420084</code></pre>
 </div>
 </div>
 </section>

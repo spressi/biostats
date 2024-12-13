@@ -104,8 +104,8 @@ chi2_lever %>% apa::chisq_apa() #output results
 #| echo: true
 # add expected count and residuals to data
 lever_presses %>% mutate(expected = chi2_lever$expected, 
-                         residuals = chi2_lever$residuals,
-                         residuals_standardized = chi2_lever$stdres)
+                         diff = n - expected,
+                         residuals = chi2_lever$residuals)
 ```
 
 :::notes
@@ -361,7 +361,7 @@ car::qqPlot(control)
 
 ## Assumptions of *t*-Tests: Normality
 
-Alternatively, we can also run a **Shapiro-Wilk** test to test for **deviations** from normality:
+Alternatively, we can also run a **Shapiro-Wilk** test to check for **deviations** from normality:
 
 ```{r}
 #| echo: true
@@ -370,6 +370,8 @@ shapiro.test(x = control)
 ```
 
 If the test is non-significant, then we can conclude that normality of residuals is **not** violated.
+
+&rArr; Shapiro-Wilk tests for **significant deveiations from normality**.
 
 ::: notes
 1.  Transform your data to try and normalise the distribution. Not usually recommended these days but some still use it.
@@ -561,10 +563,20 @@ What do you think you should report in your results section?
 
 -  Recommendation: Use `apa::t_apa()` with `es.ci = TRUE` to get (most of) the information you need
 
--  It is often a good idea to also report means and standard deviations per group (`summarize` with `.by` argument)
+-  It is often a good idea to also report means and standard deviations per group \
+(`summarize` with `.by` argument)
 
--  Plotting: Unfortunately, (between subjects) confidence intervals are not diagnostic for the significance of dependent samples. Instead, we need the **confidence interval around the paired differences (i.e., the within subject changes)**. Since this is not easy to do and there is little consensus yet, I will just raise awareness here.
+-  Plotting: Unfortunately, (between subjects) confidence intervals are not diagnostic for the significance of dependent samples. Instead, we need the **confidence interval around the paired differences (i.e., the within subject changes)**.
 :::
+
+## Kinds of Error Variance in paired samples
+
+:::notes
+Use `Notes Canvas` (paint brush icon on bottom left) to draw worst possibility of paired differences in "Raw Data" and resulting increase in within-subjects error variance while between-subjects variance remains fixed.
+:::
+
+<!-- DOI not working: https://doi.org/10.2478/v10053-008-0133-x -->
+![[Pfister & Janczyk (2013)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3699740/), Fig. 1](images/PfisterJanczyk2013.png)
 
 # Correlation: Preparation
 
@@ -589,7 +601,7 @@ gaze <- read_csv("Mehr Song and Spelke 2016 Experiment 1.csv") %>%
 
 ## Correlation Test
 
-With these data, we might be interested in whether there is a relationship between the two measures of gaze, i.e., whether those children who looked at the stranger more at baseline would also be the ones who looked at the stranger more often at the follow-up test (here: indicating stability of preferences).
+We might be interested in whether there is a relationship between the two measures of gaze, i.e., whether those children who looked at the stranger more at baseline would also look more at the follow-up test (here: indicating stability of preferences).
 
 . . .
 
@@ -601,11 +613,14 @@ Similar to the paired *t*-Test, the continuous variables are also "paired" withi
 cor.test(x = gaze %>% pull(baseline), 
          y = gaze %>% pull(test), 
          method = "pearson", #default
-         alternative = "two.sided") #default
+         alternative = "two.sided") %>% #default
+  apa::cor_apa(r_ci = TRUE)
 ```
 
 Note: We don't have to indicate `paired = TRUE` because correlations only work for paired values.
 
+
+<!-- 
 ## Correlations: Write Up
 
 Once again, the `apa` package offers help to summarize the results:
@@ -618,7 +633,8 @@ cor.test(x = gaze %>% pull(baseline),
          alternative = "two.sided") %>% 
   apa::cor_apa(r_ci=TRUE)
 ```
-
+-->
+ 
 ## Correlations: Write Up
 
 You can even use `report()` to get an automatic suggestion of how to report the results (works with a lot of different models!).
@@ -738,12 +754,10 @@ As summary statistics, we want the mean, SD, and SE.
 ```{r}
 #| echo: true
 
-se = function(x, na.rm = FALSE) { sd(x, na.rm) / sqrt(if(!na.rm) length(x) else sum(!is.na(x))) }
-
 sum_dat <- dat %>%
   summarize(mean = mean(intrusions),
             sd = sd(intrusions),
-            se = se(intrusions), #se = confintr::se_mean(intrusions),
+            se = confintr::se_mean(intrusions), #no native R function :(
             .by = Condition)
 print(sum_dat)
 ```
@@ -852,7 +866,10 @@ Should we adjust for multiple comparisons? It depends. There are good reasons fo
 
 ## ANOVA: Effect Sizes
 
-The most common effect size estimate for an ANOVA is *partial eta squared* $\eta_p^2$ (as we calculated with `afex::aov_ez` before). We get *one per factor* and it summarizes all pairwise effects within it. \
+The most common effect size estimate for an ANOVA is *partial eta squared* $\eta_p^2$ (as we calculated with `afex::aov_ez` before). We get *one per factor* and it summarizes all pairwise effects within it.
+
+. . .
+
 We could also calculate Cohen's *d* for each pairwise comparison within the factor but this is tedious and gets confusing quickly (1 factor with 5 levels = 10 effects; 3 factors with 5 levels each = 30 effects). It's still sad that `emmeans` doesn't output it as one additional column.
 
 <!--
@@ -875,7 +892,7 @@ d_1_3
 ```
 -->
 
-##ANOVA: Power
+## ANOVA: Power
 
 Effect sizes are important to calculate the **statistical power** of your study before conducting it. Use an estimated effect size based on prior research:
 
@@ -885,7 +902,12 @@ library(pwr)
 pwr.anova.test(k = 4, f = .4, sig.level = .05, power = .8) #we leave out the n parameter to let it be calculated
 ```
 
+Note: `f` is "Cohen's *f*". You can convert your $\eta_p^2$ to (partial) `f` using `effectsize` package:
 
+```{r}
+#| echo: true
+effectsize::eta2_to_f(.15)
+```
 
 ## Write Up
 
