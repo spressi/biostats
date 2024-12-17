@@ -424,7 +424,7 @@ div.cell-output-stdout {
 </style>
 </div>
 <aside class="notes">
-<p>which analysis do you use when you have two categorical etc. variables?</p>
+<p>An important part of today will be: How do I <strong>wrangle</strong> the data such that it fits to the functions available in <code>R</code>?</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -453,7 +453,8 @@ div.cell-output-stdout {
 <span id="cb1-7"><a href="#cb1-7"></a><span class="fu">library</span>(emmeans)</span>
 <span id="cb1-8"><a href="#cb1-8"></a><span class="fu">library</span>(pwr)</span>
 <span id="cb1-9"><a href="#cb1-9"></a><span class="fu">library</span>(lsr)</span>
-<span id="cb1-10"><a href="#cb1-10"></a><span class="fu">library</span>(report)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="fu">library</span>(report)</span>
+<span id="cb1-11"><a href="#cb1-11"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section></section>
 <section>
@@ -620,7 +621,7 @@ alternative hypothesis: two.sided</code></pre>
 <div class="fragment">
 <div class="cell">
 <div class="cell-output-display">
-<p><img data-src="W9_FirstAnalysisR_files/figure-revealjs/unnamed-chunk-9-1.png" width="960"></p>
+<p><img data-src="W9_FirstAnalysisR_files/figure-revealjs/unnamed-chunk-8-1.png" width="960"></p>
 </div>
 </div>
 </div>
@@ -730,6 +731,7 @@ mean of x mean of y
  400.3289  468.0592 </code></pre>
 </div>
 </div>
+<p>This makes it easier to think about the direction of the alternative hypothesis because you choose which group is considered first.</p>
 </section>
 <section id="t-test-apa-package" class="slide level2">
 <h2><em>t</em>-Test: apa package</h2>
@@ -760,6 +762,7 @@ mean of x mean of y
 <pre><code>t(19) = -1.98, p = .031, d = -0.44 [-0.90; 0.02]</code></pre>
 </div>
 </div>
+<p>You can also use the wide format for the independent samples <em>t</em>-test (instead of formula notation or filtering). You choose 😊.</p>
 </section>
 <section id="assumptions-of-t-tests" class="slide level2">
 <h2>Assumptions of <em>t</em>-Tests</h2>
@@ -794,7 +797,7 @@ In fact, only its <em>sampling distribution</em> needs to be (blue vs.&nbsp;grey
 <span id="cb24-9"><a href="#cb24-9"></a><span class="fu">qqline</span>(treatment)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
-<p><img data-src="W9_FirstAnalysisR_files/figure-revealjs/unnamed-chunk-17-1.png" width="960"></p>
+<p><img data-src="W9_FirstAnalysisR_files/figure-revealjs/unnamed-chunk-16-1.png" width="960"></p>
 </div>
 </div>
 </div>
@@ -815,7 +818,7 @@ In fact, only its <em>sampling distribution</em> needs to be (blue vs.&nbsp;grey
 <span id="cb25-8"><a href="#cb25-8"></a>car<span class="sc">::</span><span class="fu">qqPlot</span>(control)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
-<p><img data-src="W9_FirstAnalysisR_files/figure-revealjs/unnamed-chunk-18-1.png" width="960"></p>
+<p><img data-src="W9_FirstAnalysisR_files/figure-revealjs/unnamed-chunk-17-1.png" width="960"></p>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 18  4</code></pre>
@@ -845,7 +848,7 @@ W = 0.96812, p-value = 0.7147</code></pre>
 </div>
 </div>
 <p>If the test is non-significant, then we can conclude that normality of residuals is <strong>not</strong> violated.</p>
-<p>⇒ Shapiro-Wilk tests for <strong>significant deveiations from normality</strong>.</p>
+<p>⇒ Shapiro-Wilk tests for <strong>significant deviations from normality</strong>.</p>
 <aside class="notes">
 <ol type="1">
 <li>Transform your data to try and normalise the distribution. Not usually recommended these days but some still use it.</li>
@@ -922,7 +925,7 @@ data:  gaze_residual$group_resid
 W = 0.97818, p-value = 0.7451</code></pre>
 </div>
 </div>
-<img data-src="W9_FirstAnalysisR_files/figure-revealjs/unnamed-chunk-23-1.png" width="960" class="r-stretch"></section>
+<img data-src="W9_FirstAnalysisR_files/figure-revealjs/unnamed-chunk-22-1.png" width="960" class="r-stretch"></section>
 <section id="descriptives-visualization" class="slide level2">
 <h2>Descriptives &amp; Visualization</h2>
 <p>For the visualization, we need the data in long format (this is identical for between-subject groups):</p>
@@ -939,7 +942,7 @@ W = 0.97818, p-value = 0.7451</code></pre>
 <span id="cb35-9"><a href="#cb35-9"></a>  <span class="fu">geom_boxplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
-<p><img data-src="W9_FirstAnalysisR_files/figure-revealjs/unnamed-chunk-24-1.png" width="960"></p>
+<p><img data-src="W9_FirstAnalysisR_files/figure-revealjs/unnamed-chunk-23-1.png" width="960"></p>
 </div>
 </div>
 </div>
@@ -1099,6 +1102,20 @@ What do you think you should report in your results section?
 </div>
 </div>
 <p>Note: We don’t have to indicate <code>paired = TRUE</code> because correlations only work for paired values.</p>
+<aside class="notes">
+<p>We mainly use this dataset so that you don’t have to load another one, but in practice you would either run a <em>t</em>-test or a correlation, not necessarily both!</p>
+<p>The t-tests answers whether there is a change across all participants between the two time points, the correlation answers the question whether those who score high at one time point would also score high at the next (regardless of overall level).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 <!-- 
 ## Correlations: Write Up
 
@@ -1144,8 +1161,7 @@ statistically significant, and very large (r = 0.55, 95% CI [0.24, 0.75], t(30)
 </div>
 </div>
 <aside class="notes">
-<p>We mainly use this dataset so that you don’t have to load another one, but in practice you would either run a <em>t</em>-test or a correlation, not necessarily both!</p>
-<p>The t-tests answers whether there is a change across all participants between the two time points, the correlation answers the question whether those who score high at one time point would also score high at the next (regardless of overall level).</p>
+<p>Who wants to write a package that inputs data &amp; analysis results into ChatGPT? :D</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1180,10 +1196,12 @@ Note: This is very hard to judge by eye and is not the same as the confidence ba
 <p>Which statistical test could we use?</p>
 <div class="fragment">
 <p>We would possibly run an ANOVA!</p>
-<p>If we have only one factor (e.g.&nbsp;treatment with three factor levels), we would do an <strong>one-way ANOVA</strong>.<br>
-If we have more than one factor but only between-subjects variables, we would run an <strong>ANOVA</strong>.<br>
-If we have at least one within-subjects factor, we would run a <strong>repeated measures (or mixed) ANOVA</strong>.</p>
-<p>The names are only there for historical reasons. With the right R packages, we only have to ask ourselves if a variable changes between subjects or within subjects.</p>
+<p>If we have only one factor (e.g.&nbsp;treatment with three factor levels), we would do a (one-way) <strong>ANOVA</strong>.<br>
+If we have more than one factor but only between-subjects variables, we would run an <strong>ANOVA with interactions</strong> (see lecture 10).<br>
+If we have at least one within-subjects factor, we would run a <strong>repeated measures (or mixed effects) ANOVA</strong>.</p>
+</div>
+<div class="fragment">
+<p>The names are only there for historical reasons. With the right <code>R</code> packages, we only have to ask ourselves if a variable changes between subjects or within subjects.</p>
 <p>Due to their potency and wide-spread use, we will cover ANOVAs even more next time in the context of the <strong>linear model</strong>.</p>
 <aside class="notes">
 <p>we will today only look at one-way anovas! Next time we will cover the case when we have more than one IV/predictor!</p>
@@ -1287,7 +1305,7 @@ ggplot(sum_dat, aes(x = Condition, y = mean, fill = Condition)) +
 ```
 
 ::: {.cell-output-display}
-![](W9_FirstAnalysisR_files/figure-revealjs/unnamed-chunk-36-1.png){width=960}
+![](W9_FirstAnalysisR_files/figure-revealjs/unnamed-chunk-35-1.png){width=960}
 :::
 :::
 
@@ -1344,7 +1362,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <span id="cb57-3"><a href="#cb57-3"></a><span class="fu">check_model</span>(mod1) <span class="co"># doesn't work for ezANOVA output!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="W9_FirstAnalysisR_files/figure-revealjs/unnamed-chunk-39-1.png" width="960" class="r-stretch"></section>
+<img data-src="W9_FirstAnalysisR_files/figure-revealjs/unnamed-chunk-38-1.png" width="960" class="r-stretch"></section>
 <section id="checking-the-assumptions-1" class="slide level2">
 <h2>Checking the Assumptions</h2>
 <div class="cell">
@@ -1364,7 +1382,7 @@ data:  mod$aov$residuals
 W = 0.87739, p-value = 4.252e-06</code></pre>
 </div>
 </div>
-<img data-src="W9_FirstAnalysisR_files/figure-revealjs/unnamed-chunk-40-1.png" width="960" class="r-stretch"></section>
+<img data-src="W9_FirstAnalysisR_files/figure-revealjs/unnamed-chunk-39-1.png" width="960" class="r-stretch"></section>
 <section id="checking-the-assumptions-2" class="slide level2">
 <h2>Checking the Assumptions</h2>
 <div class="cell">

@@ -32,14 +32,8 @@ div.cell-output-stdout {
 }
 ```
 
-```{r}
-library(car)
-library(effectsize)
-library(tidyverse)
-```
-
 ::: notes
-which analysis do you use when you have two categorical etc. variables?
+An important part of today will be: How do I **wrangle** the data such that it fits to the functions available in `R`?
 :::
 
 ## Set Up
@@ -50,7 +44,6 @@ which analysis do you use when you have two categorical etc. variables?
 
 ```{r}
 #| echo: true
-#| eval: false
 library(car)
 library(apa)
 library(effectsize)
@@ -61,6 +54,7 @@ library(emmeans)
 library(pwr)
 library(lsr)
 library(report)
+library(tidyverse)
 ```
 
 # Activity 1
@@ -268,6 +262,8 @@ t.test(x = sim_data_t %>% filter(group=="treatment") %>% pull(reaction_times),
        alternative = "less") #more intuitive now because you can filter for treatment first
 ```
 
+This makes it easier to think about the direction of the alternative hypothesis because you choose which group is considered first.
+
 ## *t*-Test: apa package
 
 More useful output with `apa` package (only for Student's *t*-tests):
@@ -297,6 +293,8 @@ t.test(x = sim_data_t_wide %>% pull(treatment),
        paired = TRUE) %>% 
   apa::t_apa(es_ci = TRUE) #optional: confidence interval around effect size
 ```
+
+You can also use the wide format for the independent samples *t*-test (instead of formula notation or filtering). You choose &#128522;.
 
 ## Assumptions of *t*-Tests
 
@@ -371,7 +369,7 @@ shapiro.test(x = control)
 
 If the test is non-significant, then we can conclude that normality of residuals is **not** violated.
 
-&rArr; Shapiro-Wilk tests for **significant deveiations from normality**.
+&rArr; Shapiro-Wilk tests for **significant deviations from normality**.
 
 ::: notes
 1.  Transform your data to try and normalise the distribution. Not usually recommended these days but some still use it.
@@ -620,6 +618,12 @@ cor.test(x = gaze %>% pull(baseline),
 Note: We don't have to indicate `paired = TRUE` because correlations only work for paired values.
 
 
+::: notes
+We mainly use this dataset so that you don't have to load another one, but in practice you would either run a *t*-test or a correlation, not necessarily both!
+
+The t-tests answers whether there is a change across all participants between the two time points, the correlation answers the question whether those who score high at one time point would also score high at the next (regardless of overall level).
+:::
+
 <!-- 
 ## Correlations: Write Up
 
@@ -651,9 +655,7 @@ with(gaze, cor.test(x = baseline,
 ```
 
 ::: notes
-We mainly use this dataset so that you don't have to load another one, but in practice you would either run a *t*-test or a correlation, not necessarily both!
-
-The t-tests answers whether there is a change across all participants between the two time points, the correlation answers the question whether those who score high at one time point would also score high at the next (regardless of overall level).
+Who wants to write a package that inputs data & analysis results into ChatGPT? :D
 :::
 
 ## Correlations: Notes
@@ -687,11 +689,13 @@ Which statistical test could we use?
 
 We would possibly run an ANOVA!
 
-If we have only one factor (e.g. treatment with three factor levels), we would do an **one-way ANOVA**.\
-If we have more than one factor but only between-subjects variables, we would run an **ANOVA**.\
-If we have at least one within-subjects factor, we would run a **repeated measures (or mixed) ANOVA**.
+If we have only one factor (e.g. treatment with three factor levels), we would do a (one-way) **ANOVA**.\
+If we have more than one factor but only between-subjects variables, we would run an **ANOVA with interactions** (see lecture 10).\
+If we have at least one within-subjects factor, we would run a **repeated measures (or mixed effects) ANOVA**.
 
-The names are only there for historical reasons. With the right R packages, we only have to ask ourselves if a variable changes between subjects or within subjects.
+. . .
+
+The names are only there for historical reasons. With the right `R` packages, we only have to ask ourselves if a variable changes between subjects or within subjects.
 
 Due to their potency and wide-spread use, we will cover ANOVAs even more next time in the context of the **linear model**.
 
