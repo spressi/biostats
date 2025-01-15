@@ -4,7 +4,7 @@ subtitle: |
    | Julius-Maximilians-University Würzburg 
    | Course: "Biostatistics"    
    | Translational Neuroscience
-author: "Dr. Mario Reutter (slides adapted from Dr. Lea Hildebrandt)"
+author: "Dr. Lea Hildebrandt"
 format: 
   revealjs:
     smaller: true
@@ -12,6 +12,8 @@ format:
     slide-number: true
     theme: serif
     chalkboard: true
+    width: 1280
+    height: 720
 from: markdown+emoji
 ---
 
@@ -42,7 +44,7 @@ library(report)
 library(tidyverse)
 ```
 
-Last R session, we have used **one-way ANOVAs** to analyze data where we were interested in differences between levels of one factor (between-subjects groups) on a continuous dependent variable.
+In a previous session, you have used **one-way ANOVAs** to analyze data where we were interested in differences between levels of one factor (between-subjects groups) on a continuous dependent variable.
 
 . . .
 
@@ -50,7 +52,8 @@ Today, we want to turn towards the case where we have several factors as indepen
 
 . . .
 
-One big advantage of using ANOVAs is when you have repeated measures/within-subject data. They are not easily fit in LMs (you would need Linear *Mixed* Models), but you can use repeated-measures ANOVA for this kind of data!
+One big advantage of using ANOVAs is that you may have repeated measures/within-subject data. These data are not easily fit in LMs (you would need Linear *Mixed* Models), but you can use repeated-measures ANOVA for this kind of data! 
+(On the other hand, LM or LMM are usually more flexible - remember, the GLM is the umbrella term!)
 
 ## Setup
 
@@ -176,7 +179,7 @@ In this visualization, we want to look at `time` and `Condition` to see whether 
 ```{r}
 #| eval: true
 #| echo: true
-lineplot = sum_dat_factorial %>% mutate(se_interest = sd_interest / sqrt(n)) %>% 
+lineplot <- sum_dat_factorial %>% mutate(se_interest = sd_interest / sqrt(n)) %>% 
   ggplot(aes(x = time, y = mean_interest, group = Condition, shape = Condition)) +
   geom_errorbar(aes(ymin = mean_interest - se_interest, ymax = mean_interest + se_interest), width=.5) +
   geom_point(size = 5) +
@@ -249,7 +252,7 @@ The assumptions for a factorial ANOVA are the same as the one-way ANOVA.
 
 1.   The DV is continuous (interval or ratio data)
 
-2.   The observations should be independent
+2.   The observations should be independent (only true for between-subjects variables!)
 
 3.   The residuals should be normally distributed
 

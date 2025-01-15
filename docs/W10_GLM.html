@@ -508,6 +508,7 @@ sample estimates:
 <div>
 <ul>
 <li class="fragment"><p>describe the relation between two variables (similar to correlation)</p></li>
+<li class="fragment"><p>decide whether an IV is a significant predictor of the DV</p></li>
 <li class="fragment"><p>predict DV for new values of IV (new observations)</p></li>
 <li class="fragment"><p>add multiple IVs!</p></li>
 </ul>
@@ -903,6 +904,24 @@ F-statistic:  30.8 on 3 and 16 DF,  p-value: 7.014e-07</code></pre>
 <div class="fragment">
 <p>The model is now significant! There is an <em>interaction</em> between <code>caffeine</code> and <code>anxiety</code>. Interestingly, the <em>main effects</em> are also significant now even though they were not in the previous models (because the residual variance has been reduced drastically from 18 to 8 by the highly significant interaction).</p>
 <p>Note: <code>speaking ~ caffeine * anxiety</code> is shorthand for <code>speaking ~ caffeine + anxiety + caffeine:anxiety</code></p>
+<aside class="notes">
+<p>interpretation coefficients:</p>
+<p>intercept: intercept of anxious group!</p>
+<p>intercept not anxious: difference intercept anxious vs.&nbsp;notanxious</p>
+<p>slope anxious: only for the anxious group!</p>
+<p>slope not anxious: diff in slopes</p>
+<p>no main effects!!!</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </div>
 </section>
 <section id="convert-glm-to-anova" class="slide level2">
@@ -1063,7 +1082,9 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 =&gt; From many dimensions to fewer dimensions</p></li>
 </ol>
 </div>
-<div class="fragment">
+</section>
+<section id="multivariate-statistics-2" class="slide level2">
+<h2>Multivariate Statistics 2</h2>
 <p>These two methods belong to the class of <em>unsupervised learning</em>. Before, we have only dealt with <em>supervised learning</em> (e.g., regression, ANOVA). There are also methods for multivariate, supervised learning (e.g., MANOVA).</p>
 <p>Note: Unsupervised learning techniques are very <em>explorative</em> in nature. It is a different approach to learning from data compared to hypothesis testing. Explorative methods are usually used in science to create a first insight into new phenomena that can develop into hypotheses further down the line.</p>
 <aside class="notes">
@@ -1081,7 +1102,6 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-</div>
 </section>
 <section id="multivariate-data-an-example" class="slide level2">
 <h2>Multivariate Data: An Example</h2>

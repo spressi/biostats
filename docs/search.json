@@ -2514,7 +2514,7 @@
     "href": "W10_GLM.html#linear-regression",
     "title": "10 The General Linear Model & Multivariate Statistics",
     "section": "Linear Regression",
-    "text": "Linear Regression\nUse the GLM to…\n\n\ndescribe the relation between two variables (similar to correlation)\npredict DV for new values of IV (new observations)\nadd multiple IVs!\n\n\n\n\n\nSimple GLM (here: equivalent to linear regression):\n\\[\ny = \\beta_0+ x * \\beta_x + \\epsilon\n\\]\n\\(\\beta_0\\) = intercept: the overall offset of the line when \\(x=0\\) (this cannot always be interpreted)\n\\(\\beta_x\\) = slope: how much do we expect \\(y\\) to change with each change in \\(x\\)?\n\\(y\\) = DV\n\\(x\\) = IV or predictor\n\\(\\epsilon\\) = error term* or residuals: whatever variance is left once the model is fit (Think of the model as the blue line and the residuals are the vertical deviations of the data points from the line)\n(If we refer to predicted \\(y\\)-values, after we have estimated the model, we can drop the error term: \\(\\hat{y} = \\hat{\\beta_0} + x * \\hat{\\beta_x}\\).)",
+    "text": "Linear Regression\nUse the GLM to…\n\n\ndescribe the relation between two variables (similar to correlation)\ndecide whether an IV is a significant predictor of the DV\npredict DV for new values of IV (new observations)\nadd multiple IVs!\n\n\n\n\n\nSimple GLM (here: equivalent to linear regression):\n\\[\ny = \\beta_0+ x * \\beta_x + \\epsilon\n\\]\n\\(\\beta_0\\) = intercept: the overall offset of the line when \\(x=0\\) (this cannot always be interpreted)\n\\(\\beta_x\\) = slope: how much do we expect \\(y\\) to change with each change in \\(x\\)?\n\\(y\\) = DV\n\\(x\\) = IV or predictor\n\\(\\epsilon\\) = error term* or residuals: whatever variance is left once the model is fit (Think of the model as the blue line and the residuals are the vertical deviations of the data points from the line)\n(If we refer to predicted \\(y\\)-values, after we have estimated the model, we can drop the error term: \\(\\hat{y} = \\hat{\\beta_0} + x * \\hat{\\beta_x}\\).)",
     "crumbs": [
       "10 The General Linear Model & Multivariate Statistics"
     ]
@@ -2614,7 +2614,7 @@
     "href": "W10_GLM.html#interaction-example-full-model",
     "title": "10 The General Linear Model & Multivariate Statistics",
     "section": "Interaction Example: Full model",
-    "text": "Interaction Example: Full model\nTo allow for different slopes for each group (i.e. for the effect of caffeine to vary between the anxiety groups), we have to model the interaction as well.\n\n\n\n\n\nCall:\nlm(formula = speaking ~ caffeine + anxiety + caffeine:anxiety, \n    data = df)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-11.385  -7.103  -0.444   6.171  13.458 \n\nCoefficients:\n                            Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)                 17.43085    5.43012   3.210 0.005461 ** \ncaffeine                    -0.47416    0.09664  -4.906 0.000158 ***\nanxietynotAnxious          -43.44873    7.79141  -5.576 4.17e-05 ***\ncaffeine:anxietynotAnxious   1.08395    0.12931   8.382 3.01e-07 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 8.085 on 16 degrees of freedom\nMultiple R-squared:  0.8524,    Adjusted R-squared:  0.8247 \nF-statistic:  30.8 on 3 and 16 DF,  p-value: 7.014e-07\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThe model is now significant! There is an interaction between caffeine and anxiety. Interestingly, the main effects are also significant now even though they were not in the previous models (because the residual variance has been reduced drastically from 18 to 8 by the highly significant interaction).\nNote: speaking ~ caffeine * anxiety is shorthand for speaking ~ caffeine + anxiety + caffeine:anxiety",
+    "text": "Interaction Example: Full model\nTo allow for different slopes for each group (i.e. for the effect of caffeine to vary between the anxiety groups), we have to model the interaction as well.\n\n\n\n\n\nCall:\nlm(formula = speaking ~ caffeine + anxiety + caffeine:anxiety, \n    data = df)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-11.385  -7.103  -0.444   6.171  13.458 \n\nCoefficients:\n                            Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)                 17.43085    5.43012   3.210 0.005461 ** \ncaffeine                    -0.47416    0.09664  -4.906 0.000158 ***\nanxietynotAnxious          -43.44873    7.79141  -5.576 4.17e-05 ***\ncaffeine:anxietynotAnxious   1.08395    0.12931   8.382 3.01e-07 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 8.085 on 16 degrees of freedom\nMultiple R-squared:  0.8524,    Adjusted R-squared:  0.8247 \nF-statistic:  30.8 on 3 and 16 DF,  p-value: 7.014e-07\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThe model is now significant! There is an interaction between caffeine and anxiety. Interestingly, the main effects are also significant now even though they were not in the previous models (because the residual variance has been reduced drastically from 18 to 8 by the highly significant interaction).\nNote: speaking ~ caffeine * anxiety is shorthand for speaking ~ caffeine + anxiety + caffeine:anxiety\n\ninterpretation coefficients:\nintercept: intercept of anxious group!\nintercept not anxious: difference intercept anxious vs. notanxious\nslope anxious: only for the anxious group!\nslope not anxious: diff in slopes\nno main effects!!!",
     "crumbs": [
       "10 The General Linear Model & Multivariate Statistics"
     ]
@@ -2797,6 +2797,296 @@
     "text": "FA 2\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFactor analysis with Call: fa(r = observed_df, nfactors = 3)\n\nTest of the hypothesis that 3 factors are sufficient.\nThe degrees of freedom for the model is 7  and the objective function was  0.04 \nThe number of observations was  200  with Chi Square =  7.96  with prob &lt;  0.34 \n\nThe root mean square of the residuals (RMSA) is  0.01 \nThe df corrected root mean square of the residuals is  0.03 \n\nTucker Lewis Index of factoring reliability =  0.993\nRMSEA index =  0.026  and the 10 % confidence intervals are  0 0.094\nBIC =  -29.13\n\n\n\n\n\n\n\n\n\n\n\nRMSEA (root mean square error of approximation): Measure of model fit, should be &lt; .08.\nUse (lowest) SABIC (sample-size adjusted Bayesian information criterion) to compare models with different number of factors.\n\nWe can “hand over” 3 factors\nRMSEA quantifies how far predicted covariances (between data) are from actual covariances",
     "crumbs": [
       "10 The General Linear Model & Multivariate Statistics"
+    ]
+  },
+  {
+    "objectID": "W10_GLM.html#multivariate-statistics-2",
+    "href": "W10_GLM.html#multivariate-statistics-2",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Multivariate Statistics 2",
+    "text": "Multivariate Statistics 2\nThese two methods belong to the class of unsupervised learning. Before, we have only dealt with supervised learning (e.g., regression, ANOVA). There are also methods for multivariate, supervised learning (e.g., MANOVA).\nNote: Unsupervised learning techniques are very explorative in nature. It is a different approach to learning from data compared to hypothesis testing. Explorative methods are usually used in science to create a first insight into new phenomena that can develop into hypotheses further down the line.\n\nSupervised: we know the value of the DV that we’re trying to predict (try to find best model predictions).\nUnsupervised: we don’t have specific value to predict, we try to discover (patterns that help understand). Requires some assumptions about pattern.\n–&gt; does not necessarily have a “right” answer!",
+    "crumbs": [
+      "10 The General Linear Model & Multivariate Statistics"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#setup",
+    "href": "W11_GLMinR.html#setup",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Setup",
+    "text": "Setup\nWe will use the data by Zhang et al. (2014), Study 3 (Click here to download)\nThe study design was a 2x2 design:\n\ntime (time1, time2) - within-subjects IV\nevent (ordinary vs. extraordinary) - between-subjects IV\nDV: interest",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#data-wrangling",
+    "href": "W11_GLMinR.html#data-wrangling",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Data Wrangling",
+    "text": "Data Wrangling\nTasks:\n\nRead in the data file\n\nSelect the three columns we need\n\nAdd a column of subject IDs using the row number\n\nTidy the data: bring it into long format\n\nRecode the values of Condition from numeric to text labels\n\nRecode the values of time to be easier to read/write\n\nChange the data type of Condition and time to be factors!\n\nReplace the “NULLs” to achieve all this step by step…\n\nzhang_data2 &lt;- read_csv(\"Zhang et al. 2014 Study 3.csv\") %&gt;% \n  select(NULL, NULL, NULL) %&gt;% \n  mutate(subject = NULL) %&gt;% \n  NULL(names_to = \"time\", values_to = \"interest\", \n       cols = c(T1_Predicted_Interest_Composite, T2_Actual_Interest_Composite)) %&gt;%\n  mutate(Condition = Condition %&gt;% NULL(\"1\" = \"Ordinary\", \"2\" = \"Extraordinary\"),\n         time = time %&gt;% NULL(\"T1_Predicted_Interest_Composite\" = \"Time 1 (Predicted)\", \n                              \"T2_Actual_Interest_Composite\" = \"Time 2 (Actual)\"),\n         NULL = as.factor(NULL))",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#data-wrangling-solution",
+    "href": "W11_GLMinR.html#data-wrangling-solution",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Data Wrangling: Solution",
+    "text": "Data Wrangling: Solution\n\nzhang_data2 &lt;- read_csv(\"Data/Zhang et al. 2014 Study 3.csv\") %&gt;%\n  select(Condition, T1_Predicted_Interest_Composite, T2_Actual_Interest_Composite) %&gt;%\n  mutate(subject = row_number()) %&gt;%\n  pivot_longer(names_to = \"time\", values_to = \"interest\", \n               cols = c(T1_Predicted_Interest_Composite, T2_Actual_Interest_Composite)) %&gt;%\n  mutate(Condition = Condition %&gt;% recode(\"1\" = \"Ordinary\", \"2\" = \"Extraordinary\") %&gt;% as.factor(),\n         time = time %&gt;% recode(\"T1_Predicted_Interest_Composite\" = \"Time 1\", \n                                \"T2_Actual_Interest_Composite\" = \"Time 2\") %&gt;% as.factor())\n\n\n\nIf you plan ahead, you can also use rename prior to pivot_longer to substitute the recode of time. This has the advantage that you can use the shorter names already in pivot_longer (but may be harder to read because the recoding of time and Condition now occur in different places):\n\nzhang_data2 &lt;- read_csv(\"Data/Zhang et al. 2014 Study 3.csv\") %&gt;%\n  select(Condition, T1_Predicted_Interest_Composite, T2_Actual_Interest_Composite) %&gt;%\n  mutate(subject = row_number()) %&gt;%\n  rename(`Time 1` = T1_Predicted_Interest_Composite, #use backticks for column names that include spaces\n         `Time 2` = T2_Actual_Interest_Composite) %&gt;% \n  pivot_longer(names_to = \"time\", values_to = \"interest\", \n               cols = c(\"Time 1\", \"Time 2\")) %&gt;%\n  mutate(Condition = Condition %&gt;% recode(\"1\" = \"Ordinary\", \"2\" = \"Extraordinary\") %&gt;% as.factor(),\n         time = time %&gt;%  as.factor())",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#descriptive-statistics",
+    "href": "W11_GLMinR.html#descriptive-statistics",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Descriptive Statistics",
+    "text": "Descriptive Statistics\nCalculate descriptive statistics (mean, SD, and N) for interest summarized for each Condition and each time. Store the results in a variable called sum_dat_factorial.\n\n\nsum_dat_factorial &lt;- zhang_data2 %&gt;% \n  summarise(mean_interest = mean(interest, na.rm=TRUE),\n            sd_interest = sd(interest, na.rm=TRUE),\n            n = interest %&gt;% na.omit() %&gt;% length(), #can also use n() but works incorrectly if NA values exist\n            .by = c(Condition, time))\nsum_dat_factorial\n\n# A tibble: 4 × 5\n  Condition     time   mean_interest sd_interest     n\n  &lt;fct&gt;         &lt;fct&gt;          &lt;dbl&gt;       &lt;dbl&gt; &lt;int&gt;\n1 Ordinary      Time 1          4.04        1.09    64\n2 Ordinary      Time 2          4.73        1.24    64\n3 Extraordinary Time 1          4.36        1.13    66\n4 Extraordinary Time 2          4.65        1.14    66",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#visualize-the-data-violin-boxplot",
+    "href": "W11_GLMinR.html#visualize-the-data-violin-boxplot",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Visualize the data: Violin-Boxplot",
+    "text": "Visualize the data: Violin-Boxplot\nWrite the code that produces violin-boxplots for the scores in each group. time should be on the x-axis and Condition should be in different colors; interest is on the y-axis. Such plots are called “grouped” (e.g., grouped boxplot).\nHint: You want to add position = position_dodge(width = 0.9) to everything except the violin part to achieve alignment of all parts.\n\n\nggplot(zhang_data2, \n       aes(x = time , y = interest, fill = Condition))+\n  geom_violin(trim = FALSE, alpha = .4) +\n  geom_boxplot(position = position_dodge(.9), \n               width = .2, alpha = .6) +\n  #scale_x_discrete(labels = c(\"Time 1 (Predicted)\", \"Time 2 (Actual)\")) + \n  scale_fill_viridis_d(option = \"E\") +\n  stat_summary(fun = \"mean\", geom = \"point\",\n               position = position_dodge(width = 0.9)) +\n  stat_summary(fun.data = \"mean_se\", geom = \"errorbar\", width = .1,\n               position = position_dodge(width = 0.9)) +\n  theme_minimal()",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#interaction-line-plot",
+    "href": "W11_GLMinR.html#interaction-line-plot",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Interaction (line) plot",
+    "text": "Interaction (line) plot\nIn this visualization, we want to look at time and Condition to see whether an interaction might be present. It is helpful to make a line plot with time on the x-axis, Condition as separate lines, and (mean) interest on the y-axis.\n\nlineplot &lt;- sum_dat_factorial %&gt;% mutate(se_interest = sd_interest / sqrt(n)) %&gt;% \n  ggplot(aes(x = time, y = mean_interest, group = Condition, shape = Condition)) +\n  geom_errorbar(aes(ymin = mean_interest - se_interest, ymax = mean_interest + se_interest), width=.5) +\n  geom_point(size = 5) +\n  geom_line(aes(linetype = Condition)) +\n  #scale_x_discrete(labels = c(\"Time 1\", \"Time 2\")) + #this is how you could change x-axis labels\n  theme_classic()\nlineplot\n\n\n\nThe increase in interest between time 1 and 2 seems greater in the ordinary condition! But is this interaction effect significant?\nNote: You may want to add position = position_dodge(.5) to all geoms to avoid an overlap of errorbars.\nNote2: The (between-subject) errorbars are only helpful to interpret the significance of the between-subject effect Condition (at each time point). For the within-subject effect of time, we would need the mean and standard error of the paired differences (but this is very hard to visualize).",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#mixed-anova",
+    "href": "W11_GLMinR.html#mixed-anova",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Mixed ANOVA",
+    "text": "Mixed ANOVA\nWe now want to run a mixed ANOVA. It is called “mixed” because it includes both between- and within-subjects factors.\n\nComplete the below code to run the factorial ANOVA. Remember that you will need to specify both IVs and that one of them is between-subjects and one of them is within-subjects. Look up the help documentation for aov_ez to find out how to do this.\nSave the ANOVA model to an object called mod_factorial\nRun the code and inspect the result. Now, try to pull out the ANOVA table only. You can either do this with mod_factorial$anova_table or anova(mod_factorial). Hint: You can use tidy() to save the output table as a data frame, which might be useful.\n\n\nmod_factorial &lt;- aov_ez(id = \"NULL\",\n                        data = NULL, \n                        between = \"NULL\", \n                        within = \"NULL\",\n                        dv = \"NULL\", \n                        type = 3,\n                        es = \"NULL\") \nNULL %&gt;% tidy()\n\n\n\nmod_factorial &lt;- aov_ez(id = \"subject\",\n                        data = zhang_data2, \n                        between = \"Condition\", \n                        within = \"time\",\n                        dv = \"interest\", \n                        type = 3,\n                        es = \"pes\") \nanova(mod_factorial) %&gt;% tidy() #or mod_factorial$anova_table %&gt;% tidy()\n\n# A tibble: 3 × 7\n  term           num.Df den.Df   MSE statistic     ges    p.value\n  &lt;chr&gt;           &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;\n1 Condition           1    128 2.05      0.463 0.00278 0.498     \n2 time                1    128 0.607    25.9   0.0441  0.00000126\n3 Condition:time      1    128 0.607     4.44  0.00786 0.0370    \n\napa::anova_apa(mod_factorial) #or use this for apa format\n\n          Effect                                                \n1    (Intercept) F(1, 128) = 2505.82, p &lt; .001, petasq = .95 ***\n2      Condition F(1, 128) =    0.46, p = .498, petasq &lt; .01    \n3           time F(1, 128) =   25.88, p &lt; .001, petasq = .17 ***\n4 Condition:time F(1, 128) =    4.44, p = .037, petasq = .03 *",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#mixed-anova-results",
+    "href": "W11_GLMinR.html#mixed-anova-results",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Mixed ANOVA Results",
+    "text": "Mixed ANOVA Results\n\n\n\n          Effect                                                \n1    (Intercept) F(1, 128) = 2505.82, p &lt; .001, petasq = .95 ***\n2      Condition F(1, 128) =    0.46, p = .498, petasq &lt; .01    \n3           time F(1, 128) =   25.88, p &lt; .001, petasq = .17 ***\n4 Condition:time F(1, 128) =    4.44, p = .037, petasq = .03 *  \n\n\n\nConclusion: The main effect of time and the interaction between time and Condition are significant. Judged by visual inspection of the plot, interest increases over time, especially for the “ordinary” group.",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#assumption-checking",
+    "href": "W11_GLMinR.html#assumption-checking",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Assumption Checking",
+    "text": "Assumption Checking\nThe assumptions for a factorial ANOVA are the same as the one-way ANOVA.\n\nThe DV is continuous (interval or ratio data)\nThe observations should be independent\nThe residuals should be normally distributed\nThere should be homogeneity of variance between the groups\n\nTo test assumption 3, extract the residuals from the model, create a QQ-Plot and conduct a Shapiro-Wilk test. For assumption 4, we use the Levene test for homogeneity of variance.\n\n\n# normality testing\ncar::qqPlot(mod_factorial$lm$residuals)\n\n\n\n\n\n\n\n\n[1] 203  73\n\nshapiro.test(mod_factorial$lm$residuals)\n\n\n    Shapiro-Wilk normality test\n\ndata:  mod_factorial$lm$residuals\nW = 0.98325, p-value = 0.003785\n\n# levene's test\n#afex::test_levene(mod_factorial) #old version\nperformance::check_homogeneity(mod_factorial)\n\nOK: There is not clear evidence for different variances across groups (Levene's Test, p = 0.893).",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#write-up",
+    "href": "W11_GLMinR.html#write-up",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Write Up",
+    "text": "Write Up\nWhat do we need to report?\n\n\nSummary statistics (means, SDs, N) per cell\nF(df1, df2) = F-value, p = p-value, effect size per effect (apa package!)\nA visualization of the most important effect(s) in the data\nPossibly pairwise contrasts (or t-tests)\nInterpretation (direction of effect and theoretical meaning)\n\n\n\nExample how to use the apa package for reporting (you want print=F and :\nWe found a main effect of time (`r apa::anova_apa(mod_factorial, print=F, format=\"markdown\") %&gt;% filter(effect==\"time\") %&gt;% pull(text)`) with interest increasing from the first time point (*M* = `r zhang_data2 %&gt;% summarise(m = mean(interest, na.rm=TRUE), .by = c(time)) %&gt;% filter(time %&gt;% grepl(\"1\", ., fixed=T)) %&gt;% pull(m) %&gt;% signif(3)`) to the second (*M* = `r zhang_data2 %&gt;% summarise(m = mean(interest, na.rm=TRUE), .by = c(time)) %&gt;% filter(time %&gt;% grepl(\"1\", ., fixed=T)) %&gt;% pull(m) %&gt;% signif(3)`). This effect was superseded by an interaction of time and condition (`r apa::anova_apa(mod_factorial, print=F, format=\"markdown\") %&gt;% filter(effect==\"Condition:time\") %&gt;% pull(text)`) [...].\nWe found a main effect of time (F(1, 128) = 25.88, p &lt; .001, petasq = .17) with interest increasing from the first time point (M = 4.2) to the second (M = 4.2). This effect was superseded by an interaction of time and condition (F(1, 128) = 4.44, p = .037, petasq = .03) […].\n\n\n\nHint: You can add gsub to insert the greek letter for eta: gsub(\"petasq\", \"$\\\\eta_p^2$\", ., fixed=T)\nWe found a main effect of time (`r apa::anova_apa(mod_factorial, print=F, format=\"markdown\") %&gt;% filter(effect==\"time\") %&gt;% pull(text) %&gt;% gsub(\"petasq\", \"$\\\\eta_p^2$\", ., fixed=T)`) [...]\nWe found a main effect of time (F(1, 128) = 25.88, p &lt; .001, \\(\\eta_p^2\\) = .17) […]",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#setup-1",
+    "href": "W11_GLMinR.html#setup-1",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Setup",
+    "text": "Setup\nWe will use the data from this paper: Przybylski, A. & Weinstein, N. (2017). A Large-Scale Test of the Goldilocks Hypothesis.\nIn the paper, the authors investigated whether there is a “just right” amount of screen time that is associated with higher well-being.\nIn this huge dataset (\\(N=120,000\\)), we have the following variables that we will use for analysis:\n\na continuous DV, well-being (Warwick-Edinburgh Mental Well-Being Scale; WEMWBS). This is a 14-item scale with 5 response categories, summed together to form a single score ranging from 14-70 (so it’s not completely continuous…),\na continuous predictor/IV: screen time,\na categorical predictor/IV: gender.",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#tasks",
+    "href": "W11_GLMinR.html#tasks",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Tasks",
+    "text": "Tasks\n\nDownload wellbeing.csv, participant_info.csv and screen_time.csv and save them in your project folder. Make sure that you do not change the file names at all.\nLoad the CSV datasets into variables called pinfo, wellbeing, and screen using read_csv().\nTake a look at the data and make sure you understand what you see.\n\n\n \n\nThe wellbeing tibble has information from the WEMWBS questionnaire,\nscreen has information about screen time use on weekends (variables ending with “we”) and weekdays (variables ending with “wk”) for four types of activities:\n\nusing a computer (variables starting with “Comph”; Q10 on the survey)\nplaying video games (variables starting with “Comp”; Q9 on the survey)\nusing a smartphone (variables starting with “Smart”; Q11 on the survey), and\nwatching TV (variables starting with “Watch”; Q8 on the survey).",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#preprocessing",
+    "href": "W11_GLMinR.html#preprocessing",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Preprocessing",
+    "text": "Preprocessing\nCalculate the WEMWBS scores by taking the sum of all the items:\n\nWrite the code to create a new table called wemwbs with two variables: Serial (the participant ID), and tot_wellbeing, the total WEMWBS score.\nyou might have to “pivot” the data from wide to long format and use .by to calculate the well-being (WEMWBS) score per person.\nverify for yourself that the scores all fall in the 14-70 range. Przybylski and Weinstein reported a mean of 47.52 with a standard deviation of 9.55. Can you reproduce these values?\n\n\n\nwemwbs = wellbeing %&gt;%\n  pivot_longer(names_to = \"var\", values_to = \"score\", cols = -Serial) %&gt;%\n  summarise(tot_wellbeing = sum(score), .by=Serial)\n\n# you could also mutate(tot_wellbeing = WBOptimf + ...) \n# but it is easier to use \"across\" and \"filter\" the variable names\n\nwemwbs = wellbeing %&gt;% mutate(tot_wellbeing = rowSums(across(starts_with(\"WB\")))) %&gt;% \n  select(Serial, tot_wellbeing)\n\n# sanity check values\n\nwemwbs %&gt;% summarise(mean = mean(tot_wellbeing),\n                     sd = sd(tot_wellbeing),\n                     min = min(tot_wellbeing), \n                     max = max(tot_wellbeing))\n\n      mean       sd min max\n1 47.52189 9.546374  14  70",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#data-visualization",
+    "href": "W11_GLMinR.html#data-visualization",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Data Visualization",
+    "text": "Data Visualization\nWe now want to visualize the relationship between screen time (for the four different technologies) and well-being.\nRun the code below and write comments in the code that explain what each line of code is doing:\n\nscreen_long &lt;- screen %&gt;%\n  pivot_longer(names_to = \"var\", values_to = \"hours\", -Serial) %&gt;%\n  separate(var, c(\"variable\", \"day\"), \"_\")\n\nscreen2 &lt;- screen_long %&gt;%\n  mutate(variable = variable %&gt;% recode(\"Watch\" = \"Watching TV\",\n                                        \"Comp\" = \"Playing Video Games\",\n                                        \"Comph\" = \"Using Computers\",\n                                        \"Smart\" = \"Using Smartphone\"),\n         day = day %&gt;% recode(\"wk\" = \"Weekday\", \"we\" = \"Weekend\"))\n\ndat_means &lt;- inner_join(wemwbs, screen2, \"Serial\") %&gt;%\n  summarise(mean_wellbeing = mean(tot_wellbeing), .by=c(variable, day, hours))\n\nmeanplot = dat_means %&gt;% ggplot(aes(hours, mean_wellbeing, linetype = day)) +\n  geom_line() +\n  geom_point() +\n  facet_wrap(vars(variable), nrow = 2)",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#data-visualization-interpretation",
+    "href": "W11_GLMinR.html#data-visualization-interpretation",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Data Visualization: Interpretation",
+    "text": "Data Visualization: Interpretation\nDescribe what you see in the figures/plots that you get when running the code.\n\n\nThere seems to be a peak at roughly 1h/day for well-being for all sorts of screen time.",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#data-wrangling-1",
+    "href": "W11_GLMinR.html#data-wrangling-1",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Data Wrangling",
+    "text": "Data Wrangling\nWe need to do a few things to get a dataset that we can use for analysis:\n\nCreate a new table, smarttot, that has the mean number of hours per day of smartphone use for each participant, averaged over weekends/weekdays.\n\n\nYou will need to filter the dataset to only include smartphone use and not other technologies.\n\nThe final data set should have two variables: Serial (the participant) and tothours. In this step, you will need to summarise the data.\n\nYou will also need to group the summary by the participant ID (i.e., serial).\n\nYou will need to use the dataset screen2 to do this.\n\n\n\nsmarttot &lt;- screen2 %&gt;%\n  filter(variable == \"Using Smartphone\") %&gt;%\n  summarise(tothours = mean(hours), .by=Serial)\n\n\n\n\nNext, create a new tibble called smart_wb that only includes participants from smarttot who used a smartphone for more than one hour per day each week and then combine (join) this table with the information in wemwbs and pinfo.\n\n\n\n\nsmart_wb &lt;- smarttot %&gt;%\n  filter(tothours &gt; 1) %&gt;%\n  inner_join(wemwbs, \"Serial\") %&gt;%\n  inner_join(pinfo, \"Serial\")",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#data-wrangling-2",
+    "href": "W11_GLMinR.html#data-wrangling-2",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Data Wrangling 2",
+    "text": "Data Wrangling 2\nWhen you do regression analysis, it is helpful to mean center your continuous (independent) variables. You mean center a predictor X simply by subtracting the mean (X_centered = X - mean(X)). This has two useful consequences:\n\nthe model intercept reflects the prediction for Y at the mean value of the predictor variable, rather than at the zero value of the original variable;\nif there are interactions in the model, any lower-order effects can be given the same interpretation as they receive in ANOVA (main effects, rather than simple effects). (Don’t worry if you don’t understand what this means yet!)\n\nIf you mean-center categorical predictors with two levels, these become coded as \\(-.5\\) and \\(.5\\) (because the mean of these two values is 0). This is also handy and is called effects coding. (Not exactly true for unequal group sizes! So rather use if_else() function and assign \\(-.5\\) and \\(.5\\))",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#tasks-1",
+    "href": "W11_GLMinR.html#tasks-1",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Tasks",
+    "text": "Tasks\n\nUse mutate to add two new variables to smart_wb: tothours_c, calculated as a mean-centered version of the tothours predictor; and male_c, recoded as \\(-.5\\) for female and \\(.5\\) for male.\nTo create male_c you will need to use if_else(male == 1, .5, -.5)\n(Read as: “If the variable male equals 1, switch it to \\(.5\\), if not, switch it to \\(-.5\\)”.)\nFinally, recode male and male_c as factors, so that R knows not to treat them as real numbers.\n\n\n\nsmart_wb &lt;- smarttot %&gt;%\n  filter(tothours &gt; 1) %&gt;%\n  inner_join(wemwbs, \"Serial\") %&gt;%\n  inner_join(pinfo, \"Serial\") %&gt;%\n  mutate(thours_c = tothours - mean(tothours),\n         #thours_c = tothours %&gt;% scale(), #alternative, also scales the variable to SD=1\n         male_c = if_else(male == 1, .5, -.5) %&gt;% as_factor(),\n         male = as_factor(male))",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#data-visualization-2",
+    "href": "W11_GLMinR.html#data-visualization-2",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Data Visualization 2",
+    "text": "Data Visualization 2\nTry to recreate the following plot:\n\n\nsmart_wb_gen &lt;- smart_wb %&gt;%\n  summarise(mean_wellbeing = mean(tot_wellbeing), .by= c(tothours, male))\n\nggplot(NULL, aes(NULL, NULL, color = NULL)) +\n  geom_NULL() +  # which geom to use for the points?\n  geom_NULL(method = \"lm\") + # which geom for the lines?\n  scale_color_discrete(name = \"Gender\", labels = c(\"Female\", \"Male\"))+\n  scale_x_continuous(name = \"Total hours smartphone use\") +\n  scale_y_continuous(name = \"Mean well-being score\") + \n  theme_bw()",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#data-visualization-2-solution",
+    "href": "W11_GLMinR.html#data-visualization-2-solution",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Data Visualization 2: Solution",
+    "text": "Data Visualization 2: Solution\n\nsmart_wb_gen &lt;- smart_wb %&gt;%\n  summarise(mean_wellbeing = mean(tot_wellbeing), .by = c(tothours, male))\n\nggplot(smart_wb_gen, aes(tothours, mean_wellbeing, color = male)) +\n  geom_point() +\n  geom_smooth(method = \"lm\") +\n  scale_color_discrete(name = \"Gender\", labels = c(\"Female\", \"Male\"))+\n  scale_x_continuous(name = \"Total hours smartphone use\") +\n  scale_y_continuous(name = \"Mean well-being score\") + \n  theme_bw()",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#analysis",
+    "href": "W11_GLMinR.html#analysis",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Analysis",
+    "text": "Analysis\nTry to specify the following regression model in R:\n\\(Y_i = \\beta_0 + \\beta_1 X_{1i} + \\beta_2 X_{2i} + \\beta_3 X_{3i} + e_i\\)\nwhere\n\n\\(Yi\\) is the well-being score for participant i;\n\\(X1i\\) is the mean-centered smartphone use variable for participant i;\n\\(X2i\\) is gender (\\(-.5\\) = female, \\(.5\\) = male);\n\\(X3i\\) is the interaction between smartphone use and gender (=\\(X1i×X2i\\))\n\n\nmod &lt;- lm(NULL ~ NULL, data = smart_wb)\n\nmod_summary &lt;- summary(mod)",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#analysis-result",
+    "href": "W11_GLMinR.html#analysis-result",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Analysis: Result",
+    "text": "Analysis: Result\n\nmod &lt;- lm(tot_wellbeing ~ thours_c * male_c, data = smart_wb)\n#mod &lt;- lm(tot_wellbeing ~ thours_c + male_c + thours_c:male_c, data = smart_wb)\n\nmod_summary &lt;- summary(mod)\nmod_summary\n\n\nCall:\nlm(formula = tot_wellbeing ~ thours_c * male_c, data = smart_wb)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-36.881  -5.721   0.408   6.237  27.264 \n\nCoefficients:\n                   Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)        44.86740    0.04478 1001.87   &lt;2e-16 ***\nthours_c           -0.77121    0.02340  -32.96   &lt;2e-16 ***\nmale_c0.5           5.13968    0.07113   72.25   &lt;2e-16 ***\nthours_c:male_c0.5  0.45205    0.03693   12.24   &lt;2e-16 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 9.135 on 71029 degrees of freedom\nMultiple R-squared:  0.09381,   Adjusted R-squared:  0.09377 \nF-statistic:  2451 on 3 and 71029 DF,  p-value: &lt; 2.2e-16\n\n\nBy which variable in the output is the interaction between smartphone use and gender shown? Is it significant?\nHow would you interpret the results?",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#assumption-checking-1",
+    "href": "W11_GLMinR.html#assumption-checking-1",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Assumption checking",
+    "text": "Assumption checking\nHere are the assumptions for multiple regression:\n\nThe outcome/DV is continuous (interval/ratio level data)\nThe predictor variable is interval/ratio or categorical\nAll values of the outcome variable are independent (i.e., each score should come from a different participant)\nThe predictors have non-zero variance\nThe relationship between outcome and predictor is linear\nThe residuals should be normally distributed\nThere should be homoscedasticity (homogeneity of variance, but for the residuals)\nMulticollinearity: predictor variables should not be too highly correlated\n\nFrom the work we’ve done so far we know that assumptions 1 - 4 are met and we can use the functions from the performance package again to check the rest (this will take a while because the dataset is so huge)",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#assumption-checking-2",
+    "href": "W11_GLMinR.html#assumption-checking-2",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Assumption checking 2",
+    "text": "Assumption checking 2\n\n# qqPlot(mod$residuals)\ncheck_model(mod, check = c(\"vif\", \"qq\", \"normality\", \"linearity\", \"homogeneity\"))\n\n\n(Note: the line in the homogeneity plot is missing due to the large amount of data. Check out the textbook for a solution as well as for further information on what these measures mean.)",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#further-analysis-of-interaction",
+    "href": "W11_GLMinR.html#further-analysis-of-interaction",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Further Analysis of Interaction",
+    "text": "Further Analysis of Interaction\nWe can use emmeans package to further investigate the direction of the interaction. This is especially handy if we have more than two factor levels and can’t read out the direction of the effect from the model summary.\nSpecifically, we’re using the emtrends() function, because we have a continuous variable and want to know the (simple) slope/trend of this variable within each of the factor levels of the categorical variable:\n\nsimple_slopes_interaction &lt;- emtrends(mod, ~male_c|thours_c, var=\"thours_c\")\nsimple_slopes_interaction\n\nthours_c = -3.41e-16:\n male_c thours_c.trend     SE    df lower.CL upper.CL\n -0.5           -0.771 0.0234 71029   -0.817   -0.725\n 0.5            -0.319 0.0286 71029   -0.375   -0.263\n\nConfidence level used: 0.95 \n\ntest(simple_slopes_interaction)  # with the test() function, you can get the p-value to test whether the slope within each group is sign. different from 0!\n\nthours_c = -3.41e-16:\n male_c thours_c.trend     SE    df t.ratio p.value\n -0.5           -0.771 0.0234 71029 -32.956  &lt;.0001\n 0.5            -0.319 0.0286 71029 -11.170  &lt;.0001",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#power-effect-size",
+    "href": "W11_GLMinR.html#power-effect-size",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Power & Effect Size",
+    "text": "Power & Effect Size\nUse this code to calculate the minimum effect size for \\(99\\%\\) power and the empirical effect size:\n\n#minimum effect size needed: set f2 (effect size) to NULL so it will be calculated\npwr.f2.test(u = 3, v = 71029, f2 = NULL, sig.level = .05, power = .99)\n\n\n     Multiple regression power calculation \n\n              u = 3\n              v = 71029\n             f2 = 0.0003673651\n      sig.level = 0.05\n          power = 0.99\n\nf2.empirical &lt;- mod_summary$adj.r.squared/(1 - mod_summary$adj.r.squared)\nf2.empirical #empirical effect size\n\n[1] 0.1034697\n\n\nIs the study adequately powered?",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#write-up-1",
+    "href": "W11_GLMinR.html#write-up-1",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Write Up",
+    "text": "Write Up\nFor the write up, you can copy this text block, including inline code (wrapped by R) to directly use the output of R in your text. If you then knit your document, it will insert the values:\nAll continuous predictors were mean-centered and deviation coding was used for categorical predictors. The results of the regression indicated that the model significantly predicted course engagement (*F*(`r mod_summary$fstatistic[2]`, `r mod_summary$fstatistic[3] %&gt;% round(2)`) = `r mod_summary$fstatistic[1] %&gt;% round(2)`, *p* \\&lt; .001, adjusted *R*^2 = `r mod_summary$adj.r.squared %&gt;% round(2)`, f^2^ = .63), accounting for `r (mod_summary$adj.r.squared %&gt;% round(2))*100`% of the variance. Total screen time was a significant negative predictor of wellbeing scores (β = `r mod$coefficients[2] %&gt;% round(2)`, *p* \\&lt; .001), as was gender (β = `r mod$coefficients[3] %&gt;% round(2)`, *p* \\&lt; .001), with girls having lower wellbeing scores than boys. Importantly, there was a significant interaction between screentime and gender (β = `r mod$coefficients[4] %&gt;% round(2)`, *p* \\&lt; .001): Smartphone use was more negatively associated with wellbeing for girls than for boys.\n\nAll continuous predictors were mean-centered and deviation coding was used for categorical predictors. The results of the regression indicated that the model significantly predicted course engagement (F(3, 7.1029^{4}) = 2450.89, p &lt; .001, adjusted R^2 = 0.09, f2 = .63), accounting for 9% of the variance. Total screen time was a significant negative predictor of wellbeing scores (β = -0.77, p &lt; .001), as was gender (β = 5.14, p &lt; .001), with girls having lower wellbeing scores than boys. Importantly, there was a significant interaction between screentime and gender (β = 0.45, p &lt; .001): Smartphone use was more negatively associated with wellbeing for girls than for boys.",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#write-up-2",
+    "href": "W11_GLMinR.html#write-up-2",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Write Up 2",
+    "text": "Write Up 2\nYou can also use the report() function from the report package to get a suggestion for what to report from your results (it would still need some editing!):\n\nreport(mod)\n\nWe fitted a linear model (estimated using OLS) to predict tot_wellbeing with\nthours_c and male_c (formula: tot_wellbeing ~ thours_c * male_c). The model\nexplains a statistically significant and weak proportion of variance (R2 =\n0.09, F(3, 71029) = 2450.89, p &lt; .001, adj. R2 = 0.09). The model's intercept,\ncorresponding to thours_c = 0 and male_c = -0.5, is at 44.87 (95% CI [44.78,\n44.96], t(71029) = 1001.87, p &lt; .001). Within this model:\n\n  - The effect of thours c is statistically significant and negative (beta =\n-0.77, 95% CI [-0.82, -0.73], t(71029) = -32.96, p &lt; .001; Std. beta = -0.15,\n95% CI [-0.16, -0.15])\n  - The effect of male c [0.5] is statistically significant and positive (beta =\n5.14, 95% CI [5.00, 5.28], t(71029) = 72.25, p &lt; .001; Std. beta = 0.54, 95% CI\n[0.52, 0.55])\n  - The effect of thours c × male c [0.5] is statistically significant and\npositive (beta = 0.45, 95% CI [0.38, 0.52], t(71029) = 12.24, p &lt; .001; Std.\nbeta = 0.09, 95% CI [0.08, 0.11])\n\nStandardized parameters were obtained by fitting the model on a standardized\nversion of the dataset. 95% Confidence Intervals (CIs) and p-values were\ncomputed using a Wald t-distribution approximation.",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
     ]
   }
 ]

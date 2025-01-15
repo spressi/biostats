@@ -566,6 +566,20 @@ The model is now significant! There is an *interaction* between `caffeine` and `
 
 Note: `speaking ~ caffeine * anxiety` is shorthand for `speaking ~ caffeine + anxiety + caffeine:anxiety`
 
+::: notes
+interpretation coefficients:
+
+intercept: intercept of anxious group!
+
+intercept not anxious: difference intercept anxious vs. notanxious
+
+slope anxious: only for the anxious group!
+
+slope not anxious: diff in slopes
+
+no main effects!!!
+:::
+
 ## Convert GLM to ANOVA
 
 The interpretation of the coefficients of a GLM when interactions are included is not as straight forward compared to an ANOVA!
