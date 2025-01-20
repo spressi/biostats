@@ -81,22 +81,18 @@ A newer variant is called *quarto*, which works very similar to R Markdown (but 
 
 ## R Markdown Advantages
 
-There are many useful things you can do with R Markdown (adding different headers, adding inline code, knitting as a PDF, adding pictures or tables...). You can also decide whether the code chunks should be visible in the output, etc.
+There are many useful things you can do with R Markdown (adding different headers, adding inline code, knitting as a PDF, adding pictures or tables...). You can also decide whether each code chunk should be visible in the output, etc.
 
-For further information, check out the R Markdown cheatsheet: <https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf>
-
-\
-**Options for your code chunks:**
-
-![](images/Rmd Options.png)
-
-Examples:
+Example:
 
 ````{verbatim}
-```{r, eval=FALSE}
-#your code here
+```{r, echo=TRUE, eval=FALSE}
+#your code here that will only be shown but not be executed
 ```
 ````
+
+For further information, check out the R Markdown cheatsheet: <https://rmarkdown.rstudio.com/lesson-15.HTML>
+
 
 ## Code Chunk Options
 
@@ -109,12 +105,13 @@ You can change these default values for code chunks for the rest of your documen
 ````{verbatim}
 ```{r, include=FALSE}
 knitr::opts_chunk$set(
-  comment = "#>", echo = FALSE, fig.width = 6
+  echo = FALSE, #this is a good default for your report
+  fig.width = 6, fig.height = 6
 )
 ```
 ````
 
-Fore more information, see <https://bookdown.org/yihui/rmarkdown-cookbook/chunk-options.html>
+Fore more information, see <https://yihui.org/knitr/options/>
 
 
 ## From an R script to R Markdown
@@ -123,7 +120,7 @@ Previously, we have just worked with `.R` scripts. If you have a full R script w
 
 . . .
 
-1.  Copy all code into **one giant code chunk**:
+Option 1: Copy all code into **one giant code chunk**:
 
 ````{verbatim}
 ```{r}
@@ -139,10 +136,9 @@ You can break this code chunk apart into smaller ones by copying this into a new
 ```{r}
 ````
 
-. . .
+## From an R script to R Markdown 2
 
-\
-2.  "Import" the R script and run it with the `source` function:
+Option 2: "Import" the R script and run it with the `source` function:
 
 ````{verbatim}
 ```{r message=FALSE, warning=FALSE}
@@ -151,11 +147,11 @@ source("analysis.R", #your R script here (same folder as your project)
 ```
 ````
 
-You can now use all variables that you have created in your R script.
+You can now use all variables that you have created in your R script. But you cannot show individual code chunks.
 
 ## Your Second R Markdown Script
-1.  Use one of the two methods described before to include any R script from a previous R code session in your R Markdown document.
-2.  Output the content of any variable of your R script and include it as **inline code** in some text ([Cheat Sheet](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf)).
+1.  Use one of the two methods described before to include the R analysis for your report into an R Markdown document.
+2.  Output the content of any variable of your R script and include it as **inline code** in some text ([Cheat Sheet](https://rmarkdown.rstudio.com/lesson-15.HTML)).
 
 . . .
 
@@ -171,14 +167,17 @@ data = tibble(rt = rnorm(n=100, mean=.5, sd=.2))
 ```
 We observed an average reaction time of `r data %>% pull(rt) %>% mean() %>% signif(digits=3)` seconds.
 
-. . .
+3.  Knit the document and open the output with a double click.
+
+## Examples for your report: *t*-test
 
 ````{verbatim, lang = "rmarkdown"}
 ```{r}
 data = tibble(a = rnorm(n=100, mean=.5, sd=.2), b = rnorm(n=100, mean=.4, sd=.2))
 mytest = with(data, t.test(a, b, paired=T))
-#mytest %>% apa::t_apa()
+#mytest %>% apa::t_apa() #we don't want to print output to the console anymore
 ```
+
 We performed a paired *t*-test and found a significant difference between both conditions 
 (`r mytest %>% apa::t_apa(print=F, format="rmarkdown")`). In condition A, reaction times were higher 
 (*M* = `r data %>% pull(a) %>% mean() %>% signif(3)` s, *SD* = `r data %>% pull(a) %>% sd() %>% signif(3)` s)
@@ -191,10 +190,9 @@ mytest = with(data, t.test(a, b, paired=T))
 ```
 We performed a paired *t*-test and found a significant difference between both conditions (`r mytest %>% apa::t_apa(print=F, format="rmarkdown")`). In condition A, reaction times were higher (*M* = `r data %>% pull(a) %>% mean() %>% signif(3)` s, *SD* = `r data %>% pull(a) %>% sd() %>% signif(3)` s) compared to condition B (*M* = `r data %>% pull(b) %>% mean() %>% signif(3)` s, *SD* = `r data %>% pull(b) %>% sd() %>% signif(3)` s).
 
-. . .
+## Examples for your report: ANOVA
 
-\
-3.  Knit the document and open the output with a double click.
+TODO
 
 # Thanks
 
