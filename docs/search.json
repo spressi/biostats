@@ -1,0 +1,912 @@
+[
+  {
+    "objectID": "W10_GLM.html#glm",
+    "href": "W10_GLM.html#glm",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "GLM",
+    "text": "GLM\nOne approach is the GLM. You might be surprised that a lot of the common models can be viewed as linear models:\n\nAll models can be thought of as linear models",
+    "crumbs": [
+      "10 The General Linear Model & Multivariate Statistics"
+    ]
+  },
+  {
+    "objectID": "W10_GLM.html#definitions",
+    "href": "W10_GLM.html#definitions",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Definitions",
+    "text": "Definitions\nDependent variable (DV): The outcome variable that the model aims to explain (\\(Y\\)).\nIndependent variable (IV): The variable(s) that we use to explain the DV (\\(X\\)).\nLinear model: The model for the DV is composed of a linear combination of IVs (that are multiplied by different weights!)\n\nThe weights are the parameters \\(\\beta\\) and determine the relative contribution of each IV. (This is what the model estimates! The weights thus give us the important information we’re usually interested in: How strong are IV and DV related.)\nThere may also be several DVs (“multivariate statistics”), but usually that’s not the case except for specific biopsychological methods (e.g., fMRI). Thus, we will focus on those cases with one DV!",
+    "crumbs": [
+      "10 The General Linear Model & Multivariate Statistics"
+    ]
+  },
+  {
+    "objectID": "W10_GLM.html#example",
+    "href": "W10_GLM.html#example",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Example",
+    "text": "Example\n\n\nLet’s use some simulated data:\n\n\n\n\n\n\n\n\n\n\nWe can calculate the correlation between the two variables:\n\n\n\n    Pearson's product-moment correlation\n\ndata:  df$grade and df$studyTime\nt = 2.0134, df = 6, p-value = 0.09073\nalternative hypothesis: true correlation is not equal to 0\n95 percent confidence interval:\n -0.1261283  0.9255245\nsample estimates:\n      cor \n0.6349813 \n\n\nr(6) = .63 [-.13; .93], p = .091\n\n\nThe correlation is quite high (.63), but the CI is also pretty wide.\n\n\n\nFundamental activities of statistics:\n\nDescribe: How strong is the relationship between grade and study time?\nDecide: Is there a statistically significant relationship between grade and study time?\nPredict: Given a particular amount of study time, what grade do we expect?\n\n\nrelationship study time and grade",
+    "crumbs": [
+      "10 The General Linear Model & Multivariate Statistics"
+    ]
+  },
+  {
+    "objectID": "W10_GLM.html#linear-regression",
+    "href": "W10_GLM.html#linear-regression",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Linear Regression",
+    "text": "Linear Regression\nUse the GLM to…\n\n\ndescribe the relation between two variables (similar to correlation)\ndecide whether an IV is a significant predictor of the DV\npredict DV for new values of IV (new observations)\nadd multiple IVs!\n\n\n\n\n\nSimple GLM (here: equivalent to linear regression):\n\\[\ny = \\beta_0+ x * \\beta_x + \\epsilon\n\\]\n\\(\\beta_0\\) = intercept: the overall offset of the line when \\(x=0\\) (this cannot always be interpreted)\n\\(\\beta_x\\) = slope: how much do we expect \\(y\\) to change with each change in \\(x\\)?\n\\(y\\) = DV\n\\(x\\) = IV or predictor\n\\(\\epsilon\\) = error term* or residuals: whatever variance is left once the model is fit (Think of the model as the blue line and the residuals are the vertical deviations of the data points from the line)\n(If we refer to predicted \\(y\\)-values, after we have estimated the model, we can drop the error term: \\(\\hat{y} = \\hat{\\beta_0} + x * \\hat{\\beta_x}\\).)",
+    "crumbs": [
+      "10 The General Linear Model & Multivariate Statistics"
+    ]
+  },
+  {
+    "objectID": "W10_GLM.html#the-relation-between-correlation-and-regression",
+    "href": "W10_GLM.html#the-relation-between-correlation-and-regression",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "The Relation Between Correlation and Regression",
+    "text": "The Relation Between Correlation and Regression\nThere is a close relation and we can convert \\(r\\) to \\(\\hat{\\beta_x}\\).\n\\(\\hat{r} = \\frac{covariance_{xy}}{s_x * s_y}\\)\n\\(\\hat{\\beta_x} = \\frac{covariance_{xy}}{s_x*s_x}\\)\n\\(covariance_{xy} = \\hat{r} * s_x * s_y\\)\n\\(\\hat{\\beta_x} = \\frac{\\hat{r} * s_x * s_y}{s_x * s_x} = r * \\frac{s_y}{s_x}\\)\n–&gt; Regression slope = correlation multiplied by ratio of SDs (if SDs are equal, \\(r\\) = \\(\\hat{\\beta}\\) )\n\nEstimation of GLM:\nlinear algebra (R will do that for us!) –&gt; Appendix book",
+    "crumbs": [
+      "10 The General Linear Model & Multivariate Statistics"
+    ]
+  },
+  {
+    "objectID": "W10_GLM.html#standard-errors-for-regression-models",
+    "href": "W10_GLM.html#standard-errors-for-regression-models",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Standard Errors for Regression Models",
+    "text": "Standard Errors for Regression Models\nWe usually want to make inferences about the regression parameter estimates. For this we need an estimate of their variability.\nWe first need an estimate of how much variability is not explained by the model: the residual variance (or error variance):\nCompute residuals:\n\\[\nresidual = y - \\hat{y} = y - (x*\\hat{\\beta_x} + \\hat{\\beta_0})\n\\]\nCompute Sum of Squared Errors (remember from ANOVA?):\n\\[\nSS_{error} = \\sum_{i=1}^n{(y_i - \\hat{y_i})^2} = \\sum_{i=1}^n{residuals^2}\n\\]\nCompute Mean Squared Error:\n\\[\nMS_{error} = \\frac{SS_{error}}{df} = \\frac{\\sum_{i=1}^n{(y_i - \\hat{y_i})^2} }{N - p}\n\\]\nwhere the \\(df\\) are the number of observations \\(N\\) - the number of estimated parameter \\(p\\) (in this case 2: \\(\\hat{\\beta_0}\\) and \\(\\hat{\\beta_x}\\)).\nFinally, we can calculate the standard error for the full model:\n\\[\nSE_{model} = \\sqrt{MS_{error}}\n\\]\nWe can also calculate the SE for specific regression parameter estimates by rescaling the \\(SE_{model}\\):\n\\[\nSE_{\\hat{\\beta_x}} = \\frac{SE_{model}}{\\sqrt{\\sum{(x_i - \\bar{x})^2}}}\n\\]\n\nrescaling SE: by square root of the SS of the X variable",
+    "crumbs": [
+      "10 The General Linear Model & Multivariate Statistics"
+    ]
+  },
+  {
+    "objectID": "W10_GLM.html#statistical-tests-for-regression-parameters",
+    "href": "W10_GLM.html#statistical-tests-for-regression-parameters",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Statistical Tests for Regression Parameters",
+    "text": "Statistical Tests for Regression Parameters\nWith the parameter estimates and their standard errors, we can compute \\(t\\)-statistics, which represent the likelihood of the observed estimate vs. the expected value under \\(H_0\\) (usually 0, no effect).\n\\[\n\\begin{array}{c}\nt_{N - p} = \\frac{\\hat{\\beta} - \\beta_{expected}}{SE_{\\hat{\\beta}}}\\\\\nt_{N - p} = \\frac{\\hat{\\beta} - 0}{SE_{\\hat{\\beta}}}\\\\\nt_{N - p} = \\frac{\\hat{\\beta} }{SE_{\\hat{\\beta}}}\n\\end{array}\n\\]",
+    "crumbs": [
+      "10 The General Linear Model & Multivariate Statistics"
+    ]
+  },
+  {
+    "objectID": "W10_GLM.html#glm-results",
+    "href": "W10_GLM.html#glm-results",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "GLM results",
+    "text": "GLM results\nUsually, we would just let R do the calculations:\n\nsummary(lmResult)\n\n\nCall:\nlm(formula = grade ~ studyTime, data = df)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-10.656  -2.719   0.125   4.703   7.469 \n\nCoefficients:\n            Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)   76.156      5.161  14.756 6.09e-06 ***\nstudyTime      4.313      2.142   2.013   0.0907 .  \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 6.386 on 6 degrees of freedom\nMultiple R-squared:  0.4032,    Adjusted R-squared:  0.3037 \nF-statistic: 4.054 on 1 and 6 DF,  p-value: 0.09073\n\n\nThe intercept is significantly different from zero (which is usually not very relevant: with 0 study time, you don’t get 0%) and the effect of studyTime is not (or only “marginally”) significant. So for every hour that we study more, the effect on the grade is descriptively rather small (~4%) but possibly not present at all (because it is not statistically significant).\n\n\\(t\\) ratio of \\(\\beta\\) to its \\(SE\\)!\nintercept: expected grade without studying at all",
+    "crumbs": [
+      "10 The General Linear Model & Multivariate Statistics"
+    ]
+  },
+  {
+    "objectID": "W10_GLM.html#quantifying-goodness-of-fit-of-the-model",
+    "href": "W10_GLM.html#quantifying-goodness-of-fit-of-the-model",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Quantifying Goodness of Fit of the Model",
+    "text": "Quantifying Goodness of Fit of the Model\nOften, it is useful to check how good the (total) model we estimated fits the data.\n\nWe can do that easily by asking how much of the variability in the data is accounted for by the model?\n\n\nIf we only have one IV (\\(x\\)), then we can simply square the correlation coefficient:\n\\[\nR^2 = r^2\n\\]\nIn study time example, \\(R^2\\) = 0.63² = 0.4 –&gt; we accounted for 40% of the overall variance in grades!\n\n\nMore generally, we can calculate \\(R^2\\) with the Sum of Squared Variances:\n\\[\nR^2 = \\frac{SS_{model}}{SS_{total}} = 1-\\frac{SS_{error}}{SS_{total}}\n\\]\n\n\nWith a sample of sufficient size, it is possible to get highly significant values that still explain very little of the total variance (i.e., little practical significance despite statistical significance)\n\n\\(R^2\\) is the name of the Goodness of Fit stat!\nA small R² tells us that even though a model might be significant, it may only explain a small amount of information in the DV",
+    "crumbs": [
+      "10 The General Linear Model & Multivariate Statistics"
+    ]
+  },
+  {
+    "objectID": "W10_GLM.html#fitting-more-complex-models",
+    "href": "W10_GLM.html#fitting-more-complex-models",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Fitting More Complex Models",
+    "text": "Fitting More Complex Models\nOften we want to know the effects of multiple variables (IVs) on some outcome.\nExample:\nSome students have taken a very similar class before, so there might not only be the effect of studyTime on grades, but also of having taken a priorClass.\n\n\n\nWe can built a model that takes both into account by simply adding the “weight” and the IV (priorClass) to the model:\n\\(\\hat{y} = \\hat{\\beta_1}*studyTime + \\hat{\\beta_2}*priorClass + \\hat{\\beta_0}\\)\n\n\nTo model priorClass, i.e. whether each individual has taken a previous class or not, we use dummy coding (0=no, 1=yes).\nThis means, for those who have not taken a class, the whole part of the equation (\\(\\hat{\\beta_2} * priorClass\\)) will be zero - we will add it for the others.\n\\(\\hat{\\beta_2}\\) is thus the difference in means between the two groups!\n\\(\\hat{\\beta_1}\\) is the regression slope of studyTime across data points/regardless of whether someone has taken a class before.\n\n\n\nIf we plot the data, we can see that both IVs seem to have an effect on grades:\n\n\n\n\n\n\n\n\n\n\n\n\nHow can we tell from the plot that both IVs might have an effect?",
+    "crumbs": [
+      "10 The General Linear Model & Multivariate Statistics"
+    ]
+  },
+  {
+    "objectID": "W10_GLM.html#interactions-between-variables",
+    "href": "W10_GLM.html#interactions-between-variables",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Interactions Between Variables",
+    "text": "Interactions Between Variables\nWe previously assumed that the effect of studyTime on grade was the same for both groups - but sometimes we expect that this regression slope differs per group!\n\nE.g., due to prior knowledge from another class, it may be easier to profit from studying the new materials (i.e., steeper slope). Or it may be harder due to diminishing marginal returns (i.e., flatter slope).\n\n\n\nThis is what we call an interaction: The effect of one variable depends on the value of another variable.\nThus, priorClass can have a main effect on grade (i.e., independent of studyTime): “I already know more, regardless wether I study”.\nBut it can also interact with studyTime: “Due to my prior knowledge, I can study more efficiently.”",
+    "crumbs": [
+      "10 The General Linear Model & Multivariate Statistics"
+    ]
+  },
+  {
+    "objectID": "W10_GLM.html#interaction-example",
+    "href": "W10_GLM.html#interaction-example",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Interaction Example",
+    "text": "Interaction Example\nExample: What is the effect of caffeine on public speaking?\n\n\n\n\n\n# perform linear regression with caffeine as independent variable\nlmResultCaffeine &lt;- lm(speaking ~ caffeine, data = df)\nsummary(lmResultCaffeine)\n\n\nCall:\nlm(formula = speaking ~ caffeine, data = df)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-33.096 -16.024   5.014  16.453  26.979 \n\nCoefficients:\n            Estimate Std. Error t value Pr(&gt;|t|)\n(Intercept)  -7.4132     9.1653  -0.809    0.429\ncaffeine      0.1676     0.1508   1.111    0.281\n\nResidual standard error: 19.19 on 18 degrees of freedom\nMultiple R-squared:  0.06419,   Adjusted R-squared:  0.0122 \nF-statistic: 1.235 on 1 and 18 DF,  p-value: 0.2811\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThere doesn’t seem to be a “direct” (bivariate) effect:",
+    "crumbs": [
+      "10 The General Linear Model & Multivariate Statistics"
+    ]
+  },
+  {
+    "objectID": "W10_GLM.html#interaction-example-two-main-effects",
+    "href": "W10_GLM.html#interaction-example-two-main-effects",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Interaction Example: Two main effects",
+    "text": "Interaction Example: Two main effects\nWhat if we have the hypothesis that anxiety also affects public speaking?\n\n\n\n\n\n\n\nCall:\nlm(formula = speaking ~ caffeine + anxiety, data = df)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-32.968  -9.743   1.351  10.530  25.361 \n\nCoefficients:\n                  Estimate Std. Error t value Pr(&gt;|t|)\n(Intercept)       -12.5812     9.1967  -1.368    0.189\ncaffeine            0.1313     0.1446   0.908    0.377\nanxietynotAnxious  14.2328     8.2324   1.729    0.102\n\nResidual standard error: 18.21 on 17 degrees of freedom\nMultiple R-squared:  0.2041,    Adjusted R-squared:  0.1105 \nF-statistic:  2.18 on 2 and 17 DF,  p-value: 0.1436\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThe new model is still not significant. This is due to the fact that we only look at additive effects (main effects). But neither caffeine nor anxiety alone/independently predict public speaking performance.\n\n\nFrom the plot, however, it looks like the effect of caffeine is indeed different for the two anxiety groups: Increasing for non-anxious people and decreasing for anxious ones.\nIn other words: We need to have a model that allows to fit different regression slopes to both groups.\n\nexplain additive effects: look at average caffeine effect, then add mean for anxiety groups (but: both not significant here!)\nproblem of independent main effects: also if you bring together two findings from two different papers =&gt; no information about interaction of predictors",
+    "crumbs": [
+      "10 The General Linear Model & Multivariate Statistics"
+    ]
+  },
+  {
+    "objectID": "W10_GLM.html#interaction-example-full-model",
+    "href": "W10_GLM.html#interaction-example-full-model",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Interaction Example: Full model",
+    "text": "Interaction Example: Full model\nTo allow for different slopes for each group (i.e. for the effect of caffeine to vary between the anxiety groups), we have to model the interaction as well.\n\n\n\n\n\nCall:\nlm(formula = speaking ~ caffeine + anxiety + caffeine:anxiety, \n    data = df)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-11.385  -7.103  -0.444   6.171  13.458 \n\nCoefficients:\n                            Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)                 17.43085    5.43012   3.210 0.005461 ** \ncaffeine                    -0.47416    0.09664  -4.906 0.000158 ***\nanxietynotAnxious          -43.44873    7.79141  -5.576 4.17e-05 ***\ncaffeine:anxietynotAnxious   1.08395    0.12931   8.382 3.01e-07 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 8.085 on 16 degrees of freedom\nMultiple R-squared:  0.8524,    Adjusted R-squared:  0.8247 \nF-statistic:  30.8 on 3 and 16 DF,  p-value: 7.014e-07\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThe model is now significant! There is an interaction between caffeine and anxiety. Interestingly, the main effects are also significant now even though they were not in the previous models (because the residual variance has been reduced drastically from 18 to 8 by the highly significant interaction).\nNote: speaking ~ caffeine * anxiety is shorthand for speaking ~ caffeine + anxiety + caffeine:anxiety\n\ninterpretation coefficients:\nintercept: intercept of anxious group!\nintercept not anxious: difference intercept anxious vs. notanxious\nslope anxious: only for the anxious group!\nslope not anxious: diff in slopes\nno main effects!!!",
+    "crumbs": [
+      "10 The General Linear Model & Multivariate Statistics"
+    ]
+  },
+  {
+    "objectID": "W10_GLM.html#convert-glm-to-anova",
+    "href": "W10_GLM.html#convert-glm-to-anova",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Convert GLM to ANOVA",
+    "text": "Convert GLM to ANOVA\nThe interpretation of the coefficients of a GLM when interactions are included is not as straight forward compared to an ANOVA!\n\nIf you want to report the “typical” ANOVA table with main effects and the general interaction:\n\nanova(lmResultInteraction)\n\nAnalysis of Variance Table\n\nResponse: speaking\n                 Df Sum Sq Mean Sq F value   Pr(&gt;F)    \ncaffeine          1  454.8   454.8  6.9578 0.017911 *  \nanxiety           1  991.5   991.5 15.1678 0.001288 ** \ncaffeine:anxiety  1 4593.4  4593.4 70.2662 3.01e-07 ***\nResiduals        16 1045.9    65.4                     \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n\n\n\nNote: The p-values are different between the GLM and the ANOVA outputs because effects including factors are coded slightly differently (dummy vs. effect coding):\nDummy coding uses the first level as a default and compares the remaining levels to it (\\(0\\) vs. \\(1\\)).\nEffect coding takes the overall mean as an abstract comparison (\\(-.5\\) vs. \\(+.5\\)).\nThis difference is resembled in the output tables as anxietynotAnxious (GLM) vs. anxiety (ANOVA).\n\ninterpretation coefficients:\nintercept: intercept of anxious group!\nintercept not anxious: difference intercept anxious vs. notanxious\nslope anxious: only for the anxious group!\nslope not anxious: diff in slopes\nno main effects!!!",
+    "crumbs": [
+      "10 The General Linear Model & Multivariate Statistics"
+    ]
+  },
+  {
+    "objectID": "W10_GLM.html#model-comparison",
+    "href": "W10_GLM.html#model-comparison",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Model Comparison",
+    "text": "Model Comparison\nSometimes, we want to compare two (nested!) models to see which one fits the data better.\nWe can do so by using the anova()* function in R:\n\nanova(lmResultCafAnx, lmResultInteraction)\n\nAnalysis of Variance Table\n\nModel 1: speaking ~ caffeine + anxiety\nModel 2: speaking ~ caffeine + anxiety + caffeine:anxiety\n  Res.Df    RSS Df Sum of Sq      F   Pr(&gt;F)    \n1     17 5639.3                                 \n2     16 1045.9  1    4593.4 70.266 3.01e-07 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n\nThis shows that Model 2, incl. the interaction, is to be preferred.\n\nNote: We can only meaningfully use this method with so-called nested models, which means that the simpler (reduced) model only contains variables also included in the more complex (full) model.\n\n\nWald compares the ratio of squared errors to an F-distribution (sound familiar from ANOVA?), while likelihood ratio compares the ratio of likelihoods to a χ2 distribution\n\n\n\n*Yes, it is kind of an ANOVA as well, in that (a ratio of) squared errors is compared to an \\(F\\)-distribution…",
+    "crumbs": [
+      "10 The General Linear Model & Multivariate Statistics"
+    ]
+  },
+  {
+    "objectID": "W10_GLM.html#criticizing-our-model-and-checking-assumptions",
+    "href": "W10_GLM.html#criticizing-our-model-and-checking-assumptions",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Criticizing Our Model and Checking Assumptions",
+    "text": "Criticizing Our Model and Checking Assumptions\n“Garbage in, garbage out” - we have to make sure our model is properly specified!\n\nProperly specified = having included the appropriate IVs.\n\n\nThe model also needs to satisfy the assumptions of the statistical method (= GLM).\nOne important assumption of the GLM is that the residuals are normally distributed.\nThis assumption can be violated by a not properly specified model or because the data are inappropriate for the statistical model.\n\n\nWe can use a Q-Q plot, which represents the quantiles of two distributions/variables (e.g., the data and a normal distribution of the same data) against each other.\nIf the data points diverge substantially from the line (especially in the extremes), we can conclude that the residuals are not normally distributed.",
+    "crumbs": [
+      "10 The General Linear Model & Multivariate Statistics"
+    ]
+  },
+  {
+    "objectID": "W10_GLM.html#model-diagnostics",
+    "href": "W10_GLM.html#model-diagnostics",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Model Diagnostics",
+    "text": "Model Diagnostics\nTo check the assumptions, we can easily run a function for model diagnostics (incl. Q-Q plots) in R. The function, check_model(), is included in the performance package by the easystats team (who make great packages for everything related to statistical modeling!)\n\n# install.packages(\"easystats\")\nlibrary(performance)\n\ncheck_model(lmResultInteraction)\n\n\n\nWe’re not going into detail about all these diagnostics (and hard to see!), but it is always a good idea to run diagnostics/check assumptions for your models!",
+    "crumbs": [
+      "10 The General Linear Model & Multivariate Statistics"
+    ]
+  },
+  {
+    "objectID": "W10_GLM.html#remark-predicting-in-a-statistical-context",
+    "href": "W10_GLM.html#remark-predicting-in-a-statistical-context",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Remark: “Predicting” in a Statistical Context",
+    "text": "Remark: “Predicting” in a Statistical Context\nWe neither mean “predicting before seeing the data/in the future” nor mean to imply causality!\n\nIt simply refers to fitting a model to the data: We estimate (or predict) values for the DV (\\(\\hat{y}\\)) and the IVs are often referred to as predictors.\n\nRelated to: predicting future values",
+    "crumbs": [
+      "10 The General Linear Model & Multivariate Statistics"
+    ]
+  },
+  {
+    "objectID": "W10_GLM.html#multivariate-statistics-2",
+    "href": "W10_GLM.html#multivariate-statistics-2",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Multivariate Statistics 2",
+    "text": "Multivariate Statistics 2\nThese two methods belong to the class of unsupervised learning. Before, we have only dealt with supervised learning (e.g., regression, ANOVA). There are also methods for multivariate, supervised learning (e.g., MANOVA).\nNote: Unsupervised learning techniques are very explorative in nature. It is a different approach to learning from data compared to hypothesis testing. Explorative methods are usually used in science to create a first insight into new phenomena that can develop into hypotheses further down the line.\n\nSupervised: we know the value of the DV that we’re trying to predict (try to find best model predictions).\nUnsupervised: we don’t have specific value to predict, we try to discover (patterns that help understand). Requires some assumptions about pattern.\n–&gt; does not necessarily have a “right” answer!",
+    "crumbs": [
+      "10 The General Linear Model & Multivariate Statistics"
+    ]
+  },
+  {
+    "objectID": "W10_GLM.html#multivariate-data-an-example",
+    "href": "W10_GLM.html#multivariate-data-an-example",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Multivariate Data: An Example",
+    "text": "Multivariate Data: An Example\nHow do different aspects of psychological function (self-control etc.) relate to one another?\n10h battery of cognitive tests and surveys, N = 522, 9 measures of interest!\nMeasures:\n\nResponse inhibition: ability to quickly stop an action (measured with the stop-signal task, measure is called stop-signal reaction time (SSRT) - we have 4 different versions of this measure).\nImpulsivity: tendency to make decisions on impulse, without regard of potential consequences (UPPS-P survey, assesses 5 facets of impulsivity).",
+    "crumbs": [
+      "10 The General Linear Model & Multivariate Statistics"
+    ]
+  },
+  {
+    "objectID": "W10_GLM.html#visualizing-multivariate-data",
+    "href": "W10_GLM.html#visualizing-multivariate-data",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Visualizing Multivariate Data",
+    "text": "Visualizing Multivariate Data\nHard (impossible?) for us to visualize more than three dimensions/variables.\n\nScatterplot of matrices for the nine variables in the self-control dataset. The diagonal elements in the matrix show the histogram for each of the individual variables. The lower left panels show scatterplots of the relationship between each pair of variables, and the upper right panel shows the correlation coefficient for each pair of variables.\nWhat do you see?\neach row/col –&gt; single variable\ndiagonal: dist each var\nlower triangle: scatterplot each pair, regression line –&gt; relationship\nupper: correlation coefficient",
+    "crumbs": [
+      "10 The General Linear Model & Multivariate Statistics"
+    ]
+  },
+  {
+    "objectID": "W10_GLM.html#heatmap",
+    "href": "W10_GLM.html#heatmap",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Heatmap",
+    "text": "Heatmap\nVisualize correlations:\n\nHeatmap of the correlation matrix for the nine self-control variables. The brighter yellow areas in the top left and bottom right highlight the higher correlations within the two subsets of variables.We can see clear clusters: SSRT and UPPS have greater intercorrelations than correlations with the other measure.",
+    "crumbs": [
+      "10 The General Linear Model & Multivariate Statistics"
+    ]
+  },
+  {
+    "objectID": "W10_GLM.html#heatmap-2",
+    "href": "W10_GLM.html#heatmap-2",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Heatmap 2",
+    "text": "Heatmap 2\nHeatmaps are especially helpful if we have a large number of variables, such as in neuroimaging! Below you can see the functional connectivity of &gt;300 brain regions:\n\nHeatmap of correlation coefficients of brain activity between 316 regions of the left hemisphere of a single individual. Yellow: strong positive correlations, blue: strong negative correlations\nlarge blocks of pos corr: major connected networks in the brain",
+    "crumbs": [
+      "10 The General Linear Model & Multivariate Statistics"
+    ]
+  },
+  {
+    "objectID": "W10_GLM.html#clustering",
+    "href": "W10_GLM.html#clustering",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Clustering",
+    "text": "Clustering\nClustering: Identifying groups of related observations or variables within a dataset, based on the similarity of the values of the observations.\n\nSimilarity: Distance between values.\nEuclidean Distance: Length of the line that connects two data points:\n\n\n\n\n\n\n\n\n\n\\[\nd(x,y) = \\sqrt{(x_1 - x_2)^2 + (y_1 - y_2)^2}\n\\]\n\n\nEuclidean Distance is sensitive to variability in both variables –&gt; scale data before! (e.g., z-transformation using R’s scale function)\n\nClustering: finding set of groups that have the lowest distance between their members.\nEuclidean Dist: Pythagorean theorem\n–&gt; can be extended to more than two dimensions!\nScale: calculate z-score, standardizing\nExample: Relation between height and weight =&gt; it shouldn’t make a difference if we rescale the data from m to cm or from kg to pounds.",
+    "crumbs": [
+      "10 The General Linear Model & Multivariate Statistics"
+    ]
+  },
+  {
+    "objectID": "W10_GLM.html#k-means-clustering",
+    "href": "W10_GLM.html#k-means-clustering",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "K-Means Clustering",
+    "text": "K-Means Clustering\nK-means clustering: Identifies a set of cluster centers & then assigns each data point to the cluster whose center is the closest (Euclidean Distance!).\n\n\nDecide on value for K, the number of clusters to be found (e.g. based on previous knowledge/expectations).\nCome up with k locations for the centers - or centroids - of the clusters (e.g. choose data points at random to start with).\nCompute Euclidean distance of each data point to each centroid.\nAssign each point to a cluster, based on closest distance to centroid.\nRecompute centroid by averaging the location of all points assigned to that cluster.\nRepeat steps 1-5 until a stable solution is found (iterative process).",
+    "crumbs": [
+      "10 The General Linear Model & Multivariate Statistics"
+    ]
+  },
+  {
+    "objectID": "W10_GLM.html#example-latitudelongitude-data",
+    "href": "W10_GLM.html#example-latitudelongitude-data",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Example: Latitude/Longitude Data",
+    "text": "Example: Latitude/Longitude Data\n\n\nHere we can see the starting points (black squares) and end points (big colored dots) for each cluster, as well as the final cluster assignment of each data point (color):\n\n\n\n\n\n\n\n\n\n\nWe can see that there is a reasonable overlap between clusters and continents.\nWe can further investigate this overlap with the confusion matrix, which compares membership of each cluster with the actual continents for each country:\n\n\n      \nlabels AF AS EU NA OC SA\n     1  5  1 36  0  0  0\n     2  3 24  0  0  0  0\n     3  0  0  0  0  0  7\n     4  0  0  0 15  0  4\n     5  0 10  0  0  6  0\n     6 35  0  0  0  0  0\n\n\nNote: usually we don’t know the ground truth (i.e. which continent) in unsupervised learning!\n=&gt; confusion matrix cannot be estimated\nNote 2: Every time we run the iterative process, we will get a different result if we use random starting points. Make sure the result is robust, e.g. by running the Clustering algorithm several times.)\n\n\n\n\nCluster 1 contains all European countries, as well as countries from northern Africa and Asia.\n\n\n\nCluster 2 contains contains Asian countries as well as several African countries.\nCluster 3 contains countries from the southern part of South America.\nCluster 4 contains all of the North American countries as well as northern South American countries.\nCluster 5 contains Oceania as well as several Asian countries\nCluster 6 contains all of the remaining African countries.",
+    "crumbs": [
+      "10 The General Linear Model & Multivariate Statistics"
+    ]
+  },
+  {
+    "objectID": "W10_GLM.html#hierarchical-clustering",
+    "href": "W10_GLM.html#hierarchical-clustering",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Hierarchical Clustering",
+    "text": "Hierarchical Clustering\nHierarchical Clustering: Also uses distances to determine clusters but also visualizes relationships in dendrograms.\n\n\nThe most common procedure is agglomerative clustering:\n\n\nEvery data point is treated as its own cluster.\nTwo clusters with the least distance (e.g. average linkage) between them are combined.\nRepeat 1 & 2 until only one cluster is left.\nVisualize, decide on a cutoff for the amount of reasonable clusters.\n\n\n\n\n\n\n\n\n\n\n\n\nColored lines: different cutoffs.\n\n\n\nThere seems to be a high degree of similarity within each variable set (SSRT and UPPS) compared to between sets.\n=&gt; The first split separates UPPS vs. SSRT perfectly.\nWithin UPPS, sensation seeking stands out as the most different to the rest.\n\naverage linkage: average of all distances between each data point in each of two clusters.\nCan read diagram from left to right: One supercluster that is split up more and more. Or right to left: Individual points that get joint together into bigger and bigger clusters.\ncolored lines: different cutoff values",
+    "crumbs": [
+      "10 The General Linear Model & Multivariate Statistics"
+    ]
+  },
+  {
+    "objectID": "W10_GLM.html#dimensionality-reduction",
+    "href": "W10_GLM.html#dimensionality-reduction",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Dimensionality Reduction",
+    "text": "Dimensionality Reduction\nWe often measure different variables that are highly similar to each other, e.g. because they are supposed to measure the same construct.\nAlthough we might measure a particular number of variables (= dimensionality of data set), there may be fewer independent sources of underlying information!\nDimensionality reduction: Reduce the number of variables by creating composite variables that reflect the underlying information.",
+    "crumbs": [
+      "10 The General Linear Model & Multivariate Statistics"
+    ]
+  },
+  {
+    "objectID": "W10_GLM.html#principal-component-analysis-pca",
+    "href": "W10_GLM.html#principal-component-analysis-pca",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Principal Component Analysis (PCA)",
+    "text": "Principal Component Analysis (PCA)\nAim: Find a lower-dimensional (linear) description of a set of variables (that still accounts for the maximum possible information/variance in the dataset).\nVariance: Combination of signal + noise –&gt; find strongest common signal between variables!\n\n1st Component: explains most variance between variables, 2nd component: maximum of remaining variance - but uncorrelated with 1st…\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nGreen arrow: 1st component, follows direction of max. variance\nRed arrow: 2nd component, perpendicular to 1st =&gt; uncorrelated!\nWe can run a PCA on more than two variables!\n\n\n\nobtain as many components as there are variables (assuming that there are more observations than there are variables)\nin practice: find a small number of components that can explain a large portion of the variance.\n1st component: similar to regression line, but minimizes perpendicular distance points to line (not vertical!)",
+    "crumbs": [
+      "10 The General Linear Model & Multivariate Statistics"
+    ]
+  },
+  {
+    "objectID": "W10_GLM.html#pca-2",
+    "href": "W10_GLM.html#pca-2",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "PCA 2",
+    "text": "PCA 2\nIf we calculate a PCA on the impulsivity data, we see that there are two components (in the scree plot) that account for quite some variance.\nWe can also look at the variable loadings, which show which variable “goes into” which component to better specify what that component represents. Here we can see that one components represents (=captures variance related to) the SSRT variables, the other the UPPS.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nScree plot: Sometimes used to make decisions on number of components (eigenvalues plotted)\nloadings: sign is arbitrary",
+    "crumbs": [
+      "10 The General Linear Model & Multivariate Statistics"
+    ]
+  },
+  {
+    "objectID": "W10_GLM.html#factor-analysis-fa",
+    "href": "W10_GLM.html#factor-analysis-fa",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "Factor Analysis (FA)",
+    "text": "Factor Analysis (FA)\nPCA is useful for reducing the dimensionality of a dataset.\nThe components are per definition uncorrelated –&gt; sometimes this is a limitation.\nPCA also doesn’t account for measurement error –&gt; possibly difficult to interpret loadings.\n\nExploratory Factor Analysis: can also be used for dimensionality reduction.\nIdea: Each observed variable is created through a combination of contributions from a latent variable + measurement error. (latent: can’t be directly observed!)\n\n\nHow do different measures relate to underlying factor (that gives rise to these measures)?",
+    "crumbs": [
+      "10 The General Linear Model & Multivariate Statistics"
+    ]
+  },
+  {
+    "objectID": "W10_GLM.html#fa-2",
+    "href": "W10_GLM.html#fa-2",
+    "title": "10 The General Linear Model & Multivariate Statistics",
+    "section": "FA 2",
+    "text": "FA 2\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFactor analysis with Call: fa(r = observed_df, nfactors = 3)\n\nTest of the hypothesis that 3 factors are sufficient.\nThe degrees of freedom for the model is 7  and the objective function was  0.04 \nThe number of observations was  200  with Chi Square =  7.96  with prob &lt;  0.34 \n\nThe root mean square of the residuals (RMSA) is  0.01 \nThe df corrected root mean square of the residuals is  0.03 \n\nTucker Lewis Index of factoring reliability =  0.993\nRMSEA index =  0.026  and the 10 % confidence intervals are  0 0.094\nBIC =  -29.13\n\n\n\n\n\n\n\n\n\n\n\nRMSEA (root mean square error of approximation): Measure of model fit, should be &lt; .08.\nUse (lowest) SABIC (sample-size adjusted Bayesian information criterion) to compare models with different number of factors.\n\nWe can “hand over” 3 factors\nRMSEA quantifies how far predicted covariances (between data) are from actual covariances",
+    "crumbs": [
+      "10 The General Linear Model & Multivariate Statistics"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#setup",
+    "href": "W11_GLMinR.html#setup",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Setup",
+    "text": "Setup\nWe will use the data by Zhang et al. (2014), Study 3 (Click here to download)\nThe study design was a 2x2 design:\n\ntime (time1, time2) - within-subjects IV\nevent (ordinary vs. extraordinary) - between-subjects IV\nDV: interest",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#data-wrangling",
+    "href": "W11_GLMinR.html#data-wrangling",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Data Wrangling",
+    "text": "Data Wrangling\nTasks:\n\nRead in the data file\n\nSelect the three columns we need\n\nAdd a column of subject IDs using the row number\n\nTidy the data: bring it into long format\n\nRecode the values of Condition from numeric to text labels\n\nRecode the values of time to be easier to read/write\n\nChange the data type of Condition and time to be factors!\n\nReplace the “NULLs” to achieve all this step by step…\n\nzhang_data2 &lt;- read_csv(\"Zhang et al. 2014 Study 3.csv\") %&gt;% \n  select(NULL, NULL, NULL) %&gt;% \n  mutate(subject = NULL) %&gt;% \n  NULL(names_to = \"time\", values_to = \"interest\", \n       cols = c(T1_Predicted_Interest_Composite, T2_Actual_Interest_Composite)) %&gt;%\n  mutate(Condition = Condition %&gt;% NULL(\"1\" = \"Ordinary\", \"2\" = \"Extraordinary\"),\n         time = time %&gt;% NULL(\"T1_Predicted_Interest_Composite\" = \"Time 1 (Predicted)\", \n                              \"T2_Actual_Interest_Composite\" = \"Time 2 (Actual)\"),\n         NULL = as.factor(NULL))",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#data-wrangling-solution",
+    "href": "W11_GLMinR.html#data-wrangling-solution",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Data Wrangling: Solution",
+    "text": "Data Wrangling: Solution\n\nzhang_data2 &lt;- read_csv(\"Data/Zhang et al. 2014 Study 3.csv\") %&gt;%\n  select(Condition, T1_Predicted_Interest_Composite, T2_Actual_Interest_Composite) %&gt;%\n  mutate(subject = row_number()) %&gt;%\n  pivot_longer(names_to = \"time\", values_to = \"interest\", \n               cols = c(T1_Predicted_Interest_Composite, T2_Actual_Interest_Composite)) %&gt;%\n  mutate(Condition = Condition %&gt;% recode(\"1\" = \"Ordinary\", \"2\" = \"Extraordinary\") %&gt;% as.factor(),\n         time = time %&gt;% recode(\"T1_Predicted_Interest_Composite\" = \"Time 1\", \n                                \"T2_Actual_Interest_Composite\" = \"Time 2\") %&gt;% as.factor())\n\n\n\nIf you plan ahead, you can also use rename prior to pivot_longer to substitute the recode of time. This has the advantage that you can use the shorter names already in pivot_longer (but may be harder to read because the recoding of time and Condition now occur in different places):\n\nzhang_data2 &lt;- read_csv(\"Data/Zhang et al. 2014 Study 3.csv\") %&gt;%\n  select(Condition, T1_Predicted_Interest_Composite, T2_Actual_Interest_Composite) %&gt;%\n  mutate(subject = row_number()) %&gt;%\n  rename(`Time 1` = T1_Predicted_Interest_Composite, #use backticks for column names that include spaces\n         `Time 2` = T2_Actual_Interest_Composite) %&gt;% \n  pivot_longer(names_to = \"time\", values_to = \"interest\", \n               cols = c(\"Time 1\", \"Time 2\")) %&gt;%\n  mutate(Condition = Condition %&gt;% recode(\"1\" = \"Ordinary\", \"2\" = \"Extraordinary\") %&gt;% as.factor(),\n         time = time %&gt;%  as.factor())",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#descriptive-statistics",
+    "href": "W11_GLMinR.html#descriptive-statistics",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Descriptive Statistics",
+    "text": "Descriptive Statistics\nCalculate descriptive statistics (mean, SD, and N) for interest summarized for each Condition and each time. Store the results in a variable called sum_dat_factorial.\n\n\nsum_dat_factorial &lt;- zhang_data2 %&gt;% \n  summarise(mean_interest = mean(interest, na.rm=TRUE),\n            sd_interest = sd(interest, na.rm=TRUE),\n            n = interest %&gt;% na.omit() %&gt;% length(), #can also use n() but works incorrectly if NA values exist\n            .by = c(Condition, time))\nsum_dat_factorial\n\n# A tibble: 4 × 5\n  Condition     time   mean_interest sd_interest     n\n  &lt;fct&gt;         &lt;fct&gt;          &lt;dbl&gt;       &lt;dbl&gt; &lt;int&gt;\n1 Ordinary      Time 1          4.04        1.09    64\n2 Ordinary      Time 2          4.73        1.24    64\n3 Extraordinary Time 1          4.36        1.13    66\n4 Extraordinary Time 2          4.65        1.14    66",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#visualize-the-data-violin-boxplot",
+    "href": "W11_GLMinR.html#visualize-the-data-violin-boxplot",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Visualize the data: Violin-Boxplot",
+    "text": "Visualize the data: Violin-Boxplot\nWrite the code that produces violin-boxplots for the scores in each group. time should be on the x-axis and Condition should be in different colors; interest is on the y-axis. Such plots are called “grouped” (e.g., grouped boxplot).\nHint: You want to add position = position_dodge(width = 0.9) to everything except the violin part to achieve alignment of all parts.\n\n\nggplot(zhang_data2, \n       aes(x = time , y = interest, fill = Condition))+\n  geom_violin(trim = FALSE, alpha = .4) +\n  geom_boxplot(position = position_dodge(.9), \n               width = .2, alpha = .6) +\n  #scale_x_discrete(labels = c(\"Time 1 (Predicted)\", \"Time 2 (Actual)\")) + \n  scale_fill_viridis_d(option = \"E\") +\n  stat_summary(fun = \"mean\", geom = \"point\",\n               position = position_dodge(width = 0.9)) +\n  stat_summary(fun.data = \"mean_se\", geom = \"errorbar\", width = .1,\n               position = position_dodge(width = 0.9)) +\n  theme_minimal()",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#interaction-line-plot",
+    "href": "W11_GLMinR.html#interaction-line-plot",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Interaction (line) plot",
+    "text": "Interaction (line) plot\nIn this visualization, we want to look at time and Condition to see whether an interaction might be present. It is helpful to make a line plot with time on the x-axis, Condition as separate lines, and (mean) interest on the y-axis.\n\nlineplot &lt;- sum_dat_factorial %&gt;% mutate(se_interest = sd_interest / sqrt(n)) %&gt;% \n  ggplot(aes(x = time, y = mean_interest, group = Condition, shape = Condition)) +\n  geom_errorbar(aes(ymin = mean_interest - se_interest, ymax = mean_interest + se_interest), width=.5) +\n  geom_point(size = 5) +\n  geom_line(aes(linetype = Condition)) +\n  #scale_x_discrete(labels = c(\"Time 1\", \"Time 2\")) + #this is how you could change x-axis labels\n  theme_classic()\nlineplot\n\n\n\nThe increase in interest between time 1 and 2 seems greater in the ordinary condition! But is this interaction effect significant?\nNote: You may want to add position = position_dodge(.5) to all geoms to avoid an overlap of errorbars.\nNote2: The (between-subject) errorbars are only helpful to interpret the significance of the between-subject effect Condition (at each time point). For the within-subject effect of time, we would need the mean and standard error of the paired differences (but this is very hard to visualize).",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#mixed-anova",
+    "href": "W11_GLMinR.html#mixed-anova",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Mixed ANOVA",
+    "text": "Mixed ANOVA\nWe now want to run a mixed ANOVA. It is called “mixed” because it includes both between- and within-subjects factors.\n\nComplete the below code to run the factorial ANOVA. Remember that you will need to specify both IVs and that one of them is between-subjects and one of them is within-subjects. Look up the help documentation for aov_ez to find out how to do this.\nSave the ANOVA model to an object called mod_factorial\nRun the code and inspect the result. Now, try to pull out the ANOVA table only. You can either do this with mod_factorial$anova_table or anova(mod_factorial). Hint: You can use tidy() to save the output table as a data frame, which might be useful.\n\n\nmod_factorial &lt;- aov_ez(id = \"NULL\",\n                        data = NULL, \n                        between = \"NULL\", \n                        within = \"NULL\",\n                        dv = \"NULL\", \n                        type = 3,\n                        es = \"NULL\") \nNULL %&gt;% tidy()\n\n\n\nmod_factorial &lt;- aov_ez(id = \"subject\",\n                        data = zhang_data2, \n                        between = \"Condition\", \n                        within = \"time\",\n                        dv = \"interest\", \n                        type = 3,\n                        es = \"pes\") \nanova(mod_factorial) %&gt;% tidy() #or mod_factorial$anova_table %&gt;% tidy()\n\n# A tibble: 3 × 7\n  term           num.Df den.Df   MSE statistic     ges    p.value\n  &lt;chr&gt;           &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;\n1 Condition           1    128 2.05      0.463 0.00278 0.498     \n2 time                1    128 0.607    25.9   0.0441  0.00000126\n3 Condition:time      1    128 0.607     4.44  0.00786 0.0370    \n\napa::anova_apa(mod_factorial) #or use this for apa format\n\n          Effect                                                \n1    (Intercept) F(1, 128) = 2505.82, p &lt; .001, petasq = .95 ***\n2      Condition F(1, 128) =    0.46, p = .498, petasq &lt; .01    \n3           time F(1, 128) =   25.88, p &lt; .001, petasq = .17 ***\n4 Condition:time F(1, 128) =    4.44, p = .037, petasq = .03 *",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#mixed-anova-results",
+    "href": "W11_GLMinR.html#mixed-anova-results",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Mixed ANOVA Results",
+    "text": "Mixed ANOVA Results\n\n\n\n          Effect                                                \n1    (Intercept) F(1, 128) = 2505.82, p &lt; .001, petasq = .95 ***\n2      Condition F(1, 128) =    0.46, p = .498, petasq &lt; .01    \n3           time F(1, 128) =   25.88, p &lt; .001, petasq = .17 ***\n4 Condition:time F(1, 128) =    4.44, p = .037, petasq = .03 *  \n\n\n\nConclusion: The main effect of time and the interaction between time and Condition are significant. Judged by visual inspection of the plot, interest increases over time, especially for the “ordinary” group.",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#assumption-checking",
+    "href": "W11_GLMinR.html#assumption-checking",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Assumption Checking",
+    "text": "Assumption Checking\nThe assumptions for a factorial ANOVA are the same as the one-way ANOVA.\n\nThe DV is continuous (interval or ratio data)\nThe observations should be independent (only true for between-subjects variables!)\nThe residuals should be normally distributed\nThere should be homogeneity of variance between the groups\n\nTo test assumption 3, extract the residuals from the model, create a QQ-Plot and conduct a Shapiro-Wilk test. For assumption 4, we use the Levene test for homogeneity of variance.\n\n\n# normality testing\ncar::qqPlot(mod_factorial$lm$residuals)\n\n\n\n\n\n\n\n\n[1] 203  73\n\nshapiro.test(mod_factorial$lm$residuals)\n\n\n    Shapiro-Wilk normality test\n\ndata:  mod_factorial$lm$residuals\nW = 0.98325, p-value = 0.003785\n\n# levene's test\n#afex::test_levene(mod_factorial) #old version\nperformance::check_homogeneity(mod_factorial)\n\nOK: There is not clear evidence for different variances across groups (Levene's Test, p = 0.893).",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#write-up",
+    "href": "W11_GLMinR.html#write-up",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Write Up",
+    "text": "Write Up\nWhat do we need to report?\n\n\nSummary statistics (means, SDs, N) per cell\nF(df1, df2) = F-value, p = p-value, effect size per effect (apa package!)\nA visualization of the most important effect(s) in the data\nPossibly pairwise contrasts (or t-tests)\nInterpretation (direction of effect and theoretical meaning)\n\n\n\nExample how to use the apa package for reporting (you want print=F and :\nWe found a main effect of time (`r apa::anova_apa(mod_factorial, print=F, format=\"markdown\") %&gt;% filter(effect==\"time\") %&gt;% pull(text)`) with interest increasing from the first time point (*M* = `r zhang_data2 %&gt;% summarise(m = mean(interest, na.rm=TRUE), .by = c(time)) %&gt;% filter(time %&gt;% grepl(\"1\", ., fixed=T)) %&gt;% pull(m) %&gt;% signif(3)`) to the second (*M* = `r zhang_data2 %&gt;% summarise(m = mean(interest, na.rm=TRUE), .by = c(time)) %&gt;% filter(time %&gt;% grepl(\"1\", ., fixed=T)) %&gt;% pull(m) %&gt;% signif(3)`). This effect was superseded by an interaction of time and condition (`r apa::anova_apa(mod_factorial, print=F, format=\"markdown\") %&gt;% filter(effect==\"Condition:time\") %&gt;% pull(text)`) [...].\nWe found a main effect of time (F(1, 128) = 25.88, p &lt; .001, petasq = .17) with interest increasing from the first time point (M = 4.2) to the second (M = 4.2). This effect was superseded by an interaction of time and condition (F(1, 128) = 4.44, p = .037, petasq = .03) […].\n\n\n\nHint: You can add gsub to insert the greek letter for eta: gsub(\"petasq\", \"$\\\\eta_p^2$\", ., fixed=T)\nWe found a main effect of time (`r apa::anova_apa(mod_factorial, print=F, format=\"markdown\") %&gt;% filter(effect==\"time\") %&gt;% pull(text) %&gt;% gsub(\"petasq\", \"$\\\\eta_p^2$\", ., fixed=T)`) [...]\nWe found a main effect of time (F(1, 128) = 25.88, p &lt; .001, \\(\\eta_p^2\\) = .17) […]",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#setup-1",
+    "href": "W11_GLMinR.html#setup-1",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Setup",
+    "text": "Setup\nWe will use the data from this paper: Przybylski, A. & Weinstein, N. (2017). A Large-Scale Test of the Goldilocks Hypothesis.\nIn the paper, the authors investigated whether there is a “just right” amount of screen time that is associated with higher well-being.\nIn this huge dataset (\\(N=120,000\\)), we have the following variables that we will use for analysis:\n\na continuous DV, well-being (Warwick-Edinburgh Mental Well-Being Scale; WEMWBS). This is a 14-item scale with 5 response categories, summed together to form a single score ranging from 14-70 (so it’s not completely continuous…),\na continuous predictor/IV: screen time,\na categorical predictor/IV: gender.",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#tasks",
+    "href": "W11_GLMinR.html#tasks",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Tasks",
+    "text": "Tasks\n\nDownload wellbeing.csv, participant_info.csv and screen_time.csv and save them in your project folder. Make sure that you do not change the file names at all.\nLoad the CSV datasets into variables called pinfo, wellbeing, and screen using read_csv().\nTake a look at the data and make sure you understand what you see.\n\n\n \n\nThe wellbeing tibble has information from the WEMWBS questionnaire,\nscreen has information about screen time use on weekends (variables ending with “we”) and weekdays (variables ending with “wk”) for four types of activities:\n\nusing a computer (variables starting with “Comph”; Q10 on the survey)\nplaying video games (variables starting with “Comp”; Q9 on the survey)\nusing a smartphone (variables starting with “Smart”; Q11 on the survey), and\nwatching TV (variables starting with “Watch”; Q8 on the survey).",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#preprocessing",
+    "href": "W11_GLMinR.html#preprocessing",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Preprocessing",
+    "text": "Preprocessing\nCalculate the WEMWBS scores by taking the sum of all the items:\n\nWrite the code to create a new table called wemwbs with two variables: Serial (the participant ID), and tot_wellbeing, the total WEMWBS score.\nyou might have to “pivot” the data from wide to long format and use .by to calculate the well-being (WEMWBS) score per person.\nverify for yourself that the scores all fall in the 14-70 range. Przybylski and Weinstein reported a mean of 47.52 with a standard deviation of 9.55. Can you reproduce these values?\n\n\n\nwemwbs = wellbeing %&gt;%\n  pivot_longer(names_to = \"var\", values_to = \"score\", cols = -Serial) %&gt;%\n  summarise(tot_wellbeing = sum(score), .by=Serial)\n\n# you could also mutate(tot_wellbeing = WBOptimf + ...) \n# but it is easier to use \"across\" and \"filter\" the variable names\n\nwemwbs = wellbeing %&gt;% mutate(tot_wellbeing = rowSums(across(starts_with(\"WB\")))) %&gt;% \n  select(Serial, tot_wellbeing)\n\n# sanity check values\n\nwemwbs %&gt;% summarise(mean = mean(tot_wellbeing),\n                     sd = sd(tot_wellbeing),\n                     min = min(tot_wellbeing), \n                     max = max(tot_wellbeing))\n\n      mean       sd min max\n1 47.52189 9.546374  14  70",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#data-visualization",
+    "href": "W11_GLMinR.html#data-visualization",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Data Visualization",
+    "text": "Data Visualization\nWe now want to visualize the relationship between screen time (for the four different technologies) and well-being.\nRun the code below and write comments in the code that explain what each line of code is doing:\n\nscreen_long &lt;- screen %&gt;%\n  pivot_longer(names_to = \"var\", values_to = \"hours\", -Serial) %&gt;%\n  separate(var, c(\"variable\", \"day\"), \"_\")\n\nscreen2 &lt;- screen_long %&gt;%\n  mutate(variable = variable %&gt;% recode(\"Watch\" = \"Watching TV\",\n                                        \"Comp\" = \"Playing Video Games\",\n                                        \"Comph\" = \"Using Computers\",\n                                        \"Smart\" = \"Using Smartphone\"),\n         day = day %&gt;% recode(\"wk\" = \"Weekday\", \"we\" = \"Weekend\"))\n\ndat_means &lt;- inner_join(wemwbs, screen2, \"Serial\") %&gt;%\n  summarise(mean_wellbeing = mean(tot_wellbeing), .by=c(variable, day, hours))\n\nmeanplot = dat_means %&gt;% ggplot(aes(hours, mean_wellbeing, linetype = day)) +\n  geom_line() +\n  geom_point() +\n  facet_wrap(vars(variable), nrow = 2)",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#data-visualization-interpretation",
+    "href": "W11_GLMinR.html#data-visualization-interpretation",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Data Visualization: Interpretation",
+    "text": "Data Visualization: Interpretation\nDescribe what you see in the figures/plots that you get when running the code.\n\n\nThere seems to be a peak at roughly 1h/day for well-being for all sorts of screen time.",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#data-wrangling-1",
+    "href": "W11_GLMinR.html#data-wrangling-1",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Data Wrangling",
+    "text": "Data Wrangling\nWe need to do a few things to get a dataset that we can use for analysis:\n\nCreate a new table, smarttot, that has the mean number of hours per day of smartphone use for each participant, averaged over weekends/weekdays.\n\n\nYou will need to filter the dataset to only include smartphone use and not other technologies.\n\nThe final data set should have two variables: Serial (the participant) and tothours. In this step, you will need to summarise the data.\n\nYou will also need to group the summary by the participant ID (i.e., serial).\n\nYou will need to use the dataset screen2 to do this.\n\n\n\nsmarttot &lt;- screen2 %&gt;%\n  filter(variable == \"Using Smartphone\") %&gt;%\n  summarise(tothours = mean(hours), .by=Serial)\n\n\n\n\nNext, create a new tibble called smart_wb that only includes participants from smarttot who used a smartphone for more than one hour per day each week and then combine (join) this table with the information in wemwbs and pinfo.\n\n\n\n\nsmart_wb &lt;- smarttot %&gt;%\n  filter(tothours &gt; 1) %&gt;%\n  inner_join(wemwbs, \"Serial\") %&gt;%\n  inner_join(pinfo, \"Serial\")",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#data-wrangling-2",
+    "href": "W11_GLMinR.html#data-wrangling-2",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Data Wrangling 2",
+    "text": "Data Wrangling 2\nWhen you do regression analysis, it is helpful to mean center your continuous (independent) variables. You mean center a predictor X simply by subtracting the mean (X_centered = X - mean(X)). This has two useful consequences:\n\nthe model intercept reflects the prediction for Y at the mean value of the predictor variable, rather than at the zero value of the original variable;\nif there are interactions in the model, any lower-order effects can be given the same interpretation as they receive in ANOVA (main effects, rather than simple effects). (Don’t worry if you don’t understand what this means yet!)\n\nIf you mean-center categorical predictors with two levels, these become coded as \\(-.5\\) and \\(.5\\) (because the mean of these two values is 0). This is also handy and is called effects coding. (Not exactly true for unequal group sizes! So rather use if_else() function and assign \\(-.5\\) and \\(.5\\))",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#tasks-1",
+    "href": "W11_GLMinR.html#tasks-1",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Tasks",
+    "text": "Tasks\n\nUse mutate to add two new variables to smart_wb: tothours_c, calculated as a mean-centered version of the tothours predictor; and male_c, recoded as \\(-.5\\) for female and \\(.5\\) for male.\nTo create male_c you will need to use if_else(male == 1, .5, -.5)\n(Read as: “If the variable male equals 1, switch it to \\(.5\\), if not, switch it to \\(-.5\\)”.)\nFinally, recode male and male_c as factors, so that R knows not to treat them as real numbers.\n\n\n\nsmart_wb &lt;- smarttot %&gt;%\n  filter(tothours &gt; 1) %&gt;%\n  inner_join(wemwbs, \"Serial\") %&gt;%\n  inner_join(pinfo, \"Serial\") %&gt;%\n  mutate(thours_c = tothours - mean(tothours),\n         #thours_c = tothours %&gt;% scale(), #alternative, also scales the variable to SD=1\n         male_c = if_else(male == 1, .5, -.5) %&gt;% as_factor(),\n         male = as_factor(male))",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#data-visualization-2",
+    "href": "W11_GLMinR.html#data-visualization-2",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Data Visualization 2",
+    "text": "Data Visualization 2\nTry to recreate the following plot:\n\n\nsmart_wb_gen &lt;- smart_wb %&gt;%\n  summarise(mean_wellbeing = mean(tot_wellbeing), .by= c(tothours, male))\n\nggplot(NULL, aes(NULL, NULL, color = NULL)) +\n  geom_NULL() +  # which geom to use for the points?\n  geom_NULL(method = \"lm\") + # which geom for the lines?\n  scale_color_discrete(name = \"Gender\", labels = c(\"Female\", \"Male\"))+\n  scale_x_continuous(name = \"Total hours smartphone use\") +\n  scale_y_continuous(name = \"Mean well-being score\") + \n  theme_bw()",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#data-visualization-2-solution",
+    "href": "W11_GLMinR.html#data-visualization-2-solution",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Data Visualization 2: Solution",
+    "text": "Data Visualization 2: Solution\n\nsmart_wb_gen &lt;- smart_wb %&gt;%\n  summarise(mean_wellbeing = mean(tot_wellbeing), .by = c(tothours, male))\n\nggplot(smart_wb_gen, aes(tothours, mean_wellbeing, color = male)) +\n  geom_point() +\n  geom_smooth(method = \"lm\") +\n  scale_color_discrete(name = \"Gender\", labels = c(\"Female\", \"Male\"))+\n  scale_x_continuous(name = \"Total hours smartphone use\") +\n  scale_y_continuous(name = \"Mean well-being score\") + \n  theme_bw()",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#analysis",
+    "href": "W11_GLMinR.html#analysis",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Analysis",
+    "text": "Analysis\nTry to specify the following regression model in R:\n\\(Y_i = \\beta_0 + \\beta_1 X_{1i} + \\beta_2 X_{2i} + \\beta_3 X_{3i} + e_i\\)\nwhere\n\n\\(Yi\\) is the well-being score for participant i;\n\\(X1i\\) is the mean-centered smartphone use variable for participant i;\n\\(X2i\\) is gender (\\(-.5\\) = female, \\(.5\\) = male);\n\\(X3i\\) is the interaction between smartphone use and gender (=\\(X1i×X2i\\))\n\n\nmod &lt;- lm(NULL ~ NULL, data = smart_wb)\n\nmod_summary &lt;- summary(mod)",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#analysis-result",
+    "href": "W11_GLMinR.html#analysis-result",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Analysis: Result",
+    "text": "Analysis: Result\n\nmod &lt;- lm(tot_wellbeing ~ thours_c * male_c, data = smart_wb)\n#mod &lt;- lm(tot_wellbeing ~ thours_c + male_c + thours_c:male_c, data = smart_wb)\n\nmod_summary &lt;- summary(mod)\nmod_summary\n\n\nCall:\nlm(formula = tot_wellbeing ~ thours_c * male_c, data = smart_wb)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-36.881  -5.721   0.408   6.237  27.264 \n\nCoefficients:\n                   Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)        44.86740    0.04478 1001.87   &lt;2e-16 ***\nthours_c           -0.77121    0.02340  -32.96   &lt;2e-16 ***\nmale_c0.5           5.13968    0.07113   72.25   &lt;2e-16 ***\nthours_c:male_c0.5  0.45205    0.03693   12.24   &lt;2e-16 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 9.135 on 71029 degrees of freedom\nMultiple R-squared:  0.09381,   Adjusted R-squared:  0.09377 \nF-statistic:  2451 on 3 and 71029 DF,  p-value: &lt; 2.2e-16\n\n\nBy which variable in the output is the interaction between smartphone use and gender shown? Is it significant?\nHow would you interpret the results?",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#assumption-checking-1",
+    "href": "W11_GLMinR.html#assumption-checking-1",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Assumption checking",
+    "text": "Assumption checking\nHere are the assumptions for multiple regression:\n\nThe outcome/DV is continuous (interval/ratio level data)\nThe predictor variable is interval/ratio or categorical\nAll values of the outcome variable are independent (i.e., each score should come from a different participant)\nThe predictors have non-zero variance\nThe relationship between outcome and predictor is linear\nThe residuals should be normally distributed\nThere should be homoscedasticity (homogeneity of variance, but for the residuals)\nMulticollinearity: predictor variables should not be too highly correlated\n\nFrom the work we’ve done so far we know that assumptions 1 - 4 are met and we can use the functions from the performance package again to check the rest (this will take a while because the dataset is so huge)",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#assumption-checking-2",
+    "href": "W11_GLMinR.html#assumption-checking-2",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Assumption checking 2",
+    "text": "Assumption checking 2\n\n# qqPlot(mod$residuals)\ncheck_model(mod, check = c(\"vif\", \"qq\", \"normality\", \"linearity\", \"homogeneity\"))\n\n\n(Note: the line in the homogeneity plot is missing due to the large amount of data. Check out the textbook for a solution as well as for further information on what these measures mean.)",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#further-analysis-of-interaction",
+    "href": "W11_GLMinR.html#further-analysis-of-interaction",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Further Analysis of Interaction",
+    "text": "Further Analysis of Interaction\nWe can use emmeans package to further investigate the direction of the interaction. This is especially handy if we have more than two factor levels and can’t read out the direction of the effect from the model summary.\nSpecifically, we’re using the emtrends() function, because we have a continuous variable and want to know the (simple) slope/trend of this variable within each of the factor levels of the categorical variable:\n\nsimple_slopes_interaction &lt;- emtrends(mod, ~male_c|thours_c, var=\"thours_c\")\nsimple_slopes_interaction\n\nthours_c = -3.41e-16:\n male_c thours_c.trend     SE    df lower.CL upper.CL\n -0.5           -0.771 0.0234 71029   -0.817   -0.725\n 0.5            -0.319 0.0286 71029   -0.375   -0.263\n\nConfidence level used: 0.95 \n\ntest(simple_slopes_interaction)  # with the test() function, you can get the p-value to test whether the slope within each group is sign. different from 0!\n\nthours_c = -3.41e-16:\n male_c thours_c.trend     SE    df t.ratio p.value\n -0.5           -0.771 0.0234 71029 -32.956  &lt;.0001\n 0.5            -0.319 0.0286 71029 -11.170  &lt;.0001",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#power-effect-size",
+    "href": "W11_GLMinR.html#power-effect-size",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Power & Effect Size",
+    "text": "Power & Effect Size\nUse this code to calculate the minimum effect size for \\(99\\%\\) power and the empirical effect size:\n\n#minimum effect size needed: set f2 (effect size) to NULL so it will be calculated\npwr.f2.test(u = 3, v = 71029, f2 = NULL, sig.level = .05, power = .99)\n\n\n     Multiple regression power calculation \n\n              u = 3\n              v = 71029\n             f2 = 0.0003673651\n      sig.level = 0.05\n          power = 0.99\n\nf2.empirical &lt;- mod_summary$adj.r.squared/(1 - mod_summary$adj.r.squared)\nf2.empirical #empirical effect size\n\n[1] 0.1034697\n\n\nIs the study adequately powered?",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#write-up-1",
+    "href": "W11_GLMinR.html#write-up-1",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Write Up",
+    "text": "Write Up\nFor the write up, you can copy this text block, including inline code (wrapped by R) to directly use the output of R in your text. If you then knit your document, it will insert the values:\nAll continuous predictors were mean-centered and deviation coding was used for categorical predictors. The results of the regression indicated that the model significantly predicted course engagement (*F*(`r mod_summary$fstatistic[2]`, `r mod_summary$fstatistic[3] %&gt;% round(2)`) = `r mod_summary$fstatistic[1] %&gt;% round(2)`, *p* \\&lt; .001, adjusted *R*^2 = `r mod_summary$adj.r.squared %&gt;% round(2)`, f^2^ = .63), accounting for `r (mod_summary$adj.r.squared %&gt;% round(2))*100`% of the variance. Total screen time was a significant negative predictor of wellbeing scores (β = `r mod$coefficients[2] %&gt;% round(2)`, *p* \\&lt; .001), as was gender (β = `r mod$coefficients[3] %&gt;% round(2)`, *p* \\&lt; .001), with girls having lower wellbeing scores than boys. Importantly, there was a significant interaction between screentime and gender (β = `r mod$coefficients[4] %&gt;% round(2)`, *p* \\&lt; .001): Smartphone use was more negatively associated with wellbeing for girls than for boys.\n\nAll continuous predictors were mean-centered and deviation coding was used for categorical predictors. The results of the regression indicated that the model significantly predicted course engagement (F(3, 7.1029^{4}) = 2450.89, p &lt; .001, adjusted R^2 = 0.09, f2 = .63), accounting for 9% of the variance. Total screen time was a significant negative predictor of wellbeing scores (β = -0.77, p &lt; .001), as was gender (β = 5.14, p &lt; .001), with girls having lower wellbeing scores than boys. Importantly, there was a significant interaction between screentime and gender (β = 0.45, p &lt; .001): Smartphone use was more negatively associated with wellbeing for girls than for boys.",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W11_GLMinR.html#write-up-2",
+    "href": "W11_GLMinR.html#write-up-2",
+    "title": "11 ANOVA & the General Linear Model in R",
+    "section": "Write Up 2",
+    "text": "Write Up 2\nYou can also use the report() function from the report package to get a suggestion for what to report from your results (it would still need some editing!):\n\nreport(mod)\n\nWe fitted a linear model (estimated using OLS) to predict tot_wellbeing with\nthours_c and male_c (formula: tot_wellbeing ~ thours_c * male_c). The model\nexplains a statistically significant and weak proportion of variance (R2 =\n0.09, F(3, 71029) = 2450.89, p &lt; .001, adj. R2 = 0.09). The model's intercept,\ncorresponding to thours_c = 0 and male_c = -0.5, is at 44.87 (95% CI [44.78,\n44.96], t(71029) = 1001.87, p &lt; .001). Within this model:\n\n  - The effect of thours c is statistically significant and negative (beta =\n-0.77, 95% CI [-0.82, -0.73], t(71029) = -32.96, p &lt; .001; Std. beta = -0.15,\n95% CI [-0.16, -0.15])\n  - The effect of male c [0.5] is statistically significant and positive (beta =\n5.14, 95% CI [5.00, 5.28], t(71029) = 72.25, p &lt; .001; Std. beta = 0.54, 95% CI\n[0.52, 0.55])\n  - The effect of thours c × male c [0.5] is statistically significant and\npositive (beta = 0.45, 95% CI [0.38, 0.52], t(71029) = 12.24, p &lt; .001; Std.\nbeta = 0.09, 95% CI [0.08, 0.11])\n\nStandardized parameters were obtained by fitting the model on a standardized\nversion of the dataset. 95% Confidence Intervals (CIs) and p-values were\ncomputed using a Wald t-distribution approximation.",
+    "crumbs": [
+      "11 ANOVA & the General Linear Model in R"
+    ]
+  },
+  {
+    "objectID": "W12_LMM.html#setup",
+    "href": "W12_LMM.html#setup",
+    "title": "12 Linear Mixed Models",
+    "section": "Setup",
+    "text": "Setup\nWe will use a package called lme4 for the statistical models. The package includes a dataset called sleepstudy, which we will be using. You don’t have to load the data separately, just load the package and you have access to the data:\n\nlibrary(lme4)\n\n# for information about the dataset, check out:\n# ?sleepstudy\n\n\nDescription:\nThe average reaction time per day (in milliseconds) for subjects in a sleep deprivation study.\nDays 0-1 were adaptation and training (T1/T2), day 2 was baseline (B); sleep deprivation started after day 2.\n\n\nFormat:\nA data frame with 180 observations on the following 3 variables.\n‘Reaction’ Average reaction time (ms)\n‘Days’ Number of days of sleep deprivation\n‘Subject’ Subject number on which the observation was made.",
+    "crumbs": [
+      "12 Linear Mixed Models"
+    ]
+  },
+  {
+    "objectID": "W12_LMM.html#multilevel-data",
+    "href": "W12_LMM.html#multilevel-data",
+    "title": "12 Linear Mixed Models",
+    "section": "Multilevel Data",
+    "text": "Multilevel Data\nMultilevel data are nested data, which means that they are clustered:\n\n\n\n\n\nLevels of a Multilevel Model\n\n\n\n\n\n\n3-level LMM\n\n\n\n\n\n\nFor example, repeated measures of the same subjects will result in data that are often more strongly correlated within subjects than between.\nBut LMMs can also account for other kinds of nesting/clustering, such as patients who share therapists or mice from the same cage/experimenter.\n\n\n\nData is usually multilevel for one of the three reasons below (multiple reasons could simultaneously apply):\n\nyou have a within-subject factor, and/or\nyou have pseudoreplications (several trials/measurements), and/or\nyou have multiple stimulus items (this rarely is accounted for in a statistical model :( ).\n\n\npseudorep: Get RT to same stimulus several times, or give VP beverage repeatedly\nmutliple: different but related stimuli from pool of stimuli",
+    "crumbs": [
+      "12 Linear Mixed Models"
+    ]
+  },
+  {
+    "objectID": "W12_LMM.html#multilevel-data-2",
+    "href": "W12_LMM.html#multilevel-data-2",
+    "title": "12 Linear Mixed Models",
+    "section": "Multilevel Data 2",
+    "text": "Multilevel Data 2\nMultilevel data are nested data, which means that they are clustered:\n\n\n\n\n\nLevels of a Multilevel Model\n\n\n\n\n\n\n3-level LMM\n\n\n\n\n\nMultilevel data are extremely common in neuroscientific research!\nUnfortunately, LMMs are hardly every covered in statistics classes. Instead, these data are often analyzed using t-tests or ANOVAs, but sometimes these models are not sufficient.\nMoreover, LMMs have less of a problem with missing data.",
+    "crumbs": [
+      "12 Linear Mixed Models"
+    ]
+  },
+  {
+    "objectID": "W12_LMM.html#the-sleepstudy-data",
+    "href": "W12_LMM.html#the-sleepstudy-data",
+    "title": "12 Linear Mixed Models",
+    "section": "The Sleepstudy Data",
+    "text": "The Sleepstudy Data\nIn the dataset, we have measurements of 18 participants across 10 days of sleep deprivation. Each day, the participants performed a “psychomotor vigilance test” during which they had to monitor a display and press a button as quickly as possible as soon as a stimulus appeared.\nThe dependent measure (DV) is response times (RT).\nLet’s take a look at the data, with a separate plot per participant:\n\nIt looks like RT is increasing with each additional day of sleep deprivation, starting from day 2 and increasing until day 10.",
+    "crumbs": [
+      "12 Linear Mixed Models"
+    ]
+  },
+  {
+    "objectID": "W12_LMM.html#preparing-the-data",
+    "href": "W12_LMM.html#preparing-the-data",
+    "title": "12 Linear Mixed Models",
+    "section": "Preparing the Data",
+    "text": "Preparing the Data\nWe have some more information about the model that is helpful:\n\nThe first two days were adaptation and training, the third day was a baseline measurement (8h time in bed)\nOn the 4th day (until the 10th, so for 7 days), the sleep deprivation began:\n\nThere were four groups: 9h, 7h, 5h, 3h time in bed\n\n\n\nWe thus have to remove the first two days, as they might bias our results.\n\nTask:\n\nRemove (filter) observations where Days is 0 or 1.\nMake a new variable, days_deprived, where day 2 is recoded as 0, day 3 as 1 etc.\nStore the data in a dataframe called sleep2.\n\n\n\n\nsleep2 &lt;- sleepstudy %&gt;%\n  filter(Days &gt;= 2) %&gt;%\n  mutate(days_deprived = Days - 2)",
+    "crumbs": [
+      "12 Linear Mixed Models"
+    ]
+  },
+  {
+    "objectID": "W12_LMM.html#fitting-the-model",
+    "href": "W12_LMM.html#fitting-the-model",
+    "title": "12 Linear Mixed Models",
+    "section": "Fitting the Model",
+    "text": "Fitting the Model\nHow might we model the relationship between days_deprived and Reaction?\n\n\nIt looks like we could fit a different line to each participant’s data.\nRemember the general formula for fitting lines:\n\\(Y = \\beta_0 + \\beta_1 X\\)\nwhere \\(\\beta_0\\) is the y-intercept and \\(\\beta_1\\) is the slope, which we both estimate from the data.\n\n\nIf we fit such a line for every participant, the lines will differ in their intercept (individual mean RT at baseline) and slope (the individual change in RT with each additional day of sleep deprivation).\nShould we fit the same line for every participant? Or individual lines? Or something in between?\nThese three approaches are also called complete pooling, no pooling, and partial pooling.",
+    "crumbs": [
+      "12 Linear Mixed Models"
+    ]
+  },
+  {
+    "objectID": "W12_LMM.html#complete-pooling",
+    "href": "W12_LMM.html#complete-pooling",
+    "title": "12 Linear Mixed Models",
+    "section": "Complete Pooling",
+    "text": "Complete Pooling\nWith complete pooling, we would estimate the same intercept and slope for every participant (“one size fits all”). This approach ignores diversity among participants (average RT and sensitivity to sleep deprivation):\n\n\n\ncp_model &lt;- lm(Reaction ~ days_deprived, sleep2)\n\nsummary(cp_model)\n\n\nCall:\nlm(formula = Reaction ~ days_deprived, data = sleep2)\n\nResiduals:\n     Min       1Q   Median       3Q      Max \n-112.284  -26.732    2.143   27.734  140.453 \n\nCoefficients:\n              Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)    267.967      7.737  34.633  &lt; 2e-16 ***\ndays_deprived   11.435      1.850   6.183 6.32e-09 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 50.85 on 142 degrees of freedom\nMultiple R-squared:  0.2121,    Adjusted R-squared:  0.2066 \nF-statistic: 38.23 on 1 and 142 DF,  p-value: 6.316e-09\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFinds significant effects but fits the data poorly!\nThis is usually never done - even repeated measures ANOVAs at least provide a random intercept (but not slope).\nthe predicted mean response time on Day 0 is about 268 milliseconds, with an increase of about 11 milliseconds per day of deprivation, on average. We can’t trust the standard errors for our regression coefficients, however, because we are assuming that all of the observations are independent (technically, that the residuals are). However, we can be pretty sure this is a bad assumption.",
+    "crumbs": [
+      "12 Linear Mixed Models"
+    ]
+  },
+  {
+    "objectID": "W12_LMM.html#no-pooling",
+    "href": "W12_LMM.html#no-pooling",
+    "title": "12 Linear Mixed Models",
+    "section": "No Pooling",
+    "text": "No Pooling\nAnother approach would be to fit completely separate lines for each participant. This approach implies that the estimates for one participant are completely uninformed by the estimates for the other participants - we could fit 18 separate models.\nWe could also include Subject as a predictor, or a so-called fixed effect. For this approach, we have to make sure Subject is a factor (and not a continuous predictor).\n\nstr(sleep2)\n\n'data.frame':   144 obs. of  4 variables:\n $ Reaction     : num  251 321 357 415 382 ...\n $ Days         : num  2 3 4 5 6 7 8 9 2 3 ...\n $ Subject      : Factor w/ 18 levels \"308\",\"309\",\"310\",..: 1 1 1 1 1 1 1 1 2 2 ...\n $ days_deprived: num  0 1 2 3 4 5 6 7 0 1 ...\n\n# fit the model\n\nnp_model &lt;- lm(Reaction ~ days_deprived * Subject, data = sleep2)\n\nsummary(np_model)\n\n\nCall:\nlm(formula = Reaction ~ days_deprived * Subject, data = sleep2)\n\nResiduals:\n     Min       1Q   Median       3Q      Max \n-106.521   -8.541    1.143    8.889  128.545 \n\nCoefficients:\n                         Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)              288.2175    16.4772  17.492  &lt; 2e-16 ***\ndays_deprived             21.6905     3.9388   5.507 2.49e-07 ***\nSubject309               -87.9262    23.3023  -3.773 0.000264 ***\nSubject310               -62.2856    23.3023  -2.673 0.008685 ** \nSubject330               -14.9533    23.3023  -0.642 0.522422    \nSubject331                 9.9658    23.3023   0.428 0.669740    \nSubject332                27.8157    23.3023   1.194 0.235215    \nSubject333                -2.7581    23.3023  -0.118 0.906000    \nSubject334               -50.2051    23.3023  -2.155 0.033422 *  \nSubject335               -25.3429    23.3023  -1.088 0.279207    \nSubject337                24.6143    23.3023   1.056 0.293187    \nSubject349               -59.2183    23.3023  -2.541 0.012464 *  \nSubject350               -40.2023    23.3023  -1.725 0.087343 .  \nSubject351               -24.2467    23.3023  -1.041 0.300419    \nSubject352                43.0655    23.3023   1.848 0.067321 .  \nSubject369               -21.5040    23.3023  -0.923 0.358154    \nSubject370               -53.3072    23.3023  -2.288 0.024107 *  \nSubject371               -30.4896    23.3023  -1.308 0.193504    \nSubject372                 2.4772    23.3023   0.106 0.915535    \ndays_deprived:Subject309 -17.3334     5.5703  -3.112 0.002380 ** \ndays_deprived:Subject310 -17.7915     5.5703  -3.194 0.001839 ** \ndays_deprived:Subject330 -13.6849     5.5703  -2.457 0.015613 *  \ndays_deprived:Subject331 -16.8231     5.5703  -3.020 0.003154 ** \ndays_deprived:Subject332 -19.2947     5.5703  -3.464 0.000765 ***\ndays_deprived:Subject333 -10.8151     5.5703  -1.942 0.054796 .  \ndays_deprived:Subject334  -3.5745     5.5703  -0.642 0.522423    \ndays_deprived:Subject335 -25.8995     5.5703  -4.650 9.47e-06 ***\ndays_deprived:Subject337   0.7518     5.5703   0.135 0.892895    \ndays_deprived:Subject349  -5.2644     5.5703  -0.945 0.346731    \ndays_deprived:Subject350   1.6007     5.5703   0.287 0.774382    \ndays_deprived:Subject351 -13.1681     5.5703  -2.364 0.019867 *  \ndays_deprived:Subject352 -14.4019     5.5703  -2.585 0.011057 *  \ndays_deprived:Subject369  -7.8948     5.5703  -1.417 0.159273    \ndays_deprived:Subject370  -1.0495     5.5703  -0.188 0.850912    \ndays_deprived:Subject371  -9.3443     5.5703  -1.678 0.096334 .  \ndays_deprived:Subject372 -10.6041     5.5703  -1.904 0.059613 .  \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 25.53 on 108 degrees of freedom\nMultiple R-squared:  0.849, Adjusted R-squared:  0.8001 \nF-statistic: 17.35 on 35 and 108 DF,  p-value: &lt; 2.2e-16\n\n\n\nalso uses lm()\nintercept and slope = 308, other values are deviations from 308\nThis model does not give us an overall intercept and slope! (Can average of course…) -&gt; suboptimal if we want to generalize to new participants!",
+    "crumbs": [
+      "12 Linear Mixed Models"
+    ]
+  },
+  {
+    "objectID": "W12_LMM.html#no-pooling-2",
+    "href": "W12_LMM.html#no-pooling-2",
+    "title": "12 Linear Mixed Models",
+    "section": "No Pooling 2",
+    "text": "No Pooling 2\n\n\ntibble [18 × 3] (S3: tbl_df/tbl/data.frame)\n $ Subject  : Factor w/ 18 levels \"308\",\"309\",\"310\",..: 1 2 3 4 5 6 7 8 9 10 ...\n $ intercept: num [1:18] 288 200 226 273 298 ...\n $ slope    : num [1:18] 21.69 4.36 3.9 8.01 4.87 ...\n\n\n\n\nSubject 335 has a negative slope (faster with more sleep deprivation). While it is not impossible, it seems highly unlikely given what we know about sleep deprivation and/or looking at the rest of the data.",
+    "crumbs": [
+      "12 Linear Mixed Models"
+    ]
+  },
+  {
+    "objectID": "W12_LMM.html#partial-pooling",
+    "href": "W12_LMM.html#partial-pooling",
+    "title": "12 Linear Mixed Models",
+    "section": "Partial Pooling",
+    "text": "Partial Pooling\nNeither the complete nor no-pooling approach are satisfactory. It would be desirable to improve our estimates for individual participants (\\(1/18\\)th of the total data) by taking advantage of what we know about other participants.\n\nThis is called partial pooling: We treat a factor (e.g., subject) as implementing random deviations from its higher level fixed effect - with larger deviations being less likely (think: normal distribution). Consequently, we bias the random effect estimate (individual level) towards the fixed effect estimate (group level). This procedure is also called shrinkage for we are downsizing the individual’s deviation from the group mean.\n\n\nWe thus estimate a model like this:\n\\(Y_{sd} = \\gamma_{0} + S_{0s} + \\left(\\gamma_{1} + S_{1s}\\right) X_{sd} + e_{sd}\\)\nwhere \\(\\gamma_{0}\\) is the “overall”/population intercept and \\(\\gamma_{1}\\) is the population slope. These are the fixed effects which are usually of interest and they are estimated from the data.\n\\(S_{0s}\\) are the random intercepts per participant and \\(S_{1s}\\) the random slopes for \\(X_{sd}\\) per participant. These values vary over subjects (thus the \\(s\\) in the index) and are the offsets from the fixed effects (i.e., how much do individuals differ from the overall intercept/slope? Some subjects will have slower RTs than average, for some the effect of sleep deprivation will be stronger than average, etc.).\n(See textbook for further mathematical formula descriptions and details!)\n\nWill help us distinguish signal from error for each participant\nimprove generalization to the population\nespecially important if we have missing data\n\nRandom effects: result of sampling, want to generalize beyond those levels\nFixed effects: assume that they reflect true pop para, don’t vary from sample to sample",
+    "crumbs": [
+      "12 Linear Mixed Models"
+    ]
+  },
+  {
+    "objectID": "W12_LMM.html#partial-pooling-shrinkage",
+    "href": "W12_LMM.html#partial-pooling-shrinkage",
+    "title": "12 Linear Mixed Models",
+    "section": "Partial Pooling: Shrinkage",
+    "text": "Partial Pooling: Shrinkage\n\n\n\nShrinkage\n\n\n\nthe further away from the population estimate, the more biased.\nThe fewer observations in a cluster, the more information borrowed from others, greater pull (373 and 374)\nAvoids overfitting by taming extreme estimates!",
+    "crumbs": [
+      "12 Linear Mixed Models"
+    ]
+  },
+  {
+    "objectID": "W12_LMM.html#comparison-of-pooling-methods",
+    "href": "W12_LMM.html#comparison-of-pooling-methods",
+    "title": "12 Linear Mixed Models",
+    "section": "Comparison of Pooling Methods",
+    "text": "Comparison of Pooling Methods\n-,p_model_comparison,-If%20we%20stare)\n\nthe further away from the population estimate, the more biased.\nThe fewer observations in a cluster, the more information borrowed from others, greater pull (373 and 374)\nAvoids overfitting by taming extreme estimates!",
+    "crumbs": [
+      "12 Linear Mixed Models"
+    ]
+  },
+  {
+    "objectID": "W12_LMM.html#fitting-the-model-1",
+    "href": "W12_LMM.html#fitting-the-model-1",
+    "title": "12 Linear Mixed Models",
+    "section": "Fitting the Model",
+    "text": "Fitting the Model\nTo fit an LMM, we can use the function lmer() from the lme4 package (you could also use functions from the afex package, which might be more user friendly).\nThe notation is very similar to that of fitting lm() models, we only need to add the random effects:\n\npp_mod &lt;- lmer(Reaction ~ days_deprived + (days_deprived | Subject), sleep2)\n\n\nHere we can see that we only have one predictor/IV/fixed effect: days_deprived.\nRandom effects are denoted in the parentheses (). On the right side of the |, you write down what uniquely identifies the clustering variable, e.g. Subjects. On the left side of the |, you put the effects that you want to vary over the levels of the clustering variable. The right side thus denotes the random intercept, the left side the random slope.\n\n\nThere are a number of ways to specify random effects. The most common you will see are:\n\n\n\n\n\n\n\nModel\nSyntax\n\n\n\n\nRandom intercepts only\nReaction ~ days_deprived + (1 | Subject)\n\n\nRandom intercepts and slopes\nReaction ~ days_deprived + (days_deprived | Subject)\n\n\n\nRandom-intercepts-only models are appropriate if you have within-subjects factors without pseudo-replications (i.e., one measurement per subject/level). If you have more than one observation per subject and fixed effect conditions, you can estimate random slopes.\n\nrepeated-measures ANOVA is equivalent to a random intercept model!\nalways good to include random slopes, but sometimes the model does not converge –&gt; only random intercepts\nYou can add other random effects, e.g., stimulus\nYou can’t have a random slope without a random intercept (you could but it wouldn’t make sense)",
+    "crumbs": [
+      "12 Linear Mixed Models"
+    ]
+  },
+  {
+    "objectID": "W12_LMM.html#interpreting-the-model---fixed-effects",
+    "href": "W12_LMM.html#interpreting-the-model---fixed-effects",
+    "title": "12 Linear Mixed Models",
+    "section": "Interpreting the Model - Fixed Effects",
+    "text": "Interpreting the Model - Fixed Effects\nLet’s look at the model output:\n\nsummary(pp_mod)\n\nLinear mixed model fit by REML ['lmerMod']\nFormula: Reaction ~ days_deprived + (days_deprived | Subject)\n   Data: sleep2\n\nREML criterion at convergence: 1404.1\n\nScaled residuals: \n    Min      1Q  Median      3Q     Max \n-4.0157 -0.3541  0.0069  0.4681  5.0732 \n\nRandom effects:\n Groups   Name          Variance Std.Dev. Corr\n Subject  (Intercept)   958.35   30.957       \n          days_deprived  45.78    6.766   0.18\n Residual               651.60   25.526       \nNumber of obs: 144, groups:  Subject, 18\n\nFixed effects:\n              Estimate Std. Error t value\n(Intercept)    267.967      8.266  32.418\ndays_deprived   11.435      1.845   6.197\n\nCorrelation of Fixed Effects:\n            (Intr)\ndays_deprvd -0.062\n\n\nThe section called Fixed effects is similar to what you have seen so far for lm() models. This is also the section that will likely be of main interest to you.\nYou can see that the estimated mean reaction time for participants at Day 0 was about 268 milliseconds, with each day of sleep deprivation adding an additional 11 milliseconds to the response time, on average.",
+    "crumbs": [
+      "12 Linear Mixed Models"
+    ]
+  },
+  {
+    "objectID": "W12_LMM.html#interpreting-the-model---fixed-effects-2",
+    "href": "W12_LMM.html#interpreting-the-model---fixed-effects-2",
+    "title": "12 Linear Mixed Models",
+    "section": "Interpreting the Model - Fixed Effects 2",
+    "text": "Interpreting the Model - Fixed Effects 2\nYou might notice that you didn’t see p-values in the output. There is a huge discussion on how to best estimate the degrees of freedom for these models… If you don’t want to go into the details, one option is to use the lmerTest package to obtain p-values:\n\nlibrary(lmerTest)\npp_mod &lt;- lmer(Reaction ~ days_deprived + (days_deprived | Subject), sleep2)\n#you can also call lmerTest::lmer explicitly to highlight the distinction to lme4::lmer\nsummary(pp_mod)\n\nLinear mixed model fit by REML. t-tests use Satterthwaite's method [\nlmerModLmerTest]\nFormula: Reaction ~ days_deprived + (days_deprived | Subject)\n   Data: sleep2\n\nREML criterion at convergence: 1404.1\n\nScaled residuals: \n    Min      1Q  Median      3Q     Max \n-4.0157 -0.3541  0.0069  0.4681  5.0732 \n\nRandom effects:\n Groups   Name          Variance Std.Dev. Corr\n Subject  (Intercept)   958.35   30.957       \n          days_deprived  45.78    6.766   0.18\n Residual               651.60   25.526       \nNumber of obs: 144, groups:  Subject, 18\n\nFixed effects:\n              Estimate Std. Error      df t value Pr(&gt;|t|)    \n(Intercept)    267.967      8.266  17.000  32.418  &lt; 2e-16 ***\ndays_deprived   11.435      1.845  16.999   6.197 9.75e-06 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nCorrelation of Fixed Effects:\n            (Intr)\ndays_deprvd -0.062",
+    "crumbs": [
+      "12 Linear Mixed Models"
+    ]
+  },
+  {
+    "objectID": "W12_LMM.html#interpreting-the-model---random-effects",
+    "href": "W12_LMM.html#interpreting-the-model---random-effects",
+    "title": "12 Linear Mixed Models",
+    "section": "Interpreting the Model - Random Effects",
+    "text": "Interpreting the Model - Random Effects\nThe random effects part of the output provides you with the variance-covariance matrix of the random effects and the residual variance.\nThe residual variance is the error variance which is not explained by the model.\nThe variance-covariance matrix above gives us the variance of each random effect component as well as the correlation between random intercept and slope. Often, you would not need to interpret these effects in too much detail (unless you’re interested in floor/ceiling effects visible in a big correlation).\nIf the variance of a random effect is close to 0, it means that there is not much diversity of the sample with respect to predictors. In other words: Each random effect is very similar to its fixed effect.",
+    "crumbs": [
+      "12 Linear Mixed Models"
+    ]
+  },
+  {
+    "objectID": "W12_LMM.html#lmm-with-crossed-random-factors",
+    "href": "W12_LMM.html#lmm-with-crossed-random-factors",
+    "title": "12 Linear Mixed Models",
+    "section": "LMM with Crossed Random Factors",
+    "text": "LMM with Crossed Random Factors\nOften, we have a set of stimuli that we use for all subjects, e.g., pictures. Each specific stimulus might have its own effects, some might be more efficient in eliciting the intended response than others. In such a case, the stimuli would also explain some of the variance and would be a random factor.\n\nData would be clustered not only within subjects but also within stimuli\n\n\nWith lmer(), it is quite easy to add other random effects, such as crossed random effects:\n\ny ~ x + (1 + x | subject_id) + (1 + x | stimulus_id)\n\n\n\nWhy are they “crossed”?\nIf you look at the data of all trials, you can average them for every subject (i.e., across stimuli) or for every stimulus (i.e., across subjects). These provide different perspectives of the data from two different “angles”.",
+    "crumbs": [
+      "12 Linear Mixed Models"
+    ]
+  },
+  {
+    "objectID": "W12_LMM.html#convergence-issues-and-singular-fits",
+    "href": "W12_LMM.html#convergence-issues-and-singular-fits",
+    "title": "12 Linear Mixed Models",
+    "section": "Convergence Issues and Singular Fits",
+    "text": "Convergence Issues and Singular Fits\nIt often happens that you get an error message: Either your model does not converge (R tries but can’t find stable estimates) or you have a singular fit (the random factors have variances close to 0 or correlate perfectly with each other, i.e. \\(-1\\) or \\(+1\\)).\nIn both cases, it makes sense to simplify your random effect structure to reduce overfitting:\n\nConstrain all covariance parameters to zero. This is accomplished using the double-bar || syntax, e.g., changing (a * b | subject) to (a * b || subject). If you still run into estimation problems, then:\nInspect the parameter estimates from the non-converging or singular model. Are any of the slope variables zero or near to zero? Remove these and re-fit the model, repeating this step until the convergence warnings / singular fit messages go away.\n\nNote: We usually start with simplifying the random effects structure because it is much more complicated (e.g., one slope per subject!) and thus provides way more potential for overfitting.\n\nthis might not make sense right now, but you can look at it once you run into these problems",
+    "crumbs": [
+      "12 Linear Mixed Models"
+    ]
+  },
+  {
+    "objectID": "W12_LMM.html#example",
+    "href": "W12_LMM.html#example",
+    "title": "12 Linear Mixed Models",
+    "section": "Example",
+    "text": "Example\nLet’s fit a model with simulated data.\n\n\n# A tibble: 6 × 5\n  subj_id item_id  cond gender     Y\n    &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;  &lt;dbl&gt;\n1       1       1  -0.5 male   1078.\n2       1       2   0.5 male    957.\n3       1       3  -0.5 male    698.\n4       1       4   0.5 male    464.\n5       1       5  -0.5 male    497.\n6       1       6   0.5 male    787.\n\n\nWe have 100 participants (subj_id) and 50 observations per participant, one for each stimulus (item_id).\nYou can also see two predictors: cond and gender.\nAs you can see, cond is a within-subject, across-item variable (a categorical factor!), which means that some of the stimuli belong to one category, the others to a second category (e.g., positive and negative images).\ngender is a between-subjects variable (also a categorical factor!): Participants either identified as female or male but that didn’t change across the experiment.\nFinally, there is a dependent/outcome variable called Y, representing reaction times.\n\nIf we’re interested in the effects of cond and gender (including their interaction) on Y, how would you specify the model? Which would be the fixed effects, which would be random effects?",
+    "crumbs": [
+      "12 Linear Mixed Models"
+    ]
+  },
+  {
+    "objectID": "W12_LMM.html#example-2",
+    "href": "W12_LMM.html#example-2",
+    "title": "12 Linear Mixed Models",
+    "section": "Example 2",
+    "text": "Example 2\n\n# make sure gender is a factor!\ndat_sim2$gender &lt;- as.factor(dat_sim2$gender)\nlevels(dat_sim2$gender)\n\n[1] \"female\" \"male\"  \n\nmod_sim &lt;- lmer(Y ~ cond * gender + (1 + cond | subj_id) + (1 | item_id), dat_sim2, REML = FALSE)\n\nsummary(mod_sim)\n\nLinear mixed model fit by maximum likelihood . t-tests use Satterthwaite's\n  method [lmerModLmerTest]\nFormula: Y ~ cond * gender + (1 + cond | subj_id) + (1 | item_id)\n   Data: dat_sim2\n\n     AIC      BIC   logLik deviance df.resid \n 67643.3  67702.0 -33812.7  67625.3     4991 \n\nScaled residuals: \n    Min      1Q  Median      3Q     Max \n-3.6374 -0.6612 -0.0244  0.6779  3.7702 \n\nRandom effects:\n Groups   Name        Variance Std.Dev. Corr\n subj_id  (Intercept)  9457.0   97.25       \n          cond          595.3   24.40   0.67\n item_id  (Intercept)  8086.4   89.92       \n Residual             40305.0  200.76       \nNumber of obs: 5000, groups:  subj_id, 100; item_id, 50\n\nFixed effects:\n                Estimate Std. Error      df t value Pr(&gt;|t|)    \n(Intercept)      790.541     19.157 134.091  41.267  &lt; 2e-16 ***\ncond              76.085     26.894  56.207   2.829  0.00646 ** \ngendermale         5.503     20.261  99.624   0.272  0.78651    \ncond:gendermale    3.134     12.361  99.160   0.254  0.80035    \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nCorrelation of Fixed Effects:\n            (Intr) cond   gndrml\ncond         0.062              \ngendermale  -0.529 -0.059       \ncond:gndrml -0.135 -0.230  0.256\n\n# with the anova() function, you will get the typical anova table with main effects and interaction!\nanova(mod_sim)\n\nType III Analysis of Variance Table with Satterthwaite's method\n            Sum Sq Mean Sq NumDF  DenDF F value   Pr(&gt;F)   \ncond        354738  354738     1 50.671  8.8013 0.004584 **\ngender        2973    2973     1 99.624  0.0738 0.786505   \ncond:gender   2592    2592     1 99.160  0.0643 0.800346   \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1",
+    "crumbs": [
+      "12 Linear Mixed Models"
+    ]
+  },
+  {
+    "objectID": "W12_LMM.html#contrasts",
+    "href": "W12_LMM.html#contrasts",
+    "title": "12 Linear Mixed Models",
+    "section": "Contrasts",
+    "text": "Contrasts\nR, by default, uses a coding of the factor levels called dummy coding. This means that one factor level is coded as \\(0\\), another as \\(1\\) (and if there are more than two levels, there will be several dummy coded variables used for the models).\nThe problem with dummy coding is that the output is hard to interpret, especially if interactions are involved. Therefore, it is preferable to use effects or sum coding, which uses \\(-.5\\) and \\(.5\\) as codes for the factor levels.\n(For more details, see the example on Regression/Linear Model from last session)\nYou can change this before running the model using:\n\n## use sum coding instead of default 'dummy' (treatment) coding\n\ncontrasts(dat_sim2$gender) &lt;- contr.sum\n\n\n\nLinear mixed model fit by maximum likelihood . t-tests use Satterthwaite's\n  method [lmerModLmerTest]\nFormula: Y ~ cond * gender + (1 + cond | subj_id) + (1 | item_id)\n   Data: dat_sim2\n\n     AIC      BIC   logLik deviance df.resid \n 67643.3  67702.0 -33812.7  67625.3     4991 \n\nScaled residuals: \n    Min      1Q  Median      3Q     Max \n-3.6374 -0.6612 -0.0244  0.6779  3.7702 \n\nRandom effects:\n Groups   Name        Variance Std.Dev. Corr\n subj_id  (Intercept)  9457.0   97.25       \n          cond          595.3   24.40   0.67\n item_id  (Intercept)  8086.4   89.92       \n Residual             40305.0  200.76       \nNumber of obs: 5000, groups:  subj_id, 100; item_id, 50\n\nFixed effects:\n             Estimate Std. Error      df t value Pr(&gt;|t|)    \n(Intercept)   793.293     16.259 101.954  48.791  &lt; 2e-16 ***\ncond           77.652     26.175  50.671   2.967  0.00458 ** \ngender1        -2.751     10.131  99.624  -0.272  0.78651    \ncond:gender1   -1.567      6.180  99.160  -0.254  0.80035    \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nCorrelation of Fixed Effects:\n            (Intr) cond  gendr1\ncond        0.038              \ngender1     0.000  0.000       \ncond:gendr1 0.000  0.000 0.256 \n\n\nType III Analysis of Variance Table with Satterthwaite's method\n            Sum Sq Mean Sq NumDF  DenDF F value   Pr(&gt;F)   \ncond        354738  354738     1 50.671  8.8013 0.004584 **\ngender        2973    2973     1 99.624  0.0738 0.786505   \ncond:gender   2592    2592     1 99.160  0.0643 0.800346   \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1",
+    "crumbs": [
+      "12 Linear Mixed Models"
+    ]
+  },
+  {
+    "objectID": "W12_LMM.html#assumption-check",
+    "href": "W12_LMM.html#assumption-check",
+    "title": "12 Linear Mixed Models",
+    "section": "Assumption Check",
+    "text": "Assumption Check\nWe can use the check_model() function of the performance package also for LMMs:\n\ncheck_model(mod_sim)\n\n\n\nLooks good!",
+    "crumbs": [
+      "12 Linear Mixed Models"
+    ]
+  },
+  {
+    "objectID": "W12_LMM.html#planned-comparisons",
+    "href": "W12_LMM.html#planned-comparisons",
+    "title": "12 Linear Mixed Models",
+    "section": "Planned Comparisons",
+    "text": "Planned Comparisons\nYou can also use the emmeans package for comparing different groups/factor levels. For example, you could do pairwise comparisons for the main effect of gender, if that was significant. This is especially relevant if you have more than two factor levels/groups/conditions, because with two you can already read out the effect from the lmer() output (the estimate for gender1 is the difference between the two genders if you use dummy coding, and 2* the estimate if you use sum coding!). We would use the emmeans() function:\n\nemm1 = emmeans(mod_sim, specs = pairwise ~ gender)\n\nYou could also investigate further in which direction an interaction goes. If you have a categorical and a continuous predictor, we would probably use emtrends() to see how the slope of the continuous variable differs between groups of the categorical variable.\nIf we have two categorical variables, like we have in our example, we can use emmeans() similarly to the code above, only that we include the interaction:\n\nemm1 = emmeans(mod_sim, specs = pairwise ~ cond:gender)\ntest(emm1)\n\n$emmeans\n cond gender emmean   SE  df z.ratio p.value\n -0.5 female    752 22.7 Inf  33.134  &lt;.0001\n  0.5 female    829 24.1 Inf  34.410  &lt;.0001\n -0.5 male      756 22.7 Inf  33.307  &lt;.0001\n  0.5 male      836 24.1 Inf  34.703  &lt;.0001\n\nDegrees-of-freedom method: asymptotic \n\n$contrasts\n contrast                            estimate   SE  df z.ratio p.value\n (cond-0.5 female) - cond0.5 female    -76.08 26.9 Inf  -2.829  0.0241\n (cond-0.5 female) - (cond-0.5 male)    -3.94 19.6 Inf  -0.201  0.9971\n (cond-0.5 female) - cond0.5 male      -83.15 33.1 Inf  -2.512  0.0580\n cond0.5 female - (cond-0.5 male)       72.15 33.1 Inf   2.180  0.1289\n cond0.5 female - cond0.5 male          -7.07 22.6 Inf  -0.312  0.9895\n (cond-0.5 male) - cond0.5 male        -79.22 26.9 Inf  -2.946  0.0170\n\nDegrees-of-freedom method: asymptotic \nP value adjustment: tukey method for comparing a family of 4 estimates \n\n\nYou would then select the comparisons in the $contrasts output that are of interest (you can also run only those, but that’s a bit more difficult).\nYou can also use the emmip() function to make interaction plots, e.g.\n\nemmip(mod_sim, cond ~ gender)\n\n\nBut since the interaction is not significant, we don’t need to do any post-hoc comparisons!\n\nThe reason these functions exist is that we cannot simply calculate means to visualize the effects once we include random slopes using shrinkage. We have to predict values using the whole fitted model to make inference about partial effects.",
+    "crumbs": [
+      "12 Linear Mixed Models"
+    ]
+  },
+  {
+    "objectID": "W12_LMM.html#effect-sizes",
+    "href": "W12_LMM.html#effect-sizes",
+    "title": "12 Linear Mixed Models",
+    "section": "Effect Sizes",
+    "text": "Effect Sizes\nYou can calculate R², the explained variance of the DV Y, as an overall model fit index. For LMMs, you can calculate two R²: One for the fixed effects only (marginal), one when also accounting for the random effect (i.e., the individual differences, conditional).\n\n# use r2() from the performance package:\n\nr2(mod_sim)\n\n# R2 for Mixed Models\n\n  Conditional R2: 0.323\n     Marginal R2: 0.025\n\n\n\nIn addition, you can calculate the effect sizes per effect. This is not as straight-forward for LMMs, but you could use the following function from the effectsize package to obtain the partial eta² (you will have to plug in the F values etc. from the ANOVA table):\n\nlibrary(effectsize)\noptions(es.use_symbols = TRUE) #get nice symbols when printing!\n\nF_to_eta2(\n  f = c(8.8013, 0.0738, 0.0643),\n  df = c(1, 1, 1),\n  df_error = c(50.671, 99.624,99.160)\n)\n\nη² (partial) |       95% CI\n---------------------------\n0.15         | [0.03, 1.00]\n7.40e-04     | [0.00, 1.00]\n6.48e-04     | [0.00, 1.00]\n\n- One-sided CIs: upper bound fixed at [1.00].",
+    "crumbs": [
+      "12 Linear Mixed Models"
+    ]
+  },
+  {
+    "objectID": "W12_LMM.html#reporting-interpretation",
+    "href": "W12_LMM.html#reporting-interpretation",
+    "title": "12 Linear Mixed Models",
+    "section": "Reporting & Interpretation",
+    "text": "Reporting & Interpretation\nWe ran a linear mixed model with condition and gender as fixed effect, Y as dependent variable, and random slopes for condition for each subject, as well as random intercepts for subjects and items. All assumptions of linear mixed models were met and the model explains \\(32.3\\%\\) of the variance in Y if accounting for the random effects (marginal R²) and \\(2.5\\%\\) if only accounting for the fixed effects (conditional R²).\nWe found a main effect of condition (F(1, 50.67) = 8.8, p = .005, partial η² = .15), but neither a main effect of gender (F(…, …) = … , p = …, partial η² = …) nor a significant interaction between gender and condition (F(…, …) = .. , p = …, partial η² = …) emerged.\nThe reaction times in the first condition are significantly lower (M = 754 ms, SD = …) than in the other condidtion (M = 832 ms, SD = …). The effects are summarized in Figure 2.\n[Add visualization where you can see the difference between conditions!]\n\nThe ANOVA, as a fixed effects model, would have only accounted for 2.5% of variance instead of almost a third due to its neglect of random effects",
+    "crumbs": [
+      "12 Linear Mixed Models"
+    ]
+  },
+  {
+    "objectID": "W12_LMM.html#why-not-model-discrete-data-as-continuous",
+    "href": "W12_LMM.html#why-not-model-discrete-data-as-continuous",
+    "title": "12 Linear Mixed Models",
+    "section": "Why not Model Discrete Data as Continuous?",
+    "text": "Why not Model Discrete Data as Continuous?\nThis is actually what happens a lot (you can see it in published papers): Researchers treat percentages, counts, or (sums of) responses on a Likert scale as continuous data and simply run a linear model.\nBut there are a number of reasons why this is a bad idea:\n\nBounded scale: There are usually no negative numbers and often an upper limit as well. A normal linear model would try to assign probability to these impossible values. This can lead to spurious interaction effects (think of improvements from \\(90\\%\\) - there’s a ceiling)!\nVariance depends on mean: In LMs, the variance is independent from the mean (related to the assumption of homogeneity of variance). This is not necessarily the case for discrete data (e.g. binary or count data).\n\nIt thus makes sense to model the data as best as possible.",
+    "crumbs": [
+      "12 Linear Mixed Models"
+    ]
+  },
+  {
+    "objectID": "W12_LMM.html#how-to-run-a-generalized-linear-model",
+    "href": "W12_LMM.html#how-to-run-a-generalized-linear-model",
+    "title": "12 Linear Mixed Models",
+    "section": "How to run a Generalized Linear Model",
+    "text": "How to run a Generalized Linear Model\nThe basic idea is to use a link function that transforms the response space so that we can perform our usual linear regression. The parameters will be hard to interpret because they are in the model space (~different units), but we can transform them back to our response space (data units) using an inverse link function.\n\nThere are a lot of different kinds of generalized linear models that you would use depending on your data. The most common ones are the logistic regression (for binary data) and the Poisson regression (for count data).\nI will just give you an example with logistic regression.",
+    "crumbs": [
+      "12 Linear Mixed Models"
+    ]
+  },
+  {
+    "objectID": "W12_LMM.html#logistic-regression",
+    "href": "W12_LMM.html#logistic-regression",
+    "title": "12 Linear Mixed Models",
+    "section": "Logistic Regression",
+    "text": "Logistic Regression\nDefinitions:\n\n\n\n\n\n\n\nTerm\nDefinition\n\n\n\n\nBernoulli trial\nAn event with a binary outcome, one outcome being considered “success”\n\n\nproportion\nThe ratio of successes to the total number of Bernoulli trials\n\n\nodds\nThe ratio of successes to failures\n\n\nlog odds\nThe (natural) logarithm of the odds\n\n\n\nIn logisitc regression, we are modeling the relationship between response (DV) and predictors (IVs) in log odds space (= model space).\n\nLogistic regression is used when the individual outcomes are Bernoulli trials. The outcome of a sequence of trials is communicated as a proportion:\nIf we flip a coin 100 times and get 47 heads, we have a proportion of .47. This is our estimate of the probability of the event.\n\n\nWe can also calculate the (natural) odds of heads: \\(47/53 = .89\\) (heads:not heads).\nThe natural log of the odds or logit is the scale of the logistic regression.\nRecall that the logarithm of some value Y gives the exponent that would yield Y for a given base. For instance, the log2 (log to the base 2) of 16 is 4, because 24 = 16.\nIn logistic regression, the base is usually e (Euler’s number). To get the log odds from the natural odds, we can use log() and to get the inverse, the natural from the log odds, we can use exp().\n\nBernoulli: 0,1 / success, failure… arbitrary what is success!\nodds = p/1-p\n0 to +inf\nnice properties of log odds:\n\nsymmetric around 0\n0 = max. uncertainty, both outcomes equally likely\npos: success more likely than failure",
+    "crumbs": [
+      "12 Linear Mixed Models"
+    ]
+  },
+  {
+    "objectID": "W12_LMM.html#link-function",
+    "href": "W12_LMM.html#link-function",
+    "title": "12 Linear Mixed Models",
+    "section": "Link Function",
+    "text": "Link Function\nThe link function for logistic regression is:\n\\(\\eta = \\log \\left(\\frac{p}{1-p}\\right)\\)\nThe inverse link function is:\n\\(p = \\frac{1}{1 + e^{-\\eta}}\\)\n\n\n\nModel vs. response space\n\n\n\neta = outcome variable?!",
+    "crumbs": [
+      "12 Linear Mixed Models"
+    ]
+  },
+  {
+    "objectID": "W12_LMM.html#estimating-logistic-regression-in-r",
+    "href": "W12_LMM.html#estimating-logistic-regression-in-r",
+    "title": "12 Linear Mixed Models",
+    "section": "Estimating Logistic Regression in R",
+    "text": "Estimating Logistic Regression in R\nEstimating logistic regressions is not very difficult in R (the interpretation might be, though), because you simply use the function glm() instead of lm() or glmer() instead of lmer().\nIn addition, you’d add an argument to the function, which specifies the link function. For logistic regression, this would be family = binomial(link = \"logit\") or family = binomial would be sufficient if you want to use the default logit link.\nSo the code would look like this:\n\nglm(DV ~ IV1 + IV2 + ..., data, family = binomial)\n\n# for multi-level data:\nglmer(DV ~ IV1 + IV2 + ... (1 | subject), data, family = binomial)",
+    "crumbs": [
+      "12 Linear Mixed Models"
+    ]
+  }
+]
