@@ -541,7 +541,7 @@ div.cell-output-stdout {
 <span id="cb5-2"><a href="#cb5-2"></a>source("analysis.R", #your R script here (same folder as your project)</span>
 <span id="cb5-3"><a href="#cb5-3"></a>       local = knitr::knit_global())</span>
 <span id="cb5-4"><a href="#cb5-4"></a>```</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>You can now use all variables that you have created in your R script. But you cannot show individual code chunks.</p>
+<p>You can now use all variables that you have created in your R script. But you cannot show individual code chunks (<code>echo = TRUE</code>).</p>
 </section>
 <section id="your-second-r-markdown-script" class="slide level2">
 <h2>Your Second R Markdown Script</h2>
@@ -554,11 +554,17 @@ div.cell-output-stdout {
 <span id="cb6-2"><a href="#cb6-2"></a>data = tibble(rt = rnorm(n=100, mean=.5, sd=.2))</span>
 <span id="cb6-3"><a href="#cb6-3"></a>```</span>
 <span id="cb6-4"><a href="#cb6-4"></a>We observed an average reaction time of `r data %&gt;% pull(rt) %&gt;% mean() %&gt;% signif(digits=3)` seconds.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>We observed an average reaction time of 0.495 seconds.</p>
+<p>We observed an average reaction time of 0.515 seconds.</p>
 <ol start="3" type="1">
 <li>Knit the document and open the output with a double click.</li>
 </ol>
 </div>
+</section></section>
+<section>
+<section id="examples-for-your-report" class="title-slide slide level1 center">
+<h1>Examples for your report</h1>
+<p>Now you know everything you need to know for your RMarkdown report!</p>
+<p>Since writing reports with inline code can be tricky sometimes, here are some examples for the most common statistical tests.</p>
 </section>
 <section id="examples-for-your-report-t-test" class="slide level2">
 <h2>Examples for your report: <em>t</em>-test</h2>

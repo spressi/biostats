@@ -956,14 +956,14 @@
     "href": "W13_RMarkdown.html#from-an-r-script-to-r-markdown-2",
     "title": "13 R Markdown",
     "section": "From an R script to R Markdown 2",
-    "text": "From an R script to R Markdown 2\nOption 2: “Import” the R script and run it with the source function:\n```{r message=FALSE, warning=FALSE}\nsource(\"analysis.R\", #your R script here (same folder as your project)\n       local = knitr::knit_global())\n```\nYou can now use all variables that you have created in your R script. But you cannot show individual code chunks."
+    "text": "From an R script to R Markdown 2\nOption 2: “Import” the R script and run it with the source function:\n```{r message=FALSE, warning=FALSE}\nsource(\"analysis.R\", #your R script here (same folder as your project)\n       local = knitr::knit_global())\n```\nYou can now use all variables that you have created in your R script. But you cannot show individual code chunks (echo = TRUE)."
   },
   {
     "objectID": "W13_RMarkdown.html#your-second-r-markdown-script",
     "href": "W13_RMarkdown.html#your-second-r-markdown-script",
     "title": "13 R Markdown",
     "section": "Your Second R Markdown Script",
-    "text": "Your Second R Markdown Script\n\nUse one of the two methods described before to include the R analysis for your report into an R Markdown document.\nOutput the content of any variable of your R script and include it as inline code in some text (Cheat Sheet).\n\n\n```{r}\ndata = tibble(rt = rnorm(n=100, mean=.5, sd=.2))\n```\nWe observed an average reaction time of `r data %&gt;% pull(rt) %&gt;% mean() %&gt;% signif(digits=3)` seconds.\nWe observed an average reaction time of 0.495 seconds.\n\nKnit the document and open the output with a double click."
+    "text": "Your Second R Markdown Script\n\nUse one of the two methods described before to include the R analysis for your report into an R Markdown document.\nOutput the content of any variable of your R script and include it as inline code in some text (Cheat Sheet).\n\n\n```{r}\ndata = tibble(rt = rnorm(n=100, mean=.5, sd=.2))\n```\nWe observed an average reaction time of `r data %&gt;% pull(rt) %&gt;% mean() %&gt;% signif(digits=3)` seconds.\nWe observed an average reaction time of 0.515 seconds.\n\nKnit the document and open the output with a double click."
   },
   {
     "objectID": "W13_RMarkdown.html#examples-for-your-report-t-test",

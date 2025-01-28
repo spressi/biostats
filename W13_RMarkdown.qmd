@@ -149,7 +149,7 @@ source("analysis.R", #your R script here (same folder as your project)
 ```
 ````
 
-You can now use all variables that you have created in your R script. But you cannot show individual code chunks.
+You can now use all variables that you have created in your R script. But you cannot show individual code chunks (`echo = TRUE`).
 
 ## Your Second R Markdown Script
 1.  Use one of the two methods described before to include the R analysis for your report into an R Markdown document.
@@ -170,6 +170,12 @@ data = tibble(rt = rnorm(n=100, mean=.5, sd=.2))
 We observed an average reaction time of `r data %>% pull(rt) %>% mean() %>% signif(digits=3)` seconds.
 
 3.  Knit the document and open the output with a double click.
+
+# Examples for your report
+
+Now you know everything you need to know for your RMarkdown report!
+
+Since writing reports with inline code can be tricky sometimes, here are some examples for the most common statistical tests.
 
 ## Examples for your report: *t*-test
 
