@@ -23,6 +23,10 @@ from: markdown+emoji
 code.sourceCode {
   font-size: 1.4em;
 }
+
+div.cell-output-stdout {
+  font-size: 1.4em;
+}
 ```
 
 ```{r}
@@ -53,7 +57,7 @@ A newer variant is called *quarto*, which works very similar to R Markdown (but 
 
 ## Your First R Markdown Script
 
--   Open a new `.Rmd` file, change/insert the title and author.
+-   Create a new `.Rmd` file, change/insert the title and author.
 
 -   Check out the content of it. What different parts do you see?
 
@@ -95,8 +99,6 @@ For further information, check out the R Markdown cheatsheet: <https://rmarkdown
 
 
 ## Code Chunk Options
-
-**Options for your code chunks:**
 
 ![](images/Rmd Options.png)
 
@@ -171,28 +173,112 @@ We observed an average reaction time of `r data %>% pull(rt) %>% mean() %>% sign
 
 ## Examples for your report: *t*-test
 
-````{verbatim, lang = "rmarkdown"}
 ```{r}
-data = tibble(a = rnorm(n=100, mean=.5, sd=.2), b = rnorm(n=100, mean=.4, sd=.2))
-mytest = with(data, t.test(a, b, paired=T))
-#mytest %>% apa::t_apa() #we don't want to print output to the console anymore
+set.seed(1337)
 ```
 
+````{verbatim, lang = "rmarkdown"}
+#| code-line-numbers: "4,7-10"
+```{r}
+data = tibble(a = rnorm(n=100, mean=.5, sd=.2)) %>% mutate(b = a - rnorm(n=100, mean=.1, sd=.2))
+mytest = with(data, t.test(a, b, paired=TRUE))
+#mytest %>% apa::t_apa(es_ci=TRUE) #we don't want to print output to the console anymore
+```
 We performed a paired *t*-test and found a significant difference between both conditions 
-(`r mytest %>% apa::t_apa(print=F, format="rmarkdown")`). In condition A, reaction times were higher 
+(`r mytest %>% apa::t_apa(es_ci=TRUE, print=FALSE, format="rmarkdown")`). In condition A, reaction times were higher 
 (*M* = `r data %>% pull(a) %>% mean() %>% signif(3)` s, *SD* = `r data %>% pull(a) %>% sd() %>% signif(3)` s)
 compared to condition B  (*M* = `r data %>% pull(b) %>% mean() %>% signif(3)` s, *SD* = `r data %>% pull(b) %>% sd() %>% signif(3)` s).
 ````
+
 ```{r}
-data = tibble(a = rnorm(n=100, mean=.5, sd=.2), b = rnorm(n=100, mean=.4, sd=.2))
+data = tibble(a = rnorm(n=100, mean=.5, sd=.2)) %>% mutate(b = a - rnorm(n=100, mean=.1, sd=.2))
 mytest = with(data, t.test(a, b, paired=T))
-#mytest %>% apa::t_apa()
+#mytest %>% apa::t_apa(es_ci=TRUE)
 ```
-We performed a paired *t*-test and found a significant difference between both conditions (`r mytest %>% apa::t_apa(print=F, format="rmarkdown")`). In condition A, reaction times were higher (*M* = `r data %>% pull(a) %>% mean() %>% signif(3)` s, *SD* = `r data %>% pull(a) %>% sd() %>% signif(3)` s) compared to condition B (*M* = `r data %>% pull(b) %>% mean() %>% signif(3)` s, *SD* = `r data %>% pull(b) %>% sd() %>% signif(3)` s).
+We performed a paired *t*-test and found a significant difference between both conditions (`r mytest %>% apa::t_apa(es_ci=TRUE, print=FALSE, format="rmarkdown")`). In condition A, reaction times were higher (*M* = `r data %>% pull(a) %>% mean() %>% signif(3)` s, *SD* = `r data %>% pull(a) %>% sd() %>% signif(3)` s) compared to condition B (*M* = `r data %>% pull(b) %>% mean() %>% signif(3)` s, *SD* = `r data %>% pull(b) %>% sd() %>% signif(3)` s).
+
+## Examples for your report: Correlation
+
+````{verbatim, lang = "rmarkdown"}
+```{r}
+myCor = with(data, cor.test(a, b))
+#myCor %>% apa::cor_apa(r_ci=TRUE) #we don't want to print output to the console anymore
+```
+We found a significant Pearson correlation between both conditions
+(`r myCor %>% apa::cor_apa(r_ci=TRUE, print=FALSE, format="rmarkdown")`). 
+Those individuals with higher reaction times in condition A 
+(*M* = `r data %>% pull(a) %>% mean() %>% signif(3)` s, *SD* = `r data %>% pull(a) %>% sd() %>% signif(3)` s)
+also performed more slowly in condition B
+(*M* = `r data %>% pull(b) %>% mean() %>% signif(3)` s, *SD* = `r data %>% pull(b) %>% sd() %>% signif(3)` s).
+````
+
+```{r}
+myCor = with(data, cor.test(a, b))
+#myCor %>% apa::cor_apa(r_ci=TRUE) #we don't want to print output to the console anymore
+```
+We found a significant Pearson correlation between both conditions
+(`r myCor %>% apa::cor_apa(r_ci=TRUE, print=FALSE, format="rmarkdown")`). 
+Those individuals with higher reaction times in condition A 
+(*M* = `r data %>% pull(a) %>% mean() %>% signif(3)` s, *SD* = `r data %>% pull(a) %>% sd() %>% signif(3)` s)
+also performed more slowly in condition B
+(*M* = `r data %>% pull(b) %>% mean() %>% signif(3)` s, *SD* = `r data %>% pull(b) %>% sd() %>% signif(3)` s).
 
 ## Examples for your report: ANOVA
 
-TODO
+```{r}
+set.seed(1338)
+```
+
+```{r}
+data <- tibble(subject = rep(1:100, each = 2),
+              condition = rep(c("treatment", "placebo"), each = 100),
+              time = rep(1:2, times = 100),
+              performance = c(rnorm(n=100, mean=.5, sd=.2), rnorm(n=100, mean=.4, sd=.2))) %>% #main effect condition
+  mutate(performance = performance - (time-1) * rnorm(n=200, mean=.1, sd=.1)) #main effect time
+```
+
+```{r, echo=TRUE}
+#| code-line-numbers: "8-9"
+library(afex)
+model <- aov_ez(data = data,
+              id = "subject", 
+              dv = "performance", 
+              between = "condition", 
+              within = "time",
+              es = "pes", type = 3, include_aov = TRUE)
+#apa::anova_apa(model) #we don't want to print output to the console anymore
+anovaTable <- apa::anova_apa(model, print = F, format = "rmarkdown") %>% bind_rows()
+```
+
+```{r}
+anovaTable
+```
+
+## Examples for your report: ANOVA 2
+
+````{verbatim, lang = "rmarkdown"}
+```{r}
+anovaTable <- apa::anova_apa(model, print = F, format = "rmarkdown") %>% bind_rows()
+```
+We conducted a $2 \times 2$ ANOVA with *performance* as dependent variable, the within-subjects factor *time* (Baseline vs. Post), and the between-subjects factor *condition* (Treatment vs. Placebo). 
+Results indicated a main effect of *condition* 
+`r anovaTable %>% filter(effect=="condition") %>% pull(text)` with the treatment group 
+(*M* = `r data %>% filter(condition=="treatment") %>% summarize(.by = subject, performance = mean(performance)) %>% pull(performance) %>% mean() %>% signif(3)`, *SD* = `r data %>% filter(condition=="treatment") %>% summarize(.by = subject, performance = mean(performance)) %>% pull(performance) %>% sd() %>% signif(3)`)
+exhibiting higher performance than the placebo group (*M* = `r data %>% filter(condition=="placebo") %>% summarize(.by = subject, performance = mean(performance)) %>% pull(performance) %>% mean() %>% signif(3)`, *SD* = `r data %>% filter(condition=="placebo") %>% summarize(.by = subject, performance = mean(performance)) %>% pull(performance) %>% sd() %>% signif(3)`).
+We also observed a main effect of *time* `r anovaTable %>% filter(effect=="time") %>% pull(text)` with performance **decreasing** from baseline (*M* = `r data %>% filter(time==1) %>% pull(performance) %>% mean() %>% signif(3)`, *SD* = `r data %>% filter(time==1) %>% pull(performance) %>% sd() %>% signif(3)`) to post treatment (*M* = `r data %>% filter(time==2) %>% pull(performance) %>% mean() %>% signif(3)`, *SD* = `r data %>% filter(time==2) %>% pull(performance) %>% sd() %>% signif(3)`).
+The interaction did not reach significance `r anovaTable %>% filter(effect=="condition:time") %>% pull(text)`.
+The effects are depicted in Figure 1.
+````
+We conducted a $2 \times 2$ ANOVA with *performance* as dependent variable, the within-subjects factor *time* (Baseline vs. Post), and the between-subjects factor *condition* (Treatment vs. Placebo). 
+Results indicated a main effect of *condition* 
+`r anovaTable %>% filter(effect=="condition") %>% pull(text)` with the treatment group 
+(*M* = `r data %>% filter(condition=="treatment") %>% summarize(.by = subject, performance = mean(performance)) %>% pull(performance) %>% mean() %>% signif(3)`, *SD* = `r data %>% filter(condition=="treatment") %>% summarize(.by = subject, performance = mean(performance)) %>% pull(performance) %>% sd() %>% signif(3)`)
+exhibiting higher performance than the placebo group 
+(*M* = `r data %>% filter(condition=="placebo") %>% summarize(.by = subject, performance = mean(performance)) %>% pull(performance) %>% mean() %>% signif(3)`, *SD* = `r data %>% filter(condition=="placebo") %>% summarize(.by = subject, performance = mean(performance)) %>% pull(performance) %>% sd() %>% signif(3)`).
+We also observed a main effect of *time*
+`r anovaTable %>% filter(effect=="time") %>% pull(text)` with performance **decreasing** from baseline (*M* = `r data %>% filter(time==1) %>% pull(performance) %>% mean() %>% signif(3)`, *SD* = `r data %>% filter(time==1) %>% pull(performance) %>% sd() %>% signif(3)`) to post treatment (*M* = `r data %>% filter(time==2) %>% pull(performance) %>% mean() %>% signif(3)`, *SD* = `r data %>% filter(time==2) %>% pull(performance) %>% sd() %>% signif(3)`).
+The interaction did not reach significance `r anovaTable %>% filter(effect=="condition:time") %>% pull(text)`.
+The effects are depicted in Figure 1.
 
 # Thanks
 

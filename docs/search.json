@@ -908,5 +908,89 @@
     "crumbs": [
       "12 Linear Mixed Models"
     ]
+  },
+  {
+    "objectID": "W13_RMarkdown.html#comparison-r-vs.-r-markdown-1",
+    "href": "W13_RMarkdown.html#comparison-r-vs.-r-markdown-1",
+    "title": "13 R Markdown",
+    "section": "Comparison: R vs. R Markdown 1",
+    "text": "Comparison: R vs. R Markdown 1\n\n\n\nR script\n\n\n\n\n\n\nR Markdown"
+  },
+  {
+    "objectID": "W13_RMarkdown.html#comparison-r-vs.-r-markdown-2",
+    "href": "W13_RMarkdown.html#comparison-r-vs.-r-markdown-2",
+    "title": "13 R Markdown",
+    "section": "Comparison: R vs. R Markdown 2",
+    "text": "Comparison: R vs. R Markdown 2\n\n\n\nR Markdown\n\n\n\n\n\nR Markdown rendered as html report"
+  },
+  {
+    "objectID": "W13_RMarkdown.html#your-first-r-markdown-script",
+    "href": "W13_RMarkdown.html#your-first-r-markdown-script",
+    "title": "13 R Markdown",
+    "section": "Your First R Markdown Script",
+    "text": "Your First R Markdown Script\n\nCreate a new .Rmd file, change/insert the title and author.\nCheck out the content of it. What different parts do you see?\n\n\n\nSwitch between “Source” and “Visual” in the top left. What changes? What is “Visual”?\n\n\n\n\nDelete and add some of the text on the white background. Change the Header (indicated by ##) to “About me” and write something about yourself underneath.\nIn the grey boxes (“code chunks”), add some code. Try to find out how you can add a new code chunk.\n\n\n\n\nSave the file with a sensible name.\nWhat happens when you click on “Knit” (top of Script pane)?\n\n\n\nhint: The green C with the + on the top right will do so (or using “insert” in the visual view)\nClick on the little arrow next to knit and select “Knit to PDF”\ninsert inline code"
+  },
+  {
+    "objectID": "W13_RMarkdown.html#r-markdown-advantages",
+    "href": "W13_RMarkdown.html#r-markdown-advantages",
+    "title": "13 R Markdown",
+    "section": "R Markdown Advantages",
+    "text": "R Markdown Advantages\nThere are many useful things you can do with R Markdown (adding different headers, adding inline code, knitting as a PDF, adding pictures or tables…). You can also decide whether each code chunk should be visible in the output, etc.\nExample:\n```{r, echo=TRUE, eval=FALSE}\n#your code here that will only be shown but not be executed\n```\nFor further information, check out the R Markdown cheatsheet: https://rmarkdown.rstudio.com/lesson-15.HTML"
+  },
+  {
+    "objectID": "W13_RMarkdown.html#code-chunk-options",
+    "href": "W13_RMarkdown.html#code-chunk-options",
+    "title": "13 R Markdown",
+    "section": "Code Chunk Options",
+    "text": "Code Chunk Options\n\nYou can change these default values for code chunks for the rest of your document:\n```{r, include=FALSE}\nknitr::opts_chunk$set(\n  echo = FALSE, #this is a good default for your report\n  fig.width = 6, fig.height = 6\n)\n```\nFore more information, see https://yihui.org/knitr/options/"
+  },
+  {
+    "objectID": "W13_RMarkdown.html#from-an-r-script-to-r-markdown",
+    "href": "W13_RMarkdown.html#from-an-r-script-to-r-markdown",
+    "title": "13 R Markdown",
+    "section": "From an R script to R Markdown",
+    "text": "From an R script to R Markdown\nPreviously, we have just worked with .R scripts. If you have a full R script with your entire analysis (or even several scripts), how do you include them in an R Markdown file?\n\nOption 1: Copy all code into one giant code chunk:\n```{r}\n#copy all code here\n```\nYou can break this code chunk apart into smaller ones by copying this into a new line of the code chunk:\n```\n\n```{r}"
+  },
+  {
+    "objectID": "W13_RMarkdown.html#from-an-r-script-to-r-markdown-2",
+    "href": "W13_RMarkdown.html#from-an-r-script-to-r-markdown-2",
+    "title": "13 R Markdown",
+    "section": "From an R script to R Markdown 2",
+    "text": "From an R script to R Markdown 2\nOption 2: “Import” the R script and run it with the source function:\n```{r message=FALSE, warning=FALSE}\nsource(\"analysis.R\", #your R script here (same folder as your project)\n       local = knitr::knit_global())\n```\nYou can now use all variables that you have created in your R script. But you cannot show individual code chunks."
+  },
+  {
+    "objectID": "W13_RMarkdown.html#your-second-r-markdown-script",
+    "href": "W13_RMarkdown.html#your-second-r-markdown-script",
+    "title": "13 R Markdown",
+    "section": "Your Second R Markdown Script",
+    "text": "Your Second R Markdown Script\n\nUse one of the two methods described before to include the R analysis for your report into an R Markdown document.\nOutput the content of any variable of your R script and include it as inline code in some text (Cheat Sheet).\n\n\n```{r}\ndata = tibble(rt = rnorm(n=100, mean=.5, sd=.2))\n```\nWe observed an average reaction time of `r data %&gt;% pull(rt) %&gt;% mean() %&gt;% signif(digits=3)` seconds.\nWe observed an average reaction time of 0.495 seconds.\n\nKnit the document and open the output with a double click."
+  },
+  {
+    "objectID": "W13_RMarkdown.html#examples-for-your-report-t-test",
+    "href": "W13_RMarkdown.html#examples-for-your-report-t-test",
+    "title": "13 R Markdown",
+    "section": "Examples for your report: t-test",
+    "text": "Examples for your report: t-test\n```{r}\ndata = tibble(a = rnorm(n=100, mean=.5, sd=.2)) %&gt;% mutate(b = a - rnorm(n=100, mean=.1, sd=.2))\nmytest = with(data, t.test(a, b, paired=TRUE))\n#mytest %&gt;% apa::t_apa(es_ci=TRUE) #we don't want to print output to the console anymore\n```\n\nWe performed a paired *t*-test and found a significant difference between both conditions \n(`r mytest %&gt;% apa::t_apa(es_ci=TRUE, print=FALSE, format=\"rmarkdown\")`). In condition A, reaction times were higher \n(*M* = `r data %&gt;% pull(a) %&gt;% mean() %&gt;% signif(3)` s, *SD* = `r data %&gt;% pull(a) %&gt;% sd() %&gt;% signif(3)` s)\ncompared to condition B  (*M* = `r data %&gt;% pull(b) %&gt;% mean() %&gt;% signif(3)` s, *SD* = `r data %&gt;% pull(b) %&gt;% sd() %&gt;% signif(3)` s).\nWe performed a paired t-test and found a significant difference between both conditions (t(99) = 5.38, p &lt; .001, d = 0.54 [0.33; 0.75]). In condition A, reaction times were higher (M = 0.547 s, SD = 0.213 s) compared to condition B (M = 0.439 s, SD = 0.309 s)."
+  },
+  {
+    "objectID": "W13_RMarkdown.html#examples-for-your-report-anova",
+    "href": "W13_RMarkdown.html#examples-for-your-report-anova",
+    "title": "13 R Markdown",
+    "section": "Examples for your report: ANOVA",
+    "text": "Examples for your report: ANOVA\n\nlibrary(afex)\nmodel &lt;- aov_ez(data = data,\n              id = \"subject\", \n              dv = \"performance\", \n              between = \"condition\", \n              within = \"time\",\n              es = \"pes\", type = 3, include_aov = TRUE)\n#apa::anova_apa(model) #we don't want to print output to the console anymore\nanovaTable &lt;- apa::anova_apa(model, print = F, format = \"rmarkdown\") %&gt;% bind_rows()\n\n\n\n# A tibble: 4 × 2\n  effect         text                                                \n  &lt;chr&gt;          &lt;chr&gt;                                               \n1 (Intercept)    \"*F*(1, 98) = 661.36, *p* &lt; .001, $\\\\eta^2_p$ = .87\"\n2 condition      \"*F*(1, 98) = 7.65, *p* = .007, $\\\\eta^2_p$ = .07\"  \n3 time           \"*F*(1, 98) = 6.40, *p* = .013, $\\\\eta^2_p$ = .06\"  \n4 condition:time \"*F*(1, 98) = 0.81, *p* = .370, $\\\\eta^2_p$ &lt; .01\""
+  },
+  {
+    "objectID": "W13_RMarkdown.html#examples-for-your-report-anova-2",
+    "href": "W13_RMarkdown.html#examples-for-your-report-anova-2",
+    "title": "13 R Markdown",
+    "section": "Examples for your report: ANOVA 2",
+    "text": "Examples for your report: ANOVA 2\n```{r}\nanovaTable &lt;- apa::anova_apa(model, print = F, format = \"rmarkdown\") %&gt;% bind_rows()\n```\n\nWe conducted a $2 \\times 2$ ANOVA with *performance* as dependent variable, the within-subjects factor *time* (Baseline vs. Post), and the between-subjects factor *condition* (Treatment vs. Placebo). \nResults indicated a main effect of *condition* \n`r anovaTable %&gt;% filter(effect==\"condition\") %&gt;% pull(text)` with the treatment group \n(*M* = `r data %&gt;% filter(condition==\"treatment\") %&gt;% summarize(.by = subject, performance = mean(performance)) %&gt;% pull(performance) %&gt;% mean() %&gt;% signif(3)`, *SD* = `r data %&gt;% filter(condition==\"treatment\") %&gt;% summarize(.by = subject, performance = mean(performance)) %&gt;% pull(performance) %&gt;% sd() %&gt;% signif(3)`)\nexhibiting higher performance than the placebo group (*M* = `r data %&gt;% filter(condition==\"placebo\") %&gt;% summarize(.by = subject, performance = mean(performance)) %&gt;% pull(performance) %&gt;% mean() %&gt;% signif(3)`, *SD* = `r data %&gt;% filter(condition==\"placebo\") %&gt;% summarize(.by = subject, performance = mean(performance)) %&gt;% pull(performance) %&gt;% sd() %&gt;% signif(3)`).\nWe also observed a main effect of *time* `r anovaTable %&gt;% filter(effect==\"time\") %&gt;% pull(text)` with performance **decreasing** from baseline (*M* = `r data %&gt;% filter(time==1) %&gt;% pull(performance) %&gt;% mean() %&gt;% signif(3)`, *SD* = `r data %&gt;% filter(time==1) %&gt;% pull(performance) %&gt;% sd() %&gt;% signif(3)`) to post treatment (*M* = `r data %&gt;% filter(time==2) %&gt;% pull(performance) %&gt;% mean() %&gt;% signif(3)`, *SD* = `r data %&gt;% filter(time==2) %&gt;% pull(performance) %&gt;% sd() %&gt;% signif(3)`).\nThe interaction did not reach significance `r anovaTable %&gt;% filter(effect==\"condition:time\") %&gt;% pull(text)`.\nThe effects are depicted in Figure 1.\nWe conducted a \\(2 \\times 2\\) ANOVA with performance as dependent variable, the within-subjects factor time (Baseline vs. Post), and the between-subjects factor condition (Treatment vs. Placebo). Results indicated a main effect of condition F(1, 98) = 7.65, p = .007, \\(\\eta^2_p\\) = .07 with the treatment group (M = 0.433, SD = 0.17) exhibiting higher performance than the placebo group (M = 0.349, SD = 0.131). We also observed a main effect of time F(1, 98) = 6.40, p = .013, \\(\\eta^2_p\\) = .06 with performance decreasing from baseline (M = 0.429, SD = 0.217) to post treatment (M = 0.352, SD = 0.219). The interaction did not reach significance F(1, 98) = 0.81, p = .370, \\(\\eta^2_p\\) &lt; .01. The effects are depicted in Figure 1."
+  },
+  {
+    "objectID": "W13_RMarkdown.html#examples-for-your-report-correlation",
+    "href": "W13_RMarkdown.html#examples-for-your-report-correlation",
+    "title": "13 R Markdown",
+    "section": "Examples for your report: Correlation",
+    "text": "Examples for your report: Correlation\n```{r}\nmyCor = with(data, cor.test(a, b))\n#myCor %&gt;% apa::cor_apa(r_ci=TRUE) #we don't want to print output to the console anymore\n```\nWe found a significant Pearson correlation between both conditions\n(`r myCor %&gt;% apa::cor_apa(r_ci=TRUE, print=FALSE, format=\"rmarkdown\")`). \nThose individuals with higher reaction times in condition A \n(*M* = `r data %&gt;% pull(a) %&gt;% mean() %&gt;% signif(3)` s, *SD* = `r data %&gt;% pull(a) %&gt;% sd() %&gt;% signif(3)` s)\nalso performed more slowly in condition B\n(*M* = `r data %&gt;% pull(b) %&gt;% mean() %&gt;% signif(3)` s, *SD* = `r data %&gt;% pull(b) %&gt;% sd() %&gt;% signif(3)` s).\nWe found a significant Pearson correlation between both conditions (r(98) = .76 [.66; .83], p &lt; .001). Those individuals with higher reaction times in condition A (M = 0.547 s, SD = 0.213 s) also performed more slowly in condition B (M = 0.439 s, SD = 0.309 s)."
   }
 ]
