@@ -572,7 +572,7 @@ div.cell-output-stdout {
 <span id="cb6-2"><a href="#cb6-2"></a>data = tibble(rt = rnorm(n=100, mean=.5, sd=.2))</span>
 <span id="cb6-3"><a href="#cb6-3"></a>```</span>
 <span id="cb6-4"><a href="#cb6-4"></a>We observed an average reaction time of `r data %&gt;% pull(rt) %&gt;% mean() %&gt;% signif(digits=3)` seconds.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>We observed an average reaction time of 0.508 seconds.</p>
+<p>We observed an average reaction time of 0.502 seconds.</p>
 <ol start="3" type="1">
 <li>Knit the document and open the output with a double click.</li>
 </ol>
@@ -597,6 +597,23 @@ div.cell-output-stdout {
 <span id="cb7-9"><a href="#cb7-9"></a>(*M* = `r data %&gt;% pull(a) %&gt;% mean() %&gt;% signif(3)` s, *SD* = `r data %&gt;% pull(a) %&gt;% sd() %&gt;% signif(3)` s)</span>
 <span id="cb7-10"><a href="#cb7-10"></a>compared to condition B  (*M* = `r data %&gt;% pull(b) %&gt;% mean() %&gt;% signif(3)` s, *SD* = `r data %&gt;% pull(b) %&gt;% sd() %&gt;% signif(3)` s).</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>We performed a paired <em>t</em>-test and found a significant difference between both conditions (<em>t</em>(99) = 5.38, <em>p</em> &lt; .001, <em>d</em> = 0.54 [0.33; 0.75]). In condition A, reaction times were higher (<em>M</em> = 0.547 s, <em>SD</em> = 0.213 s) compared to condition B (<em>M</em> = 0.439 s, <em>SD</em> = 0.309 s).</p>
+<aside class="notes">
+<ol type="1">
+<li>Comment out the code that performes an output to the console. We will replace it with inline code.</li>
+<li>The <code>apa</code> functions need some tweaking: <code>print=FALSE</code> and <code>format="rmarkdown"</code>.</li>
+<li>The <code>signif()</code> function is your friend! It helps you to show a certain amount of significant digits for output of descriptive data.</li>
+</ol>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="examples-for-your-report-correlation" class="slide level2">
 <h2>Examples for your report: Correlation</h2>
@@ -636,6 +653,19 @@ div.cell-output-stdout {
 4 condition:time "*F*(1, 98) = 0.81, *p* = .370, $\\eta^2_p$ &lt; .01"  </code></pre>
 </div>
 </div>
+<aside class="notes">
+<p>For the ANOVA, we also have to call <code>bind_rows()</code> after <code>anova_apa</code> to bind the output into a data frame that we can filter.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="examples-for-your-report-anova-2" class="slide level2">
 <h2>Examples for your report: ANOVA 2</h2>
@@ -652,6 +682,22 @@ div.cell-output-stdout {
 <span id="cb11-11"><a href="#cb11-11"></a>The interaction did not reach significance `r anovaTable %&gt;% filter(effect=="condition:time") %&gt;% pull(text)`.</span>
 <span id="cb11-12"><a href="#cb11-12"></a>The effects are depicted in Figure 1.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>We conducted a <span class="math inline">\(2 \times 2\)</span> ANOVA with <em>performance</em> as dependent variable, the within-subjects factor <em>time</em> (Baseline vs.&nbsp;Post), and the between-subjects factor <em>condition</em> (Treatment vs.&nbsp;Placebo). Results indicated a main effect of <em>condition</em> <em>F</em>(1, 98) = 7.65, <em>p</em> = .007, <span class="math inline">\(\eta^2_p\)</span> = .07 with the treatment group (<em>M</em> = 0.433, <em>SD</em> = 0.17) exhibiting higher performance than the placebo group (<em>M</em> = 0.349, <em>SD</em> = 0.131). We also observed a main effect of <em>time</em> <em>F</em>(1, 98) = 6.40, <em>p</em> = .013, <span class="math inline">\(\eta^2_p\)</span> = .06 with performance <strong>decreasing</strong> from baseline (<em>M</em> = 0.429, <em>SD</em> = 0.217) to post treatment (<em>M</em> = 0.352, <em>SD</em> = 0.219). The interaction did not reach significance <em>F</em>(1, 98) = 0.81, <em>p</em> = .370, <span class="math inline">\(\eta^2_p\)</span> &lt; .01. The effects are depicted in Figure 1.</p>
+<aside class="notes">
+<ol type="1">
+<li><p><code>anovaTable %&gt;% filter(effect=="condition") %&gt;% pull(text)</code> to call the statistical output for an individual effect.</p></li>
+<li><p>When calculating descriptives (esp.&nbsp;<em>SD</em>) while collapsing across (within-subject) variables, make sure to calculate the mean for each subject first before you <code>summarize</code> across all subjects.</p></li>
+</ol>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section></section>
 <section id="thanks" class="title-slide slide level1 center">
 <h1>Thanks</h1>

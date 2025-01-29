@@ -211,6 +211,12 @@ mytest = with(data, t.test(a, b, paired=T))
 ```
 We performed a paired *t*-test and found a significant difference between both conditions (`r mytest %>% apa::t_apa(es_ci=TRUE, print=FALSE, format="rmarkdown")`). In condition A, reaction times were higher (*M* = `r data %>% pull(a) %>% mean() %>% signif(3)` s, *SD* = `r data %>% pull(a) %>% sd() %>% signif(3)` s) compared to condition B (*M* = `r data %>% pull(b) %>% mean() %>% signif(3)` s, *SD* = `r data %>% pull(b) %>% sd() %>% signif(3)` s).
 
+::: notes
+1. Comment out the code that performes an output to the console. We will replace it with inline code.
+2. The `apa` functions need some tweaking: `print=FALSE` and `format="rmarkdown"`.
+3. The `signif()` function is your friend! It helps you to show a certain amount of significant digits for output of descriptive data.
+:::
+
 ## Examples for your report: Correlation
 
 ````{verbatim, lang = "rmarkdown"}
@@ -268,6 +274,10 @@ anovaTable <- apa::anova_apa(model, print = F, format = "rmarkdown") %>% bind_ro
 anovaTable
 ```
 
+::: notes
+For the ANOVA, we also have to call `bind_rows()` after `anova_apa` to bind the output into a data frame that we can filter.
+:::
+
 ## Examples for your report: ANOVA 2
 
 ````{verbatim, lang = "rmarkdown"}
@@ -293,6 +303,12 @@ We also observed a main effect of *time*
 `r anovaTable %>% filter(effect=="time") %>% pull(text)` with performance **decreasing** from baseline (*M* = `r data %>% filter(time==1) %>% pull(performance) %>% mean() %>% signif(3)`, *SD* = `r data %>% filter(time==1) %>% pull(performance) %>% sd() %>% signif(3)`) to post treatment (*M* = `r data %>% filter(time==2) %>% pull(performance) %>% mean() %>% signif(3)`, *SD* = `r data %>% filter(time==2) %>% pull(performance) %>% sd() %>% signif(3)`).
 The interaction did not reach significance `r anovaTable %>% filter(effect=="condition:time") %>% pull(text)`.
 The effects are depicted in Figure 1.
+
+::: notes
+1. `anovaTable %>% filter(effect=="condition") %>% pull(text)` to call the statistical output for an individual effect.
+
+2. When calculating descriptives (esp. *SD*) while collapsing across (within-subject) variables, make sure to calculate the mean for each subject first before you `summarize` across all subjects.
+:::
 
 # Thanks
 
