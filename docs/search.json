@@ -935,7 +935,7 @@
     "href": "W13_RMarkdown.html#r-markdown-advantages",
     "title": "13 R Markdown",
     "section": "R Markdown Advantages",
-    "text": "R Markdown Advantages\nThere are many useful things you can do with R Markdown (adding different headers, adding inline code, knitting as a PDF, adding pictures or tables…). You can also decide whether each code chunk should be visible in the output, etc.\nExample:\n```{r, echo=TRUE, eval=FALSE}\n#your code here that will only be shown but not be executed\n```\nFor further information, check out the R Markdown cheatsheet: https://rmarkdown.rstudio.com/lesson-15.HTML"
+    "text": "R Markdown Advantages\nThere are many useful things you can do with R Markdown (adding different headers, adding inline code, knitting as a PDF, adding pictures or tables…). You can also decide whether each code chunk should be visible in the output, etc.\nExample: \n```{r, echo=TRUE, eval=FALSE}\n#your code here that will only be shown but not be executed\n```\nFor further information, check out the R Markdown cheatsheet: https://rmarkdown.rstudio.com/lesson-15.HTML"
   },
   {
     "objectID": "W13_RMarkdown.html#code-chunk-options",
@@ -949,7 +949,7 @@
     "href": "W13_RMarkdown.html#from-an-r-script-to-r-markdown",
     "title": "13 R Markdown",
     "section": "From an R script to R Markdown",
-    "text": "From an R script to R Markdown\nPreviously, we have just worked with .R scripts. If you have a full R script with your entire analysis (or even several scripts), how do you include them in an R Markdown file?\n\nOption 1: Copy all code into one giant code chunk:\n```{r}\n#copy all code here\n```\nYou can break this code chunk apart into smaller ones by copying this into a new line of the code chunk:\n```\n\n```{r}"
+    "text": "From an R script to R Markdown\nPreviously, we have just worked with .R scripts. If you have a full R script with your entire analysis (or even several scripts), how do you include them in an R Markdown file?\n\nOption 1: Copy all code into one giant code chunk:\n```{r}\n#copy all code here\n```\nYou can break this code chunk apart into smaller ones by copying this into a new line of the code chunk:\n```\n\n```{r}\n\nseparate code chunks make sense for two reasons:\n\nit helps you structure different steps of your data analysis (e.g., data wrangling, data visualization, and different analyses)\n⇒ naming code chunks can greatly support your structure!\nif you want different chunk options for parts of your code (e.g., echo=TRUE for certain lines of code ⇒ put them into a separate code chunk)"
   },
   {
     "objectID": "W13_RMarkdown.html#from-an-r-script-to-r-markdown-2",
@@ -963,7 +963,7 @@
     "href": "W13_RMarkdown.html#your-second-r-markdown-script",
     "title": "13 R Markdown",
     "section": "Your Second R Markdown Script",
-    "text": "Your Second R Markdown Script\n\nUse one of the two methods described before to include the R analysis for your report into an R Markdown document.\nOutput the content of any variable of your R script and include it as inline code in some text (Cheat Sheet).\n\n\n```{r}\ndata = tibble(rt = rnorm(n=100, mean=.5, sd=.2))\n```\nWe observed an average reaction time of `r data %&gt;% pull(rt) %&gt;% mean() %&gt;% signif(digits=3)` seconds.\nWe observed an average reaction time of 0.515 seconds.\n\nKnit the document and open the output with a double click."
+    "text": "Your Second R Markdown Script\n\nUse one of the two methods described before to include the R analysis for your report into an R Markdown document.\nOutput the content of any variable of your R script and include it as inline code in some text (Cheat Sheet).\n\n\n```{r}\ndata = tibble(rt = rnorm(n=100, mean=.5, sd=.2))\n```\nWe observed an average reaction time of `r data %&gt;% pull(rt) %&gt;% mean() %&gt;% signif(digits=3)` seconds.\nWe observed an average reaction time of 0.508 seconds.\n\nKnit the document and open the output with a double click."
   },
   {
     "objectID": "W13_RMarkdown.html#examples-for-your-report-t-test",

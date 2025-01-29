@@ -88,7 +88,7 @@ A newer variant is called *quarto*, which works very similar to R Markdown (but 
 There are many useful things you can do with R Markdown (adding different headers, adding inline code, knitting as a PDF, adding pictures or tables...). You can also decide whether each code chunk should be visible in the output, etc.
 
 Example:
-
+<!-- The verbatim tag with quadruple back ticks is too much for the RStudio compiler (version 2023.06.0 Build 421) - but the rendering works! -->
 ````{verbatim}
 ```{r, echo=TRUE, eval=FALSE}
 #your code here that will only be shown but not be executed
@@ -137,6 +137,14 @@ You can break this code chunk apart into smaller ones by copying this into a new
 
 ```{r}
 ````
+
+::: notes
+separate code chunks make sense for two reasons:
+
+1.  it helps you structure different steps of your data analysis (e.g., data wrangling, data visualization, and different analyses) \
+&rArr; naming code chunks can greatly support your structure!
+2.  if you want different chunk options for parts of your code (e.g., `echo=TRUE` for certain lines of code &rArr; put them into a separate code chunk)
+:::
 
 ## From an R script to R Markdown 2
 

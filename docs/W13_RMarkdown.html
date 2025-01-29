@@ -502,7 +502,7 @@ div.cell-output-stdout {
 <section id="r-markdown-advantages" class="slide level2">
 <h2>R Markdown Advantages</h2>
 <p>There are many useful things you can do with R Markdown (adding different headers, adding inline code, knitting as a PDF, adding pictures or tables…). You can also decide whether each code chunk should be visible in the output, etc.</p>
-<p>Example:</p>
+<p>Example: <!-- The verbatim tag with quadruple back ticks is too much for the RStudio compiler (version 2023.06.0 Build 421) - but the rendering works! --></p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode numberSource default number-lines code-with-copy"><code class="sourceCode default"><span id="cb1-1"><a href="#cb1-1"></a>```{r, echo=TRUE, eval=FALSE}</span>
 <span id="cb1-2"><a href="#cb1-2"></a>#your code here that will only be shown but not be executed</span>
 <span id="cb1-3"><a href="#cb1-3"></a>```</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -532,6 +532,24 @@ div.cell-output-stdout {
 <div class="sourceCode" id="cb4"><pre class="sourceCode numberSource default number-lines code-with-copy"><code class="sourceCode default"><span id="cb4-1"><a href="#cb4-1"></a>```</span>
 <span id="cb4-2"><a href="#cb4-2"></a></span>
 <span id="cb4-3"><a href="#cb4-3"></a>```{r}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<aside class="notes">
+<p>separate code chunks make sense for two reasons:</p>
+<ol type="1">
+<li>it helps you structure different steps of your data analysis (e.g., data wrangling, data visualization, and different analyses)<br>
+⇒ naming code chunks can greatly support your structure!</li>
+<li>if you want different chunk options for parts of your code (e.g., <code>echo=TRUE</code> for certain lines of code ⇒ put them into a separate code chunk)</li>
+</ol>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </div>
 </section>
 <section id="from-an-r-script-to-r-markdown-2" class="slide level2">
@@ -554,7 +572,7 @@ div.cell-output-stdout {
 <span id="cb6-2"><a href="#cb6-2"></a>data = tibble(rt = rnorm(n=100, mean=.5, sd=.2))</span>
 <span id="cb6-3"><a href="#cb6-3"></a>```</span>
 <span id="cb6-4"><a href="#cb6-4"></a>We observed an average reaction time of `r data %&gt;% pull(rt) %&gt;% mean() %&gt;% signif(digits=3)` seconds.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>We observed an average reaction time of 0.515 seconds.</p>
+<p>We observed an average reaction time of 0.508 seconds.</p>
 <ol start="3" type="1">
 <li>Knit the document and open the output with a double click.</li>
 </ol>
